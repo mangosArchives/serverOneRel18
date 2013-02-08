@@ -54,8 +54,8 @@
 
 char remotes[NUM_REMOTES][MAX_REMOTE] =
 {
-    "git@github.com:cmangos/mangos-tbc.git",
-    "git://github.com/cmangos/mangos-tbc.git"       // used for fetch if present
+    "git@github.com:mangosone/server.git",
+    "git://github.com/mangosone/server.git"       // used for fetch if present
 };
 
 char remote_branch[MAX_REMOTE] = "master";
