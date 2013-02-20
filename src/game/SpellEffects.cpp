@@ -1191,7 +1191,7 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
 
                     tempSummon->UnSummon();
 
-                    Creature* pCreature = m_caster->SummonCreature(entry_list[urand(0, 2)], x, y, z, o, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 180000);
+                    Creature* pCreature = m_caster->SummonCreature(entry_list[urand(0, 2)], x, y, z, o, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 180000);
                     if (!pCreature)
                         return;
 
