@@ -3090,7 +3090,6 @@ void ObjectMgr::LoadArenaTeams()
 
     if (!result)
     {
-
         BarGoLink bar(1);
 
         bar.step();
@@ -3110,7 +3109,6 @@ void ObjectMgr::LoadArenaTeams()
 
     do
     {
-
         bar.step();
         ++count;
 
@@ -5239,7 +5237,6 @@ void ObjectMgr::LoadAreaTriggerTeleports()
     QueryResult* result = WorldDatabase.Query("SELECT id, required_level, required_item, required_item2, heroic_key, heroic_key2, required_quest_done, required_quest_done_heroic, target_map, target_position_x, target_position_y, target_position_z, target_orientation FROM areatrigger_teleport");
     if (!result)
     {
-
         BarGoLink bar(1);
 
         bar.step();
@@ -8383,7 +8380,6 @@ void ObjectMgr::LoadVendorTemplates()
 
 void ObjectMgr::LoadNpcGossips()
 {
-
     m_mCacheNpcTextIdMap.clear();
 
     QueryResult* result = WorldDatabase.Query("SELECT npc_guid, textid FROM npc_gossip");
