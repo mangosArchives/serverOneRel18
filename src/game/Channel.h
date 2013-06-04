@@ -69,7 +69,7 @@ enum ChatNotify
     CHAT_NOT_IN_LFG_NOTICE            = 0x21,               //+ "[%s] You must be queued in looking for group before joining this channel."; -- The user must be in the looking for group system to join LFG chat channels.
     CHAT_VOICE_ON_NOTICE              = 0x22,               //+ "[%s] Channel voice enabled by %s.";
     CHAT_VOICE_OFF_NOTICE             = 0x23                //+ "[%s] Channel voice disabled by %s.";
-    // 0x24 enable voice?
+                                        // 0x24 enable voice?
 };
 
 class Channel
@@ -85,11 +85,11 @@ class Channel
             CHANNEL_FLAG_CITY       = 0x20,
             CHANNEL_FLAG_LFG        = 0x40,
             CHANNEL_FLAG_VOICE      = 0x80
-            // General                  0x18 = 0x10 | 0x08
-            // Trade                    0x3C = 0x20 | 0x10 | 0x08 | 0x04
-            // LocalDefence             0x18 = 0x10 | 0x08
-            // GuildRecruitment         0x38 = 0x20 | 0x10 | 0x08
-            // LookingForGroup          0x50 = 0x40 | 0x10
+                                      // General                  0x18 = 0x10 | 0x08
+                                      // Trade                    0x3C = 0x20 | 0x10 | 0x08 | 0x04
+                                      // LocalDefence             0x18 = 0x10 | 0x08
+                                      // GuildRecruitment         0x38 = 0x20 | 0x10 | 0x08
+                                      // LookingForGroup          0x50 = 0x40 | 0x10
         };
 
         enum ChannelDBCFlags
@@ -189,40 +189,40 @@ class Channel
         // initial packet data (notify type and channel name)
         void MakeNotifyPacket(WorldPacket* data, uint8 notify_type);
         // type specific packet data
-        void MakeJoined(WorldPacket* data, ObjectGuid guid);//+ 0x00
-        void MakeLeft(WorldPacket* data, ObjectGuid guid);  //+ 0x01
-        void MakeYouJoined(WorldPacket* data);              //+ 0x02
-        void MakeYouLeft(WorldPacket* data);                //+ 0x03
-        void MakeWrongPassword(WorldPacket* data);          //? 0x04
-        void MakeNotMember(WorldPacket* data);              //? 0x05
-        void MakeNotModerator(WorldPacket* data);           //? 0x06
+        void MakeJoined(WorldPacket* data, ObjectGuid guid);                    //+ 0x00
+        void MakeLeft(WorldPacket* data, ObjectGuid guid);                      //+ 0x01
+        void MakeYouJoined(WorldPacket* data);                                  //+ 0x02
+        void MakeYouLeft(WorldPacket* data);                                    //+ 0x03
+        void MakeWrongPassword(WorldPacket* data);                              //? 0x04
+        void MakeNotMember(WorldPacket* data);                                  //? 0x05
+        void MakeNotModerator(WorldPacket* data);                               //? 0x06
         void MakePasswordChanged(WorldPacket* data, ObjectGuid guid);           //+ 0x07
         void MakeOwnerChanged(WorldPacket* data, ObjectGuid guid);              //? 0x08
         void MakePlayerNotFound(WorldPacket* data, const std::string& name);    //+ 0x09
-        void MakeNotOwner(WorldPacket* data);               //? 0x0A
-        void MakeChannelOwner(WorldPacket* data);           //? 0x0B
+        void MakeNotOwner(WorldPacket* data);                                   //? 0x0A
+        void MakeChannelOwner(WorldPacket* data);                               //? 0x0B
         void MakeModeChange(WorldPacket* data, ObjectGuid guid, uint8 oldflags);//+ 0x0C
         void MakeAnnouncementsOn(WorldPacket* data, ObjectGuid guid);           //+ 0x0D
         void MakeAnnouncementsOff(WorldPacket* data, ObjectGuid guid);          //+ 0x0E
         void MakeModerationOn(WorldPacket* data, ObjectGuid guid);              //+ 0x0F
         void MakeModerationOff(WorldPacket* data, ObjectGuid guid);             //+ 0x10
-        void MakeMuted(WorldPacket* data);                  //? 0x11
+        void MakeMuted(WorldPacket* data);                                      //? 0x11
         void MakePlayerKicked(WorldPacket* data, ObjectGuid bad, ObjectGuid good);//? 0x12
-        void MakeBanned(WorldPacket* data);                 //? 0x13
+        void MakeBanned(WorldPacket* data);                                     //? 0x13
         void MakePlayerBanned(WorldPacket* data, ObjectGuid bad, ObjectGuid good);//? 0x14
         void MakePlayerUnbanned(WorldPacket* data, ObjectGuid bad, ObjectGuid good);//? 0x15
         void MakePlayerNotBanned(WorldPacket* data, ObjectGuid guid);           //? 0x16
         void MakePlayerAlreadyMember(WorldPacket* data, ObjectGuid guid);       //+ 0x17
-        void MakeInvite(WorldPacket* data, ObjectGuid guid);//? 0x18
-        void MakeInviteWrongFaction(WorldPacket* data);     //? 0x19
-        void MakeWrongFaction(WorldPacket* data);           //? 0x1A
-        void MakeInvalidName(WorldPacket* data);            //? 0x1B
-        void MakeNotModerated(WorldPacket* data);           //? 0x1C
+        void MakeInvite(WorldPacket* data, ObjectGuid guid);                    //? 0x18
+        void MakeInviteWrongFaction(WorldPacket* data);                         //? 0x19
+        void MakeWrongFaction(WorldPacket* data);                               //? 0x1A
+        void MakeInvalidName(WorldPacket* data);                                //? 0x1B
+        void MakeNotModerated(WorldPacket* data);                               //? 0x1C
         void MakePlayerInvited(WorldPacket* data, const std::string& name);     //+ 0x1D
         void MakePlayerInviteBanned(WorldPacket* data, ObjectGuid guid);        //? 0x1E
-        void MakeThrottled(WorldPacket* data);              //? 0x1F
-        void MakeNotInArea(WorldPacket* data);              //? 0x20
-        void MakeNotInLfg(WorldPacket* data);               //? 0x21
+        void MakeThrottled(WorldPacket* data);                                  //? 0x1F
+        void MakeNotInArea(WorldPacket* data);                                  //? 0x20
+        void MakeNotInLfg(WorldPacket* data);                                   //? 0x21
         void MakeVoiceOn(WorldPacket* data, ObjectGuid guid);                   //+ 0x22
         void MakeVoiceOff(WorldPacket* data, ObjectGuid guid);                  //+ 0x23
 
