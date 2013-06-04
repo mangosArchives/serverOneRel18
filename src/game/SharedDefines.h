@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
+ * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,7 +149,7 @@ enum Powers
 
 #define MAX_POWERS                        5
 
-/**
+/*
  * The different spell schools that are available, used in both damage calculation
  * and spell casting to decide what should be affected, the SPELL_SCHOOL_NORMAL
  * is the armor, others should be self explanatory.
@@ -170,7 +170,7 @@ enum SpellSchools
 
 #define MAX_SPELL_SCHOOL                  7
 
-/**
+/*
  * A bitmask of the available SpellSchools. Used for convenience
  */
 enum SpellSchoolMask
