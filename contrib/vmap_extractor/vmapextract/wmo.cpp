@@ -467,7 +467,7 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
 
         /* std::ofstream llog("Buildings/liquid.log", ios_base::out | ios_base::app);
         llog << filename;
-        llog << ":\ntype: " << hlq->type << " (root:" << rootWMO->liquidType << " group:" << liquidType << ")\n";
+        llog << ":\nliquidEntry: " << liquidEntry << " type: " << hlq->type << " (root:" << rootWMO->liquidType << " group:" << liquidType << ")\n";
         llog.close(); */
 
         fwrite(hlq, sizeof(WMOLiquidHeader), 1, output);

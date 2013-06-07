@@ -4,7 +4,7 @@ This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THAN
 
 See the COPYING file for copying conditions.
 
-NOTE: This is file special addition for mangos-0.12 branch
+NOTE: This is file special addition for mangosone fork (from mangos 0.12)
       It describe work with backported sql updates
 
 == Database Updates ==
@@ -23,7 +23,7 @@ First part is the order_number, revision and counter that shows the commit revis
 will be compatible with the database after apply that particular update.
 Counter sets the order to apply sql updates for the same revision. Order_number set
 global order in directory for backported sql updates (its backported in random order
-and need special mangos-0.12 side order for apply).
+and need special mangosone side order for apply).
 
 The second part of the name is the database and the table that needs an update or has been added.
 
@@ -62,7 +62,7 @@ Then apply post-YYYYY slq updates for make characters DB up-to-date.
 
 === For Commiters ====
 
-IMPORTANT: Need use git_id tool from mangos-0.12 branch.
+IMPORTANT: Need use git_id tool from MaNGOSOne sources.
 
 ===== For backporting sql updates =====
 
@@ -81,7 +81,7 @@ IMPORTANT: Need use git_id tool from mangos-0.12 branch.
 
 ===== For new sql updates =====
 
-1. Name sql update in mangos-0.12 form (s99999_xxxxx_01_characters_character_pet.sql)
+1. Name sql update in mangosone form (s99999_xxxxx_01_characters_character_pet.sql)
    using any free order_number in sql/updates files list (it will replaced by proper at git_id -s use).
 
 2. Add sql update to commit and manually include sql update changes in to related DB sql file.
