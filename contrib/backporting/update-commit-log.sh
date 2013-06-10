@@ -3,7 +3,7 @@
 # Simple helper script to create backport lists
 
 # By user defined (remote/branch to the to-be-backported history)
-COMPARE_PATH="wotlk/master"
+COMPARE_PATH="mangostwo/cleaned_wotlk_history"
 OUTPUT_FILE="contrib/backporting/todo_wotlk_commits.log"
 
 # By user defined (text format)
@@ -12,9 +12,9 @@ OUTPUT_FILE="contrib/backporting/todo_wotlk_commits.log"
 #FOOTER_FORMAT="FILE LAST UPDATED BASED ON... ${SMALL_FORMAT}"
 
 # By user defined (Textile markup based wiki format)
-SMALL_FORMAT="\"wotlk\":http://github.com/cmangos/mangos-wotlk/commit/%h: %h * %an (committer %cn)"
-FULL_FORMAT="</code></pre>%n* ${SMALL_FORMAT}<pre><code>%s"
-FOOTER_FORMAT="</code></pre>FILE LAST UPDATED BASED ON... ${SMALL_FORMAT}"
+SMALL_FORMAT="\"wotlk\":http://github.com/mangosone/server/commit/%h: %h * %an (committer %cn)"
+FULL_FORMAT="</code></pre>%n%n%n* ${SMALL_FORMAT}<pre><code>%s"
+FOOTER_FORMAT="</code></pre>%n%n%nFILE LAST UPDATED BASED ON... ${SMALL_FORMAT}"
 
 # param1 must be the commit hash of last backported commit (of original commit)
 if [ "$#" != "1" ]

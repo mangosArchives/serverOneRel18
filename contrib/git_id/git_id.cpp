@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -701,9 +701,9 @@ bool generate_sql_makefile()
             "#  Install basic SQL files to datadir\n"
             "pkgdata_DATA = \\\n",
             sql_update_dir, sql_update_dir
-           );
+    );
 
-    for (std::set<std::string>::iterator itr = file_list.begin(), next; itr != file_list.end(); ++itr)
+    for(std::set<std::string>::iterator itr = file_list.begin(), next; itr != file_list.end(); ++itr)
     {
         next = itr; ++next;
         fprintf(fout, "\t%s%s\n", itr->c_str(), next == file_list.end() ? "" : " \\");
