@@ -196,7 +196,6 @@ extern int main(int argc, char** argv)
                     " ###  #####  ### ###    ### ###    ####  #########   #########   ######### \n"
                     " ###   ###   ### ###    ### ###     ###   #######     #######     #######  \n"
                     "\n"
-<<<<<<< HEAD
                     "                                                         ###               \n"
                     " Website: http://www.getmangos.co.uk                    ## ##  ##  ##  ####\n"
                     "                                                        ## ##  ### ##  ##  \n"
@@ -206,17 +205,6 @@ extern int main(int argc, char** argv)
                     "\n\n");
 
     sLog.outString("Using configuration file %s.", cfg_file);
-=======
-                    "                                                #####                      \n"
-                    " Website: http://www.getmangos.co.uk              ###  ####  #####    #### \n"
-                    "                                                  ##   ##    ##  ##  ##  ##\n"
-                    "    Wiki: http://github.com/mangoswiki/wiki      ##    ####  #####   ##  ##\n"
-                    "                                                ##     ##    ## ##   ##  ##\n"
-                    "   Forum: http://community.getmangos.co.uk      #####  ####  ##  ##   #### \n"
-                    "\n\n");
-
-   sLog.outString("Using configuration file %s.", cfg_file);
->>>>>>> 629192372f89400197b9ebbd5a06eb0b8c0a2453
 
     DETAIL_LOG("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
     if (SSLeay() < 0x009080bfL)
