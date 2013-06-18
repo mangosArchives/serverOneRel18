@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -79,7 +79,6 @@ void CreatureEventAIMgr::CheckUnusedAITexts()
             }
         }
     }
-
     for (std::set<int32>::const_iterator itr = idx_set.begin(); itr != idx_set.end(); ++itr)
         sLog.outErrorEventAI("Entry %i in table `creature_ai_texts` but not used in EventAI scripts.", *itr);
 }

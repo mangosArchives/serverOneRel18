@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -790,6 +790,7 @@ bool ChatHandler::HandleReloadBattleEventCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadEventAITextsCommand(char* /*args*/)
 {
+
     sLog.outString("Re-Loading Texts from `creature_ai_texts`...");
     sEventAIMgr.LoadCreatureEventAI_Texts(true);
     SendGlobalSysMessage("DB table `creature_ai_texts` reloaded.");

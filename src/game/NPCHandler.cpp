@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -291,7 +291,7 @@ void WorldSession::HandleTrainerBuySpellOpcode(WorldPacket& recv_data)
     data << uint32(0x016A);                                 // index from SpellVisualKit.dbc
     SendPacket(&data);
 
-    // learn explicitly
+    // learn explicitly to prevent lost money at lags, learning spell will be only show spell animation
     _player->learnSpell(trainer_spell->spell, false);
 
     data.Initialize(SMSG_TRAINER_BUY_SUCCEEDED, 12);

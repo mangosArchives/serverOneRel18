@@ -12,7 +12,7 @@ OUTPUT_FILE="contrib/backporting/todo_wotlk_commits.log"
 #FOOTER_FORMAT="FILE LAST UPDATED BASED ON... ${SMALL_FORMAT}"
 
 # By user defined (Textile markup based wiki format)
-SMALL_FORMAT="\"wotlk\":http://github.com/mangosone/server/commit/%h: %h * %an (committer %cn)"
+SMALL_FORMAT="\"wotlk\":http://github.com/mangostwo/server/commit/%h: %h * %an (committer %cn)"
 FULL_FORMAT="</code></pre>%n%n%n* ${SMALL_FORMAT}<pre><code>%s"
 FOOTER_FORMAT="</code></pre>%n%n%nFILE LAST UPDATED BASED ON... ${SMALL_FORMAT}"
 

@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef WIN32
 #pragma warning(disable:4996)
+#endif
 
 struct RawData
 {
