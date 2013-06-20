@@ -59,7 +59,7 @@ enum AreaFlags
     AREA_FLAG_PVP                   = 0x00008000,           // pvp objective area? (Death's Door also has this flag although it's no pvp object area)
     AREA_FLAG_ARENA_INSTANCE        = 0x00010000,           // used by instanced arenas only
     AREA_FLAG_UNUSED2               = 0x00020000,           // not used now (no area/zones with this flag set in 2.4.2)
-    AREA_FLAG_UNK5                  = 0x00040000,           // just used for Amani Pass, Hatchet Hills
+    AREA_FLAG_UNK5                  = 0x00040000,           // only used for Amani Pass, Hatchet Hills
     AREA_FLAG_LOWLEVEL              = 0x00100000,           // used for some starting areas with area_level <=15
 };
 
@@ -75,7 +75,7 @@ enum Difficulty
 
 enum SpawnMask
 {
-    SPAWNMASK_REGULAR           = (1 << REGULAR_DIFFICULTY),// any any maps without spawn modes (continents/subway) or in minimal spawnmode
+    SPAWNMASK_REGULAR           = (1 << REGULAR_DIFFICULTY),// any maps without spawn modes (continents/subway) or in minimal spawnmode
 
     SPAWNMASK_DUNGEON_NORMAL    = (1 << DUNGEON_DIFFICULTY_NORMAL),
     SPAWNMASK_DUNGEON_HEROIC    = (1 << DUNGEON_DIFFICULTY_HEROIC),
@@ -97,13 +97,13 @@ enum FactionMasks
     // if none flags set then non-aggressive creature
 };
 
-enum MapTypes
+enum MapTypes                                               // Lua_IsInInstance
 {
-    MAP_COMMON          = 0,
-    MAP_INSTANCE        = 1,
-    MAP_RAID            = 2,
-    MAP_BATTLEGROUND    = 3,
-    MAP_ARENA           = 4
+    MAP_COMMON          = 0,                                // none
+    MAP_INSTANCE        = 1,                                // party
+    MAP_RAID            = 2,                                // raid
+    MAP_BATTLEGROUND    = 3,                                // pvp
+    MAP_ARENA           = 4                                 // arena
 };
 
 enum AbilytyLearnType

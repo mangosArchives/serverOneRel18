@@ -7118,11 +7118,11 @@ bool Unit::isVisibleForOrDetect(Unit const* u, WorldObject const* viewPoint, boo
         if (u->GetTypeId() != TYPEID_PLAYER || !((Player*)u)->isGameMaster())
             return false;
 
-    // Visible units, always are visible for all units, except for units under invisibility
+    // Visible units, always are visible for all units, except for units under invisibility and phases
     if (m_Visibility == VISIBILITY_ON && u->m_invisibilityMask == 0)
         return true;
 
-    // GMs see any players, not higher GMs and all units
+    // GMs see any players, not higher GMs and all units in any phase
     if (u->GetTypeId() == TYPEID_PLAYER && ((Player*)u)->isGameMaster())
     {
         if (GetTypeId() == TYPEID_PLAYER)
@@ -7890,7 +7890,7 @@ int32 Unit::CalculateSpellDamage(Unit const* target, SpellEntry const* spellProt
 
     switch (randomPoints)
     {
-        case 0:
+        case 0:                                             // not used
         case 1: basePoints += baseDice; break;              // range 1..1
         default:
         {

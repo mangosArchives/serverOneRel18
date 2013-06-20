@@ -347,7 +347,7 @@ struct GameObjectInfo
             uint32 mapID;                                   //0
             uint32 difficulty;                              //1
         } doNotUseYet;
-        //33 GAMEOBJECT_TYPE_DESTRUCTIBLE_BUILDING
+        //33 GAMEOBJECT_TYPE_DESTRUCTIBLE_BUILDING          // Much guesswork
         struct
         {
             uint32 dmgPctState1;                            //0

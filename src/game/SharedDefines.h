@@ -324,14 +324,14 @@ enum SpellAttributesEx2
     SPELL_ATTR_EX2_AUTOREPEAT_FLAG             = 0x00000020,// 5
     SPELL_ATTR_EX2_UNK6                        = 0x00000040,// 6 only usable on tabbed by yourself
     SPELL_ATTR_EX2_UNK7                        = 0x00000080,// 7
-    SPELL_ATTR_EX2_UNK8                        = 0x00000100,// 8 not set in 2.4.2
+    SPELL_ATTR_EX2_UNK8                        = 0x00000100,// 8 not set in 2.4.2 or 3.0.3
     SPELL_ATTR_EX2_UNK9                        = 0x00000200,// 9
     SPELL_ATTR_EX2_UNK10                       = 0x00000400,// 10
     SPELL_ATTR_EX2_HEALTH_FUNNEL               = 0x00000800,// 11
     SPELL_ATTR_EX2_UNK12                       = 0x00001000,// 12
     SPELL_ATTR_EX2_UNK13                       = 0x00002000,// 13
     SPELL_ATTR_EX2_UNK14                       = 0x00004000,// 14
-    SPELL_ATTR_EX2_UNK15                       = 0x00008000,// 15 not set in 2.4.2
+    SPELL_ATTR_EX2_UNK15                       = 0x00008000,// 15 not set in 2.4.2 or 3.0.3
     SPELL_ATTR_EX2_UNK16                       = 0x00010000,// 16
     SPELL_ATTR_EX2_UNK17                       = 0x00020000,// 17 suspend weapon timer instead of resetting it, (?Hunters Shot and Stings only have this flag?)
     SPELL_ATTR_EX2_UNK18                       = 0x00040000,// 18 Only Revive pet - possible req dead pet
@@ -1121,7 +1121,7 @@ enum Targets
     TARGET_POINT_AT_SW                 = 85,                // from spell desc: "(SW)"
     TARGET_RANDOM_NEARBY_DEST          = 86,                // "Test Nearby Dest Random" - random around selected destination
     TARGET_SELF2                       = 87,
-    TARGET_88                          = 88,                // Smoke Flare(s)
+    TARGET_88                          = 88,                // Smoke Flare(s) and Hurricane
     TARGET_NONCOMBAT_PET               = 90,
 };
 
@@ -1147,7 +1147,7 @@ enum SpellHitType
     SPELL_HIT_TYPE_CRIT = 0x00002,
     SPELL_HIT_TYPE_UNK3 = 0x00004,
     SPELL_HIT_TYPE_UNK4 = 0x00008,
-    SPELL_HIT_TYPE_UNK5 = 0x00010,
+    SPELL_HIT_TYPE_UNK5 = 0x00010,                          // replace caster?
     SPELL_HIT_TYPE_UNK6 = 0x00020
 };
 

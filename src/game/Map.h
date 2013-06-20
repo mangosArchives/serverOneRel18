@@ -180,12 +180,12 @@ class MANGOS_DLL_SPEC Map : public GridRefManager<NGridType>
 
         // _currently_ spawnmode == difficulty, but this can be changes later, so use appropriate spawnmode/difficult functions
         // for simplify later code support
-        // regular difficulty = continent/dungeon normal/raid normal difficulty
+        // regular difficulty = continent/dungeon normal/first raid normal difficulty
         uint8 GetSpawnMode() const { return (i_spawnMode); }
         Difficulty GetDifficulty() const { return Difficulty(GetSpawnMode()); }
         bool IsRegularDifficulty() const { return GetDifficulty() == REGULAR_DIFFICULTY; }
-        uint32 GetMaxPlayers() const;
-        uint32 GetMaxResetDelay() const;
+        uint32 GetMaxPlayers() const;                       // dependent from map difficulty
+        uint32 GetMaxResetDelay() const;                    // dependent from map difficulty
 
         bool Instanceable() const { return i_mapEntry && i_mapEntry->Instanceable(); }
         // NOTE: this duplicate of Instanceable(), but Instanceable() can be changed when BG also will be instanceable
@@ -235,7 +235,7 @@ class MANGOS_DLL_SPEC Map : public GridRefManager<NGridType>
         Player* GetPlayer(ObjectGuid guid);
         Creature* GetCreature(ObjectGuid guid);
         Pet* GetPet(ObjectGuid guid);
-        Creature* GetAnyTypeCreature(ObjectGuid guid);      // normal creature or pet
+        Creature* GetAnyTypeCreature(ObjectGuid guid);      // normal creature or pet or vehicle
         GameObject* GetGameObject(ObjectGuid guid);
         DynamicObject* GetDynamicObject(ObjectGuid guid);
         Corpse* GetCorpse(ObjectGuid guid);                 // !!! find corpse can be not in world

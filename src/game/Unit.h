@@ -446,16 +446,16 @@ enum UnitState
 
     // stay by different reasons
     UNIT_STAT_NOT_MOVE        = UNIT_STAT_ROOT | UNIT_STAT_STUNNED | UNIT_STAT_DIED |
-    UNIT_STAT_DISTRACTED,
+                                UNIT_STAT_DISTRACTED,
 
     // stay or scripted movement for effect( = in player case you can't move by client command)
     UNIT_STAT_NO_FREE_MOVE    = UNIT_STAT_ROOT | UNIT_STAT_STUNNED | UNIT_STAT_DIED |
-    UNIT_STAT_TAXI_FLIGHT |
-    UNIT_STAT_CONFUSED | UNIT_STAT_FLEEING,
+                                UNIT_STAT_TAXI_FLIGHT |
+                                UNIT_STAT_CONFUSED | UNIT_STAT_FLEEING,
 
     // not react at move in sight or other
     UNIT_STAT_CAN_NOT_REACT   = UNIT_STAT_STUNNED | UNIT_STAT_DIED |
-    UNIT_STAT_CONFUSED | UNIT_STAT_FLEEING,
+                                UNIT_STAT_CONFUSED | UNIT_STAT_FLEEING,
 
     // AI disabled by some reason
     UNIT_STAT_LOST_CONTROL    = UNIT_STAT_FLEEING | UNIT_STAT_CONTROLLED,
@@ -758,10 +758,10 @@ namespace Movement
  */
 enum DiminishingLevels
 {
-    DIMINISHING_LEVEL_1             = 0,         ///Won't make a difference to stun duration
-    DIMINISHING_LEVEL_2             = 1,         ///Reduces stun time by 50%
-    DIMINISHING_LEVEL_3             = 2,         ///Reduces stun time by 75%
-    DIMINISHING_LEVEL_IMMUNE        = 3          ///The target is immune to the DiminishingGrouop
+    DIMINISHING_LEVEL_1             = 0,         //< Won't make a difference to stun duration
+    DIMINISHING_LEVEL_2             = 1,         //< Reduces stun time by 50%
+    DIMINISHING_LEVEL_3             = 2,         //< Reduces stun time by 75%
+    DIMINISHING_LEVEL_IMMUNE        = 3          //< The target is immune to the DiminishingGrouop
 };
 
 /**
