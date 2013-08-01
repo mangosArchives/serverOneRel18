@@ -97,7 +97,7 @@ class GMTicket
          * @param responsetext the response to the question if any
          * @param update the last time the ticket was updated by either \ref Player or GM
          */
-        void Init(ObjectGuid guid, const std::string& text, const std::string& responsetext, time_t update);
+        void Init(ObjectGuid guid, const std::string& text, const std::string& responseText, time_t update, uint32 ticketId);
 
         /** 
          * Gets the \ref Player s \ref ObjectGuid which asked the question and created the ticket
@@ -119,6 +119,12 @@ class GMTicket
          * @return Time since last update in seconds since UNIX epoch
          */
         uint64 GetLastUpdate() const { return m_lastUpdate; }
+        /** 
+         * Gets the id for this \ref GMTicket, as represented in the database
+         * table characters.character_ticket
+         * @return id for this ticket in the database
+         */
+        uint32 GetId() const { return m_ticketId; }
 
         /** 
          * Changes the tickets question text.
@@ -139,21 +145,7 @@ class GMTicket
          * \todo Change to resolved/not resolved instead, via the check in db
          */
         bool HasResponse() { return !m_responseText.empty(); };
-
-        /**
-         * This will delete this ticket from the characters database (table character_ticket)
-         * and that in turn makes sure that the ticket isn't loaded as a new one when
-         * restarting the server. 
-         * \todo Mark the ticked as solved instead
-         * \todo Log conversation between GM and player aswell
-         */
-        void DeleteFromDB() const;
-        /** 
-         * Saves the current state of this ticket to the DB in the characters database
-         * in a table name character_ticket
-         */
-        void SaveToDB() const;
-    
+        
         /** 
          * This will take care of a \ref OpcodesList::CMSG_GMSURVEY_SUBMIT packet
          * and save the data received into the database, this is not implemented yet
@@ -176,6 +168,7 @@ class GMTicket
         void _Close(GMTicketStatus statusCode) const;
     
         ObjectGuid m_guid;
+        uint32 m_ticketId;
         std::string m_text;
         std::string m_responseText;
         time_t m_lastUpdate;
@@ -231,7 +224,6 @@ class GMTicketMgr
             GMTicketMap::iterator itr = m_GMTicketMap.find(guid);
             if (itr == m_GMTicketMap.end())
                 { return; }
-            itr->second.DeleteFromDB();
             m_GMTicketListByCreatingOrder.remove(&itr->second);
             m_GMTicketMap.erase(itr);
         }
@@ -250,26 +242,14 @@ class GMTicketMgr
          * @param guid \ref ObjectGuid of the creator of the \ref GMTicket
          * @param text the question text sent
          */
-        void Create(ObjectGuid guid, const char* text)
-        {
-            GMTicket& ticket = m_GMTicketMap[guid];
-            if (ticket.GetPlayerGuid())                     // overwrite ticket
-            {
-                ticket.DeleteFromDB();
-                m_GMTicketListByCreatingOrder.remove(&ticket);
-            }
+        void Create(ObjectGuid guid, const char* text);
 
-            ticket.Init(guid, text, "", time(NULL));
-            ticket.SaveToDB();
-            m_GMTicketListByCreatingOrder.push_back(&ticket);
-        }
-
-       /** 
-        * Turns on/off accepting tickets globally, if this is off the client will see a message
-        * telling them that filing tickets is currently unavailable. When it's on anyone can
-        * file a ticket.
-        * @param accept true means that we accept tickets, false means that we don't
-        */
+        /** 
+         * Turns on/off accepting tickets globally, if this is off the client will see a message
+         * telling them that filing tickets is currently unavailable. When it's on anyone can
+         * file a ticket.
+         * @param accept true means that we accept tickets, false means that we don't
+         */
         void SetAcceptTickets(bool accept) { m_TicketSystemOn = accept; };
         /** 
          * Checks if we accept tickets globally (see \ref GMTicketMgr::SetAcceptTickets)

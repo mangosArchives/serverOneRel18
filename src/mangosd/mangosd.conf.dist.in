@@ -294,6 +294,12 @@ CleanCharacterDB                  = 1
 #        Default: 0 - include in log if log level permit
 #                 1 - not include with any log level
 #
+#    LogWhispers
+#        Log whispers between players to database, character.character_whispers
+#                 0 - Don't log anything
+#        Default: 1 - Only log GM tickets responses and the following conversation until closing the ticket
+#                 2 - Log all whispers
+#
 #    WorldLogFile
 #        Packet logging file for the worldserver
 #        Default: ""          - no log file created
@@ -386,6 +392,7 @@ LogFilter_PlayerStats       = 0
 LogFilter_Damage            = 0
 LogFilter_Combat            = 0
 LogFilter_SpellCast         = 0
+LogWhispers                 = 1
 WorldLogFile                = "world-packets.log"
 WorldLogTimestamp           = 0
 DBErrorLogFile              = "world-database.log"
