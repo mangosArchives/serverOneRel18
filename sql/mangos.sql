@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `db_version`;
 CREATE TABLE `db_version` (
   `version` varchar(120) default NULL,
   `creature_ai_version` varchar(120) default NULL,
-  `required_s2060_mangos_creature_template_classlevelstats` bit(1) default NULL
+  `required_19001_scripted_event` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 
 --
@@ -1188,80 +1188,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template` (
-<<<<<<< HEAD
-  `entry` mediumint(8) unsigned NOT NULL default '0',
-  `heroic_entry` mediumint(8) unsigned NOT NULL default '0',
-  `KillCredit1` int(11) unsigned NOT NULL default '0',
-  `KillCredit2` int(11) unsigned NOT NULL default '0',
-  `modelid_1` mediumint(8) unsigned NOT NULL default '0',
-  `modelid_2` mediumint(8) unsigned NOT NULL default '0',
-  `modelid_3` mediumint(8) unsigned NOT NULL default '0',
-  `modelid_4` mediumint(8) unsigned NOT NULL default '0',
-  `name` char(100) NOT NULL default '0',
-  `subname` char(100) default NULL,
-  `IconName` char(100) default NULL,
-  `gossip_menu_id` mediumint(8) unsigned NOT NULL default '0',
-  `minlevel` tinyint(3) unsigned NOT NULL default '1',
-  `maxlevel` tinyint(3) unsigned NOT NULL default '1',
-  `minhealth` int(10) unsigned NOT NULL default '0',
-  `maxhealth` int(10) unsigned NOT NULL default '0',
-  `minmana` int(10) unsigned NOT NULL default '0',
-  `maxmana` int(10) unsigned NOT NULL default '0',
-  `armor` mediumint(8) unsigned NOT NULL default '0',
-  `faction_A` smallint(5) unsigned NOT NULL default '0',
-  `faction_H` smallint(5) unsigned NOT NULL default '0',
-  `npcflag` int(10) unsigned NOT NULL default '0',
-  `speed_walk` float NOT NULL default '1' COMMENT 'Result of 2.5/2.5, most common value',
-  `speed_run` float NOT NULL default '1.14286' COMMENT 'Result of 8.0/7.0, most common value',
-  `scale` float NOT NULL default '1',
-  `rank` tinyint(3) unsigned NOT NULL default '0',
-  `mindmg` float NOT NULL default '0',
-  `maxdmg` float NOT NULL default '0',
-  `dmgschool` tinyint(4) NOT NULL default '0',
-  `attackpower` int(10) unsigned NOT NULL default '0',
-  `dmg_multiplier` float NOT NULL default '1',
-  `baseattacktime` int(10) unsigned NOT NULL default '0',
-  `rangeattacktime` int(10) unsigned NOT NULL default '0',
-  `unit_class` tinyint(3) unsigned NOT NULL default '0',
-  `unit_flags` int(10) unsigned NOT NULL default '0',
-  `dynamicflags` int(10) unsigned NOT NULL default '0',
-  `family` tinyint(4) NOT NULL default '0',
-  `trainer_type` tinyint(4) NOT NULL default '0',
-  `trainer_spell` mediumint(8) unsigned NOT NULL default '0',
-  `trainer_class` tinyint(3) unsigned NOT NULL default '0',
-  `trainer_race` tinyint(3) unsigned NOT NULL default '0',
-  `minrangedmg` float NOT NULL default '0',
-  `maxrangedmg` float NOT NULL default '0',
-  `rangedattackpower` smallint(5) unsigned NOT NULL default '0',
-  `type` tinyint(3) unsigned NOT NULL default '0',
-  `type_flags` int(10) unsigned NOT NULL default '0',
-  `lootid` mediumint(8) unsigned NOT NULL default '0',
-  `pickpocketloot` mediumint(8) unsigned NOT NULL default '0',
-  `skinloot` mediumint(8) unsigned NOT NULL default '0',
-  `resistance1` smallint(5) NOT NULL default '0',
-  `resistance2` smallint(5) NOT NULL default '0',
-  `resistance3` smallint(5) NOT NULL default '0',
-  `resistance4` smallint(5) NOT NULL default '0',
-  `resistance5` smallint(5) NOT NULL default '0',
-  `resistance6` smallint(5) NOT NULL default '0',
-  `PetSpellDataId` mediumint(8) unsigned NOT NULL default '0',
-  `mingold` mediumint(8) unsigned NOT NULL default '0',
-  `maxgold` mediumint(8) unsigned NOT NULL default '0',
-  `AIName` char(64) NOT NULL default '',
-  `MovementType` tinyint(3) unsigned NOT NULL default '0',
-  `InhabitType` tinyint(3) unsigned NOT NULL default '3',
-  `unk16` float NOT NULL default '1',
-  `unk17` float NOT NULL default '1',
-  `RacialLeader` tinyint(3) unsigned NOT NULL default '0',
-  `RegenHealth` tinyint(3) unsigned NOT NULL default '1',
-  `equipment_id` mediumint(8) unsigned NOT NULL default '0',
-  `trainer_id` mediumint(8) unsigned NOT NULL default '0',
-  `vendor_id` mediumint(8) unsigned NOT NULL default '0',
-  `mechanic_immune_mask` int(10) unsigned NOT NULL default '0',
-  `flags_extra` int(10) unsigned NOT NULL default '0',
-  `ScriptName` char(64) NOT NULL default '',
-  PRIMARY KEY  (`entry`)
-=======
   `Entry` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `Name` char(100) NOT NULL DEFAULT '',
   `SubName` char(100) DEFAULT NULL,
@@ -1338,7 +1264,6 @@ CREATE TABLE `creature_template` (
   `AIName` char(64) NOT NULL DEFAULT '',
   `ScriptName` char(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`entry`)
->>>>>>> f9e2c62... [s2091] Big rename of creature_template fields.
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Creature System';
 
 --
@@ -1348,11 +1273,7 @@ CREATE TABLE `creature_template` (
 LOCK TABLES `creature_template` WRITE;
 /*!40000 ALTER TABLE `creature_template` DISABLE KEYS */;
 INSERT INTO `creature_template` VALUES
-<<<<<<< HEAD
-(1,1,0,0,10045,0,0,0,'Waypoint(Only GM can see it)','Visual',NULL,0,1,1,64,64,0,0,0,35,35,0,0.91,1.14286,1,0,14,15,0,100,1,2000,2200,8,4096,0,0,0,0,0,0,1.76,2.42,100,8,5242886,0,0,0,0,0,0,0,0,0,0,0,0,'',0,7,1.0,1.0,0,1,0,0,0,0,0x82,'');
-=======
 (1,'Waypoint (Only GM can see it)','Visual',NULL,1,1,0,10045,0,0,0,35,35,1,8,8,1,1,0,0,4096,0,130,5242886,0.91,1.14286,0,0,-1,1,1,1,1,1,1,8,8,0,0,7,7,1.76,2.42,0,3,100,2000,2200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'','');
->>>>>>> f9e2c62... [s2091] Big rename of creature_template fields.
 /*!40000 ALTER TABLE `creature_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -11739,23 +11660,23 @@ LOCK TABLES `scripted_areatrigger` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `scripted_event_id`
+-- Table structure for table `scripted_event`
 --
 
-DROP TABLE IF EXISTS `scripted_event_id`;
-CREATE TABLE `scripted_event_id` (
+DROP TABLE IF EXISTS `scripted_event`;
+CREATE TABLE `scripted_event` (
   `id` mediumint(8) NOT NULL,
   `ScriptName` char(64) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Script library scripted events';
 
 --
--- Dumping data for table `scripted_event_id`
+-- Dumping data for table `scripted_event`
 --
 
-LOCK TABLES `scripted_event_id` WRITE;
-/*!40000 ALTER TABLE `scripted_event_id` DISABLE KEYS */;
-/*!40000 ALTER TABLE `scripted_event_id` ENABLE KEYS */;
+LOCK TABLES `scripted_event` WRITE;
+/*!40000 ALTER TABLE `scripted_event` DISABLE KEYS */;
+/*!40000 ALTER TABLE `scripted_event` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
