@@ -1287,19 +1287,19 @@ bool ChatHandler::ParseCommands(const char* text)
     if (m_session)
     {
         if (m_session->GetSecurity() == SEC_PLAYER && !sWorld.getConfig(CONFIG_BOOL_PLAYER_COMMANDS))
-            return false;
+            { return false; }
 
         if (text[0] != '!' && text[0] != '.')
-            return false;
+            { return false; }
 
         /// ignore single . and ! in line
         if (strlen(text) < 2)
-            return false;
+            { return false; }
     }
 
     /// ignore messages staring from many dots.
     if ((text[0] == '.' && text[1] == '.') || (text[0] == '!' && text[1] == '!'))
-        return false;
+        { return false; }
 
     /// skip first . or ! (in console allowed use command with . and ! and without its)
     if (text[0] == '!' || text[0] == '.')
