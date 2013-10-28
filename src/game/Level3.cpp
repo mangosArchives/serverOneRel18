@@ -3730,9 +3730,9 @@ bool ChatHandler::HandleNearGraveCommand(char* args)
         else if (data->team == HORDE)
             team_name = GetMangosString(LANG_COMMAND_GRAVEYARD_HORDE);
         else if (data->team == ALLIANCE)
-            team_name = GetMangosString(LANG_COMMAND_GRAVEYARD_ALLIANCE);
-        else                                                // Actually, this case cannot happen
-            team_name = GetMangosString(LANG_COMMAND_GRAVEYARD_NOTEAM);
+            { team_name = GetMangosString(LANG_COMMAND_GRAVEYARD_ALLIANCE); }
+        else                                                // Actually, this case can not happen
+            { team_name = GetMangosString(LANG_COMMAND_GRAVEYARD_NOTEAM); }
 
         PSendSysMessage(LANG_COMMAND_GRAVEYARDNEAREST, g_id, team_name.c_str(), zone_id);
     }

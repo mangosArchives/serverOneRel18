@@ -426,7 +426,7 @@ bool ChatHandler::HandleNamegoCommand(char* args)
             Map* cMap = target->GetMap();
             if (cMap->Instanceable() && cMap->GetInstanceId() != pMap->GetInstanceId())
             {
-                // cannot summon from instance to instance
+                // can not summon from instance to instance
                 PSendSysMessage(LANG_CANNOT_SUMMON_TO_INST, nameLink.c_str());
                 SetSentErrorMessage(true);
                 return false;
@@ -1927,7 +1927,7 @@ bool ChatHandler::HandleGroupgoCommand(char* args)
 
             if (plMap->Instanceable() && plMap->GetInstanceId() != gmMap->GetInstanceId())
             {
-                // cannot summon from instance to instance
+                // can not summon from instance to instance
                 PSendSysMessage(LANG_CANNOT_SUMMON_TO_INST, plNameLink.c_str());
                 SetSentErrorMessage(true);
                 return false;

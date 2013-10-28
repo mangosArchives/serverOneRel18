@@ -1253,7 +1253,7 @@ bool DungeonMap::Add(Player* player)
     InstancePlayerBind* playerBind = player->GetBoundInstance(GetId(), GetDifficulty());
     if (playerBind && playerBind->perm)
     {
-        // cannot enter other instances if bound permanently
+        // can not enter other instances if bound permanently
         if (playerBind->state != GetPersistanceState())
         {
             sLog.outError("DungeonMap::Add: player %s(%d) is permanently bound to instance %d,%d,%d,%d,%d,%d but he is being put in instance %d,%d,%d,%d,%d,%d",
@@ -1298,7 +1298,7 @@ bool DungeonMap::Add(Player* player)
                 pGroup->BindToInstance(GetPersistanceState(), false);
             else
             {
-                // cannot jump to a different instance without resetting it
+                // can not jump to a different instance without resetting it
                 if (groupBind->state != GetPersistentState())
                 {
                     sLog.outError("DungeonMap::Add: %s is being put in instance %d,%d,%d but he is in group (Id: %d) which is bound to instance %d,%d,%d!",
@@ -1333,8 +1333,8 @@ bool DungeonMap::Add(Player* player)
             if (!playerBind)
                 player->BindToInstance(GetPersistanceState(), false);
             else
-                // cannot jump to a different instance without resetting it
-                MANGOS_ASSERT(playerBind->state == GetPersistentState());
+                // can not jump to a different instance without resetting it
+                { MANGOS_ASSERT(playerBind->state == GetPersistentState()); }
         }
     }
 
@@ -1348,7 +1348,7 @@ bool DungeonMap::Add(Player* player)
     m_resetAfterUnload = false;
     m_unloadWhenEmpty = false;
 
-    // this will acquire the same mutex so it cannot be in the previous block
+    // this will acquire the same mutex so it can not be in the previous block
     Map::Add(player);
 
     return true;
@@ -1421,7 +1421,7 @@ void DungeonMap::PermBindAllPlayers(Player* player)
     for (MapRefManager::iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
     {
         Player* plr = itr->getSource();
-        // players inside an instance cannot be bound to other instances
+        // players inside an instance can not be bound to other instances
         // some players may already be permanently bound, in this case nothing happens
         InstancePlayerBind* bind = plr->GetBoundInstance(GetId(), GetDifficulty());
         if (!bind || !bind->perm)

@@ -378,7 +378,7 @@ void Group::Disband(bool hideDestroy)
         if (!player)
             continue;
 
-        // we cannot call _removeMember because it would invalidate member iterator
+        // we can not call _removeMember because it would invalidate member iterator
         // if we are removing player from battleground raid
         if (isBGGroup())
             player->RemoveFromBattleGroundRaid();
