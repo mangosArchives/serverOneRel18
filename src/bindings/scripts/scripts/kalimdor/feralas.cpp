@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Feralas
-SD%Complete: 100
-SDComment: Quest support: 2767.
-SDCategory: Feralas
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Feralas
+ * SD%Complete: 100
+ * SDComment:   Quest support: 2767, 2987.
+ * SDCategory:  Feralas
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -142,6 +144,25 @@ bool QuestAccept_npc_oox22fe(Player* pPlayer, Creature* pCreature, const Quest* 
 }
 
 /*######
+## go_gordunni_trap
+######*/
+
+bool GOUse_go_gordunni_trap(Player* pPlayer, GameObject* pGo)
+{
+    switch (urand(0, 1))
+    {
+    case 0:
+        pPlayer->CastSpell(pGo->GetPositionX(), pGo->GetPositionY(), pGo->GetPositionZ(), 19394, false);
+        break;
+    case 1:
+        pPlayer->CastSpell(pGo->GetPositionX(), pGo->GetPositionY(), pGo->GetPositionZ(), 11756, false);
+        break;
+    }
+    pGo->SetLootState(GO_JUST_DEACTIVATED);
+    return true;
+}
+
+/*######
 ## AddSC
 ######*/
 
@@ -153,5 +174,10 @@ void AddSC_feralas()
     pNewScript->Name = "npc_oox22fe";
     pNewScript->GetAI = &GetAI_npc_oox22fe;
     pNewScript->pQuestAcceptNPC = &QuestAccept_npc_oox22fe;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "go_gordunni_trap";
+    pNewScript->pGOUse = &GOUse_go_gordunni_trap;
     pNewScript->RegisterSelf();
 }
