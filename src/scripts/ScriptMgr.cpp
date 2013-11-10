@@ -35,7 +35,6 @@ void LoadDatabase()
     if (SD2Database.Initialize(strSD2DBinfo.c_str()))
     {
         outstring_log("SD2: ScriptDev2 database initialized.");
-        outstring_log("");
 
         pSystemMgr.LoadVersion();
         pSystemMgr.LoadScriptTexts();
@@ -79,15 +78,14 @@ MANGOS_DLL_EXPORT
 void InitScriptLibrary()
 {
     // ScriptDev2 startup
-    outstring_log("");
-    outstring_log(" MMM  MMM    MM");
-    outstring_log("M  MM M  M  M  M");
-    outstring_log("MM    M   M   M");
-    outstring_log(" MMM  M   M  M");
-    outstring_log("   MM M   M MMMM");
-    outstring_log("MM  M M  M ");
-    outstring_log(" MMM  MMM  http://www.scriptdev2.com");
-    outstring_log("");
+    outstring_log("\n");
+    outstring_log("  ___         _      _   ___          ___ ");
+    outstring_log(" / __| __ _ _(_)_ __| |_|   \\ _____ _|_  )");
+    outstring_log(" \\__ \\/ _| '_| | '_ \\  _| |) / -_) V // / ");
+    outstring_log(" |___/\\__|_| |_| .__/\\__|___/\\___|\\_//___|");
+    outstring_log("               |_|                        ");
+    outstring_log("                     http://scriptdev2.com");
+    outstring_log("\n");
 
     // Get configuration file
     bool configFailure = false;
@@ -97,7 +95,7 @@ void InitScriptLibrary()
         outstring_log("SD2: Using configuration file %s", _SCRIPTDEV2_CONFIG);
 
     // Set SD2 Error Log File
-    std::string sd2LogFile = SD2Config.GetStringDefault("SD2ErrorLogFile", "SD2Errors.log");
+    std::string sd2LogFile = SD2Config.GetStringDefault("SD2ErrorLogFile", "scriptdev2-errors.log");
     setScriptLibraryErrorFile(sd2LogFile.c_str(), "SD2");
 
     if (configFailure)
@@ -107,7 +105,7 @@ void InitScriptLibrary()
     if (SD2Config.GetIntDefault("ConfVersion", 0) != SD2_CONF_VERSION)
         script_error_log("Configuration file version doesn't match expected version. Some config variables may be wrong or missing.");
 
-    outstring_log("");
+    outstring_log("\n");
 
     // Load database (must be called after SD2Config.SetSource).
     LoadDatabase();
@@ -115,7 +113,6 @@ void InitScriptLibrary()
     outstring_log("SD2: Loading C++ scripts");
     BarGoLink bar(1);
     bar.step();
-    outstring_log("");
 
     // Resize script ids to needed ammount of assigned ScriptNames (from core)
     m_scripts.resize(GetScriptIdsCount(), NULL);

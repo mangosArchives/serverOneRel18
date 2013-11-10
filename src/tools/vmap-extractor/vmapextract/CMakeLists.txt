@@ -12,10 +12,9 @@ set(EXECUTABLE_NAME vmap-extractor)
 
 link_directories(
     ${LINK_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/../../dep/libmpq/libmpq/.libs/
+    ${CMAKE_SOURCE_DIR}/dep/libmpq/libmpq/.libs/
 )
 
 add_executable(${EXECUTABLE_NAME} adtfile.cpp dbcfile.cpp gameobject_extract.cpp model.cpp mpq_libmpq.cpp vmapexport.cpp wdtfile.cpp wmo.cpp)
 target_link_libraries(${EXECUTABLE_NAME} mpq bz2 z)
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION ${BIN_DIR})
-

@@ -15,7 +15,7 @@
 ADD_DEFINITIONS("-DUSE_LIBMPQ04")
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/../../dep/libmpq
+    ${CMAKE_SOURCE_DIR}/dep/libmpq
 )
 
 add_subdirectory(vmapextract)

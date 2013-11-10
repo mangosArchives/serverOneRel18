@@ -138,6 +138,10 @@ add_library(${LIBRARY_NAME} STATIC
   ${LIBRARY_SRCS}
 )
 
+if(UNIX)
+  target_link_libraries(${LIBRARY_NAME} pthread)
+endif()
+
 add_dependencies(${LIBRARY_NAME} revision.h)
 if(NOT ACE_USE_EXTERNAL)
   add_dependencies(${LIBRARY_NAME} ACE_Project)
