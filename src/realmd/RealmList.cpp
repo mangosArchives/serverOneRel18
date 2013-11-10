@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-one is a full featured server for World of Warcraft in its first
+ * expansion version, supporting clients for patch 2.4.3.
+ *
+ * Copyright (C) 2005-2013  MaNGOS project <http://getmangos.com>
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *

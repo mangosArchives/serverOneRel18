@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-one is a full featured server for World of Warcraft in its first
+ * expansion version, supporting clients for patch 2.4.3.
+ *
+ * Copyright (C) 2005-2013  MaNGOS project <http://getmangos.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOS_SHAREDDEFINES_H
@@ -179,7 +185,7 @@ enum SpellSchoolMask
     /// not exist
     SPELL_SCHOOL_MASK_NONE    = 0x00,
     /// PHYSICAL (Armor)
-    SPELL_SCHOOL_MASK_NORMAL  = (1 << SPELL_SCHOOL_NORMAL), 
+    SPELL_SCHOOL_MASK_NORMAL  = (1 << SPELL_SCHOOL_NORMAL),
     SPELL_SCHOOL_MASK_HOLY    = (1 << SPELL_SCHOOL_HOLY),
     SPELL_SCHOOL_MASK_FIRE    = (1 << SPELL_SCHOOL_FIRE),
     SPELL_SCHOOL_MASK_NATURE  = (1 << SPELL_SCHOOL_NATURE),
@@ -1026,7 +1032,7 @@ enum SpellImmunity
 #define MAX_SPELL_IMMUNITY           6
 
 /**
- * The different types of attacks you can do with 
+ * The different types of attacks you can do with
  * weapons
  */
 enum WeaponAttackType
@@ -1036,7 +1042,7 @@ enum WeaponAttackType
     ///Off-hand weapon
     OFF_ATTACK    = 1,
     ///Ranged weapon, bow/wand etc.
-    RANGED_ATTACK = 2  
+    RANGED_ATTACK = 2
 };
 
 #define MAX_ATTACK  3
@@ -1182,7 +1188,7 @@ enum SpellRangeIndex
     /// 5.5 (but dynamic), seems to indicate melee range
     SPELL_RANGE_IDX_COMBAT    = 2,
     /// 500000 (anywhere)
-    SPELL_RANGE_IDX_ANYWHERE  = 13,                         
+    SPELL_RANGE_IDX_ANYWHERE  = 13,
 };
 
 enum DamageEffectType
@@ -1190,11 +1196,11 @@ enum DamageEffectType
     /// Used for normal weapon damage (not for class abilities or spells)
     DIRECT_DAMAGE           = 0,
     /// spell/class abilities damage
-    SPELL_DIRECT_DAMAGE     = 1,                            
+    SPELL_DIRECT_DAMAGE     = 1,
     DOT                     = 2,
     HEAL                    = 3,
     /// used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
-    NODAMAGE                = 4,                            
+    NODAMAGE                = 4,
     SELF_DAMAGE             = 5
 };
 

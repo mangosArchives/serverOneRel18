@@ -1,8 +1,7 @@
 # mangos-one is a full featured server for World of Warcraft in its first
 # expansion version, supporting clients for patch 2.4.3.
 #
-# Copyright (C) 2005-2014 MaNGOS <http://getmangos.eu/>
-# Copyright (C) 2005-2013 MaNGOS project <http://getmangos.com>
+# Copyright (C) 2006-2013 ScriptDev2 <http://www.scriptdev2.com/>
 #
 # ***** BEGIN GPL LICENSE BLOCK *****
 #
