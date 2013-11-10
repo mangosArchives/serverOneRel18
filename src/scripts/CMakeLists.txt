@@ -1,5 +1,10 @@
+# mangos-one is a full featured server for World of Warcraft in its first
+# expansion version, supporting clients for patch 2.4.3.
 #
-# Copyright (C) 2005-2014 MaNGOS <http://getmangos.co.uk/>
+# Copyright (C) 2005-2014 MaNGOS <http://getmangos.eu/>
+# Copyright (C) 2005-2013 MaNGOS project <http://getmangos.com>
+#
+# ***** BEGIN GPL LICENSE BLOCK *****
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +20,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
+# ***** END GPL LICENSE BLOCK *****
+#
+# World of Warcraft, and all World of Warcraft or Warcraft art, images,
+# and lore are copyrighted by Blizzard Entertainment, Inc.
 
 ## magic to include revision data in SD2 version string
 # revision.h: FORCE

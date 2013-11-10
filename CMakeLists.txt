@@ -1,5 +1,9 @@
+# mangos-one is a full featured server for World of Warcraft in its first
+# expansion version, supporting clients for patch 2.4.3.
 #
-# This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+# Copyright (C) 2005-2013  MaNGOS project <http://getmangos.com>
+#
+# ***** BEGIN GPL LICENSE BLOCK *****
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +19,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
+# ***** END GPL LICENSE BLOCK *****
+#
+# World of Warcraft, and all World of Warcraft or Warcraft art, images,
+# and lore are copyrighted by Blizzard Entertainment, Inc.
 
 # CMake policies
 cmake_minimum_required(VERSION 2.8)
@@ -38,6 +46,7 @@ else()
   option(PCH                "Use precompiled headers"               OFF)
 endif()
 # TODO: options that should be checked/created:
+#option(SOAP                 "With SOAP"                             OFF)
 #option(CLI                  "With CLI"                              ON)
 #option(RA                   "With Remote Access"                    OFF)
 #option(SQL                  "Copy SQL files"                        OFF)
@@ -72,11 +81,6 @@ if(WIN32 AND NOT MSVC)
   message(FATAL_ERROR
     "Under Windows other compiler than Microsoft Visual Studio are not supported."
   )
-endif()
-
-# TODO: remove this in the future! it has only been added to make the switch easier for end users
-if(PREFIX)
-  message(FATAL_ERROR "The parameter PREFIX has been removed. Please re-run CMake and use CMAKE_INSTALL_PREFIX instead to define your installation location!")
 endif()
 
 # TODO: use MSVC_CXX_ARCHITECTURE_ID instead to identify platform on windows (not required on other systems)
