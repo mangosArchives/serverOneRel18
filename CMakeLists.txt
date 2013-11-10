@@ -40,6 +40,7 @@ endif()
 option(BUILD_SCRIPTS        "Build scripts"                         ON)
 
 # TODO: options that should be checked/created:
+option(SOAP                 "With SOAP"                             OFF)
 #option(CLI                  "With CLI"                              ON)
 #option(RA                   "With Remote Access"                    OFF)
 #option(SQL                  "Copy SQL files"                        OFF)
@@ -206,6 +207,27 @@ endif()
 
 message(STATUS "MaNGOS-Core revision  : ${GIT_REVISION}")
 message(STATUS "Install server to     : ${CMAKE_INSTALL_PREFIX}")
+
+if(DEFINED INCLUDE_BINDINGS_DIR AND INCLUDE_BINDINGS_DIR)
+  # check if the directory exists
+  if(NOT IS_DIRECTORY ${CMAKE_SOURCE_DIR}/src/bindings/${INCLUDE_BINDINGS_DIR})
+    message(FATAL_ERROR "Could not find the script library which was supposed to be: " ${CMAKE_SOURCE_DIR}/src/bindings/${INCLUDE_BINDINGS_DIR})
+  endif()
+  # check if it really contains a CMakeLists.txt
+  if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/bindings/${INCLUDE_BINDINGS_DIR}/CMakeLists.txt)
+    message(FATAL_ERROR "The script library does not contain a CMakeLists.txt!")
+  endif()
+  message(STATUS "Build script library  : Yes (using ${INCLUDE_BINDINGS_DIR})")
+else()
+  message(STATUS "Build script library  : No")
+endif()
+
+if(USE_SOAP)
+  message(STATUS "Build with SOAP       : Yes")
+  add_definitions(-DENABLE_SOAP)
+else()
+  message(STATUS "Build with SOAP       : No (default)")
+endif()
 
 # if(CLI)
 #   message(STATUS "Build with CLI        : Yes (default)")
