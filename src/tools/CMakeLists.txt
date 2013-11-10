@@ -17,3 +17,4 @@
 add_subdirectory(map-extractor)
 add_subdirectory(vmap-extractor)
 add_subdirectory(vmap-assembler)
+add_subdirectory(mmap-generator)
