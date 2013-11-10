@@ -45,7 +45,6 @@ void SystemMgr::LoadVersion()
     strSD2Version.append(_FULLVERSION);
 
     outstring_log("Loading %s", strSD2Version.c_str());
-    outstring_log("");
 }
 
 void SystemMgr::LoadScriptTexts()
@@ -122,14 +121,12 @@ void SystemMgr::LoadScriptWaypoints()
 
         delete pResult;
 
-        outstring_log("");
         outstring_log(">> Loaded %u Script Waypoint nodes.", uiNodeCount);
     }
     else
     {
         BarGoLink bar(1);
         bar.step();
-        outstring_log("");
         outstring_log(">> Loaded 0 Script Waypoints. DB table `script_waypoint` is empty.");
     }
 }
