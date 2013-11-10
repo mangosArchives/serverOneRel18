@@ -183,15 +183,15 @@ extern int main(int argc, char** argv)
 
     sLog.outString("%s [world-daemon]", _FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_NR, REVISION_ID));
     sLog.outString("<Ctrl-C> to stop.\n"
-                   "  __  __      _  _  ___  ___  ___                       \n"
-                   " |  \\/  |__ _| \\| |/ __|/ _ \\/ __|                      \n"                                         
-                   " | |\\/| / _` | .` | (_ | (_) \\__ \\                      \n"                                         
-                   " |_|  |_\\__,_|_|\\_|\\___|\\___/|___/                      \n"
-                   "                                         ___               \n"
-                   " For help and support please visit:     / _ \\ ___  ___     \n"
-                   " Website: https://getmangos.eu         | (_) |   \\/ -_)    \n"
-                   "    Wiki: http://github.com/mangoswiki  \\___/|_||_\\___|    \\n"
-                  );
+                   "  __  __      _  _  ___  ___  ___                        \n"
+                   " |  \\/  |__ _| \\| |/ __|/ _ \\/ __|     We Love the    \n"
+                   " | |\\/| / _` | .` | (_ | (_) \\__ \\   Burning Crusade  \n"
+                   " |_|  |_\\__,_|_|\\_|\\___|\\___/|___/                   \n"                   
+                   "                                         ___             \n"
+                   " For help and support please visit:     / _ \\ _ _  ___  \n"
+                   " Website: https://getmangos.eu         | (_) | ' \\/ -_) \n"
+                   "    Wiki: http://github.com/mangoswiki  \\___/|_||_\\___|\n"
+                   );
     sLog.outString("Using configuration file %s.", cfg_file);
 
     DETAIL_LOG("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
