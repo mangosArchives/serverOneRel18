@@ -1778,6 +1778,16 @@ bool ScriptAction::HandleScriptStep()
             }
             return terminateResult;
         }
+        case SCRIPT_COMMAND_TURN_TO:                 // 35
+        {
+            if (LogIfNotUnit(pSource))
+            {
+                break;
+            }
+
+            ((Unit*)pSource)->SetFacingTo(pSource->GetAngle(pTarget));
+            break;
+        }
         default:
             sLog.outErrorDb(" DB-SCRIPTS: Process table `%s` id %u, command %u unknown command used.", m_table, m_script->id, m_script->command);
             break;
