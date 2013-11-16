@@ -55,7 +55,7 @@
 #  define COMPILER COMPILER_INTEL
 #elif defined(__clang__)
 #  define COMPILER COMPILER_CLANG
-#elif defined( __GNUC__ ) && !defined( __clang__ )
+#elif defined( __GNUC__ ) && !defined(__clang__)
 #  define COMPILER COMPILER_GNU
 #else
 #  pragma error "FATAL ERROR: Unknown compiler."
@@ -66,4 +66,5 @@
 #else
 #define COMPILE_ASSERT(exp, name) static_assert((exp), #name) 
 #endif
+
 #endif

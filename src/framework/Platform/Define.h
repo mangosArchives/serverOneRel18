@@ -175,6 +175,11 @@ typedef uint32      DWORD;
 #    define override
 #    define static_assert(a, b) STATIC_ASSERT_WORKAROUND(a, b)
 #  endif
+#elif COMPILER == COMPILER_CLANG
+#  ifndef __cxx_static_assert
+#    define override
+#    define static_assert(a, b) STATIC_ASSERT_WORKAROUND(a, b)
+#  endif
 #elif COMPILER == COMPILER_MICROSOFT
 #  if _MSC_VER < 1600
 #    define static_assert(a, b) STATIC_ASSERT_WORKAROUND(a, b)
