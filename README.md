@@ -19,6 +19,48 @@ green, a successful build has been performed under Linux.
 
 Requirements
 ------------
+*mangos-zero* server stands on the shoulders of well-known Open Source
+libraries, and a few awesome, but less known libraries to prevent us from
+inventing the wheel again.
+
+*Please note that Linux and Mac OS X users should install packages using
+their systems package management instead of source packages.*
+
+* **MySQL** / **PostgreSQL**: to store content, and user data, we rely on
+  [MySQL][40]/[MariaDB][41] and [PostgreSQL][42] to handle data.
+* **ACE**: the [ADAPTIVE Communication Environment][43] aka. *ACE* provides us
+  with a solid cross-platform framework for abstracting operating system
+  specific details.
+* **Recast**: in order to create navigation data from the client's map files,
+  we use [Recast][44] to do the dirty work. It provides functions for
+  rendering, pathing, etc.
+* **G3D**: the [G3D][45] engine provides the basic framework for handling 3D
+  data, and is used to handle basic map data.
+* **libmpq**: [libmpq][46] provides an abstraction layer for reading from the
+  client's data files.
+* **Zlib**: [Zlib][53] ([Zlib for Windows][51]) provides compression algorithms
+  used in both MPQ archive handling and the client/server protocol.
+* **Bzip2**: [Bzip2][54] ([Bzip2 for Windows][52]) provides compression
+  algorithms used in MPQ archives.
+* **OpenSSL**; [OpenSSL][48] ([OpenSSL for Windows][55]) provides encryption
+  algorithms used when authenticating clients.
+
+*Recast*, *G3D* and *libmpq* are included in the *mangos-zero* distribution as
+we rely on specific versions.
+
+Optional dependencies
+---------------------
+
+* **Doxygen**: if you want to export HTML or PDF formatted documentation for the
+  *mangos-zero* API, you should install [Doxygen][49].
+* **Lua**: if you want to test drive how *mangos-zero* feels with [Lua][50] as
+  scripting language instead of the scripting library, you will need Lua **5.1.x**
+  installed.
+
+Discuss
+-------
+If you need help with building and installing *mangos-zero* there is thousands
+of users out there already running *mangos-zero* and many you can find on
 
 
 Compilation Guides
@@ -61,25 +103,51 @@ License
   "OpenSSL".
 
 [1]: http://blizzard.com/ "Blizzard Entertainment Inc. · we love you!"
-[2]: http://battle.net/wow/ "World of Warcraft"
+[2]: http://blizzard.com/games/wow/ "World of Warcraft · Classic / Vanilla"
+[3]: http://wowpedia.org/Beta#World_of_Warcraft "World of Warcraft - Classic Beta"
+[4]: http://www.wowpedia.org/Patch_1.12.0 "Vanilla WoW · Patch 1.12.0 release notes"
+[5]: http://www.wowpedia.org/Patch_1.12.1 "Vanilla WoW · Patch 1.12.1 release notes"
+[6]: http://www.wowpedia.org/Patch_1.12.2 "Vanilla WoW · Patch 1.12.2 release notes"
+[7]: http://www.cppreference.com/ "C / C++ reference"
 
-[10]: http://a.dependency.net/ "A · dependency"
+[10]: http://getmangos.com/ "mangos · project site"
+[11]: http://community.getmangos.co.uk/ "mangos · discussion forums"
+[12]: http://github.com/mangoszero "mangos-zero · github organization"
+[13]: http://github.com/mangoszero/server "mangos zero · server repository"
+[14]: http://github.com/mangoszero/scripts "mangos zero · script extensions repository"
+[15]: http://github.com/mangoszero/database "mangos zero · content database repository"
+[16]: https://travis-ci.org/mangoszero/server "Travis CI · mangos-zero build status"
+[17]: https://scan.coverity.com/ "Coverity Scan · Static Code Analysis"
 
-[20]: https://github.com/mangoswiki/Wiki/wiki/MaNGOS%20Installation/ "Wiki"
+[19]: http://www.cmake.org/ "CMake · Cross Platform Make"
+[20]: http://windows.microsoft.com/ "Microsoft Windows · that OS, yes."
+[21]: http://www.debian.org/ "Debian · The Universal Operating System"
+[22]: http://www.ubuntu.com/ "Ubuntu · The world's most popular free OS"
+[23]: http://www.freebsd.org/ "FreeBSD · The Power To Serve"
+[24]: http://www.netbsd.org/ "NetBSD · The NetBSD Project"
+[25]: http://www.openbsd.org/ "OpenBSD · Free, functional and secure"
+[26]: http://www.dragonflybsd.org/ "DragonFlyBSD"
 
-[50]: http://www.wowpedia.org/Patch_2.4.2 "WoW TBC · Patch 2.4.3 release notes"
+[30]: http://www.microsoft.com/visualstudio/eng/ "Visual Studio 2012"
+[31]: http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-products "Visual Studio Express 2012 for Windows Desktop"
+[32]: http://www.microsoft.com/en-us/download/details.aspx?id=8279 "Windows SDK for Windows 7 and .NET Framework 4"
+[33]: http://clang.llvm.org/ "clang · a C language family frontend for LLVM"
+[34]: http://git-scm.com/ "Git · Distributed version control system"
+[35]: http://windows.github.com/ "github · windows client"
+[36]: http://www.sourcetreeapp.com/ "SourceTree · Free Mercurial and Git Client for Windows/Mac"
 
-[100]: http://getmangos.co.uk/ "MaNGOS Community Project Website"
-[101]: http://community.getmangos.co.uk/ "MaNGOS Community Discussion Forums"
-
-[110]: http://github.com/mangosone "MaNGOS One · github organization"
-[111]: http://github.com/mangosone/server "MaNGOS One · server repository"
-[112]: http://github.com/mangosone/scripts "MaNGOS One · script extensions repository"
-[113]: http://github.com/mangosone/database "MaNGOS One · content database repository"
-[114]: https://travis-ci.org/mangosone/server/ "MaNGOS One · build status"
-
-[201]: http://www.microsoft.com/express/ "Visual Studio Express · free, limited edition"
-[202]: http://gcc.gnu.org/ "GCC"
-[203]: http://clang.llvm.org/ "Clang"
-
-[251]: http://www.cmake.org/ "CMake · Cross Platform Make"
+[40]: http://www.mysql.com/ "MySQL · The world's most popular open source database"
+[41]: http://www.mariadb.org/ "MariaDB · An enhanced, drop-in replacement for MySQL"
+[42]: http://www.postgresql.org/ "PostgreSQL · The world's most advanced open source database"
+[43]: http://www.cs.wustl.edu/~schmidt/ACE.html "ACE · The ADAPTIVE Communication Environment"
+[44]: http://github.com/memononen/recastnavigation "Recast · Navigation-mesh Toolset for Games"
+[45]: http://sourceforge.net/projects/g3d/ "G3D · G3D Innovation Engine"
+[46]: http://github.com/ge0rg/libmpq "libmpq · A library for reading data from MPQ archives"
+[48]: http://www.openssl.org/ "OpenSSL · The Open Source toolkit for SSL/TLS"
+[49]: http://www.stack.nl/~dimitri/doxygen/ "Doxygen · API documentation generator"
+[50]: http://www.lua.org/ "Lua · The Programming Language"
+[51]: http://gnuwin32.sourceforge.net/packages/zlib.htm "Zlib for Windows"
+[52]: http://gnuwin32.sourceforge.net/packages/bzip2.htm "Bzip2 for Windows"
+[53]: http://www.zlib.net/ "Zlib"
+[54]: http://www.bzip.org/ "Bzip2"
+[55]: http://slproweb.com/products/Win32OpenSSL.html "OpenSSL for Windows"
