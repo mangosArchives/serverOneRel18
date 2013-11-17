@@ -110,6 +110,7 @@ namespace MMAP
         {
             sLog.outError("MMAP:loadMapData: Failed to load mmap %03u from file %s", mapId, fileName);
             delete[] fileName;
+            fclose(file);
             return false;
         }
         fclose(file);
