@@ -9,9 +9,9 @@
 #include "DBCStores.h"
 #include "ObjectMgr.h"
 #include "ProgressBar.h"
-#include "../system/ScriptLoader.h"
-#include "../system/system.h"
-#include "../../../game/ScriptMgr.h"
+#include "system/ScriptLoader.h"
+#include "system/system.h"
+#include "ScriptMgr.h"
 
 typedef std::vector<Script*> SDScriptVec;
 int num_sc_scripts;
