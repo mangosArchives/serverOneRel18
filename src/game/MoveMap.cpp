@@ -105,7 +105,13 @@ namespace MMAP
         }
 
         dtNavMeshParams params;
-        fread(&params, sizeof(dtNavMeshParams), 1, file);
+        size_t file_read = fread(&params, sizeof(dtNavMeshParams), 1, file);
+        if (file_read <= 0)
+        {
+            sLog.outError("MMAP:loadMapData: Failed to load mmap %03u from file %s", mapId, fileName);
+            delete[] fileName;
+            return false;
+        }
         fclose(file);
 
         dtNavMesh* mesh = dtAllocNavMesh();
@@ -169,7 +175,14 @@ namespace MMAP
 
         // read header
         MmapTileHeader fileHeader;
-        fread(&fileHeader, sizeof(MmapTileHeader), 1, file);
+        size_t file_read = fread(&fileHeader, sizeof(MmapTileHeader), 1, file);
+
+        if (file_read <= 0)
+        {
+            sLog.outError("MMAP:loadMap: Could not load mmap %03u%02i%02i.mmtile", mapId, x, y);
+            fclose(file);
+            return false;
+        }
 
         if (fileHeader.mmapMagic != MMAP_MAGIC)
         {

@@ -350,8 +350,16 @@ namespace VMAP
         char buff[500];
         while (!feof(model_list))
         {
-            fread(&displayId, sizeof(uint32), 1, model_list);
-            fread(&name_length, sizeof(uint32), 1, model_list);
+            if (fread(&displayId, sizeof(uint32), 1, model_list) <= 0)
+            {
+                std::cout << "\nFile '" << GAMEOBJECT_MODELS << "' seems to be corrupted" << std::endl;
+                break;
+            }
+            if (fread(&name_length, sizeof(uint32), 1, model_list) <= 0)
+            {
+                std::cout << "\nFile '" << GAMEOBJECT_MODELS << "' seems to be corrupted" << std::endl;
+                break;
+            }
 
             if (name_length >= sizeof(buff))
             {
@@ -359,7 +367,11 @@ namespace VMAP
                 break;
             }
 
-            fread(&buff, sizeof(char), name_length, model_list);
+            if (fread(&buff, sizeof(char), name_length, model_list) <= 0)
+            {
+                std::cout << "\nFile '" << GAMEOBJECT_MODELS << "' seems to be corrupted" << std::endl;
+                break;
+            }
             std::string model_name(buff, name_length);
 
             WorldModel_Raw raw_model;

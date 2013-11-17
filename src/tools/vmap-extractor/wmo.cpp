@@ -537,7 +537,7 @@ WMOInstance::WMOInstance(MPQFile& f, const char* WmoInstName, uint32 mapID, uint
     fclose(input);
 
     if (nVertices == 0 || file_read <= 0)
-        { return; }
+    { return; }
 
     float x, z;
     x = pos.x;

@@ -206,6 +206,7 @@ namespace MMAP
                     printf("Could not read map data from %s.\n", mapFileName);
                     return false;
                 }
+
                 file_read = fread(V8, sizeof(float), V8_SIZE_SQ, mapFile);
                 if (file_read <= 0)
                 {
@@ -293,7 +294,6 @@ namespace MMAP
                 if (file_read <= 0)
                 {
                     fclose(mapFile);
-                    delete [] liquid_map;
                     printf("Could not read map data from %s.\n", mapFileName);
                     return false;
                 }
