@@ -4398,7 +4398,7 @@ void ObjectMgr::LoadItemTexts()
     delete result;
 
     sLog.outString();
-    sLog.outString(">> Loaded " SIZEFMTD " item texts", count);
+    sLog.outString(">> Loaded %u item texts", count);
 }
 
 void ObjectMgr::LoadPageTexts()
