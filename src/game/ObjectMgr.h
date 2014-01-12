@@ -647,11 +647,8 @@ class ObjectMgr
         void LoadCreatureAddons();
         void LoadCreatureClassLvlStats();
         void LoadCreatureModelInfo();
-<<<<<<< HEAD
         void LoadCreatureModelRace();
-=======
         void LoadCreatureItemTemplates();
->>>>>>> 1682fae... support for creature_item_template
         void LoadEquipmentTemplates();
         void LoadGameObjectLocales();
         void LoadGameObjects();
