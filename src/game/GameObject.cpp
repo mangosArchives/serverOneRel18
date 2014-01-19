@@ -1944,7 +1944,7 @@ void GameObject::SetCapturePointSlider(float value, bool isLocked)
 
     // only activate non-locked capture point
     if (!isLocked)
-        SetLootState(GO_ACTIVATED);
+        { SetLootState(GO_ACTIVATED); }
 
     // set the state of the capture point based on the slider value
     if ((int)m_captureSlider == CAPTURE_SLIDER_ALLIANCE)
