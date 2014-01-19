@@ -27,6 +27,7 @@
 #include "SharedDefines.h"
 #include "OutdoorPvPMgr.h"
 
+// forward declaration
 class WorldPacket;
 class WorldObject;
 class Player;
