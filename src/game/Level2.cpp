@@ -3720,6 +3720,10 @@ bool ChatHandler::HandleWpImportCommand(char* args)
     if (!stream.is_open())
         return false;
 
+    std::ifstream stream(arg_str);
+    if (!stream.is_open())
+        return false;
+
     std::string line;
     while (getline(stream, line))
     {

@@ -124,9 +124,10 @@ bool ChatHandler::HandleDebugSendOpcodeCommand(char* /*args*/)
 
     std::ifstream stream("opcode.txt");
     if (!stream.is_open())
-        return false;
+        { return false; }
 
     uint32 opcode = 0;
+
     if (!stream >> opcode)
     {
         stream.close();
