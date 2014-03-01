@@ -1977,6 +1977,10 @@ bool SpellMgr::IsNoStackSpellDueToSpell(uint32 spellId_1, uint32 spellId_2) cons
                     if (spellId_1 == 35081 && spellInfo_2->SpellIconID == 561 && spellInfo_2->SpellVisual == 7992)
                         return false;
 
+                    // Seal of Righteousness and Head Crack
+                    if (spellInfo_1->SpellIconID == 25 && spellInfo_2->SpellIconID == 25 && spellInfo_2->SpellVisual == 7986)
+                        return false;
+
                     break;
                 }
             }
@@ -2072,6 +2076,10 @@ bool SpellMgr::IsNoStackSpellDueToSpell(uint32 spellId_1, uint32 spellId_2) cons
 
             // Bloodlust and Bloodthirst (multi-family check)
             if (spellInfo_2->Id == 2825 && spellInfo_1->SpellIconID == 38 && spellInfo_1->SpellVisual == 0)
+                return false;
+
+            // Seal of Righteousness and Concussion Blow, Head Crack
+            if (spellInfo_1->SpellIconID == 25 && spellInfo_2->SpellIconID == 25 && spellInfo_2->SpellVisual == 7986)
                 return false;
 
             break;
@@ -2174,6 +2182,9 @@ bool SpellMgr::IsNoStackSpellDueToSpell(uint32 spellId_1, uint32 spellId_2) cons
                     return true;
                 // Concentration Aura and Improved Concentration Aura and Aura Mastery
                 if ((spellInfo_1->SpellIconID == 1487) && (spellInfo_2->SpellIconID == 1487))
+                    return false;
+                // Holy shield and (talent) and Vigilance of the Colossus (from item 27529)
+                if (spellInfo_1->SpellIconID == 453 && spellInfo_2->SpellIconID == 453)
                     return false;
             }
 
