@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "InstanceData.h"
@@ -23,19 +26,19 @@
 void InstanceData::SaveToDB() const
 {
     // no reason to save BGs/Arenas
-    if (instance->IsBattleGroundOrArena())
-        return;
+    if (instance->IsBattleGround())
+        { return; }
 
     if (!Save())
-        return;
+        { return; }
 
     std::string data = Save();
     CharacterDatabase.escape_string(data);
 
     if (instance->Instanceable())
-        CharacterDatabase.PExecute("UPDATE instance SET data = '%s' WHERE id = '%u'", data.c_str(), instance->GetInstanceId());
+        { CharacterDatabase.PExecute("UPDATE instance SET data = '%s' WHERE id = '%u'", data.c_str(), instance->GetInstanceId()); }
     else
-        CharacterDatabase.PExecute("UPDATE world SET data = '%s' WHERE map = '%u'", data.c_str(), instance->GetId());
+        { CharacterDatabase.PExecute("UPDATE world SET data = '%s' WHERE map = '%u'", data.c_str(), instance->GetId()); }
 }
 
 bool InstanceData::CheckConditionCriteriaMeet(Player const* /*source*/, uint32 instance_condition_id, WorldObject const* /*conditionSource*/, uint32 conditionSourceType) const

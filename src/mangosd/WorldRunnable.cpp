@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /** \file
@@ -25,6 +28,7 @@
 #include "World.h"
 #include "WorldRunnable.h"
 #include "Timer.h"
+#include "ObjectAccessor.h"
 #include "MapManager.h"
 
 #include "Database/DatabaseEnv.h"
@@ -69,11 +73,11 @@ void WorldRunnable::run()
             ACE_Based::Thread::Sleep(prevSleepTime);
         }
         else
-            prevSleepTime = 0;
+            { prevSleepTime = 0; }
 
 #ifdef WIN32
-        if (m_ServiceStatus == 0) World::StopNow(SHUTDOWN_EXIT_CODE);
-        while (m_ServiceStatus == 2) Sleep(1000);
+        if (m_ServiceStatus == 0) { World::StopNow(SHUTDOWN_EXIT_CODE); }
+        while (m_ServiceStatus == 2) { Sleep(1000); }
 #endif
     }
 

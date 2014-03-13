@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /** \file
@@ -68,7 +71,7 @@ class FreezeDetectorRunnable : public ACE_Based::Runnable
         void run(void)
         {
             if (!_delaytime)
-                return;
+                { return; }
             sLog.outString("Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime / 1000);
             m_loops = 0;
             w_loops = 0;
@@ -152,7 +155,7 @@ class RARunnable : public ACE_Based::Runnable
                 ACE_Time_Value interval(0, 10000);
 
                 if (m_Reactor->run_reactor_event_loop(interval) == -1)
-                    break;
+                    { break; }
 
                 if (World::IsStopped())
                 {
@@ -182,7 +185,7 @@ int Master::Run()
         uint32 pid = CreatePIDFile(pidfile);
         if (!pid)
         {
-            sLog.outError("Cannot create PID file %s.\n", pidfile.c_str());
+            sLog.outError("Can not create PID file %s.\n", pidfile.c_str());
             Log::WaitBeforeContinueIfNeed();
             return 1;
         }
@@ -263,9 +266,9 @@ int Master::Run()
                 else
                 {
                     if (SetProcessAffinityMask(hProcess, curAff))
-                        sLog.outString("Using processors (bitmask, hex): %x", curAff);
+                        { sLog.outString("Using processors (bitmask, hex): %x", curAff); }
                     else
-                        sLog.outError("Can't set used processors (hex): %x", curAff);
+                        { sLog.outError("Can't set used processors (hex): %x", curAff); }
                 }
             }
             sLog.outString();
@@ -277,9 +280,9 @@ int Master::Run()
         if (Prio)
         {
             if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
-                sLog.outString("mangosd process priority class set to HIGH");
+                { sLog.outString("mangosd process priority class set to HIGH"); }
             else
-                sLog.outError("Can't set mangosd process priority class.");
+                { sLog.outError("Can't set mangosd process priority class."); }
             sLog.outString();
         }
     }
@@ -405,11 +408,8 @@ int Master::Run()
         BOOL ret = WriteConsoleInput(hStdIn, b, 4, &numb);
 
         cliThread->wait();
-
 #else
-
         cliThread->destroy();
-
 #endif
 
         delete cliThread;
@@ -435,7 +435,7 @@ bool Master::_StartDB()
     ///- Initialise the world database
     if (!WorldDatabase.Initialize(dbstring.c_str(), nConnections))
     {
-        sLog.outError("Cannot connect to world database %s", dbstring.c_str());
+        sLog.outError("Can not connect to world database %s", dbstring.c_str());
         return false;
     }
 
@@ -461,7 +461,7 @@ bool Master::_StartDB()
     ///- Initialise the Character database
     if (!CharacterDatabase.Initialize(dbstring.c_str(), nConnections))
     {
-        sLog.outError("Cannot connect to Character database %s", dbstring.c_str());
+        sLog.outError("Can not connect to Character database %s", dbstring.c_str());
 
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
@@ -493,7 +493,7 @@ bool Master::_StartDB()
     sLog.outString("Login Database total connections: %i", nConnections + 1);
     if (!LoginDatabase.Initialize(dbstring.c_str(), nConnections))
     {
-        sLog.outError("Cannot connect to login database %s", dbstring.c_str());
+        sLog.outError("Can not connect to login database %s", dbstring.c_str());
 
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();

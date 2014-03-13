@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "AggressorAI.h"
@@ -32,7 +35,7 @@ AggressorAI::Permissible(const Creature* creature)
 {
     // have some hostile factions, it will be selected by IsHostileTo check at MoveInLineOfSight
     if (!creature->IsCivilian() && !creature->IsNeutralToAll())
-        return PERMIT_BASE_PROACTIVE;
+        { return PERMIT_BASE_PROACTIVE; }
 
     return PERMIT_BASE_NO;
 }
@@ -46,7 +49,7 @@ AggressorAI::MoveInLineOfSight(Unit* u)
 {
     // Ignore Z for flying creatures
     if (!m_creature->CanFly() && m_creature->GetDistanceZ(u) > CREATURE_Z_ATTACK_RANGE)
-        return;
+        { return; }
 
     if (m_creature->CanInitiateAttack() && u->isTargetableForAttack() &&
             m_creature->IsHostileTo(u) && u->isInAccessablePlaceFor(m_creature))
@@ -110,7 +113,7 @@ void AggressorAI::EnterEvadeMode()
 
         // Remove ChaseMovementGenerator from MotionMaster stack list, and add HomeMovementGenerator instead
         if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() == CHASE_MOTION_TYPE)
-            m_creature->GetMotionMaster()->MoveTargetedHome();
+            { m_creature->GetMotionMaster()->MoveTargetedHome(); }
     }
 
     m_creature->DeleteThreatList();
@@ -124,7 +127,7 @@ AggressorAI::UpdateAI(const uint32 /*diff*/)
 {
     // update i_victimGuid if m_creature->getVictim() !=0 and changed
     if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        return;
+        { return; }
 
     i_victimGuid = m_creature->getVictim()->GetObjectGuid();
 
@@ -142,7 +145,7 @@ void
 AggressorAI::AttackStart(Unit* u)
 {
     if (!u)
-        return;
+        { return; }
 
     if (m_creature->Attack(u, true))
     {

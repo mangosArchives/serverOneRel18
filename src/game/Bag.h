@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOS_BAG_H
@@ -70,7 +73,7 @@ class Bag : public Item
 inline Item* NewItemOrBag(ItemPrototype const* proto)
 {
     if (proto->InventoryType == INVTYPE_BAG)
-        return new Bag;
+        { return new Bag; }
 
     return new Item;
 }

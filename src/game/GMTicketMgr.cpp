@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Common.h"
@@ -57,7 +60,7 @@ void GMTicketMgr::LoadGMTickets()
 
         uint32 guidlow = fields[0].GetUInt32();
         if (!guidlow)
-            continue;
+            { continue; }
 
         ObjectGuid guid = ObjectGuid(HIGHGUID_PLAYER, guidlow);
 
@@ -84,7 +87,7 @@ void GMTicketMgr::DeleteAll()
     for (GMTicketMap::const_iterator itr = m_GMTicketMap.begin(); itr != m_GMTicketMap.end(); ++itr)
     {
         if (Player* owner = sObjectMgr.GetPlayer(itr->first))
-            owner->GetSession()->SendGMTicketGetTicket(0x0A);
+            { owner->GetSession()->SendGMTicketGetTicket(0x0A); }
     }
     CharacterDatabase.Execute("DELETE FROM character_ticket");
     m_GMTicketListByCreatingOrder.clear();

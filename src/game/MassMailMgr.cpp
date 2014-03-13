@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /**
@@ -44,7 +47,7 @@ void MassMailMgr::AddMassMailTask(MailDraft* mailProto, MailSender sender, uint3
         AddMassMailTask(mailProto, sender, ss.str().c_str());
     }
     else
-        AddMassMailTask(mailProto, sender, "SELECT guid FROM characters WHERE deleteDate IS NULL");
+        { AddMassMailTask(mailProto, sender, "SELECT guid FROM characters WHERE deleteDate IS NULL"); }
 }
 
 struct MassMailerQueryHandler
@@ -52,7 +55,7 @@ struct MassMailerQueryHandler
     void HandleQueryCallback(QueryResult* result, MailDraft* mailProto, MailSender sender)
     {
         if (!result)
-            return;
+            { return; }
 
         MassMailMgr::ReceiversList& recievers = sMassMailMgr.AddMassMailTask(mailProto, sender);
 
@@ -74,7 +77,7 @@ void MassMailMgr::AddMassMailTask(MailDraft* mailProto, MailSender sender, char 
 void MassMailMgr::Update(bool sendall /*= false*/)
 {
     if (m_massMails.empty())
-        return;
+        { return; }
 
     uint32 maxcount = sWorld.getConfig(CONFIG_UINT32_MASS_MAILER_SEND_PER_TICK);
 
@@ -97,7 +100,7 @@ void MassMailMgr::Update(bool sendall /*= false*/)
                 task.m_protoMail->SendMailTo(MailReceiver(receiver, receiver_guid), task.m_sender, MAIL_CHECK_MASK_RETURNED);
 
                 if (!sendall)
-                    --maxcount;
+                    { --maxcount; }
                 break;
             }
 
@@ -109,11 +112,11 @@ void MassMailMgr::Update(bool sendall /*= false*/)
             draft.SendMailTo(MailReceiver(receiver, receiver_guid), task.m_sender, MAIL_CHECK_MASK_RETURNED);
 
             if (!sendall)
-                --maxcount;
+                { --maxcount; }
         }
 
         if (task.m_receivers.empty())
-            m_massMails.pop_front();
+            { m_massMails.pop_front(); }
     }
     while (!m_massMails.empty() && (sendall || maxcount > 0));
 }
@@ -124,7 +127,7 @@ void MassMailMgr::GetStatistic(uint32& tasks, uint32& mails, uint32& needTime) c
 
     uint32 mailsCount = 0;
     for (MassMailList::const_iterator mailItr = m_massMails.begin(); mailItr != m_massMails.end(); ++mailItr)
-        mailsCount += mailItr->m_receivers.size();
+        { mailsCount += mailItr->m_receivers.size(); }
 
     mails = mailsCount;
 

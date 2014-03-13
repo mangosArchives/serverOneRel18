@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOS_MOTIONMASTER_H
@@ -83,16 +86,16 @@ class MANGOS_DLL_SPEC MotionMaster : private std::stack<MovementGenerator*>
         void Clear(bool reset = true, bool all = false)
         {
             if (m_cleanFlag & MMCF_UPDATE)
-                DelayedClean(reset, all);
+                { DelayedClean(reset, all); }
             else
-                DirectClean(reset, all);
+                { DirectClean(reset, all); }
         }
         void MovementExpired(bool reset = true)
         {
             if (m_cleanFlag & MMCF_UPDATE)
-                DelayedExpire(reset);
+                { DelayedExpire(reset); }
             else
-                DirectExpire(reset);
+                { DirectExpire(reset); }
         }
 
         void MoveIdle();

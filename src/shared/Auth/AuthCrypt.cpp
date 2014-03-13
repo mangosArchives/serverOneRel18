@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "AuthCrypt.h"
@@ -31,8 +34,8 @@ AuthCrypt::AuthCrypt()
 
 void AuthCrypt::DecryptRecv(uint8* data, size_t len)
 {
-    if (!_initialized) return;
-    if (len < CRYPTED_RECV_LEN) return;
+    if (!_initialized) { return; }
+    if (len < CRYPTED_RECV_LEN) { return; }
 
     for (size_t t = 0; t < CRYPTED_RECV_LEN; t++)
     {
@@ -46,8 +49,8 @@ void AuthCrypt::DecryptRecv(uint8* data, size_t len)
 
 void AuthCrypt::EncryptSend(uint8* data, size_t len)
 {
-    if (!_initialized) return;
-    if (len < CRYPTED_SEND_LEN) return;
+    if (!_initialized) { return; }
+    if (len < CRYPTED_SEND_LEN) { return; }
 
     for (size_t t = 0; t < CRYPTED_SEND_LEN; t++)
     {

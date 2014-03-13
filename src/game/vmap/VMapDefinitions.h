@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef _VMAPDEFINITIONS_H
@@ -28,7 +31,15 @@ namespace VMAP
     const char RAW_VMAP_MAGIC[] = "VMAPs04";                // used in extracted vmap files with raw data
     const char GAMEOBJECT_MODELS[] = "temp_gameobject_models";
 
-    // defined in TileAssembler.cpp currently...
+    /**
+     * @brief defined in TileAssembler.cpp currently
+     *
+     * @param rf
+     * @param dest
+     * @param compare
+     * @param len
+     * @return bool
+     */
     bool readChunk(FILE* rf, char* dest, const char* compare, uint32 len);
 }
 

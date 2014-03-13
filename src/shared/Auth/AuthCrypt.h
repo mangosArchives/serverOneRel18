@@ -14,31 +14,68 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef _AUTHCRYPT_H
 #define _AUTHCRYPT_H
 
-#include <Common.h>
+#include "Common.h"
 #include <vector>
 
 class BigNumber;
 
+/**
+ * @brief
+ *
+ */
 class AuthCrypt
 {
     public:
+        /**
+         * @brief
+         *
+         */
         AuthCrypt();
+        /**
+         * @brief
+         *
+         */
         ~AuthCrypt();
 
+
+        /**
+         * @brief
+         *
+         */
         void Init(BigNumber* K);
+        /**
+         * @brief
+         *
+         * @param
+         * @param size_t
+         */
         void DecryptRecv(uint8*, size_t);
+        /**
+         * @brief
+         *
+         * @param
+         * @param size_t
+         */
         void EncryptSend(uint8*, size_t);
 
+        /**
+         * @brief
+         *
+         * @return bool
+         */
         bool IsInitialized() { return _initialized; }
 
     private:
-        std::vector<uint8> _key;
-        uint8 _send_i, _send_j, _recv_i, _recv_j;
-        bool _initialized;
+        std::vector<uint8> _key; /**< TODO */
+        uint8 _send_i, _send_j, _recv_i, _recv_j; /**< TODO */
+        bool _initialized; /**< TODO */
 };
 #endif

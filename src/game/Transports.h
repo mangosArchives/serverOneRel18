@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef TRANSPORTS_H
@@ -31,7 +34,7 @@ class Transport : public GameObject
         explicit Transport();
 
         bool Create(uint32 guidlow, uint32 mapid, float x, float y, float z, float ang, uint32 animprogress);
-        bool GenerateWaypoints(uint32 pathid, std::set<uint32> &mapids);
+        bool GenerateWaypoints(uint32 pathid, std::set<uint32>& mapids);
         void Update(uint32 update_diff, uint32 p_time) override;
         bool AddPassenger(Player* passenger);
         bool RemovePassenger(Player* passenger);

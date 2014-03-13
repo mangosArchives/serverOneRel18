@@ -14,10 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 namespace Movement
 {
+    /**
+     * @brief
+     *
+     * @param t
+     * @param c
+     */
     template<typename length_type> void Spline<length_type>::evaluate_percent(float t, Vector3& c) const
     {
         index_type Index;
@@ -26,6 +35,12 @@ namespace Movement
         evaluate_percent(Index, u, c);
     }
 
+    /**
+     * @brief
+     *
+     * @param t
+     * @param hermite
+     */
     template<typename length_type> void Spline<length_type>::evaluate_derivative(float t, Vector3& hermite) const
     {
         index_type Index;
@@ -34,9 +49,15 @@ namespace Movement
         evaluate_derivative(Index, u, hermite);
     }
 
+    /**
+     * @brief
+     *
+     * @param length_
+     * @return SplineBase::index_type Spline<length_type>
+     */
     template<typename length_type> SplineBase::index_type Spline<length_type>::computeIndexInBounds(length_type length_) const
     {
-// Temporary disabled: causes infinite loop with t = 1.f
+        // Temporary disabled: causes infinite loop with t = 1.f
         /*
             index_type hi = index_hi;
             index_type lo = index_lo;
@@ -56,11 +77,18 @@ namespace Movement
         index_type i = index_lo;
         index_type N = index_hi;
         while (i + 1 < N && lengths[i + 1] < length_)
-            ++i;
+            { ++i; }
 
         return i;
     }
 
+    /**
+     * @brief
+     *
+     * @param t
+     * @param index
+     * @param u
+     */
     template<typename length_type> void Spline<length_type>::computeIndex(float t, index_type& index, float& u) const
     {
         MANGOS_ASSERT(t >= 0.f && t <= 1.f);
@@ -70,12 +98,22 @@ namespace Movement
         u = (length_ - length(index)) / (float)length(index, index + 1);
     }
 
+    /**
+     * @brief
+     *
+     * @param t
+     * @return SplineBase::index_type Spline<length_type>
+     */
     template<typename length_type> SplineBase::index_type Spline<length_type>::computeIndexInBounds(float t) const
     {
         MANGOS_ASSERT(t >= 0.f && t <= 1.f);
         return computeIndexInBounds(t * length());
     }
 
+    /**
+     * @brief
+     *
+     */
     template<typename length_type> void Spline<length_type>::initLengths()
     {
         index_type i = index_lo;
@@ -88,6 +126,10 @@ namespace Movement
         }
     }
 
+    /**
+     * @brief
+     *
+     */
     template<typename length_type> void Spline<length_type>::clear()
     {
         SplineBase::clear();

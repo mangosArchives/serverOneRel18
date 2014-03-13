@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOSSERVER_PATH_H
@@ -59,7 +62,7 @@ class Path
             for (unsigned int idx = start + 1; idx < end; ++idx)
             {
                 PathNode const& node = i_nodes[idx];
-                PathNode const& prev = i_nodes[idx-1];
+                PathNode const& prev = i_nodes[idx - 1];
                 float xd = node.x - prev.x;
                 float yd = node.y - prev.y;
                 float zd = node.z - prev.z;
@@ -76,7 +79,7 @@ class Path
 
             if (curnode > 0)
             {
-                PathNode const& node = i_nodes[curnode-1];
+                PathNode const& node = i_nodes[curnode - 1];
                 float xd = x - node.x;
                 float yd = y - node.y;
                 float zd = z - node.z;

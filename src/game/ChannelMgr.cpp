@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "ChannelMgr.h"
@@ -26,12 +29,12 @@ INSTANTIATE_SINGLETON_1(HordeChannelMgr);
 ChannelMgr* channelMgr(Team team)
 {
     if (sWorld.getConfig(CONFIG_BOOL_ALLOW_TWO_SIDE_INTERACTION_CHANNEL))
-        return &MaNGOS::Singleton<AllianceChannelMgr>::Instance();        // cross-faction
+        { return &MaNGOS::Singleton<AllianceChannelMgr>::Instance(); }        // cross-faction
 
     if (team == ALLIANCE)
-        return &MaNGOS::Singleton<AllianceChannelMgr>::Instance();
+        { return &MaNGOS::Singleton<AllianceChannelMgr>::Instance(); }
     if (team == HORDE)
-        return &MaNGOS::Singleton<HordeChannelMgr>::Instance();
+        { return &MaNGOS::Singleton<HordeChannelMgr>::Instance(); }
 
     return NULL;
 }
@@ -39,12 +42,12 @@ ChannelMgr* channelMgr(Team team)
 ChannelMgr::~ChannelMgr()
 {
     for (ChannelMap::iterator itr = channels.begin(); itr != channels.end(); ++itr)
-        delete itr->second;
+        { delete itr->second; }
 
     channels.clear();
 }
 
-Channel* ChannelMgr::GetJoinChannel(std::string name, uint32 channel_id)
+Channel* ChannelMgr::GetJoinChannel(std::string name, uint32 channelId)
 {
     std::wstring wname;
     Utf8toWStr(name, wname);
@@ -52,7 +55,7 @@ Channel* ChannelMgr::GetJoinChannel(std::string name, uint32 channel_id)
 
     if (channels.find(wname) == channels.end())
     {
-        Channel* nchan = new Channel(name, channel_id);
+        Channel* nchan = new Channel(name, channelId);
         channels[wname] = nchan;
         return nchan;
     }
@@ -80,7 +83,7 @@ Channel* ChannelMgr::GetChannel(std::string name, Player* p, bool pkt)
         return NULL;
     }
     else
-        return i->second;
+        { return i->second; }
 }
 
 void ChannelMgr::LeftChannel(std::string name)
@@ -92,7 +95,7 @@ void ChannelMgr::LeftChannel(std::string name)
     ChannelMap::const_iterator i = channels.find(wname);
 
     if (i == channels.end())
-        return;
+        { return; }
 
     Channel* channel = i->second;
 

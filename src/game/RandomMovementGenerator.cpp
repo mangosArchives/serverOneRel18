@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Creature.h"
@@ -57,9 +60,9 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature& creature)
     init.Launch();
 
     if (creature.CanFly())
-        i_nextMoveTime.Reset(0);
+        { i_nextMoveTime.Reset(0); }
     else
-        i_nextMoveTime.Reset(urand(500, 10000));
+        { i_nextMoveTime.Reset(urand(500, 10000)); }
 }
 
 template<>
@@ -108,7 +111,7 @@ bool RandomMovementGenerator<Creature>::Update(Creature& creature, const uint32&
     {
         i_nextMoveTime.Update(diff);
         if (i_nextMoveTime.Passed())
-            _setRandomLocation(creature);
+            { _setRandomLocation(creature); }
     }
     return true;
 }

@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOS_GRIDDEFINES_H
@@ -78,10 +81,10 @@ template<const unsigned int LIMIT>
 struct MANGOS_DLL_DECL CoordPair
 {
     CoordPair(uint32 x = 0, uint32 y = 0) : x_coord(x), y_coord(y) {}
-    CoordPair(const CoordPair<LIMIT> &obj) : x_coord(obj.x_coord), y_coord(obj.y_coord) {}
-    bool operator==(const CoordPair<LIMIT> &obj) const { return (obj.x_coord == x_coord && obj.y_coord == y_coord); }
-    bool operator!=(const CoordPair<LIMIT> &obj) const { return !operator==(obj); }
-    CoordPair<LIMIT>& operator=(const CoordPair<LIMIT> &obj)
+    CoordPair(const CoordPair<LIMIT>& obj) : x_coord(obj.x_coord), y_coord(obj.y_coord) {}
+    bool operator==(const CoordPair<LIMIT>& obj) const { return (obj.x_coord == x_coord && obj.y_coord == y_coord); }
+    bool operator!=(const CoordPair<LIMIT>& obj) const { return !operator==(obj); }
+    CoordPair<LIMIT>& operator=(const CoordPair<LIMIT>& obj)
     {
         x_coord = obj.x_coord;
         y_coord = obj.y_coord;
@@ -91,33 +94,33 @@ struct MANGOS_DLL_DECL CoordPair
     void operator<<(const uint32 val)
     {
         if (x_coord > val)
-            x_coord -= val;
+            { x_coord -= val; }
         else
-            x_coord = 0;
+            { x_coord = 0; }
     }
 
     void operator>>(const uint32 val)
     {
         if (x_coord + val < LIMIT)
-            x_coord += val;
+            { x_coord += val; }
         else
-            x_coord = LIMIT - 1;
+            { x_coord = LIMIT - 1; }
     }
 
     void operator-=(const uint32 val)
     {
         if (y_coord > val)
-            y_coord -= val;
+            { y_coord -= val; }
         else
-            y_coord = 0;
+            { y_coord = 0; }
     }
 
     void operator+=(const uint32 val)
     {
         if (y_coord + val < LIMIT)
-            y_coord += val;
+            { y_coord += val; }
         else
-            y_coord = LIMIT - 1;
+            { y_coord = LIMIT - 1; }
     }
 
     CoordPair& normalize()
@@ -161,9 +164,9 @@ namespace MaNGOS
     inline void NormalizeMapCoord(float& c)
     {
         if (c > MAP_HALFSIZE - 0.5)
-            c = MAP_HALFSIZE - 0.5;
+            { c = MAP_HALFSIZE - 0.5; }
         else if (c < -(MAP_HALFSIZE - 0.5))
-            c = -(MAP_HALFSIZE - 0.5);
+            { c = -(MAP_HALFSIZE - 0.5); }
     }
 
     inline bool IsValidMapCoord(float c)

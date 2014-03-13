@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Common.h"
@@ -27,22 +30,22 @@ void CharacterDatabaseCleaner::CleanDatabase()
 {
     // config to disable
     if (!sWorld.getConfig(CONFIG_BOOL_CLEAN_CHARACTER_DB))
-        return;
+        { return; }
 
     sLog.outString("Cleaning character database...");
 
     // check flags which clean ups are necessary
     QueryResult* result = CharacterDatabase.PQuery("SELECT cleaning_flags FROM saved_variables");
     if (!result)
-        return;
+        { return; }
     uint32 flags = (*result)[0].GetUInt32();
     delete result;
 
     // clean up
     if (flags & CLEANING_FLAG_SKILLS)
-        CleanCharacterSkills();
+        { CleanCharacterSkills(); }
     if (flags & CLEANING_FLAG_SPELLS)
-        CleanCharacterSpell();
+        { CleanCharacterSpell(); }
     CharacterDatabase.Execute("UPDATE saved_variables SET cleaning_flags = 0");
 }
 
@@ -74,7 +77,7 @@ void CharacterDatabaseCleaner::CheckUnique(const char* column, const char* table
                 found = true;
             }
             else
-                ss << ",";
+                { ss << ","; }
             ss << id;
         }
     }

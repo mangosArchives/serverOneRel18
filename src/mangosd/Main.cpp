@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /// \addtogroup mangosd Mangos Daemon
@@ -110,15 +113,15 @@ extern int main(int argc, char** argv)
                 const char* mode = cmd_opts.opt_arg();
 
                 if (!strcmp(mode, "run"))
-                    serviceDaemonMode = 'r';
+                    { serviceDaemonMode = 'r'; }
 #ifdef WIN32
                 else if (!strcmp(mode, "install"))
-                    serviceDaemonMode = 'i';
+                    { serviceDaemonMode = 'i'; }
                 else if (!strcmp(mode, "uninstall"))
-                    serviceDaemonMode = 'u';
+                    { serviceDaemonMode = 'u'; }
 #else
                 else if (!strcmp(mode, "stop"))
-                    serviceDaemonMode = 's';
+                    { serviceDaemonMode = 's'; }
 #endif
                 else
                 {
@@ -147,11 +150,11 @@ extern int main(int argc, char** argv)
     {
         case 'i':
             if (WinServiceInstall())
-                sLog.outString("Installing service");
+                { sLog.outString("Installing service"); }
             return 1;
         case 'u':
             if (WinServiceUninstall())
-                sLog.outString("Uninstalling service");
+                { sLog.outString("Uninstalling service"); }
             return 1;
         case 'r':
             WinServiceRun();

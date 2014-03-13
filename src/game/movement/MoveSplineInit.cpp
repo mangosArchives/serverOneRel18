@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "MoveSplineInit.h"
@@ -36,9 +39,9 @@ namespace Movement
         else if (moveFlags & MOVEFLAG_SWIMMING)
         {
             if (moveFlags & MOVEFLAG_BACKWARD /*&& speed_obj.swim >= speed_obj.swim_back*/)
-                return MOVE_SWIM_BACK;
+                { return MOVE_SWIM_BACK; }
             else
-                return MOVE_SWIM;
+                { return MOVE_SWIM; }
         }
         else if (moveFlags & MOVEFLAG_WALK_MODE)
         {
@@ -46,7 +49,7 @@ namespace Movement
             return MOVE_WALK;
         }
         else if (moveFlags & MOVEFLAG_BACKWARD /*&& speed_obj.run >= speed_obj.run_back*/)
-            return MOVE_RUN_BACK;
+            { return MOVE_RUN_BACK; }
 
         return MOVE_RUN;
     }
@@ -65,7 +68,7 @@ namespace Movement
         // there is a big chane that current position is unknown if current state is not finalized, need compute it
         // this also allows calculate spline position and update map position in much greater intervals
         if (!move_spline.Finalized())
-            real_position = move_spline.ComputePosition();
+            { real_position = move_spline.ComputePosition(); }
 
         if (args.path.empty())
         {
@@ -77,17 +80,17 @@ namespace Movement
         args.path[0] = real_position;
         uint32 moveFlags = unit.m_movementInfo.GetMovementFlags();
         if (args.flags.runmode)
-            moveFlags &= ~MOVEFLAG_WALK_MODE;
+            { moveFlags &= ~MOVEFLAG_WALK_MODE; }
         else
-            moveFlags |= MOVEFLAG_WALK_MODE;
+            { moveFlags |= MOVEFLAG_WALK_MODE; }
 
         moveFlags |= (MOVEFLAG_SPLINE_ENABLED | MOVEFLAG_FORWARD);
 
         if (args.velocity == 0.f)
-            args.velocity = unit.GetSpeed(SelectSpeedType(moveFlags));
+            { args.velocity = unit.GetSpeed(SelectSpeedType(moveFlags)); }
 
         if (!args.Validate(&unit))
-            return 0;
+            { return 0; }
 
         unit.m_movementInfo.SetMovementFlags((MovementFlags)moveFlags);
         move_spline.Initialize(args);

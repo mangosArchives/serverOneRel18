@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "MapTree.h"
@@ -38,7 +41,7 @@ namespace VMAP
             {
                 bool result = prims[entry].intersectRay(ray, distance, pStopAtFirstHit);
                 if (result)
-                    hit = true;
+                    { hit = true; }
                 return result;
             }
             bool didHit() { return hit; }
@@ -73,7 +76,7 @@ namespace VMAP
                 DEBUG_LOG("trying to intersect '%s'", prims[entry].name.c_str());
 #endif
                 if (prims[entry].GetLocationInfo(point, locInfo))
-                    result = true;
+                    { result = true; }
             }
 
             ModelInstance* prims;
@@ -145,7 +148,7 @@ namespace VMAP
         MapRayCallback intersectionCallBack(iTreeValues);
         iTree.intersectRay(pRay, intersectionCallBack, distance, pStopAtFirstHit);
         if (intersectionCallBack.didHit())
-            pMaxDist = distance;
+            { pMaxDist = distance; }
         return intersectionCallBack.didHit();
     }
     //=========================================================
@@ -157,11 +160,11 @@ namespace VMAP
         MANGOS_ASSERT(maxDist < std::numeric_limits<float>::max());
         // prevent NaN values which can cause BIH intersection to enter infinite loop
         if (maxDist < 1e-10f)
-            return true;
+            { return true; }
         // direction with length of 1
         G3D::Ray ray = G3D::Ray::fromOriginAndDirection(pos1, (pos2 - pos1) / maxDist);
         if (getIntersectionTime(ray, maxDist, true))
-            return false;
+            { return false; }
 
         return true;
     }
@@ -235,12 +238,12 @@ namespace VMAP
     {
         std::string basePath = vmapPath;
         if (basePath.length() > 0 && (basePath[basePath.length() - 1] != '/' || basePath[basePath.length() - 1] != '\\'))
-            basePath.append("/");
+            { basePath.append("/"); }
         std::string fullname = basePath + VMapManager2::getMapFileName(mapID);
         bool success = true;
         FILE* rf = fopen(fullname.c_str(), "rb");
         if (!rf)
-            return false;
+            { return false; }
         // TODO: check magic number when implemented...
         char tiled;
         char chunk[8];
@@ -254,11 +257,11 @@ namespace VMAP
             std::string tilefile = basePath + getTileFileName(mapID, tileX, tileY);
             FILE* tf = fopen(tilefile.c_str(), "rb");
             if (!tf)
-                success = false;
+                { success = false; }
             else
             {
                 if (!readChunk(tf, chunk, VMAP_MAGIC, 8))
-                    success = false;
+                    { success = false; }
                 fclose(tf);
             }
         }
@@ -275,25 +278,25 @@ namespace VMAP
         std::string fullname = iBasePath + fname;
         FILE* rf = fopen(fullname.c_str(), "rb");
         if (!rf)
-            return false;
+            { return false; }
         else
         {
             char chunk[8];
             // general info
-            if (!readChunk(rf, chunk, VMAP_MAGIC, 8)) success = false;
+            if (!readChunk(rf, chunk, VMAP_MAGIC, 8)) { success = false; }
             char tiled;
-            if (success && fread(&tiled, sizeof(char), 1, rf) != 1) success = false;
+            if (success && fread(&tiled, sizeof(char), 1, rf) != 1) { success = false; }
             iIsTiled = bool(tiled);
             // Nodes
-            if (success && !readChunk(rf, chunk, "NODE", 4)) success = false;
-            if (success) success = iTree.readFromFile(rf);
+            if (success && !readChunk(rf, chunk, "NODE", 4)) { success = false; }
+            if (success) { success = iTree.readFromFile(rf); }
             if (success)
             {
                 iNTreeValues = iTree.primCount();
                 iTreeValues = new ModelInstance[iNTreeValues];
             }
 
-            if (success && !readChunk(rf, chunk, "GOBJ", 4)) success = false;
+            if (success && !readChunk(rf, chunk, "GOBJ", 4)) { success = false; }
             // global model spawns
             // only non-tiled maps have them, and if so exactly one (so far at least...)
             ModelSpawn spawn;
@@ -330,7 +333,7 @@ namespace VMAP
         {
             iTreeValues[i->first].setUnloaded();
             for (uint32 refCount = 0; refCount < i->second; ++refCount)
-                vm->releaseModelInstance(iTreeValues[i->first].name);
+                { vm->releaseModelInstance(iTreeValues[i->first].name); }
         }
         iLoadedSpawns.clear();
         iLoadedTiles.clear();
@@ -360,10 +363,10 @@ namespace VMAP
         {
             char chunk[8];
             if (!readChunk(tf, chunk, VMAP_MAGIC, 8))
-                result = false;
+                { result = false; }
             uint32 numSpawns;
             if (result && fread(&numSpawns, sizeof(uint32), 1, tf) != 1)
-                result = false;
+                { result = false; }
             for (uint32 i = 0; i < numSpawns && result; ++i)
             {
                 // read model spawns
@@ -374,7 +377,7 @@ namespace VMAP
                     // acquire model instance
                     WorldModel* model = vm->acquireModelInstance(iBasePath, spawn.name);
                     if (!model)
-                        ERROR_LOG("StaticMapTree::LoadMapTile() could not acquire WorldModel pointer for '%s'!", spawn.name.c_str());
+                        { ERROR_LOG("StaticMapTree::LoadMapTile() could not acquire WorldModel pointer for '%s'!", spawn.name.c_str()); }
 
                     // update tree
                     uint32 referencedVal;
@@ -397,9 +400,9 @@ namespace VMAP
                         ++iLoadedSpawns[referencedVal];
 #ifdef VMAP_DEBUG
                         if (iTreeValues[referencedVal].ID != spawn.ID)
-                            DEBUG_LOG("Error: trying to load wrong spawn in node!");
+                            { DEBUG_LOG("Error: trying to load wrong spawn in node!"); }
                         else if (iTreeValues[referencedVal].name != spawn.name)
-                            DEBUG_LOG("Error: name mismatch on GUID=%u", spawn.ID);
+                            { DEBUG_LOG("Error: name mismatch on GUID=%u", spawn.ID); }
 #endif
                     }
                 }
@@ -408,7 +411,7 @@ namespace VMAP
             fclose(tf);
         }
         else
-            iLoadedTiles[packTileID(tileX, tileY)] = false;
+            { iLoadedTiles[packTileID(tileX, tileY)] = false; }
         return result;
     }
 
@@ -432,10 +435,10 @@ namespace VMAP
                 bool result = true;
                 char chunk[8];
                 if (!readChunk(tf, chunk, VMAP_MAGIC, 8))
-                    result = false;
+                    { result = false; }
                 uint32 numSpawns;
                 if (fread(&numSpawns, sizeof(uint32), 1, tf) != 1)
-                    result = false;
+                    { result = false; }
                 for (uint32 i = 0; i < numSpawns && result; ++i)
                 {
                     // read model spawns
