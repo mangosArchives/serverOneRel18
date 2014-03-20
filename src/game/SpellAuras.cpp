@@ -2775,7 +2775,10 @@ void Aura::HandleAuraModShapeshift(bool apply, bool Real)
         target->RemoveSpellsCausingAura(SPELL_AURA_MOD_SHAPESHIFT, GetHolder());
 
         if (modelid > 0)
+        {
+            target->SetObjectScale(DEFAULT_OBJECT_SCALE);
             target->SetDisplayId(modelid);
+        }
 
         // now only powertype must be set
         switch (form)
@@ -2873,7 +2876,18 @@ void Aura::HandleAuraModShapeshift(bool apply, bool Real)
     else
     {
         if (modelid > 0)
+        {
+            // workaround for tauren scale appear too big
+            if (target->getRace() == RACE_TAUREN)
+            {
+                if (target->getGender() == GENDER_MALE)
+                    target->SetObjectScale(DEFAULT_TAUREN_MALE_SCALE);
+                else
+                    target->SetObjectScale(DEFAULT_TAUREN_FEMALE_SCALE);
+            }
+
             target->SetDisplayId(target->GetNativeDisplayId());
+        }
 
         if (target->getClass() == CLASS_DRUID)
             target->setPowerType(POWER_MANA);
