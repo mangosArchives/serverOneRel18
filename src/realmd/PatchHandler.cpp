@@ -1,7 +1,7 @@
 /**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
- * Copyright (C) 2005-2013  MaNGOS project <http://getmangos.com>
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

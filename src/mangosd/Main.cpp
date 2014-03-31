@@ -182,30 +182,16 @@ extern int main(int argc, char** argv)
 #endif
 
     sLog.outString("%s [world-daemon]", _FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_NR, REVISION_ID));
-    sLog.outString("<Ctrl-C> to stop.");
-    sLog.outString("\n\n"
-                    " ####       ####            ###     ###   ########    #######     ######## \n"
-                    " #####     #####            ####    ###  ##########  #########   ##########\n"
-                    " #####     #####            #####   ###  ##########  #########   ##########\n"
-                    " ######   ######            #####   ###  ###        ####   ####  ###       \n"
-                    " ######   ######    ####    ######  ###  ###        ###     ###  ###       \n"
-                    " ####### #######   ######   ######  ###  ###  ##### ###     ###  ########  \n"
-                    " ### ### ### ###   ######   ####### ###  ###  ##### ###     ###  ######### \n"
-                    " ### ### ### ###  ###  ###  ### ### ###  ###  ##### ###     ###   #########\n"
-                    " ### ####### ###  ###  ###  ###  ######  ###    ### ###     ###        ####\n"
-                    " ### ####### ###  ###  ###  ###  ######  ###    ### ###     ###         ###\n"
-                    " ###  #####  ### ########## ###   #####  ###   #### ####   ####        ####\n"
-                    " ###  #####  ### ########## ###   #####  #########   #########   ##########\n"
-                    " ###  #####  ### ###    ### ###    ####  #########   #########   ######### \n"
-                    " ###   ###   ### ###    ### ###     ###   #######     #######     #######  \n"
-                    "\n"
-                    "                                                         ###               \n"
-                    " Website: http://www.getmangos.co.uk                    ## ##  ##  ##  ####\n"
-                    "                                                        ## ##  ### ##  ##  \n"
-                    "    Wiki: http://github.com/mangoswiki/wiki             ## ##  ######  ####\n"
-                    "                                                        ## ##  ## ###  ##  \n"
-                    "   Forum: http://community.getmangos.co.uk               ###   ##  ##  ####\n"
-                    "\n\n");
+    sLog.outString("<Ctrl-C> to stop.\n"
+                   "  __  __      _  _  ___  ___  ___                       \n"
+                   " |  \\/  |__ _| \\| |/ __|/ _ \\/ __|                      \n"                                         
+                   " | |\\/| / _` | .` | (_ | (_) \\__ \\                      \n"                                         
+                   " |_|  |_\\__,_|_|\\_|\\___|\\___/|___/                      \n"
+                   "                                         ___               \n"
+                   " For help and support please visit:     / _ \\ ___  ___     \n"
+                   " Website: https://getmangos.eu         | (_) |   \\/ -_)    \n"
+                   "    Wiki: http://github.com/mangoswiki  \\___/|_||_\\___|    \\n"
+                  );
     sLog.outString("Using configuration file %s.", cfg_file);
 
     DETAIL_LOG("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
