@@ -20,7 +20,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(MaNGOS)
-set(MANGOS_VERSION 0.18)
+set(MANGOS_VERSION 0.18.1)
 
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
@@ -29,14 +29,14 @@ set(CMAKE_MODULE_PATH
 
 # define all options here
 option(DEBUG                "Debug mode"                            OFF)
-option(TBB_USE_EXTERNAL     "Use external TBB"                      OFF)
-option(USE_STD_MALLOC       "Use standard malloc instead of TBB"    OFF)
 option(ACE_USE_EXTERNAL     "Use external ACE"                      OFF)
 if(PCHSupport_FOUND AND WIN32) # TODO: why only enable it on windows by default?
   option(PCH                "Use precompiled headers"               ON)
 else()
   option(PCH                "Use precompiled headers"               OFF)
 endif()
+option(BUILD_SCRIPTS        "Build scripts"                         ON)
+
 # TODO: options that should be checked/created:
 #option(CLI                  "With CLI"                              ON)
 #option(RA                   "With Remote Access"                    OFF)
@@ -51,9 +51,8 @@ message(
     CMAKE_INSTALL_PREFIX    Path where the server should be installed to
     PCH                     Use precompiled headers
     DEBUG                   Debug mode
-    TBB_USE_EXTERNAL        Use external TBB
-    USE_STD_MALLOC          Use standard malloc instead of TBB
     ACE_USE_EXTERNAL        Use external ACE
+    BUILD_SCRIPTS           Build server scripts content.
   To set an option simply type -D<OPTION>=<VALUE> after 'cmake <srcs>'.
   Also, you can specify the generator with -G. see 'cmake --help' for more details
   For example: cmake .. -DDEBUG=1 -DCMAKE_INSTALL_PREFIX=/opt/mangos"
@@ -97,7 +96,7 @@ find_package(Git)
 # check if the platform supports precomiled headers
 find_package(PCHSupport)
 
-# TODO: remove this (refactor ACE & TBB CMake code)
+# TODO: remove this (refactor ACE CMake code)
 # VS100 uses MSBuild.exe instead of devenv.com, so force it to use devenv.com
 if(WIN32 AND MSVC_VERSION MATCHES 1600)
   find_package(VisualStudio2010)
@@ -145,25 +144,6 @@ if(ACE_USE_EXTERNAL)
   endif()
 else()
   include(cmake/ImportACE.cmake)
-endif()
-
-if(NOT USE_STD_MALLOC)
-  unset(TBB_INCLUDE_DIR CACHE)
-  unset(TBB_LIBRARIES CACHE)
-  unset(TBB_LIBRARIES_DIR CACHE)
-  unset(TBB_INCLUDE_DIR)
-  unset(TBB_LIBRARIES)
-  unset(TBB_LIBRARIES_DIR)
-  if(TBB_USE_EXTERNAL)
-    find_package(TBB)
-    if(NOT TBB_FOUND)
-      message(FATAL_ERROR
-        "This project requires TBB installed when TBB_USE_EXTERNAL is set. Please download the TBB Stable Release from http://www.threadingbuildingblocks.org/ and install it. If this script didn't find TBB and it was correctly installed please set TBB_ROOT to the correct path."
-      )
-    endif()
-  else()
-    include(cmake/ImportTBB.cmake)
-  endif()
 endif()
 
 # Win32 delivered packages
