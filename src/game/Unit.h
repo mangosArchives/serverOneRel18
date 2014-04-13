@@ -1952,11 +1952,10 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
          * the structure. Also calculates bonus damage with Unit::MeleeDamageBonusDone and the damage
          * with Unit::CalculateDamage
          * @param pVictim the victim that was hit with damage
-         * @param damage how much damage to try to do
          * @param damageInfo this is filled with data about what kind of damage that was done
          * @param attackType type of attack, base/off/ranged
          */
-        void CalculateMeleeDamage(Unit* pVictim, uint32 damage, CalcDamageInfo* damageInfo, WeaponAttackType attackType = BASE_ATTACK);
+        void CalculateMeleeDamage(Unit* pVictim, CalcDamageInfo* damageInfo, WeaponAttackType attackType = BASE_ATTACK);
         /** 
          * Deals melee damage, if the attack was parried we reduce the victims time until next hit 
          * instead of the weapons normal time by 20 or 60%.
