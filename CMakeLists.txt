@@ -168,7 +168,7 @@ if(UNIX)
       include_directories(${POSTGRESQL_INCLUDE_DIRS})
     endif(POSTGRESQL_FOUND)
 
-  else
+  else()
     find_package(MySQL REQUIRED)
   endif()
 
