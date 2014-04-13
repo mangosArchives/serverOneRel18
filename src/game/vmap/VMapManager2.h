@@ -229,7 +229,7 @@ namespace VMAP
              * @param pCommand
              * @return bool
              */
-            bool processCommand(char* pCommand) override { return false; }      // for debug and extensions
+            bool processCommand(char* /*pCommand*/) override { return false; }      // for debug and extensions
 
             /**
              * @brief
@@ -275,6 +275,7 @@ namespace VMAP
              */
             void releaseModelInstance(const std::string& filename);
 
+<<<<<<< HEAD
             /**
              * @brief what's the use of this? o.O
              *
@@ -284,6 +285,10 @@ namespace VMAP
              * @return std::string
              */
             std::string getDirFileName(unsigned int pMapId, int x, int y) const override
+=======
+            // what's the use of this? o.O
+            std::string getDirFileName(unsigned int pMapId, int /*x*/, int /*y*/) const override
+>>>>>>> 189a6c1... [s2117] Fix some unused parameter warnings
             {
                 return getMapFileName(pMapId);
             }
