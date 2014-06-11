@@ -164,7 +164,10 @@ namespace MMAP
         minX = INT_MIN;
         minY = INT_MIN;
 
-        float bmin[3], bmax[3], lmin[3], lmax[3];
+		float bmin[3] = { 0 };
+		float bmax[3] = { 0 };
+		float lmin[3] = { 0 };
+		float lmax[3] = { 0 };
         MeshData meshData;
 
         // make sure we process maps which don't have tiles
@@ -838,7 +841,7 @@ namespace MMAP
                 return true;
             default:
                 return false;
-        }
+        //}
     }
 
     /**************************************************************************/
