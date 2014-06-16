@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOSSERVER_PET_H
@@ -110,6 +116,8 @@ enum PetTalk
     PET_TALK_ATTACK         = 1
 };
 
+
+// [-ZERO] Need recheck and drop not existed cases
 enum PetNameInvalidReason
 {
     // custom, not send
@@ -175,18 +183,18 @@ class MANGOS_DLL_SPEC Pet : public Creature
         uint32 GetPetAutoSpellOnPos(uint8 pos) const override
         {
             if (pos >= m_autospells.size())
-                return 0;
-            else
-                return m_autospells[pos];
+        { return 0; }
+    else
+        { return m_autospells[pos]; }
         }
 
         bool CanSwim() const override
         {
             Unit const* owner = GetOwner();
             if (owner)
-                return owner->GetTypeId() == TYPEID_PLAYER ? true : ((Creature const*)owner)->CanSwim();
-            else
-                return Creature::CanSwim();
+        { return owner->GetTypeId() == TYPEID_PLAYER ? true : ((Creature const*)owner)->CanSwim(); }
+        else
+            { return Creature::CanSwim(); }
         }
 
         void RegenerateAll(uint32 update_diff) override;    // overwrite Creature::RegenerateAll

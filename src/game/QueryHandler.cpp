@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Common.h"
@@ -37,7 +43,7 @@
 void WorldSession::SendNameQueryOpcode(Player* p)
 {
     if (!p)
-        return;
+        { return; }
 
     // guess size
     WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 4 + 4 + 4 + 10));
@@ -80,7 +86,7 @@ void WorldSession::SendNameQueryOpcodeFromDB(ObjectGuid guid)
 void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32 accountId)
 {
     if (!result)
-        return;
+        { return; }
 
     WorldSession* session = sWorld.FindSession(accountId);
     if (!session)
@@ -94,7 +100,7 @@ void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32
     std::string name = fields[1].GetCppString();
     uint8 pRace = 0, pGender = 0, pClass = 0;
     if (name == "")
-        name         = session->GetMangosString(LANG_NON_EXIST_CHARACTER);
+        { name         = session->GetMangosString(LANG_NON_EXIST_CHARACTER); }
     else
     {
         pRace        = fields[2].GetUInt8();
@@ -134,12 +140,12 @@ void WorldSession::HandleNameQueryOpcode(WorldPacket& recv_data)
     Player* pChar = sObjectMgr.GetPlayer(guid);
 
     if (pChar)
-        SendNameQueryOpcode(pChar);
+        { SendNameQueryOpcode(pChar); }
     else
-        SendNameQueryOpcodeFromDB(guid);
+        { SendNameQueryOpcodeFromDB(guid); }
 }
 
-void WorldSession::HandleQueryTimeOpcode(WorldPacket & /*recv_data*/)
+void WorldSession::HandleQueryTimeOpcode(WorldPacket& /*recv_data*/)
 {
     SendQueryTimeResponse();
 }
@@ -253,7 +259,7 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
     }
 }
 
-void WorldSession::HandleCorpseQueryOpcode(WorldPacket & /*recv_data*/)
+void WorldSession::HandleCorpseQueryOpcode(WorldPacket& /*recv_data*/)
 {
     DETAIL_LOG("WORLD: Received opcode MSG_CORPSE_QUERY");
 
@@ -354,14 +360,14 @@ void WorldSession::HandleNpcTextQueryOpcode(WorldPacket& recv_data)
             data << pGossip->Options[i].Probability;
 
             if (Text_0[i].empty())
-                data << Text_1[i];
+                { data << Text_1[i]; }
             else
-                data << Text_0[i];
+                { data << Text_0[i]; }
 
             if (Text_1[i].empty())
-                data << Text_0[i];
+                { data << Text_0[i]; }
             else
-                data << Text_1[i];
+                { data << Text_1[i]; }
 
             data << pGossip->Options[i].Language;
 
@@ -409,7 +415,7 @@ void WorldSession::HandlePageTextQueryOpcode(WorldPacket& recv_data)
                 if (pl)
                 {
                     if (pl->Text.size() > size_t(loc_idx) && !pl->Text[loc_idx].empty())
-                        Text = pl->Text[loc_idx];
+                        { Text = pl->Text[loc_idx]; }
                 }
             }
 

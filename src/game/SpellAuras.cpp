@@ -2204,7 +2204,7 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
             {
                 if (m_removeMode == AURA_REMOVE_BY_DEFAULT)
                 {
-                    if (target->getDeathState() != CORPSE)
+                    if (target->GetDeathState() != CORPSE)
                         return;
 
                     Unit* pCaster = GetCaster();

@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "QuestDef.h"
@@ -139,22 +145,22 @@ Quest::Quest(Field* questRecord)
     for (int i = 0; i < QUEST_OBJECTIVES_COUNT; ++i)
     {
         if (ReqItemId[i])
-            ++m_reqitemscount;
+            { ++m_reqitemscount; }
 
         if (ReqCreatureOrGOId[i])
-            ++m_reqCreatureOrGOcount;
+            { ++m_reqCreatureOrGOcount; }
     }
 
     for (int i = 0; i < QUEST_REWARDS_COUNT; ++i)
     {
         if (RewItemId[i])
-            ++m_rewitemscount;
+            { ++m_rewitemscount; }
     }
 
     for (int i = 0; i < QUEST_REWARD_CHOICES_COUNT; ++i)
     {
         if (RewChoiceItemId[i])
-            ++m_rewchoiceitemscount;
+            { ++m_rewchoiceitemscount; }
     }
 }
 
@@ -168,30 +174,30 @@ uint32 Quest::XPValue(Player* pPlayer) const
             uint32 qLevel = QuestLevel > 0 ? (uint32)QuestLevel : 0;
             float fullxp = 0;
             if (qLevel >= 65)
-                fullxp = RewMoneyMaxLevel / 6.0f;
+                { fullxp = RewMoneyMaxLevel / 6.0f; }
             else if (qLevel == 64)
-                fullxp = RewMoneyMaxLevel / 4.8f;
+                { fullxp = RewMoneyMaxLevel / 4.8f; }
             else if (qLevel == 63)
-                fullxp = RewMoneyMaxLevel / 3.6f;
+                { fullxp = RewMoneyMaxLevel / 3.6f; }
             else if (qLevel == 62)
-                fullxp = RewMoneyMaxLevel / 2.4f;
+                { fullxp = RewMoneyMaxLevel / 2.4f; }
             else if (qLevel == 61)
-                fullxp = RewMoneyMaxLevel / 1.2f;
+                { fullxp = RewMoneyMaxLevel / 1.2f; }
             else if (qLevel > 0 && qLevel <= 60)
-                fullxp = RewMoneyMaxLevel / 0.6f;
+                { fullxp = RewMoneyMaxLevel / 0.6f; }
 
             if (pLevel <= qLevel +  5)
-                return uint32(ceilf(fullxp));
+                { return uint32(ceilf(fullxp)); }
             else if (pLevel == qLevel +  6)
-                return uint32(ceilf(fullxp * 0.8f));
+                { return uint32(ceilf(fullxp * 0.8f)); }
             else if (pLevel == qLevel +  7)
-                return uint32(ceilf(fullxp * 0.6f));
+                { return uint32(ceilf(fullxp * 0.6f)); }
             else if (pLevel == qLevel +  8)
-                return uint32(ceilf(fullxp * 0.4f));
+                { return uint32(ceilf(fullxp * 0.4f)); }
             else if (pLevel == qLevel +  9)
-                return uint32(ceilf(fullxp * 0.2f));
+                { return uint32(ceilf(fullxp * 0.2f)); }
             else
-                return uint32(ceilf(fullxp * 0.1f));
+                { return uint32(ceilf(fullxp * 0.1f)); }
         }
     }
 
@@ -201,7 +207,7 @@ uint32 Quest::XPValue(Player* pPlayer) const
 int32  Quest::GetRewOrReqMoney() const
 {
     if (RewOrReqMoney <= 0)
-        return RewOrReqMoney;
+        { return RewOrReqMoney; }
 
     return int32(RewOrReqMoney * sWorld.getConfig(CONFIG_FLOAT_RATE_DROP_MONEY));
 }
@@ -209,7 +215,7 @@ int32  Quest::GetRewOrReqMoney() const
 bool Quest::IsAllowedInRaid() const
 {
     if (Type == QUEST_TYPE_RAID)
-        return true;
+        { return true; }
 
     return sWorld.getConfig(CONFIG_BOOL_QUEST_IGNORE_RAID);
 }

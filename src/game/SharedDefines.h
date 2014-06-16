@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOS_SHAREDDEFINES_H
@@ -93,8 +99,8 @@ enum Classes
 
 #define CLASSMASK_ALL_PLAYABLE \
     ((1<<(CLASS_WARRIOR-1))|(1<<(CLASS_PALADIN-1))|(1<<(CLASS_HUNTER-1))| \
-    (1<<(CLASS_ROGUE-1))  |(1<<(CLASS_PRIEST-1)) |(1<<(CLASS_SHAMAN-1))| \
-    (1<<(CLASS_MAGE-1))   |(1<<(CLASS_WARLOCK-1))|(1<<(CLASS_DRUID-1))   )
+     (1<<(CLASS_ROGUE-1))  |(1<<(CLASS_PRIEST-1)) |(1<<(CLASS_SHAMAN-1))| \
+     (1<<(CLASS_MAGE-1))   |(1<<(CLASS_WARLOCK-1))|(1<<(CLASS_DRUID-1))   )
 
 #define CLASSMASK_ALL_CREATURES ((1<<(CLASS_WARRIOR-1)) | (1<<(CLASS_PALADIN-1)) | (1<<(CLASS_MAGE-1)) )
 #define MAX_CREATURE_CLASS 3
@@ -142,25 +148,29 @@ enum Stats
 
 #define MAX_STATS                        5
 
+/**
+ * These are the different possible powers that are available to us, they should
+ * be fairly familiar if you've played WoW.
+ */
 enum Powers
 {
-    POWER_MANA                          = 0,
-    POWER_RAGE                          = 1,
-    POWER_FOCUS                         = 2,
-    POWER_ENERGY                        = 3,
-    POWER_HAPPINESS                     = 4,
-    POWER_HEALTH                        = 0xFFFFFFFE    // (-2 as signed value)
+    POWER_MANA                          = 0,         ///< The most common one, mobs usually have this or rage
+    POWER_RAGE                          = 1,         ///< This is what warriors use to cast their spells
+    POWER_FOCUS                         = 2,         ///< Used by hunters after Cataclysm (4.x)
+    POWER_ENERGY                        = 3,         ///< Used by rouges to do their spells
+    POWER_HAPPINESS                     = 4,         ///< Hunters pet's happiness affect their damage
+    POWER_HEALTH                        = 0xFFFFFFFE ///< Health, everyone has this (-2 as signed value)
 };
 
 #define MAX_POWERS                        5
 
 /**
  * The different spell schools that are available, used in both damage calculation
- * and spell casting to decide what should be affected, the SPELL_SCHOOL_NORMAL
+ * and spell casting to decide what should be affected, the \ref SpellSchools::SPELL_SCHOOL_NORMAL
  * is the armor, others should be self explanatory.
  *
  * Note that these are the values to use for changing ie, the armor via a
- * Modifier, and it is the Modifier::m_miscValue that should be set.
+ * \ref Modifier, and it is the \ref Modifier::m_miscValue that should be set.
  */
 enum SpellSchools
 {
@@ -184,7 +194,7 @@ enum SpellSchoolMask
     /// not exist
     SPELL_SCHOOL_MASK_NONE    = 0x00,
     /// PHYSICAL (Armor)
-    SPELL_SCHOOL_MASK_NORMAL  = (1 << SPELL_SCHOOL_NORMAL), 
+    SPELL_SCHOOL_MASK_NORMAL  = (1 << SPELL_SCHOOL_NORMAL),
     SPELL_SCHOOL_MASK_HOLY    = (1 << SPELL_SCHOOL_HOLY),
     SPELL_SCHOOL_MASK_FIRE    = (1 << SPELL_SCHOOL_FIRE),
     SPELL_SCHOOL_MASK_NATURE  = (1 << SPELL_SCHOOL_NATURE),
@@ -196,8 +206,8 @@ enum SpellSchoolMask
 
     /// 124, not include normal and holy damage
     SPELL_SCHOOL_MASK_SPELL   = (SPELL_SCHOOL_MASK_FIRE   |
-                                 SPELL_SCHOOL_MASK_NATURE | SPELL_SCHOOL_MASK_FROST  |
-                                 SPELL_SCHOOL_MASK_SHADOW | SPELL_SCHOOL_MASK_ARCANE),
+    SPELL_SCHOOL_MASK_NATURE | SPELL_SCHOOL_MASK_FROST  |
+    SPELL_SCHOOL_MASK_SHADOW | SPELL_SCHOOL_MASK_ARCANE),
     /// 126
     SPELL_SCHOOL_MASK_MAGIC   = (SPELL_SCHOOL_MASK_HOLY | SPELL_SCHOOL_MASK_SPELL),
 
@@ -214,7 +224,7 @@ inline SpellSchools GetFirstSchoolInMask(SpellSchoolMask mask)
 {
     for (int i = 0; i < MAX_SPELL_SCHOOL; ++i)
         if (mask & (1 << i))
-            return SpellSchools(i);
+            { return SpellSchools(i); }
 
     return SPELL_SCHOOL_NORMAL;
 }
@@ -285,74 +295,74 @@ enum SpellAttributes
 
 enum SpellAttributesEx
 {
-    SPELL_ATTR_EX_UNK0                         = 0x00000001,// 0
-    SPELL_ATTR_EX_DRAIN_ALL_POWER              = 0x00000002,// 1 use all power (Only paladin Lay of Hands and Bunyanize)
-    SPELL_ATTR_EX_CHANNELED_1                  = 0x00000004,// 2 channeled 1
-    SPELL_ATTR_EX_UNK3                         = 0x00000008,// 3
-    SPELL_ATTR_EX_UNK4                         = 0x00000010,// 4
-    SPELL_ATTR_EX_NOT_BREAK_STEALTH            = 0x00000020,// 5 Not break stealth
-    SPELL_ATTR_EX_CHANNELED_2                  = 0x00000040,// 6 channeled 2
-    SPELL_ATTR_EX_NEGATIVE                     = 0x00000080,// 7
-    SPELL_ATTR_EX_NOT_IN_COMBAT_TARGET         = 0x00000100,// 8 Spell req target not to be in combat state
-    SPELL_ATTR_EX_UNK9                         = 0x00000200,// 9
-    SPELL_ATTR_EX_NO_THREAT                    = 0x00000400,// 10 no generates threat on cast 100%
-    SPELL_ATTR_EX_UNK11                        = 0x00000800,// 11
-    SPELL_ATTR_EX_UNK12                        = 0x00001000,// 12
-    SPELL_ATTR_EX_FARSIGHT                     = 0x00002000,// 13 related to farsight
-    SPELL_ATTR_EX_UNK14                        = 0x00004000,// 14
-    SPELL_ATTR_EX_DISPEL_AURAS_ON_IMMUNITY     = 0x00008000,// 15 remove auras on immunity
-    SPELL_ATTR_EX_UNAFFECTED_BY_SCHOOL_IMMUNE  = 0x00010000,// 16 unaffected by school immunity
-    SPELL_ATTR_EX_UNK17                        = 0x00020000,// 17 for auras SPELL_AURA_TRACK_CREATURES, SPELL_AURA_TRACK_RESOURCES and SPELL_AURA_TRACK_STEALTHED select non-stacking tracking spells
-    SPELL_ATTR_EX_UNK18                        = 0x00040000,// 18
-    SPELL_ATTR_EX_UNK19                        = 0x00080000,// 19
-    SPELL_ATTR_EX_REQ_TARGET_COMBO_POINTS      = 0x00100000,// 20 Req combo points on target
-    SPELL_ATTR_EX_UNK21                        = 0x00200000,// 21
-    SPELL_ATTR_EX_REQ_COMBO_POINTS             = 0x00400000,// 22 Use combo points (in 4.x not required combo point target selected)
-    SPELL_ATTR_EX_UNK23                        = 0x00800000,// 23
-    SPELL_ATTR_EX_UNK24                        = 0x01000000,// 24 Req fishing pole??
-    SPELL_ATTR_EX_UNK25                        = 0x02000000,// 25 not set in 2.4.2
-    SPELL_ATTR_EX_UNK26                        = 0x04000000,// 26
-    SPELL_ATTR_EX_UNK27                        = 0x08000000,// 27
-    SPELL_ATTR_EX_UNK28                        = 0x10000000,// 28
-    SPELL_ATTR_EX_UNK29                        = 0x20000000,// 29
-    SPELL_ATTR_EX_UNK30                        = 0x40000000,// 30 overpower
-    SPELL_ATTR_EX_UNK31                        = 0x80000000,// 31
+    SPELL_ATTR_EX_UNK0                          = 0x00000001,            // 0
+    SPELL_ATTR_EX_DRAIN_ALL_POWER               = 0x00000002,            // 1 use all power (Only paladin Lay of Hands and Bunyanize)
+    SPELL_ATTR_EX_CHANNELED_1                   = 0x00000004,            // 2 channeled 1
+    SPELL_ATTR_EX_UNK3                          = 0x00000008,            // 3
+    SPELL_ATTR_EX_UNK4                          = 0x00000010,            // 4
+    SPELL_ATTR_EX_NOT_BREAK_STEALTH             = 0x00000020,            // 5 Not break stealth
+    SPELL_ATTR_EX_CHANNELED_2                   = 0x00000040,            // 6 channeled 2
+    SPELL_ATTR_EX_NEGATIVE                      = 0x00000080,            // 7
+    SPELL_ATTR_EX_NOT_IN_COMBAT_TARGET          = 0x00000100,            // 8 Spell req target not to be in combat state
+    SPELL_ATTR_EX_UNK9                          = 0x00000200,            // 9
+    SPELL_ATTR_EX_NO_THREAT                     = 0x00000400,            // 10 no generates threat on cast 100%
+    SPELL_ATTR_EX_UNK11                         = 0x00000800,            // 11
+    SPELL_ATTR_EX_UNK12                         = 0x00001000,            // 12
+    SPELL_ATTR_EX_FARSIGHT                      = 0x00002000,            // 13 related to farsight
+    SPELL_ATTR_EX_UNK14                         = 0x00004000,            // 14
+    SPELL_ATTR_EX_DISPEL_AURAS_ON_IMMUNITY      = 0x00008000,            // 15 remove auras on immunity
+    SPELL_ATTR_EX_UNAFFECTED_BY_SCHOOL_IMMUNE   = 0x00010000,            // 16 unaffected by school immunity
+    SPELL_ATTR_EX_UNK17                         = 0x00020000,            // 17 for auras SPELL_AURA_TRACK_CREATURES, SPELL_AURA_TRACK_RESOURCES and SPELL_AURA_TRACK_STEALTHED select non-stacking tracking spells
+    SPELL_ATTR_EX_UNK18                         = 0x00040000,            // 18
+    SPELL_ATTR_EX_UNK19                         = 0x00080000,            // 19
+    SPELL_ATTR_EX_REQ_TARGET_COMBO_POINTS       = 0x00100000,            // 20 Req combo points on target
+    SPELL_ATTR_EX_UNK21                         = 0x00200000,            // 21
+    SPELL_ATTR_EX_REQ_COMBO_POINTS              = 0x00400000,            // 22 Use combo points (in 4.x not required combo point target selected)
+    SPELL_ATTR_EX_UNK23                         = 0x00800000,            // 23
+    SPELL_ATTR_EX_UNK24                         = 0x01000000,            // 24 Req fishing pole??
+    SPELL_ATTR_EX_UNK25                         = 0x02000000,            // 25 not set in 2.4.2
+    SPELL_ATTR_EX_UNK26                         = 0x04000000,            // 26
+    SPELL_ATTR_EX_UNK27                         = 0x08000000,            // 27
+    SPELL_ATTR_EX_UNK28                         = 0x10000000,            // 28
+    SPELL_ATTR_EX_UNK29                         = 0x20000000,            // 29
+    SPELL_ATTR_EX_UNK30                         = 0x40000000,            // 30 overpower
+    SPELL_ATTR_EX_UNK31                         = 0x80000000,            // 31
 };
 
 enum SpellAttributesEx2
 {
-    SPELL_ATTR_EX2_UNK0                        = 0x00000001,// 0
-    SPELL_ATTR_EX2_UNK1                        = 0x00000002,// 1
-    SPELL_ATTR_EX2_CANT_REFLECTED              = 0x00000004,// 2 ? used for detect can or not spell reflected // do not need LOS (e.g. 18220 since 3.3.3)
-    SPELL_ATTR_EX2_UNK3                        = 0x00000008,// 3 auto targeting? (e.g. fishing skill enhancement items since 3.3.3)
-    SPELL_ATTR_EX2_UNK4                        = 0x00000010,// 4
-    SPELL_ATTR_EX2_AUTOREPEAT_FLAG             = 0x00000020,// 5
-    SPELL_ATTR_EX2_UNK6                        = 0x00000040,// 6 only usable on tabbed by yourself
-    SPELL_ATTR_EX2_UNK7                        = 0x00000080,// 7
-    SPELL_ATTR_EX2_UNK8                        = 0x00000100,// 8 not set in 2.4.2 or 3.0.3
-    SPELL_ATTR_EX2_UNK9                        = 0x00000200,// 9
-    SPELL_ATTR_EX2_UNK10                       = 0x00000400,// 10
-    SPELL_ATTR_EX2_HEALTH_FUNNEL               = 0x00000800,// 11
-    SPELL_ATTR_EX2_UNK12                       = 0x00001000,// 12
-    SPELL_ATTR_EX2_UNK13                       = 0x00002000,// 13
-    SPELL_ATTR_EX2_UNK14                       = 0x00004000,// 14
-    SPELL_ATTR_EX2_UNK15                       = 0x00008000,// 15 not set in 2.4.2 or 3.0.3
-    SPELL_ATTR_EX2_UNK16                       = 0x00010000,// 16
-    SPELL_ATTR_EX2_UNK17                       = 0x00020000,// 17 suspend weapon timer instead of resetting it, (?Hunters Shot and Stings only have this flag?)
-    SPELL_ATTR_EX2_UNK18                       = 0x00040000,// 18 Only Revive pet - possible req dead pet
-    SPELL_ATTR_EX2_NOT_NEED_SHAPESHIFT         = 0x00080000,// 19 does not necessary need shapeshift (pre-3.x not have passive spells with this attribute)
-    SPELL_ATTR_EX2_UNK20                       = 0x00100000,// 20
-    SPELL_ATTR_EX2_DAMAGE_REDUCED_SHIELD       = 0x00200000,// 21 for ice blocks, pala immunity buffs, priest absorb shields, but used also for other spells -> not sure!
-    SPELL_ATTR_EX2_UNK22                       = 0x00400000,// 22
-    SPELL_ATTR_EX2_UNK23                       = 0x00800000,// 23 Only mage Arcane Concentration have this flag
-    SPELL_ATTR_EX2_UNK24                       = 0x01000000,// 24
-    SPELL_ATTR_EX2_UNK25                       = 0x02000000,// 25
-    SPELL_ATTR_EX2_UNK26                       = 0x04000000,// 26 unaffected by school immunity
-    SPELL_ATTR_EX2_UNK27                       = 0x08000000,// 27
-    SPELL_ATTR_EX2_UNK28                       = 0x10000000,// 28 no breaks stealth if it fails??
-    SPELL_ATTR_EX2_CANT_CRIT                   = 0x20000000,// 29 Spell can't crit
-    SPELL_ATTR_EX2_UNK30                       = 0x40000000,// 30
-    SPELL_ATTR_EX2_FOOD_BUFF                   = 0x80000000,// 31 Food or Drink Buff (like Well Fed)
+    SPELL_ATTR_EX2_UNK0                         = 0x00000001,            // 0
+    SPELL_ATTR_EX2_UNK1                         = 0x00000002,            // 1
+    SPELL_ATTR_EX2_CANT_REFLECTED               = 0x00000004,            // 2 ? used for detect can or not spell reflected // do not need LOS (e.g. 18220 since 3.3.3)
+    SPELL_ATTR_EX2_UNK3                         = 0x00000008,            // 3 auto targeting? (e.g. fishing skill enhancement items since 3.3.3)
+    SPELL_ATTR_EX2_UNK4                         = 0x00000010,            // 4
+    SPELL_ATTR_EX2_AUTOREPEAT_FLAG              = 0x00000020,            // 5
+    SPELL_ATTR_EX2_UNK6                         = 0x00000040,            // 6 only usable on tabbed by yourself
+    SPELL_ATTR_EX2_UNK7                         = 0x00000080,            // 7
+    SPELL_ATTR_EX2_UNK8                         = 0x00000100,            // 8 not set in 2.4.2
+    SPELL_ATTR_EX2_UNK9                         = 0x00000200,            // 9
+    SPELL_ATTR_EX2_UNK10                        = 0x00000400,            // 10
+    SPELL_ATTR_EX2_HEALTH_FUNNEL                = 0x00000800,            // 11
+    SPELL_ATTR_EX2_UNK12                        = 0x00001000,            // 12
+    SPELL_ATTR_EX2_UNK13                        = 0x00002000,            // 13
+    SPELL_ATTR_EX2_UNK14                        = 0x00004000,            // 14
+    SPELL_ATTR_EX2_UNK15                        = 0x00008000,            // 15 not set in 2.4.2
+    SPELL_ATTR_EX2_UNK16                        = 0x00010000,            // 16
+    SPELL_ATTR_EX2_UNK17                        = 0x00020000,            // 17 suspend weapon timer instead of resetting it, (?Hunters Shot and Stings only have this flag?)
+    SPELL_ATTR_EX2_UNK18                        = 0x00040000,            // 18 Only Revive pet - possible req dead pet
+    SPELL_ATTR_EX2_NOT_NEED_SHAPESHIFT          = 0x00080000,            // 19 does not necessary need shapeshift (pre-3.x not have passive spells with this attribute)
+    SPELL_ATTR_EX2_UNK20                        = 0x00100000,            // 20
+    SPELL_ATTR_EX2_DAMAGE_REDUCED_SHIELD        = 0x00200000,            // 21 for ice blocks, pala immunity buffs, priest absorb shields, but used also for other spells -> not sure!
+    SPELL_ATTR_EX2_UNK22                        = 0x00400000,            // 22
+    SPELL_ATTR_EX2_UNK23                        = 0x00800000,            // 23 Only mage Arcane Concentration have this flag
+    SPELL_ATTR_EX2_UNK24                        = 0x01000000,            // 24
+    SPELL_ATTR_EX2_UNK25                        = 0x02000000,            // 25
+    SPELL_ATTR_EX2_UNK26                        = 0x04000000,            // 26 unaffected by school immunity
+    SPELL_ATTR_EX2_UNK27                        = 0x08000000,            // 27
+    SPELL_ATTR_EX2_UNK28                        = 0x10000000,            // 28 no breaks stealth if it fails??
+    SPELL_ATTR_EX2_CANT_CRIT                    = 0x20000000,            // 29 Spell can't crit
+    SPELL_ATTR_EX2_UNK30                        = 0x40000000,            // 30
+    SPELL_ATTR_EX2_FOOD_BUFF                    = 0x80000000,            // 31 Food or Drink Buff (like Well Fed)
 };
 
 enum SpellAttributesEx3
@@ -910,11 +920,10 @@ enum SpellCastResult
 enum AuraState
 {
     // (C) used in caster aura state     (T) used in target aura state
-    // (c) used in caster aura state-not (t) used in target aura state-not
     AURA_STATE_DEFENSE                      = 1,            // C   |
-    AURA_STATE_HEALTHLESS_20_PERCENT        = 2,            // CcT |
-    AURA_STATE_BERSERKING                   = 3,            // C T |
-    AURA_STATE_FROZEN                       = 4,            //  c t| frozen target
+    AURA_STATE_HEALTHLESS_20_PERCENT        = 2,            // C T |
+    AURA_STATE_BERSERKING                   = 3,            // C   |
+    AURA_STATE_FROZEN                       = 4,            //     | frozen target (but not used for any spells in 1.12.1 at client side)
     AURA_STATE_JUDGEMENT                    = 5,            // C   |
     // AURA_STATE_UNKNOWN6                   = 6,           //     | not used
     AURA_STATE_HUNTER_PARRY                 = 7,            // C   |
@@ -946,7 +955,7 @@ enum Mechanics
     MECHANIC_FEAR             = 5,
     MECHANIC_FUMBLE           = 6,
     MECHANIC_ROOT             = 7,
-    MECHANIC_PACIFY           = 8,                          // No spells use this mechanic
+    MECHANIC_PACIFY           = 8,                          // 0 spells use this mechanic
     MECHANIC_SILENCE          = 9,
     MECHANIC_SLEEP            = 10,
     MECHANIC_SNARE            = 11,
@@ -960,7 +969,7 @@ enum Mechanics
     MECHANIC_SHIELD           = 19,
     MECHANIC_SHACKLE          = 20,
     MECHANIC_MOUNT            = 21,
-    MECHANIC_PERSUADE         = 22,                         //0 spells use this mechanic
+    MECHANIC_PERSUADE         = 22,                         // 0 spells use this mechanic
     MECHANIC_TURN             = 23,
     MECHANIC_HORROR           = 24,
     MECHANIC_INVULNERABILITY  = 25,
@@ -984,19 +993,20 @@ enum Mechanics
     (1<<(MECHANIC_DAZE    -1))|(1<<(MECHANIC_SAPPED     -1)))
 
 #define IMMUNE_TO_ROOT_AND_SNARE_MASK ( \
-    (1<<(MECHANIC_ROOT-1))|(1<<(MECHANIC_SNARE-1)))
+                                        (1<<(MECHANIC_ROOT-1))|(1<<(MECHANIC_SNARE-1)))
 
 #define IMMUNE_TO_ROOT_AND_STUN_MASK ( \
-    (1<<(MECHANIC_ROOT-1))|(1<<(MECHANIC_STUN-1)))
+                                       (1<<(MECHANIC_ROOT-1))|(1<<(MECHANIC_STUN-1)))
 
-// Daze and all croud control spells except polymorph are not removed
+/// Daze and all crowd control spells except polymorph are not removed
 #define MECHANIC_NOT_REMOVED_BY_SHAPESHIFT ( \
-    (1<<(MECHANIC_CHARM -1))|(1<<(MECHANIC_DISORIENTED-1))|(1<<(MECHANIC_FEAR  -1))| \
-    (1<<(MECHANIC_PACIFY-1))|(1<<(MECHANIC_STUN       -1))|(1<<(MECHANIC_FREEZE-1))| \
-    (1<<(MECHANIC_BANISH-1))|(1<<(MECHANIC_SHACKLE    -1))|(1<<(MECHANIC_HORROR-1))| \
-    (1<<(MECHANIC_TURN  -1))|(1<<(MECHANIC_DAZE       -1))|(1<<(MECHANIC_SAPPED-1)))
+        (1<<(MECHANIC_CHARM -1))|(1<<(MECHANIC_DISORIENTED-1))|(1<<(MECHANIC_FEAR  -1))| \
+        (1<<(MECHANIC_PACIFY-1))|(1<<(MECHANIC_STUN       -1))|(1<<(MECHANIC_FREEZE-1))| \
+        (1<<(MECHANIC_BANISH-1))|(1<<(MECHANIC_SHACKLE    -1))|(1<<(MECHANIC_HORROR-1))| \
+        (1<<(MECHANIC_TURN  -1))|(1<<(MECHANIC_DAZE       -1))|(1<<(MECHANIC_SAPPED-1)))
 
-// Spell dispell type
+/// Different types of \ref Spell s that can be dispelled and what the reason for the dispel is.
+/// Also coupled with \ref Aura s as \ref Spell s have \ref Aura s.
 enum DispelType
 {
     DISPEL_NONE         = 0,
@@ -1031,7 +1041,7 @@ enum SpellImmunity
 #define MAX_SPELL_IMMUNITY           6
 
 /**
- * The different types of attacks you can do with 
+ * The different types of attacks you can do with
  * weapons
  */
 enum WeaponAttackType
@@ -1041,7 +1051,7 @@ enum WeaponAttackType
     ///Off-hand weapon
     OFF_ATTACK    = 1,
     ///Ranged weapon, bow/wand etc.
-    RANGED_ATTACK = 2  
+    RANGED_ATTACK = 2
 };
 
 #define MAX_ATTACK  3
@@ -1130,11 +1140,16 @@ enum Targets
     TARGET_NONCOMBAT_PET               = 90,
 };
 
+/**
+ * Tells how a spell that was cast missed or hit, ie it might have been
+ * resisted or dodged etc. This enum tells which of those it was. The only
+ * one which indicates a hit is SPELL_MISS_NONE
+ */
 enum SpellMissInfo
 {
-    SPELL_MISS_NONE                    = 0,
+    SPELL_MISS_NONE                    = 0, ///< Indicates an actual hit
     SPELL_MISS_MISS                    = 1,
-    SPELL_MISS_RESIST                  = 2,
+    SPELL_MISS_RESIST                  = 2, ///< The spell was resisted
     SPELL_MISS_DODGE                   = 3,
     SPELL_MISS_PARRY                   = 4,
     SPELL_MISS_BLOCK                   = 5,
@@ -1152,7 +1167,7 @@ enum SpellHitType
     SPELL_HIT_TYPE_CRIT = 0x00002,
     SPELL_HIT_TYPE_UNK3 = 0x00004,
     SPELL_HIT_TYPE_UNK4 = 0x00008,
-    SPELL_HIT_TYPE_UNK5 = 0x00010,                          // replace caster?
+    SPELL_HIT_TYPE_UNK5 = 0x00010,
     SPELL_HIT_TYPE_UNK6 = 0x00020
 };
 
@@ -1187,7 +1202,7 @@ enum SpellRangeIndex
     /// 5.5 (but dynamic), seems to indicate melee range
     SPELL_RANGE_IDX_COMBAT    = 2,
     /// 500000 (anywhere)
-    SPELL_RANGE_IDX_ANYWHERE  = 13,                         
+    SPELL_RANGE_IDX_ANYWHERE  = 13,
 };
 
 enum DamageEffectType
@@ -1195,11 +1210,11 @@ enum DamageEffectType
     /// Used for normal weapon damage (not for class abilities or spells)
     DIRECT_DAMAGE           = 0,
     /// spell/class abilities damage
-    SPELL_DIRECT_DAMAGE     = 1,                            
+    SPELL_DIRECT_DAMAGE     = 1,
     DOT                     = 2,
     HEAL                    = 3,
     /// used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
-    NODAMAGE                = 4,                            
+    NODAMAGE                = 4,
     SELF_DAMAGE             = 5
 };
 
@@ -2369,10 +2384,10 @@ enum InstanceResetMethod
     INSTANCE_RESET_GLOBAL,
     INSTANCE_RESET_GROUP_DISBAND,
     INSTANCE_RESET_GROUP_JOIN,
-    INSTANCE_RESET_RESPAWN_DELAY                            // called from reset scheduler for request reset at map unload when map loaded at reset attempt for normal dungeon difficulty
+    INSTANCE_RESET_RESPAWN_DELAY                            // called from reset scheduler for request reset at map unload when map loaded at reset attempt for normal dungeon
 };
 
-// high byte (3 from 0..3) of UNIT_FIELD_BYTES_2
+// byte flags  value (UNIT_FIELD_BYTES_1,2) (SpellShapeshiftForm.dbc, checked for 1.12.1)
 enum ShapeshiftForm
 {
     FORM_NONE               = 0x00,
@@ -2590,7 +2605,12 @@ enum PetTameFailureReason
     PETTAME_UNKNOWNERROR            = 12
 };
 
-// Stored in SummonProperties.dbc with slot+1 values
+/**
+ * These are the different totem types that are available.
+ * Stored in SummonProperties.dbc with slot+1 values
+ * \see Totem
+ * \see Unit::GetTotemGuid
+ */
 enum TotemSlot
 {
     TOTEM_SLOT_FIRE   = 0,
