@@ -22,8 +22,8 @@
 #include "Util.h"
 #include "Timer.h"
 
-#include <utf8.h>
-#include <MersenneTwister.h>
+#include "utf8cpp/utf8.h"
+#include "mersennetwister/MersenneTwister.h"
 #include <ace/TSS_T.h>
 #include <ace/INET_Addr.h>
 
@@ -55,7 +55,7 @@ uint32 WorldTimer::getMSTime()
     return getMSTime_internal();
 }
 
-uint32 WorldTimer::getMSTime_internal(bool savetime /*= false*/)
+uint32 WorldTimer::getMSTime_internal(bool /*savetime*/ /*= false*/)
 {
     // get current time
     const ACE_Time_Value currTime = ACE_OS::gettimeofday();
@@ -499,7 +499,7 @@ void utf8printf(FILE* out, const char* str, ...)
 {
     va_list ap;
     va_start(ap, str);
-    vutf8printf(stdout, str, &ap);
+    vutf8printf(out, str, &ap);
     va_end(ap);
 }
 
