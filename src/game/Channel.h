@@ -191,6 +191,20 @@ class Channel
         void JoinNotify(ObjectGuid guid);                   // invisible notify
         void LeaveNotify(ObjectGuid guid);                  // invisible notify
 
+        /**
+         * This denotes the PvP rank needed to speak in local defense, the + 4 is needed because there
+         * are 4 lower levels of honor if you've been bad and killed civilians etc. So when we add 4
+         * it makes it the "real" rank 9 in the client, if we hadn't added that it would've been rank
+         * 5 in the client.
+         * \see HonorRankInfo
+         */ 
+        static const uint8 SPEAK_IN_LOCALDEFENSE_RANK = 4 + 9;
+        /**
+         * This denotes the PvP rank needed to speak in world defense, see
+         * \ref Channel::SPEAK_IN_LOCALDEFENSE_RANK for more info on the 4 added.
+         */
+        static const uint8 SPEAK_IN_WORLDDEFENSE_RANK = 4 + 10; 
+        
     private:
         // initial packet data (notify type and channel name)
         void MakeNotifyPacket(WorldPacket* data, uint8 notify_type);
