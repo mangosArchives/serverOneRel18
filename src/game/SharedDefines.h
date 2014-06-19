@@ -2761,6 +2761,10 @@ static const MaxLevel maxLevelForExpansion[MAX_EXPANSION + 1] = { MAX_LEVEL_CLAS
  */
 enum GMTicketStatus
 {
+    /**
+     * This code is used when the client closed the ticket itself and we shouldn't send an update
+     * message to it */
+    GM_TICKET_STATUS_DO_NOTHING = -1,
     /** Should close the window in the top right corner telling you that you have a
      * ticket open */
     GM_TICKET_STATUS_CLOSE = 2,
