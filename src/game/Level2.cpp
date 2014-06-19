@@ -2543,13 +2543,17 @@ bool ChatHandler::HandleTicketCommand(char* args)
 
         //This needs to be before we delete the ticket
         Player* pPlayer = sObjectMgr.GetPlayer(ticket->GetPlayerGuid());
+
+        //For now we can't close tickets for offline players, TODO
+        if (!pPlayer)
+        {
+            SendSysMessage(LANG_COMMAND_TICKET_CANT_CLOSE);
+            return false;
+        }
         
         //This logic feels misplaced, but you can't have it in GMTicket?
         sTicketMgr.Delete(ticket->GetPlayerGuid());
         ticket = NULL;
-        
-        if (!pPlayer)
-            return true; //i guess?
         
         PSendSysMessage(LANG_COMMAND_TICKETCLOSED_NAME, pPlayer->GetName());
         
@@ -2557,7 +2561,8 @@ bool ChatHandler::HandleTicketCommand(char* args)
     }
     
     // ticket respond
-    if (strncmp(px, "respond", 8) == 0)
+    if (strncmp(px, "respond", 8) == 0 || strncmp(px, "response", 9) == 0
+        || strncmp(px, "whisper", 8) == 0)
     {
         GMTicket* ticket = NULL;
 
