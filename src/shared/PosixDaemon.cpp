@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,9 +89,12 @@ void startDaemon(uint32_t timeout)
         exit(EXIT_FAILURE);
     }
 
-    freopen("/dev/null", "rt", stdin);
-    freopen("/dev/null", "wt", stdout);
-    freopen("/dev/null", "wt", stderr);
+    if (!freopen("/dev/null", "rt", stdin))
+        exit(EXIT_FAILURE);
+    if (!freopen("/dev/null", "wt", stdout))
+        exit(EXIT_FAILURE);
+    if (!freopen("/dev/null", "wt", stderr))
+        exit(EXIT_FAILURE);
 }
 
 void stopDaemon()

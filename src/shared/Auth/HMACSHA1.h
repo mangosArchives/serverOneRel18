@@ -1,5 +1,8 @@
-/*
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+/**
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef _AUTH_HMACSHA1_H
@@ -27,20 +33,61 @@ class BigNumber;
 
 #define SEED_KEY_SIZE 16
 
+/**
+ * @brief
+ *
+ */
 class HMACSHA1
 {
     public:
+        /**
+         * @brief
+         *
+         */
         HMACSHA1(uint32 len, uint8* seed);
+        /**
+         * @brief
+         *
+         */
         ~HMACSHA1();
+        /**
+         * @brief
+         *
+         * @param bn
+         */
         void UpdateBigNumber(BigNumber* bn);
+        /**
+         * @brief
+         *
+         * @param data
+         * @param length
+         */
         void UpdateData(const uint8* data, int length);
+        /**
+         * @brief
+         *
+         */
         void Initialize();
+        /**
+         * @brief
+         *
+         */
         void Finalize();
-        uint8* GetDigest() { return m_digest; };
-        int GetLength() { return SHA_DIGEST_LENGTH; };
+        /**
+         * @brief
+         *
+         * @return uint8
+         */
+        uint8* GetDigest() { return m_digest; }
+        /**
+         * @brief
+         *
+         * @return int
+         */
+        int GetLength() { return SHA_DIGEST_LENGTH; }
     private:
-        HMAC_CTX m_ctx;
-        uint8 m_key[SEED_KEY_SIZE];
-        uint8 m_digest[SHA_DIGEST_LENGTH];
+        HMAC_CTX m_ctx; /**< TODO */
+        uint8 m_key[SEED_KEY_SIZE]; /**< TODO */
+        uint8 m_digest[SHA_DIGEST_LENGTH]; /**< TODO */
 };
 #endif

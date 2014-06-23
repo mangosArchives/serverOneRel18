@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,6 +111,7 @@ bool MySQLConnection::Initialize(const char* infoString)
         { database = *iter++; }
 
     mysql_options(mysqlInit, MYSQL_SET_CHARSET_NAME, "utf8");
+    mysql_options(mysqlInit, MYSQL_OPT_RECONNECT, "1");
 #ifdef WIN32
     if (host == ".")                                        // named pipe use option (Windows)
     {

@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +57,7 @@ void ByteBuffer::print_storage() const
     for (size_t i = 0; i < size(); ++i)
         { ss << uint32(read<uint8>(i)) << " - "; }
 
-    sLog.outDebug(ss.str().c_str());
+    sLog.outDebug("%s", ss.str().c_str());
 }
 
 void ByteBuffer::textlike() const
@@ -71,7 +74,7 @@ void ByteBuffer::textlike() const
     for (size_t i = 0; i < size(); ++i)
         { ss << read<uint8>(i); }
 
-    sLog.outDebug(ss.str().c_str());
+    sLog.outDebug("%s", ss.str().c_str());
 }
 
 void ByteBuffer::hexlike() const
@@ -110,5 +113,5 @@ void ByteBuffer::hexlike() const
         ss << buf << " ";
     }
 
-    sLog.outDebug(ss.str().c_str());
+    sLog.outDebug("%s", ss.str().c_str());
 }

@@ -1,5 +1,8 @@
-/*
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+/**
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Auth/HMACSHA1.h"
@@ -22,7 +28,6 @@
 HMACSHA1::HMACSHA1(uint32 len, uint8* seed)
 {
     MANGOS_ASSERT(len == SEED_KEY_SIZE);
-
     memcpy(&m_key, seed, len);
     HMAC_CTX_init(&m_ctx);
     HMAC_Init_ex(&m_ctx, &m_key, SEED_KEY_SIZE, EVP_sha1(), NULL);

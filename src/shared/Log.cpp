@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -881,7 +884,7 @@ void Log::outWorldPacketDump(uint32 socket, uint32 opcode, char const* opcodeNam
 
     outTimestamp(worldLogfile);
 
-    fprintf(worldLogfile, "\n%s:\nSOCKET: %u\nLENGTH: " SIZEFMTD "\nOPCODE: %s (0x%.4X)\nDATA:\n",
+    fprintf(worldLogfile, "\n%s:\nSOCKET: %u\nLENGTH: %lu\nOPCODE: %s (0x%.4X)\nDATA:\n",
             incoming ? "CLIENT" : "SERVER",
             socket, packet->size(), opcodeName, opcode);
 

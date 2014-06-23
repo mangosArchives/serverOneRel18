@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +35,17 @@
  */
 enum FieldFormat
 {
-    FT_NA = 'x',                                            // ignore/ default, 4 byte size, in Source String means field is ignored, in Dest String means field is filled with default value
-    FT_NA_BYTE = 'X',                                       // ignore/ default, 1 byte size, see above
-    FT_NA_FLOAT = 'F',                                      // ignore/ default,  float size, see above
-    FT_NA_POINTER = 'p',                                    // fill default value into dest, pointer size, Use this only with static data (otherwise mem-leak)
-    FT_STRING = 's',                                        // char*
-    FT_FLOAT = 'f',                                         // float
-    FT_INT = 'i',                                           // uint32
-    FT_BYTE = 'b',                                          // uint8
-    FT_SORT = 'd',                                          // sorted by this field, field is not included
-    FT_IND = 'n',                                           // the same,but parsed to data
-    FT_LOGIC = 'l'                                          // Logical (boolean)
+    DBC_FF_NA = 'x',                                        // ignore/ default, 4 byte size, in Source String means field is ignored, in Dest String means field is filled with default value
+    DBC_FF_NA_BYTE = 'X',                                   // ignore/ default, 1 byte size, see above
+    DBC_FF_NA_FLOAT = 'F',                                  // ignore/ default,  float size, see above
+    DBC_FF_NA_POINTER = 'p',                                // fill default value into dest, pointer size, Use this only with static data (otherwise mem-leak)
+    DBC_FF_STRING = 's',                                    // char*
+    DBC_FF_FLOAT = 'f',                                     // float
+    DBC_FF_INT = 'i',                                       // uint32
+    DBC_FF_BYTE = 'b',                                      // uint8
+    DBC_FF_SORT = 'd',                                      // sorted by this field, field is not included
+    DBC_FF_IND = 'n',                                       // the same,but parsed to data
+    DBC_FF_LOGIC = 'l'                                          // Logical (boolean)
 };
 
 /**

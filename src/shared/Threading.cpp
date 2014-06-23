@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * mangos-zero is a full featured server for World of Warcraft in its vanilla
+ * version, supporting clients for patch 1.12.x.
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +68,7 @@ ThreadPriority::ThreadPriority()
         // since we have only 7(seven) values in enum Priority
         // and 3 we know already (Idle, Normal, Realtime) so
         // we need to split each list [Idle...Normal] and [Normal...Realtime]
-        // into ¹ piesces
+        // into pieces
         const size_t _divider = 4;
         size_t _div = (norm_pos - min_pos) / _divider;
         if (_div == 0)
@@ -229,7 +232,7 @@ void Thread::setPriority(Priority type)
     int _priority = m_TpEnum.getPriority(type);
     int _ok = ACE_Thread::setprio(m_hThreadHandle, _priority);
     // remove this ASSERT in case you don't want to know is thread priority change was successful or not
-    MANGOS_ASSERT (_ok == 0 || (_ok == -1 && errno == ENOTSUP));
+    MANGOS_ASSERT(_ok == 0);
 #endif
 }
 
