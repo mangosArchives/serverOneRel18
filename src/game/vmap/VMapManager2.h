@@ -275,7 +275,6 @@ namespace VMAP
              */
             void releaseModelInstance(const std::string& filename);
 
-<<<<<<< HEAD
             /**
              * @brief what's the use of this? o.O
              *
@@ -284,11 +283,8 @@ namespace VMAP
              * @param y
              * @return std::string
              */
-            std::string getDirFileName(unsigned int pMapId, int x, int y) const override
-=======
             // what's the use of this? o.O
             std::string getDirFileName(unsigned int pMapId, int /*x*/, int /*y*/) const override
->>>>>>> 189a6c1... [s2117] Fix some unused parameter warnings
             {
                 return getMapFileName(pMapId);
             }
