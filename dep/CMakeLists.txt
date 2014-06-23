@@ -14,9 +14,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+if(NOT (TBB_USE_EXTERNAL OR USE_STD_MALLOC OR USE_FASTMM_MALLOC))
+  add_subdirectory(tbb)
+endif()
+
 if(NOT ACE_USE_EXTERNAL)
   add_subdirectory(ACE_wrappers)
 endif()
 
 add_subdirectory(recastnavigation)
 add_subdirectory(src)
+add_subdirectory(libmpq)
+
+# This is done to generate the config.h file for libmpq
+# Kind of a cludge..
+include(ExternalProject)
+ExternalProject_Add(mympqtmp
+  PREFIX "./"
+  SOURCE_DIR "${CMAKE_SOURCE_DIR}/dep/libmpq/"
+  INSTALL_DIR "${CMAKE_BINARY_DIR}/lib"
+  # This is for the CONFIGURE_COMMAND to have the right working dir
+  BINARY_DIR "${CMAKE_SOURCE_DIR}/dep/libmpq/"
+  CONFIGURE_COMMAND "${CMAKE_SOURCE_DIR}/dep/libmpq/autogen.sh"
+  BUILD_COMMAND "${CMAKE_SOURCE_DIR}/dep/libmpq/configure"
+  INSTALL_COMMAND ""
+)
