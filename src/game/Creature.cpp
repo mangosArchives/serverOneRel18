@@ -548,7 +548,7 @@ void Creature::Update(uint32 update_diff, uint32 diff)
             else
                 m_aggroDelay -= update_diff;
 
-            if (m_IsDeadByDefault)
+            if (m_isDeadByDefault)
             {
                 if (m_corpseDecayTimer <= update_diff)
                 {
@@ -2550,7 +2550,7 @@ void Creature::SetVirtualItem(VirtualItemSlot slot, uint32 item_id)
     SetByteValue(UNIT_VIRTUAL_ITEM_INFO + (slot * 2) + 0, VIRTUAL_ITEM_INFO_0_OFFSET_CLASS,         proto->Class);
     SetByteValue(UNIT_VIRTUAL_ITEM_INFO + (slot * 2) + 0, VIRTUAL_ITEM_INFO_0_OFFSET_SUBCLASS,      proto->SubClass);
     SetByteValue(UNIT_VIRTUAL_ITEM_INFO + (slot * 2) + 0, VIRTUAL_ITEM_INFO_0_OFFSET_MATERIAL,      proto->Material);
-    SetByteValue(UNIT_VIRTUAL_ITEM_INFO + (slot * 2) + 0, VIRTUAL_ITEM_INFO_0_OFFSET_INVENTORYTYPE, proto->InventoryType);
+    SetByteValue(UNIT_VIRTUAL_ITEM_INFO + (slot * 2) + 0, VIRTUAL_ITEM_INFO_1_OFFSET_INVENTORYTYPE, proto->InventoryType);
 
     SetByteValue(UNIT_VIRTUAL_ITEM_INFO + (slot * 2) + 1, VIRTUAL_ITEM_INFO_1_OFFSET_SHEATH,        proto->Sheath);
 }

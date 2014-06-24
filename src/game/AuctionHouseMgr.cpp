@@ -823,14 +823,14 @@ void WorldSession::BuildListAuctionItems(std::vector<AuctionEntry*> const& aucti
 
             if (usable != 0x00)
             {
-                if (player->CanUseItem(item) != EQUIP_ERR_OK)
+				if (_player->CanUseItem(item) != EQUIP_ERR_OK)
                     continue;
 
                 if (proto->Class == ITEM_CLASS_RECIPE)
                 {
                     if (SpellEntry const* spell = sSpellStore.LookupEntry(proto->Spells[0].SpellId))
                     {
-                        if (player->HasSpell(spell->EffectTriggerSpell[EFFECT_INDEX_0]))
+						if (_player->HasSpell(spell->EffectTriggerSpell[EFFECT_INDEX_0]))
                             continue;
                     }
                 }
