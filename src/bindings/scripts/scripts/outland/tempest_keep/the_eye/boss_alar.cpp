@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -127,7 +136,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_ALAR, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_ALAR, IN_PROGRESS); }
 
         // The boss will always move to the first platform from the left side; also set the movement to idle to stop the DB movement
         m_creature->GetMotionMaster()->MoveIdle();
@@ -137,23 +146,23 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_ALAR, FAIL);
+        { m_pInstance->SetData(TYPE_ALAR, FAIL); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_ALAR, DONE);
+        { m_pInstance->SetData(TYPE_ALAR, DONE); }
     }
 
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_FLAME_PATCH)
-            pSummoned->CastSpell(pSummoned, SPELL_FLAME_PATCH, true);
+        { pSummoned->CastSpell(pSummoned, SPELL_FLAME_PATCH, true); }
         else
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                pSummoned->AI()->AttackStart(pTarget);
+            { pSummoned->AI()->AttackStart(pTarget); }
         }
     }
 
@@ -164,7 +173,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
         {
             // Check first if we have enough health to drain
             if (m_creature->GetMaxHealth()*.03f > m_creature->GetHealth())
-                m_creature->DealDamage(m_creature, m_creature->GetMaxHealth()*.03f, NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+            { m_creature->DealDamage(m_creature, m_creature->GetMaxHealth()*.03f, NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); }
         }
     }
 
@@ -172,7 +181,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
     {
         // Don't evade if the boss has the ember blast invisibility aura
         if (m_creature->HasAura(SPELL_EMBER_BLAST))
-            return;
+        { return; }
 
         ScriptedAI::EnterEvadeMode();
     }
@@ -180,7 +189,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
     void MovementInform(uint32 uiMotionType, uint32 uiPointId) override
     {
         if (uiMotionType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
@@ -197,7 +206,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                 else if (m_uiPhase == PHASE_DIVE_BOMB)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_DIVE_BOMB_VISUAL) == CAST_OK)
-                        m_uiDiveBombTimer = 5000;
+                    { m_uiDiveBombTimer = 5000; }
                 }
                 break;
             case POINT_ID_PLATFORM:
@@ -208,7 +217,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
             case POINT_ID_RESSURRECT:
                 // remove the invisibility aura
                 if (m_creature->HasAura(SPELL_EMBER_BLAST))
-                    m_creature->RemoveAurasDueToSpell(SPELL_EMBER_BLAST);
+                { m_creature->RemoveAurasDueToSpell(SPELL_EMBER_BLAST); }
 
                 m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 m_creature->SetStandState(UNIT_STAND_STATE_STAND);
@@ -221,7 +230,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                     // start following target
                     SetCombatMovement(true);
                     if (m_creature->getVictim())
-                        m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim());
+                    { m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim()); }
 
                     m_uiPhase = PHASE_TWO;
                 }
@@ -233,10 +242,10 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
     {
         // Only init fake in phase one
         if (m_uiPhase != PHASE_ONE)
-            return;
+        { return; }
 
         if (uiDamage < m_creature->GetHealth())
-            return;
+        { return; }
 
         m_creature->InterruptNonMeleeSpells(true);
         // We set the health to 1 in order to avoid the forced death stand flag - this way we can have the ressurrect animation
@@ -267,7 +276,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Platform phase
         if (m_uiPhase == PHASE_ONE)
@@ -282,7 +291,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                 m_uiFlameQuillsTimer = 180000;
             }
             else
-                m_uiFlameQuillsTimer -= uiDiff;
+            { m_uiFlameQuillsTimer -= uiDiff; }
 
             if (m_uiPlatformMoveTimer)
             {
@@ -292,11 +301,11 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                     ++m_uiCurrentPlatformId;
 
                     if (m_uiCurrentPlatformId == MAX_PLATFORMS)
-                        m_uiCurrentPlatformId = 0;
+                    { m_uiCurrentPlatformId = 0; }
 
                     // move to next platform and summon one ember only if moving on platforms (we avoid the summoning during the Flame Quills move)
                     if (m_bCanSummonEmber)
-                        m_creature->SummonCreature(NPC_EMBER_OF_ALAR, 0, 0, 0, 0, TEMPSUMMON_DEAD_DESPAWN, 0);
+                    { m_creature->SummonCreature(NPC_EMBER_OF_ALAR, 0, 0, 0, 0, TEMPSUMMON_DEAD_DESPAWN, 0); }
 
                     m_creature->GetMotionMaster()->MovePoint(POINT_ID_PLATFORM, aPlatformLocation[m_uiCurrentPlatformId].m_fX, aPlatformLocation[m_uiCurrentPlatformId].m_fY, aPlatformLocation[m_uiCurrentPlatformId].m_fZ);
 
@@ -304,7 +313,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                     m_uiPlatformMoveTimer = 35000;
                 }
                 else
-                    m_uiPlatformMoveTimer -= uiDiff;
+                { m_uiPlatformMoveTimer -= uiDiff; }
             }
         }
         // Combat phase
@@ -313,10 +322,10 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
             if (m_uiBerserkTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_BERSERK) == CAST_OK)
-                    m_uiBerserkTimer = 10 * MINUTE * IN_MILLISECONDS;
+                { m_uiBerserkTimer = 10 * MINUTE * IN_MILLISECONDS; }
             }
             else
-                m_uiBerserkTimer -= uiDiff;
+            { m_uiBerserkTimer -= uiDiff; }
 
             if (m_uiFlamePatchTimer < uiDiff)
             {
@@ -327,26 +336,26 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                 }
             }
             else
-                m_uiFlamePatchTimer -= uiDiff;
+            { m_uiFlamePatchTimer -= uiDiff; }
 
             if (m_uiMeltArmorTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MELT_ARMOR) == CAST_OK)
-                    m_uiMeltArmorTimer = 60000;
+                { m_uiMeltArmorTimer = 60000; }
             }
             else
-                m_uiMeltArmorTimer -= uiDiff;
+            { m_uiMeltArmorTimer -= uiDiff; }
 
             if (m_uiChargeTimer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_CHARGE) == CAST_OK)
-                        m_uiChargeTimer = 20000;
+                    { m_uiChargeTimer = 20000; }
                 }
             }
             else
-                m_uiChargeTimer -= uiDiff;
+            { m_uiChargeTimer -= uiDiff; }
 
             if (m_uiDiveBombTimer)
             {
@@ -359,7 +368,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                     m_uiDiveBombTimer = 0;
                 }
                 else
-                    m_uiDiveBombTimer -= uiDiff;
+                { m_uiDiveBombTimer -= uiDiff; }
             }
         }
         // Dive Bomb event
@@ -380,7 +389,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                     }
                 }
                 else
-                    m_uiDiveBombTimer -= uiDiff;
+                { m_uiDiveBombTimer -= uiDiff; }
             }
 
             if (m_uiRebirthTimer)
@@ -407,7 +416,7 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
                     }
                 }
                 else
-                    m_uiRebirthTimer -= uiDiff;
+                { m_uiRebirthTimer -= uiDiff; }
             }
         }
 
@@ -417,11 +426,11 @@ struct MANGOS_DLL_DECL boss_alarAI : public ScriptedAI
             if (m_uiRangeCheckTimer <= uiDiff)
             {
                 if (!m_creature->IsWithinDistInMap(m_creature->getVictim(), ATTACK_DISTANCE))
-                    DoCastSpellIfCan(m_creature, SPELL_FLAME_BUFFET);
+                { DoCastSpellIfCan(m_creature, SPELL_FLAME_BUFFET); }
                 m_uiRangeCheckTimer = 2000;
             }
             else
-                m_uiRangeCheckTimer -= uiDiff;
+            { m_uiRangeCheckTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();

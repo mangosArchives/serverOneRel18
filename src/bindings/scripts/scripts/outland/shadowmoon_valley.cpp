@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -80,7 +89,7 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
     void SpellHit(Unit* pCaster, SpellEntry const* pSpell) override
     {
         if (m_uiEatTimer || m_uiCreditTimer)
-            return;
+        { return; }
 
         if (pCaster->GetTypeId() == TYPEID_PLAYER && pSpell->Id == SPELL_PLACE_CARCASS && !m_creature->HasAura(SPELL_JUST_EATEN))
         {
@@ -92,7 +101,7 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         if (uiPointId)
         {
@@ -112,7 +121,7 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
                 if (GameObject* pGo = GetClosestGameObjectWithEntry(m_creature, GO_FLAYER_CARCASS, 80.0f))
                 {
                     if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
-                        m_creature->GetMotionMaster()->MovementExpired();
+                    { m_creature->GetMotionMaster()->MovementExpired(); }
 
                     m_creature->GetMotionMaster()->MoveIdle();
 
@@ -124,7 +133,7 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
                 m_uiEatTimer = 0;
             }
             else
-                m_uiEatTimer -= uiDiff;
+            { m_uiEatTimer -= uiDiff; }
 
             return;
         }
@@ -137,7 +146,7 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
                 DoScriptText(SAY_JUST_EATEN, m_creature);
 
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                    pPlayer->KilledMonsterCredit(NPC_EVENT_PINGER, m_creature->GetObjectGuid());
+                { pPlayer->KilledMonsterCredit(NPC_EVENT_PINGER, m_creature->GetObjectGuid()); }
 
                 Reset();
                 m_creature->SetLevitate(true);
@@ -146,13 +155,13 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
                 m_uiCreditTimer = 0;
             }
             else
-                m_uiCreditTimer -= uiDiff;
+            { m_uiCreditTimer -= uiDiff; }
 
             return;
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiCastTimer < uiDiff)
         {
@@ -160,7 +169,7 @@ struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
             m_uiCastTimer = 5000;
         }
         else
-            m_uiCastTimer -= uiDiff;
+        { m_uiCastTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -212,7 +221,7 @@ struct MANGOS_DLL_DECL mob_enslaved_netherwing_drakeAI : public ScriptedAI
                 m_creature->SetFactionTemporary(FACTION_FRIENDLY, TEMPFACTION_RESTORE_RESPAWN);
 
                 if (Creature* pDragonmaw = GetClosestCreatureWithEntry(m_creature, NPC_DRAGONMAW_SUBJUGATOR, 50.0f))
-                    AttackStart(pDragonmaw);
+                { AttackStart(pDragonmaw); }
             }
         }
     }
@@ -220,10 +229,10 @@ struct MANGOS_DLL_DECL mob_enslaved_netherwing_drakeAI : public ScriptedAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         if (uiPointId)
-            m_creature->ForcedDespawn();
+        { m_creature->ForcedDespawn(); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -245,7 +254,7 @@ struct MANGOS_DLL_DECL mob_enslaved_netherwing_drakeAI : public ScriptedAI
 
                             // Get an escape position
                             if (Creature* pEscapeDummy = GetClosestCreatureWithEntry(m_creature, NPC_ESCAPE_DUMMY, 50.0f))
-                                pEscapeDummy->GetPosition(fX, fY, fZ);
+                            { pEscapeDummy->GetPosition(fX, fY, fZ); }
                             else
                             {
                                 m_creature->GetRandomPoint(m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), 20.0f, fX, fY, fZ);
@@ -258,7 +267,7 @@ struct MANGOS_DLL_DECL mob_enslaved_netherwing_drakeAI : public ScriptedAI
                     m_uiFlyTimer = 0;
                 }
                 else
-                    m_uiFlyTimer -= uiDiff;
+                { m_uiFlyTimer -= uiDiff; }
             }
 
             return;
@@ -314,7 +323,7 @@ struct MANGOS_DLL_DECL npc_dragonmaw_peonAI : public ScriptedAI
     {
         // Check if event already started
         if (m_playerGuid)
-            return false;
+        { return false; }
 
         m_playerGuid = playerGuid;
         m_uiMoveTimer = 500;
@@ -324,7 +333,7 @@ struct MANGOS_DLL_DECL npc_dragonmaw_peonAI : public ScriptedAI
     void MovementInform(uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         if (uiPointId == POINT_DEST)
         {
@@ -376,7 +385,7 @@ struct MANGOS_DLL_DECL npc_dragonmaw_peonAI : public ScriptedAI
                 m_uiMoveTimer = 0;
             }
             else
-                m_uiMoveTimer -= uiDiff;
+            { m_uiMoveTimer -= uiDiff; }
         }
         else if (m_uiEatTimer)
         {
@@ -387,14 +396,14 @@ struct MANGOS_DLL_DECL npc_dragonmaw_peonAI : public ScriptedAI
                 m_uiEatTimer = 0;
             }
             else
-                m_uiEatTimer -= uiDiff;
+            { m_uiEatTimer -= uiDiff; }
         }
         else if (m_uiPoisonTimer)
         {
             if (m_uiPoisonTimer <= uiDiff)
             {
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                    pPlayer->KilledMonsterCredit(NPC_DRAGONMAW_KILL_CREDIT, m_creature->GetObjectGuid());
+                { pPlayer->KilledMonsterCredit(NPC_DRAGONMAW_KILL_CREDIT, m_creature->GetObjectGuid()); }
 
                 m_uiPoisonTimer = 0;
 
@@ -403,7 +412,7 @@ struct MANGOS_DLL_DECL npc_dragonmaw_peonAI : public ScriptedAI
                 m_creature->SetHealth(0);
             }
             else
-                m_uiPoisonTimer -= uiDiff;
+            { m_uiPoisonTimer -= uiDiff; }
         }
     }
 };
@@ -416,12 +425,12 @@ CreatureAI* GetAI_npc_dragonmaw_peon(Creature* pCreature)
 bool EffectDummyCreature_npc_dragonmaw_peon(Unit* pCaster, uint32 uiSpellId, SpellEffectIndex uiEffIndex, Creature* pCreatureTarget, ObjectGuid /*originalCasterGuid*/)
 {
     if (uiEffIndex != EFFECT_INDEX_1 || uiSpellId != SPELL_SERVING_MUTTON || pCaster->GetTypeId() != TYPEID_PLAYER)
-        return false;
+    { return false; }
 
     npc_dragonmaw_peonAI* pPeonAI = dynamic_cast<npc_dragonmaw_peonAI*>(pCreatureTarget->AI());
 
     if (!pPeonAI)
-        return false;
+    { return false; }
 
     if (pPeonAI->SetPlayerTarget(pCaster->GetObjectGuid()))
     {
@@ -476,7 +485,7 @@ struct MANGOS_DLL_DECL npc_wildaAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
@@ -533,7 +542,7 @@ struct MANGOS_DLL_DECL npc_wildaAI : public npc_escortAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_COILSKAR_ASSASSIN)
-            pSummoned->AI()->AttackStart(m_creature);
+        { pSummoned->AI()->AttackStart(m_creature); }
     }
 
     // this is very unclear, random say without no real relevance to script/event
@@ -560,7 +569,7 @@ struct MANGOS_DLL_DECL npc_wildaAI : public npc_escortAI
     {
         // don't always use
         if (urand(0, 4))
-            return;
+        { return; }
 
         // only aggro text if not player
         if (pWho->GetTypeId() != TYPEID_PLAYER)
@@ -577,7 +586,7 @@ struct MANGOS_DLL_DECL npc_wildaAI : public npc_escortAI
     void UpdateEscortAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // TODO: add more abilities
         if (m_creature->GetHealthPercent() <= 30.0f)
@@ -588,7 +597,7 @@ struct MANGOS_DLL_DECL npc_wildaAI : public npc_escortAI
                 m_uiHealingTimer = 15000;
             }
             else
-                m_uiHealingTimer -= uiDiff;
+            { m_uiHealingTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -608,7 +617,7 @@ bool QuestAccept_npc_wilda(Player* pPlayer, Creature* pCreature, const Quest* pQ
         pCreature->SetFactionTemporary(FACTION_EARTHEN, TEMPFACTION_RESTORE_RESPAWN);
 
         if (npc_wildaAI* pEscortAI = dynamic_cast<npc_wildaAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
     return true;
 }
@@ -780,7 +789,7 @@ struct MANGOS_DLL_DECL mob_torlothAI : public ScriptedAI
         }
 
         if (TorlothAnim[m_uiAnimationCount].iTextId)
-            DoScriptText(TorlothAnim[m_uiAnimationCount].iTextId, pCreature);
+        { DoScriptText(TorlothAnim[m_uiAnimationCount].iTextId, pCreature); }
 
         m_uiAnimationTimer = TorlothAnim[m_uiAnimationCount].uiTimer;
 
@@ -836,14 +845,14 @@ struct MANGOS_DLL_DECL mob_torlothAI : public ScriptedAI
         if (m_uiAnimationCount < 7)
         {
             if (m_uiAnimationTimer < uiDiff)
-                HandleAnimation();
+            { HandleAnimation(); }
             else
-                m_uiAnimationTimer -= uiDiff;
+            { m_uiAnimationTimer -= uiDiff; }
         }
         else
         {
             if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-                return;
+            { return; }
 
             if (m_uiCleaveTimer < uiDiff)
             {
@@ -851,7 +860,7 @@ struct MANGOS_DLL_DECL mob_torlothAI : public ScriptedAI
                 m_uiCleaveTimer = 15000;
             }
             else
-                m_uiCleaveTimer -= uiDiff;
+            { m_uiCleaveTimer -= uiDiff; }
 
             if (m_uiShadowfuryTimer < uiDiff)
             {
@@ -859,7 +868,7 @@ struct MANGOS_DLL_DECL mob_torlothAI : public ScriptedAI
                 m_uiShadowfuryTimer = 20000;
             }
             else
-                m_uiShadowfuryTimer -= uiDiff;
+            { m_uiShadowfuryTimer -= uiDiff; }
 
             if (m_uiSpellReflectionTimer < uiDiff)
             {
@@ -867,7 +876,7 @@ struct MANGOS_DLL_DECL mob_torlothAI : public ScriptedAI
                 m_uiSpellReflectionTimer = 30000;
             }
             else
-                m_uiSpellReflectionTimer -= uiDiff;
+            { m_uiSpellReflectionTimer -= uiDiff; }
 
             DoMeleeAttackIfReady();
         }
@@ -939,7 +948,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
             {
 
                 if (m_uiWaveCount)                          // only in first wave
-                    continue;
+                { continue; }
 
                 if (!urand(0, 2) && uiFelguardCount < 2)
                 {
@@ -970,7 +979,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
         ++m_uiMobCount;
 
         if (!m_playerGuid)
-            return;
+        { return; }
 
         if (pSummoned->GetEntry() == NPC_TORLOTH_THE_MAGNIFICENT)
         {
@@ -997,7 +1006,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
         --m_uiMobCount;
 
         if (!m_uiMobCount)
-            m_bWaveAnnounced = false;
+        { m_bWaveAnnounced = false; }
     }
 
     void CheckEventFail()
@@ -1005,7 +1014,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
         Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid);
 
         if (!pPlayer)
-            return;
+        { return; }
 
         if (Group* pEventGroup = pPlayer->GetGroup())
         {
@@ -1017,7 +1026,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
                 if (Player* pMember = pRef->getSource())
                 {
                     if (!pMember->isAlive())
-                        ++uiDeadMemberCount;
+                    { ++uiDeadMemberCount; }
 
                     // if we already failed no need to check other things
                     if (pMember->GetQuestStatus(QUEST_BATTLE_OF_THE_CRIMSON_WATCH) == QUEST_STATUS_FAILED)
@@ -1048,7 +1057,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
                     if (Player* pMember = pRef->getSource())
                     {
                         if (pMember->GetQuestStatus(QUEST_BATTLE_OF_THE_CRIMSON_WATCH) == QUEST_STATUS_INCOMPLETE)
-                            pMember->FailQuest(QUEST_BATTLE_OF_THE_CRIMSON_WATCH);
+                        { pMember->FailQuest(QUEST_BATTLE_OF_THE_CRIMSON_WATCH); }
                     }
                 }
 
@@ -1065,7 +1074,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_playerGuid || !m_bEventStarted)
-            return;
+        { return; }
 
         if (!m_uiMobCount && m_uiWaveCount < 4)
         {
@@ -1075,12 +1084,12 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
                 m_bWaveAnnounced = true;
             }
             else
-                m_uiAnnounceTimer -= uiDiff;
+            { m_uiAnnounceTimer -= uiDiff; }
 
             if (m_uiWaveTimer < uiDiff)
-                SummonWave();
+            { SummonWave(); }
             else
-                m_uiWaveTimer -= uiDiff;
+            { m_uiWaveTimer -= uiDiff; }
         }
 
         if (m_uiCheckTimer < uiDiff)
@@ -1089,10 +1098,10 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
             m_uiCheckTimer = 2000;
         }
         else
-            m_uiCheckTimer -= uiDiff;
+        { m_uiCheckTimer -= uiDiff; }
 
         if (m_bEventFailed)
-            Reset();
+        { Reset(); }
     }
 };
 
@@ -1110,7 +1119,7 @@ bool GOQuestAccept_GO_crystal_prison(Player* pPlayer, GameObject* /*pGo*/, Quest
         if (Creature* pLordIllidan = GetClosestCreatureWithEntry(pPlayer, NPC_LORD_ILLIDAN, 50.0))
             if (npc_lord_illidan_stormrageAI* pIllidanAI = dynamic_cast<npc_lord_illidan_stormrageAI*>(pLordIllidan->AI()))
                 if (!pIllidanAI->m_bEventStarted)
-                    pIllidanAI->StartEvent(pPlayer);
+                { pIllidanAI->StartEvent(pPlayer); }
 
     return true;
 }
@@ -1173,7 +1182,7 @@ struct MANGOS_DLL_DECL npc_totem_of_spiritsAI : public ScriptedPetAI
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (pWho->GetTypeId() != TYPEID_UNIT)
-            return;
+        { return; }
 
         // Use the LoS function to check for the souls in range due to the fact that pets do not support SummonedMovementInform()
         uint32 uiEntry = pWho->GetEntry();
@@ -1181,7 +1190,7 @@ struct MANGOS_DLL_DECL npc_totem_of_spiritsAI : public ScriptedPetAI
         {
             // Only when it's close to the totem
             if (!pWho->IsWithinDistInMap(m_creature, 1.5f))
-                return;
+            { return; }
 
             switch (uiEntry)
             {
@@ -1207,13 +1216,13 @@ struct MANGOS_DLL_DECL npc_totem_of_spiritsAI : public ScriptedPetAI
     void OwnerKilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_UNIT)
-            return;
+        { return; }
 
         uint32 uiEntry = pVictim->GetEntry();
 
         // make elementals cast the sieve is only way to make it work properly, due to the spell target modes 22/7
         if (uiEntry == NPC_EARTH_SPIRIT || uiEntry == NPC_FIERY_SPIRIT || uiEntry == NPC_WATER_SPIRIT || uiEntry == NPC_AIR_SPIRIT)
-            pVictim->CastSpell(pVictim, SPELL_ELEMENTAL_SIEVE, true);
+        { pVictim->CastSpell(pVictim, SPELL_ELEMENTAL_SIEVE, true); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -1233,7 +1242,7 @@ CreatureAI* GetAI_npc_totem_of_spirits(Creature* pCreature)
 bool EffectDummyCreature_npc_totem_of_spirits(Unit* /*pCaster*/, uint32 uiSpellId, SpellEffectIndex uiEffIndex, Creature* pCreatureTarget, ObjectGuid /*originalCasterGuid*/)
 {
     if (uiEffIndex != EFFECT_INDEX_0)
-        return false;
+    { return false; }
 
     switch (uiSpellId)
     {
@@ -1265,13 +1274,13 @@ bool EffectDummyCreature_npc_totem_of_spirits(Unit* /*pCaster*/, uint32 uiSpellI
 bool EffectAuraDummy_npc_totem_of_spirits(const Aura* pAura, bool bApply)
 {
     if (pAura->GetId() != SPELL_ELEMENTAL_SIEVE)
-        return true;
+    { return true; }
 
     if (pAura->GetEffIndex() != EFFECT_INDEX_0)
-        return true;
+    { return true; }
 
     if (bApply)                                             // possible it should be some visual effects, using "enraged soul" npc and "Cosmetic: ... soul" spell
-        return true;
+    { return true; }
 
     Creature* pCreature = (Creature*)pAura->GetTarget();
     Unit* pCaster = pAura->GetCaster();
@@ -1280,7 +1289,7 @@ bool EffectAuraDummy_npc_totem_of_spirits(const Aura* pAura, bool bApply)
     // It is possible though, that player is the one who should actually have the aura
     // and check for presense of spirit totem, but then we can't script the dummy.
     if (!pCreature || !pCreature->IsPet() || !pCaster)
-        return true;
+    { return true; }
 
     // Summon the soul of the spirit and cast the visual
     uint32 uiSoulEntry = 0;
@@ -1305,7 +1314,7 @@ bool ProcessEventId_event_spell_soul_captured_credit(uint32 uiEventId, Object* p
         Player* pOwner = (Player*)((Creature*)pSource)->GetOwner();
 
         if (!pOwner)
-            return true;
+        { return true; }
 
         switch (uiEventId)
         {
@@ -1480,7 +1489,7 @@ struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, priva
                 break;
             case SAY_ORONOK_EPILOGUE_7:
                 if (Creature* pTorlok = m_creature->GetMap()->GetCreature(m_torlokGuid))
-                    m_creature->SetFacingToObject(pTorlok);
+                { m_creature->SetFacingToObject(pTorlok); }
                 break;
             case NPC_ORONOK_TORN_HEART:
                 if (GameObject* pMark = GetClosestGameObjectWithEntry(m_creature, GO_MARK_OF_KAELTHAS, 30.0f))
@@ -1489,9 +1498,9 @@ struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, priva
                     pMark->Refresh();
                 }
                 if (Creature* pBorak = m_creature->GetMap()->GetCreature(m_borakGuid))
-                    pBorak->ForcedDespawn();
+                { pBorak->ForcedDespawn(); }
                 if (Creature* pGromtor = m_creature->GetMap()->GetCreature(m_gromtorGuid))
-                    pGromtor->ForcedDespawn();
+                { pGromtor->ForcedDespawn(); }
                 m_creature->ForcedDespawn();
                 break;
         }
@@ -1551,12 +1560,12 @@ struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, priva
         Reset();
 
         if (!m_creature->isAlive())
-            return;
+        { return; }
 
         if (Creature* pCyrukh = m_creature->GetMap()->GetCreature(m_cyrukhGuid))
         {
             if (!pCyrukh->isAlive())
-                m_creature->GetMotionMaster()->MovePoint(POINT_ID_EPILOGUE, aDamnationLocations[6].m_fX, aDamnationLocations[6].m_fY, aDamnationLocations[6].m_fZ);
+            { m_creature->GetMotionMaster()->MovePoint(POINT_ID_EPILOGUE, aDamnationLocations[6].m_fX, aDamnationLocations[6].m_fY, aDamnationLocations[6].m_fZ); }
         }
         else
         {
@@ -1568,14 +1577,14 @@ struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, priva
     void MovementInform(uint32 uiMotionType, uint32 uiPointId) override
     {
         if (uiMotionType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
             case POINT_ID_ATTACK_READY:
                 // Get Cyrukh guid now, because we are at a closer distance
                 if (Creature* pCyrukh = GetClosestCreatureWithEntry(m_creature, NPC_CYRUKH_THE_FIRELORD, 70.0f))
-                    m_cyrukhGuid = pCyrukh->GetObjectGuid();
+                { m_cyrukhGuid = pCyrukh->GetObjectGuid(); }
 
                 m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                 DoScriptText(SAY_ORONOK_READY, m_creature);
@@ -1583,7 +1592,7 @@ struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, priva
             case POINT_ID_ELEMENTS:
                 // Attack the closest earth element
                 if (Creature* pElement = GetClosestCreatureWithEntry(m_creature, NPC_EARTH_SPIRIT, 50.0f))
-                    AttackStart(pElement);
+                { AttackStart(pElement); }
                 break;
             case POINT_ID_EPILOGUE:
                 StartNextDialogueText(NPC_EARTHMENDER_TORLOK);
@@ -1596,42 +1605,42 @@ struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, priva
         DialogueUpdate(uiDiff);
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiLightningTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_CHAIN_LIGHTNING) == CAST_OK)
-                    m_uiLightningTimer = urand(9000, 15000);
+                { m_uiLightningTimer = urand(9000, 15000); }
             }
         }
         else
-            m_uiLightningTimer -= uiDiff;
+        { m_uiLightningTimer -= uiDiff; }
 
         if (m_uiTotemTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_EARTHBIND_TOTEM) == CAST_OK)
-                m_uiTotemTimer = urand(40000, 60000);
+            { m_uiTotemTimer = urand(40000, 60000); }
         }
         else
-            m_uiTotemTimer -= uiDiff;
+        { m_uiTotemTimer -= uiDiff; }
 
         if (m_uiFrostTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_FROST_SHOCK) == CAST_OK)
-                m_uiFrostTimer = urand(14000, 18000);
+            { m_uiFrostTimer = urand(14000, 18000); }
         }
         else
-            m_uiFrostTimer -= uiDiff;
+        { m_uiFrostTimer -= uiDiff; }
 
         if (m_uiHealTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_HEALING_WAVE) == CAST_OK)
-                m_uiHealTimer = urand(6000, 10000);
+            { m_uiHealTimer = urand(6000, 10000); }
         }
         else
-            m_uiHealTimer -= uiDiff;
+        { m_uiHealTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -1650,7 +1659,7 @@ bool GossipHello_npc_spawned_oronok_tornheart(Player* pPlayer, Creature* pCreatu
         pPlayer->SEND_GOSSIP_MENU(GOSSIP_TEXT_ID_ORONOK, pCreature->GetObjectGuid());
     }
     else
-        pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
+    { pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid()); }
 
     return true;
 }
@@ -1705,7 +1714,7 @@ struct MANGOS_DLL_DECL npc_domesticated_felboarAI : public ScriptedAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE || !uiPointId)
-            return;
+        { return; }
 
         if (DoCastSpellIfCan(m_creature, SPELL_SPECIAL_UNARMED) == CAST_OK)
         {
@@ -1738,14 +1747,14 @@ struct MANGOS_DLL_DECL npc_domesticated_felboarAI : public ScriptedAI
                 {
                     case 0:
                         if (DoCastSpellIfCan(m_creature, SPELL_SPECIAL_UNARMED) == CAST_OK)
-                            m_uiTuberTimer = 2000;
+                        { m_uiTuberTimer = 2000; }
                         break;
                     case 1:
                         if (DoCastSpellIfCan(m_creature, SPELL_SHADOWMOON_TUBER) == CAST_OK)
                         {
                             // Despawn current tuber
                             if (GameObject* pTuber = GetClosestGameObjectWithEntry(m_creature, GO_SHADOWMOON_TUBER_MOUND, 3.0f))
-                                pTuber->SetLootState(GO_JUST_DEACTIVATED);
+                            { pTuber->SetLootState(GO_JUST_DEACTIVATED); }
 
                             DoScriptText(EMOTE_SQUEAL, m_creature);
                             m_uiTuberTimer = 2000;
@@ -1758,11 +1767,11 @@ struct MANGOS_DLL_DECL npc_domesticated_felboarAI : public ScriptedAI
                 ++m_uiTuberStage;
             }
             else
-                m_uiTuberTimer -= uiDiff;
+            { m_uiTuberTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DoMeleeAttackIfReady();
     }
@@ -1783,11 +1792,11 @@ bool EffectDummyCreature_npc_shadowmoon_tuber_node(Unit* pCaster, uint32 uiSpell
             // Check if tuber mound exists or it's spawned
             GameObject* pTuber = GetClosestGameObjectWithEntry(pCreatureTarget, GO_SHADOWMOON_TUBER_MOUND, 1.0f);
             if (!pTuber || !pTuber->isSpawned())
-                return true;
+            { return true; }
 
             // Call nearby felboar
             if (Creature* pBoar = GetClosestCreatureWithEntry(pCreatureTarget, NPC_DOMESTICATED_FELBOAR, 40.0f))
-                pCreatureTarget->AI()->SendAIEvent(AI_EVENT_START_EVENT, pCaster, pBoar);
+            { pCreatureTarget->AI()->SendAIEvent(AI_EVENT_START_EVENT, pCaster, pBoar); }
         }
 
         // always return true when we are handling this spell and effect

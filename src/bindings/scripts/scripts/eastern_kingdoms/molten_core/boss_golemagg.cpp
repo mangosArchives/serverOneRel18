@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -65,25 +74,25 @@ struct MANGOS_DLL_DECL boss_golemaggAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GOLEMAGG, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_GOLEMAGG, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GOLEMAGG, DONE);
+        { m_pInstance->SetData(TYPE_GOLEMAGG, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GOLEMAGG, FAIL);
+        { m_pInstance->SetData(TYPE_GOLEMAGG, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Pyroblast
         if (m_uiPyroblastTimer < uiDiff)
@@ -91,17 +100,17 @@ struct MANGOS_DLL_DECL boss_golemaggAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_PYROBLAST) == CAST_OK)
-                    m_uiPyroblastTimer = 7 * IN_MILLISECONDS;
+                { m_uiPyroblastTimer = 7 * IN_MILLISECONDS; }
             }
         }
         else
-            m_uiPyroblastTimer -= uiDiff;
+        { m_uiPyroblastTimer -= uiDiff; }
 
         // Enrage
         if (!m_bEnraged && m_creature->GetHealthPercent() < 10.0f)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ENRAGE) == CAST_OK)
-                m_bEnraged = true;
+            { m_bEnraged = true; }
         }
 
         // Earthquake
@@ -110,10 +119,10 @@ struct MANGOS_DLL_DECL boss_golemaggAI : public ScriptedAI
             if (m_uiEarthquakeTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_EARTHQUAKE) == CAST_OK)
-                    m_uiEarthquakeTimer = 3 * IN_MILLISECONDS;
+                { m_uiEarthquakeTimer = 3 * IN_MILLISECONDS; }
             }
             else
-                m_uiEarthquakeTimer -= uiDiff;
+            { m_uiEarthquakeTimer -= uiDiff; }
         }
 
         // Golemagg's Trust
@@ -123,7 +132,7 @@ struct MANGOS_DLL_DECL boss_golemaggAI : public ScriptedAI
             m_uiBuffTimer = 1.5 * IN_MILLISECONDS;
         }
         else
-            m_uiBuffTimer -= uiDiff;
+        { m_uiBuffTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -161,16 +170,16 @@ struct MANGOS_DLL_DECL mob_core_ragerAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Mangle
         if (m_uiMangleTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MANGLE) == CAST_OK)
-                m_uiMangleTimer = 10 * IN_MILLISECONDS;
+            { m_uiMangleTimer = 10 * IN_MILLISECONDS; }
         }
         else
-            m_uiMangleTimer -= uiDiff;
+        { m_uiMangleTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

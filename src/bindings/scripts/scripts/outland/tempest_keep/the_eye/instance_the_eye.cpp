@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -40,7 +49,7 @@ bool instance_the_eye::IsEncounterInProgress() const
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            return true;
+        { return true; }
     }
 
     return false;
@@ -86,17 +95,17 @@ void instance_the_eye::SetData(uint32 uiType, uint32 uiData)
         case TYPE_KAELTHAS:
             // Don't set the same data twice
             if (m_auiEncounter[uiType] == uiData)
-                break;
+            { break; }
             DoUseDoorOrButton(GO_ARCANE_DOOR_HORIZ_3);
             DoUseDoorOrButton(GO_ARCANE_DOOR_HORIZ_4);
             if (uiData == FAIL)
             {
                 if (GameObject* pGo = GetSingleGameObjectFromStorage(GO_KAEL_STATUE_LEFT))
-                    pGo->ResetDoorOrButton();
+                { pGo->ResetDoorOrButton(); }
                 if (GameObject* pGo = GetSingleGameObjectFromStorage(GO_KAEL_STATUE_RIGHT))
-                    pGo->ResetDoorOrButton();
+                { pGo->ResetDoorOrButton(); }
                 if (GameObject* pGo = GetSingleGameObjectFromStorage(GO_BRIDGE_WINDOW))
-                    pGo->ResetDoorOrButton();
+                { pGo->ResetDoorOrButton(); }
 
                 // Respawn or reset the advisors
                 for (uint8 i = 0; i < MAX_ADVISORS; ++i)
@@ -104,9 +113,9 @@ void instance_the_eye::SetData(uint32 uiType, uint32 uiData)
                     if (Creature* pTemp = GetSingleCreatureFromStorage(aAdvisors[i]))
                     {
                         if (!pTemp->isAlive())
-                            pTemp->Respawn();
+                        { pTemp->Respawn(); }
                         else
-                            pTemp->AI()->EnterEvadeMode();
+                        { pTemp->AI()->EnterEvadeMode(); }
                     }
                 }
             }
@@ -118,7 +127,7 @@ void instance_the_eye::SetData(uint32 uiType, uint32 uiData)
 uint32 instance_the_eye::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-        return m_auiEncounter[uiType];
+    { return m_auiEncounter[uiType]; }
 
     return 0;
 }

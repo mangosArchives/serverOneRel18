@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -65,9 +74,9 @@ void instance_zulgurub::OnCreatureCreate(Creature* pCreature)
             break;
         case NPC_PANTHER_TRIGGER:
             if (pCreature->GetPositionY() < -1626)
-                m_lLeftPantherTriggerGUIDList.push_back(pCreature->GetObjectGuid());
+            { m_lLeftPantherTriggerGUIDList.push_back(pCreature->GetObjectGuid()); }
             else
-                m_lRightPantherTriggerGUIDList.push_back(pCreature->GetObjectGuid());
+            { m_lRightPantherTriggerGUIDList.push_back(pCreature->GetObjectGuid()); }
             break;
     }
 }
@@ -96,12 +105,12 @@ void instance_zulgurub::SetData(uint32 uiType, uint32 uiData)
         case TYPE_THEKAL:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE)
-                DoLowerHakkarHitPoints();
+            { DoLowerHakkarHitPoints(); }
             break;
         case TYPE_MARLI:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE)
-                DoLowerHakkarHitPoints();
+            { DoLowerHakkarHitPoints(); }
             if (uiData == FAIL)
             {
                 for (GuidList::const_iterator itr = m_lSpiderEggGUIDList.begin(); itr != m_lSpiderEggGUIDList.end(); ++itr)
@@ -119,7 +128,7 @@ void instance_zulgurub::SetData(uint32 uiType, uint32 uiData)
             m_auiEncounter[uiType] = uiData;
             DoUseDoorOrButton(GO_FORCEFIELD);
             if (uiData == DONE)
-                DoLowerHakkarHitPoints();
+            { DoLowerHakkarHitPoints(); }
             if (uiData == FAIL)
             {
                 // Note: this gameobject should change flags - currently it despawns which isn't correct
@@ -194,7 +203,7 @@ void instance_zulgurub::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -203,7 +212,7 @@ void instance_zulgurub::Load(const char* chrIn)
 uint32 instance_zulgurub::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-        return m_auiEncounter[uiType];
+    { return m_auiEncounter[uiType]; }
 
     return 0;
 }
@@ -217,11 +226,11 @@ Creature* instance_zulgurub::SelectRandomPantherTrigger(bool bIsLeft)
     for (GuidList::const_iterator itr = plTempList->begin(); itr != plTempList->end(); ++itr)
     {
         if (Creature* pTemp = instance->GetCreature(*itr))
-            vTriggers.push_back(pTemp);
+        { vTriggers.push_back(pTemp); }
     }
 
     if (vTriggers.empty())
-        return NULL;
+    { return NULL; }
 
     return vTriggers[urand(0, vTriggers.size() - 1)];
 }
@@ -236,10 +245,10 @@ bool AreaTrigger_at_zulgurub(Player* pPlayer, AreaTriggerEntry const* pAt)
     if (pAt->id == AREATRIGGER_ENTER || pAt->id == AREATRIGGER_ALTAR)
     {
         if (pPlayer->isGameMaster() || pPlayer->isDead())
-            return false;
+        { return false; }
 
         if (instance_zulgurub* pInstance = (instance_zulgurub*)pPlayer->GetInstanceData())
-            pInstance->DoYellAtTriggerIfCan(pAt->id);
+        { pInstance->DoYellAtTriggerIfCan(pAt->id); }
     }
 
     return false;

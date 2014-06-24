@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -62,17 +71,17 @@ bool EffectDummyGameObj_spell_dummy_go(Unit* pCaster, uint32 uiSpellId, SpellEff
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pGOTarget->GetRespawnTime() != 0 || pGOTarget->GetEntry() != GO_RED_SNAPPER || pCaster->GetTypeId() != TYPEID_PLAYER)
-                    return true;
+                { return true; }
 
                 if (urand(0, 2))
                 {
                     if (Creature* pMurloc = pCaster->SummonCreature(NPC_ANGRY_MURLOC, pCaster->GetPositionX(), pCaster->GetPositionY() + 20.0f, pCaster->GetPositionZ(), 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 10000))
-                        pMurloc->AI()->AttackStart(pCaster);
+                    { pMurloc->AI()->AttackStart(pCaster); }
                 }
                 else
                 {
                     if (Item* pItem = ((Player*)pCaster)->StoreNewItemInInventorySlot(ITEM_RED_SNAPPER, 1))
-                        ((Player*)pCaster)->SendNewItem(pItem, 1, true, false);
+                    { ((Player*)pCaster)->SendNewItem(pItem, 1, true, false); }
                 }
 
                 pGOTarget->SetLootState(GO_JUST_DEACTIVATED);
@@ -180,12 +189,12 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
         case SPELL_HEALING_SALVE:
         {
             if (pAura->GetEffIndex() != EFFECT_INDEX_0)
-                return true;
+            { return true; }
 
             if (bApply)
             {
                 if (Unit* pCaster = pAura->GetCaster())
-                    pCaster->CastSpell(pAura->GetTarget(), SPELL_HEALING_SALVE_DUMMY, true);
+                { pCaster->CastSpell(pAura->GetTarget(), SPELL_HEALING_SALVE_DUMMY, true); }
             }
 
             return true;
@@ -193,7 +202,7 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
         case SPELL_HEALING_SALVE_DUMMY:
         {
             if (pAura->GetEffIndex() != EFFECT_INDEX_0)
-                return true;
+            { return true; }
 
             if (!bApply)
             {
@@ -202,7 +211,7 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
                 pCreature->UpdateEntry(NPC_MAGHAR_GRUNT);
 
                 if (pCreature->getStandState() == UNIT_STAND_STATE_KNEEL)
-                    pCreature->SetStandState(UNIT_STAND_STATE_STAND);
+                { pCreature->SetStandState(UNIT_STAND_STATE_STAND); }
 
                 pCreature->ForcedDespawn(60 * IN_MILLISECONDS);
             }
@@ -212,12 +221,12 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
         case SPELL_RECHARGING_BATTERY:
         {
             if (pAura->GetEffIndex() != EFFECT_INDEX_0)
-                return true;
+            { return true; }
 
             if (!bApply)
             {
                 if (pAura->GetTarget()->HasAuraState(AURA_STATE_HEALTHLESS_20_PERCENT))
-                    ((Creature*)pAura->GetTarget())->UpdateEntry(NPC_DRAINED_PHASE_HUNTER);
+                { ((Creature*)pAura->GetTarget())->UpdateEntry(NPC_DRAINED_PHASE_HUNTER); }
             }
 
             return true;
@@ -227,20 +236,20 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
             Creature* pCreature = (Creature*)pAura->GetTarget();
 
             if (pAura->GetEffIndex() != EFFECT_INDEX_0)
-                return true;
+            { return true; }
 
             if (bApply)
             {
                 if (pCreature->GetEntry() == NPC_BLACKSILT_MURLOC)
                 {
                     if (Unit* pCaster = pAura->GetCaster())
-                        pCaster->CastSpell(pCreature, SPELL_TAG_MURLOC_PROC, true);
+                    { pCaster->CastSpell(pCreature, SPELL_TAG_MURLOC_PROC, true); }
                 }
             }
             else
             {
                 if (pCreature->GetEntry() == NPC_TAGGED_MURLOC)
-                    pCreature->ForcedDespawn();
+                { pCreature->ForcedDespawn(); }
             }
 
             return true;
@@ -248,7 +257,7 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
         case SPELL_ENRAGE:
         {
             if (!bApply || pAura->GetTarget()->GetTypeId() != TYPEID_UNIT)
-                return false;
+            { return false; }
 
             Creature* pTarget = (Creature*)pAura->GetTarget();
 
@@ -272,23 +281,23 @@ bool EffectAuraDummy_spell_aura_dummy_npc(const Aura* pAura, bool bApply)
             Creature* pCreature = (Creature*)pAura->GetTarget();
 
             if (!pCreature || (pCreature->GetEntry() != NPC_FRANCLORN_FORGEWRIGHT && pCreature->GetEntry() != NPC_GAERIYAN))
-                return false;
+            { return false; }
 
             if (bApply)
-                pCreature->m_AuraFlags |= UNIT_AURAFLAG_ALIVE_INVISIBLE;
+            { pCreature->m_AuraFlags |= UNIT_AURAFLAG_ALIVE_INVISIBLE; }
             else
-                pCreature->m_AuraFlags &= ~UNIT_AURAFLAG_ALIVE_INVISIBLE;
+            { pCreature->m_AuraFlags &= ~UNIT_AURAFLAG_ALIVE_INVISIBLE; }
 
             return false;
         }
         case SPELL_PROTOVOLTAIC_MAGNETO_COLLECTOR:
         {
             if (pAura->GetEffIndex() != EFFECT_INDEX_0)
-                return true;
+            { return true; }
 
             Unit* pTarget = pAura->GetTarget();
             if (bApply && pTarget->GetTypeId() == TYPEID_UNIT)
-                ((Creature*)pTarget)->UpdateEntry(NPC_ENCASED_ELECTROMENTAL);
+            { ((Creature*)pTarget)->UpdateEntry(NPC_ENCASED_ELECTROMENTAL); }
             return true;
         }
     }
@@ -305,7 +314,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCreatureTarget->GetEntry() != NPC_HELBOAR)
-                    return true;
+                { return true; }
 
                 // possible needs check for quest state, to not have any effect when quest really complete
 
@@ -319,10 +328,10 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCaster->GetTypeId() != TYPEID_PLAYER)
-                    return true;
+                { return true; }
 
                 if (pCreatureTarget->GetEntry() != NPC_SICKLY_DEER && pCreatureTarget->GetEntry() != NPC_SICKLY_GAZELLE)
-                    return true;
+                { return true; }
 
                 // Update entry, remove aura, set the kill credit and despawn
                 uint32 uiUpdateEntry = pCreatureTarget->GetEntry() == NPC_SICKLY_DEER ? NPC_CURED_DEER : NPC_CURED_GAZELLE;
@@ -340,7 +349,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCreatureTarget->GetEntry() != NPC_OWLKIN)
-                    return true;
+                { return true; }
 
                 pCreatureTarget->UpdateEntry(NPC_OWLKIN_INOC);
                 ((Player*)pCaster)->KilledMonsterCredit(NPC_OWLKIN_INOC);
@@ -357,7 +366,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCreatureTarget->GetEntry() != NPC_FELBLOOD_INITIATE)
-                    return true;
+                { return true; }
 
                 pCreatureTarget->UpdateEntry(NPC_EMACIATED_FELBLOOD);
                 return true;
@@ -369,7 +378,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_1)
             {
                 if (pCreatureTarget->GetEntry() != NPC_MORBENT)
-                    return true;
+                { return true; }
 
                 pCreatureTarget->UpdateEntry(NPC_WEAKENED_MORBENT);
                 return true;
@@ -381,7 +390,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCreatureTarget->GetEntry() == NPC_BLACKSILT_MURLOC)
-                    pCreatureTarget->UpdateEntry(NPC_TAGGED_MURLOC);
+                { pCreatureTarget->UpdateEntry(NPC_TAGGED_MURLOC); }
             }
             return true;
         }
@@ -412,7 +421,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
                         for (int i = 0; i < 2; ++i)
                         {
                             if (Creature* pSandGnome = pCaster->SummonCreature(NPC_SAND_GNOME, pCreatureTarget->GetPositionX(), pCreatureTarget->GetPositionY(), pCreatureTarget->GetPositionZ(), 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 30000))
-                                pSandGnome->AI()->AttackStart(pCaster);
+                            { pSandGnome->AI()->AttackStart(pCaster); }
                         }
                         break;
                     }
@@ -421,7 +430,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
                         for (int i = 0; i < 2; ++i)
                         {
                             if (Creature* pMatureBoneSifter = pCaster->SummonCreature(NPC_MATURE_BONE_SIFTER, pCreatureTarget->GetPositionX(), pCreatureTarget->GetPositionY(), pCreatureTarget->GetPositionZ(), 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 30000))
-                                pMatureBoneSifter->AI()->AttackStart(pCaster);
+                            { pMatureBoneSifter->AI()->AttackStart(pCaster); }
                         }
                         break;
                     }
@@ -437,7 +446,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
                 for (int i = 0; i < 3; ++i)
                 {
                     if (irand(i, 2))                        // 2-3 summons
-                        pCreatureTarget->SummonCreature(NPC_MINION_OF_GUROK, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 5000);
+                    { pCreatureTarget->SummonCreature(NPC_MINION_OF_GUROK, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 5000); }
                 }
 
                 if (pCreatureTarget->getVictim())
@@ -458,12 +467,12 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCreatureTarget->GetEntry() != NPC_RAZORTHORN_RAVAGER)
-                    return true;
+                { return true; }
 
                 if (GameObject* pMound = GetClosestGameObjectWithEntry(pCreatureTarget, GO_RAZORTHORN_DIRT_MOUND, 20.0f))
                 {
                     if (pMound->GetRespawnTime() != 0)
-                        return true;
+                    { return true; }
 
                     pCreatureTarget->CastSpell(pCreatureTarget, SPELL_SUMMON_RAZORTHORN_ROOT, true);
                     pMound->SetLootState(GO_JUST_DEACTIVATED);
@@ -476,7 +485,7 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCaster->GetTypeId() != TYPEID_PLAYER && pCreatureTarget->GetEntry() != NPC_DEEPRUN_RAT)
-                    return true;
+                { return true; }
 
                 pCreatureTarget->UpdateEntry(NPC_ENTHRALLED_DEEPRUN_RAT);
                 pCreatureTarget->CastSpell(pCreatureTarget, SPELL_MELODIOUS_RAPTURE_VISUAL, false);

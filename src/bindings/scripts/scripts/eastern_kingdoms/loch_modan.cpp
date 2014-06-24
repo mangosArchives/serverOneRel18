@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -36,10 +45,10 @@ EndContentData */
 bool GossipHello_npc_mountaineer_pebblebitty(Player* pPlayer, Creature* pCreature)
 {
     if (pCreature->isQuestGiver())
-        pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
+    { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
     if (!pPlayer->GetQuestRewardStatus(3181) == 1)
-        pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Open the gate please, i need to get to Searing Gorge", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Open the gate please, i need to get to Searing Gorge", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
 
     pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
 
@@ -120,7 +129,7 @@ struct MANGOS_DLL_DECL npc_miranAI: public npc_escortAI
     void Reset() override
     {
         if (!HasEscortState(STATE_ESCORT_ESCORTING))
-            m_uiDwarves = 0;
+        { m_uiDwarves = 0; }
     }
 
     void WaypointReached(uint32 uiPointId) override
@@ -135,7 +144,7 @@ struct MANGOS_DLL_DECL npc_miranAI: public npc_escortAI
             case 23:
                 DoScriptText(SAY_MIRAN_3, m_creature);
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_PROTECTING_THE_SHIPMENT, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_PROTECTING_THE_SHIPMENT, m_creature); }
                 break;
         }
     }
@@ -146,7 +155,7 @@ struct MANGOS_DLL_DECL npc_miranAI: public npc_escortAI
         {
             --m_uiDwarves;
             if (!m_uiDwarves)
-                DoScriptText(SAY_MIRAN_2, m_creature);
+            { DoScriptText(SAY_MIRAN_2, m_creature); }
         }
     }
 
@@ -155,7 +164,7 @@ struct MANGOS_DLL_DECL npc_miranAI: public npc_escortAI
         if (pSummoned->GetEntry() == NPC_DARK_IRON_DWARF)
         {
             if (!m_uiDwarves)
-                DoScriptText(SAY_DARK_IRON_DWARF, pSummoned);
+            { DoScriptText(SAY_DARK_IRON_DWARF, pSummoned); }
             ++m_uiDwarves;
             pSummoned->AI()->AttackStart(m_creature);
         }
@@ -167,7 +176,7 @@ bool QuestAccept_npc_miran(Player* pPlayer, Creature* pCreature, const Quest* pQ
     if (pQuest->GetQuestId() == QUEST_PROTECTING_THE_SHIPMENT)
     {
         if (npc_miranAI* pEscortAI = dynamic_cast<npc_miranAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
     return true;
 }

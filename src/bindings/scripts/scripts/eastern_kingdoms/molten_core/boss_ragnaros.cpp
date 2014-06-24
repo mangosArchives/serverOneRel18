@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -98,10 +107,10 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
     void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_PLAYER)
-            return;
+        { return; }
 
         if (urand(0, 3))
-            return;
+        { return; }
 
         DoScriptText(SAY_KILL, m_creature);
     }
@@ -109,28 +118,28 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_RAGNAROS, DONE);
+        { m_pInstance->SetData(TYPE_RAGNAROS, DONE); }
     }
 
     void Aggro(Unit* pWho) override
     {
         if (pWho->GetTypeId() == TYPEID_UNIT && pWho->GetEntry() == NPC_MAJORDOMO)
-            return;
+        { return; }
 
         DoCastSpellIfCan(m_creature, SPELL_MELT_WEAPON);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_RAGNAROS, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_RAGNAROS, IN_PROGRESS); }
     }
 
     void EnterEvadeMode() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_RAGNAROS, FAIL);
+        { m_pInstance->SetData(TYPE_RAGNAROS, FAIL); }
 
         // Reset flag if had been submerged
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
-            m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+        { m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE); }
 
         ScriptedAI::EnterEvadeMode();
     }
@@ -144,7 +153,7 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
 
             // If last add killed then emerge soonish
             if (m_uiAddCount == 0)
-                m_uiAttackTimer = std::min(m_uiAttackTimer, (uint32)1000);
+            { m_uiAttackTimer = std::min(m_uiAttackTimer, (uint32)1000); }
         }
     }
 
@@ -153,19 +162,19 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
         if (pSummoned->GetEntry() == NPC_SON_OF_FLAME)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                pSummoned->AI()->AttackStart(pTarget);
+            { pSummoned->AI()->AttackStart(pTarget); }
 
             ++m_uiAddCount;
         }
         else if (pSummoned->GetEntry() == NPC_FLAME_OF_RAGNAROS)
-            pSummoned->CastSpell(pSummoned, SPELL_INTENSE_HEAT, true, NULL, NULL, m_creature->GetObjectGuid());
+        { pSummoned->CastSpell(pSummoned, SPELL_INTENSE_HEAT, true, NULL, NULL, m_creature->GetObjectGuid()); }
     }
 
     void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell) override
     {
         // As Majordomo is now killed, the last timer (until attacking) must be handled with ragnaros script
         if (pSpell->Id == SPELL_ELEMENTAL_FIRE_KILL && pTarget->GetTypeId() == TYPEID_UNIT && pTarget->GetEntry() == NPC_MAJORDOMO)
-            m_uiEnterCombatTimer = 10000;
+        { m_uiEnterCombatTimer = 10000; }
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -196,11 +205,11 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
                 }
             }
             else
-                m_uiEnterCombatTimer -= uiDiff;
+            { m_uiEnterCombatTimer -= uiDiff; }
         }
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_bIsSubmerged)
         {
@@ -215,7 +224,7 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
                 m_bIsSubmerged = false;
             }
             else
-                m_uiAttackTimer -= uiDiff;
+            { m_uiAttackTimer -= uiDiff; }
 
             // Do nothing while submerged
             return;
@@ -231,16 +240,16 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
             }
         }
         else
-            m_uiWrathOfRagnarosTimer -= uiDiff;
+        { m_uiWrathOfRagnarosTimer -= uiDiff; }
 
         // Elemental Fire Timer
         if (m_uiElementalFireTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_ELEMENTAL_FIRE) == CAST_OK)
-                m_uiElementalFireTimer = urand(10000, 14000);
+            { m_uiElementalFireTimer = urand(10000, 14000); }
         }
         else
-            m_uiElementalFireTimer -= uiDiff;
+        { m_uiElementalFireTimer -= uiDiff; }
 
         // Hammer of Ragnaros
         if (m_uiHammerTimer < uiDiff)
@@ -254,10 +263,10 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
                 }
             }
             else
-                m_uiHammerTimer = 11000;
+            { m_uiHammerTimer = 11000; }
         }
         else
-            m_uiHammerTimer -= uiDiff;
+        { m_uiHammerTimer -= uiDiff; }
 
         // Submerge Timer
         if (m_uiSubmergeTimer < uiDiff)
@@ -285,13 +294,13 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
             return;
         }
         else
-            m_uiSubmergeTimer -= uiDiff;
+        { m_uiSubmergeTimer -= uiDiff; }
 
         // TODO this actually should select _any_ enemy in melee range, not only the tank
         // Range check for melee target, if nobody is found in range, then cast magma blast on random
         // If we are within range melee the target
         if (m_creature->IsNonMeleeSpellCasted(false) || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->CanReachWithMeleeAttack(m_creature->getVictim()))
         {
@@ -322,7 +331,7 @@ struct MANGOS_DLL_DECL boss_ragnarosAI : public Scripted_NoMovementAI
                 }
             }
             else
-                m_uiMagmaBlastTimer -= uiDiff;
+            { m_uiMagmaBlastTimer -= uiDiff; }
         }
     }
 };

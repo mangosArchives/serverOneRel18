@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -73,7 +82,7 @@ struct MANGOS_DLL_DECL npc_lady_sylvanas_windrunnerAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_HIGHBORNE_BUNNY)
-            pSummoned->CastSpell(pSummoned, SPELL_RIBBON_OF_SOULS, false);
+        { pSummoned->CastSpell(pSummoned, SPELL_RIBBON_OF_SOULS, false); }
         else if (pSummoned->GetEntry() == NPC_HIGHBORNE_LAMENTER)
         {
             pSummoned->CastSpell(pSummoned, SPELL_HIGHBORNE_AURA, false);
@@ -110,7 +119,7 @@ struct MANGOS_DLL_DECL npc_lady_sylvanas_windrunnerAI : public ScriptedAI
                 }
             }
             else
-                m_uiLamentEventTimer -= uiDiff;
+            { m_uiLamentEventTimer -= uiDiff; }
         }
 
         if (m_uiSummonTimer)
@@ -118,17 +127,17 @@ struct MANGOS_DLL_DECL npc_lady_sylvanas_windrunnerAI : public ScriptedAI
             if (m_uiSummonTimer <= uiDiff)
             {
                 for (uint8 i = 0; i < MAX_LAMENTERS; ++i)
-                    m_creature->SummonCreature(NPC_HIGHBORNE_LAMENTER, aHighborneLoc[i][0], aHighborneLoc[i][1], aHighborneLoc[i][2], aHighborneLoc[i][3], TEMPSUMMON_TIMED_DESPAWN, 160000);
+                { m_creature->SummonCreature(NPC_HIGHBORNE_LAMENTER, aHighborneLoc[i][0], aHighborneLoc[i][1], aHighborneLoc[i][2], aHighborneLoc[i][3], TEMPSUMMON_TIMED_DESPAWN, 160000); }
 
                 m_uiLamentEventTimer = 2000;
                 m_uiSummonTimer = 0;
             }
             else
-                m_uiSummonTimer -= uiDiff;
+            { m_uiSummonTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DoMeleeAttackIfReady();
     }
@@ -144,7 +153,7 @@ bool QuestRewarded_npc_lady_sylvanas_windrunner(Player* /*pPlayer*/, Creature* p
     if (pQuest->GetQuestId() == QUEST_ID_JOURNEY_UNDERCITY)
     {
         if (npc_lady_sylvanas_windrunnerAI* pSylvanAI = dynamic_cast<npc_lady_sylvanas_windrunnerAI*>(pCreature->AI()))
-            pSylvanAI->DoStartLamentEvent();
+        { pSylvanAI->DoStartLamentEvent(); }
     }
 
     return true;

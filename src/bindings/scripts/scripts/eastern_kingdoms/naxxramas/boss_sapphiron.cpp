@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -114,19 +123,19 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_FROST_AURA);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SAPPHIRON, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_SAPPHIRON, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SAPPHIRON, DONE);
+        { m_pInstance->SetData(TYPE_SAPPHIRON, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SAPPHIRON, FAIL);
+        { m_pInstance->SetData(TYPE_SAPPHIRON, FAIL); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -134,7 +143,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
         if (pSummoned->GetEntry() == NPC_YOU_KNOW_WHO)
         {
             if (Unit* pEnemy = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                pSummoned->AI()->AttackStart(pEnemy);
+            { pSummoned->AI()->AttackStart(pEnemy); }
         }
     }
 
@@ -156,7 +165,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         switch (m_Phase)
         {
@@ -164,34 +173,34 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
                 if (m_uiCleaveTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CLEAVE) == CAST_OK)
-                        m_uiCleaveTimer = urand(5000, 10000);
+                    { m_uiCleaveTimer = urand(5000, 10000); }
                 }
                 else
-                    m_uiCleaveTimer -= uiDiff;
+                { m_uiCleaveTimer -= uiDiff; }
 
                 if (m_uiTailSweepTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_TAIL_SWEEP) == CAST_OK)
-                        m_uiTailSweepTimer = urand(7000, 10000);
+                    { m_uiTailSweepTimer = urand(7000, 10000); }
                 }
                 else
-                    m_uiTailSweepTimer -= uiDiff;
+                { m_uiTailSweepTimer -= uiDiff; }
 
                 if (m_uiLifeDrainTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_LIFE_DRAIN) == CAST_OK)
-                        m_uiLifeDrainTimer = 23000;
+                    { m_uiLifeDrainTimer = 23000; }
                 }
                 else
-                    m_uiLifeDrainTimer -= uiDiff;
+                { m_uiLifeDrainTimer -= uiDiff; }
 
                 if (m_uiBlizzardTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_BLIZZARD) == CAST_OK)
-                        m_uiBlizzardTimer = 20000;
+                    { m_uiBlizzardTimer = 20000; }
                 }
                 else
-                    m_uiBlizzardTimer -= uiDiff;
+                { m_uiBlizzardTimer -= uiDiff; }
 
                 if (m_creature->GetHealthPercent() > 10.0f)
                 {
@@ -207,7 +216,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
                         return;
                     }
                     else
-                        m_uiFlyTimer -= uiDiff;
+                    { m_uiFlyTimer -= uiDiff; }
                 }
 
                 // Only Phase in which we have melee attack!
@@ -230,7 +239,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
                         }
                     }
                     else
-                        m_uiFrostBreathTimer -= uiDiff;
+                    { m_uiFrostBreathTimer -= uiDiff; }
                 }
                 else
                 {
@@ -242,7 +251,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
                         m_uiIceboltTimer = 4000;
                     }
                     else
-                        m_uiIceboltTimer -= uiDiff;
+                    { m_uiIceboltTimer -= uiDiff; }
                 }
 
                 break;
@@ -260,7 +269,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
                         m_uiLandTimer = 2000;
                     }
                     else
-                        m_uiLandTimer -= uiDiff;
+                    { m_uiLandTimer -= uiDiff; }
                 }
 
                 break;
@@ -277,7 +286,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
                     m_uiLandTimer = 0;
                 }
                 else
-                    m_uiLandTimer -= uiDiff;
+                { m_uiLandTimer -= uiDiff; }
 
                 break;
         }
@@ -292,7 +301,7 @@ struct MANGOS_DLL_DECL boss_sapphironAI : public ScriptedAI
             }
         }
         else
-            m_uiBerserkTimer -= uiDiff;
+        { m_uiBerserkTimer -= uiDiff; }
     }
 };
 
@@ -306,14 +315,14 @@ bool GOUse_go_sapphiron_birth(Player* pPlayer, GameObject* pGo)
     ScriptedInstance* pInstance = (ScriptedInstance*)pGo->GetInstanceData();
 
     if (!pInstance)
-        return true;
+    { return true; }
 
     if (pInstance->GetData(TYPE_SAPPHIRON) != NOT_STARTED)
-        return true;
+    { return true; }
 
     // If already summoned return (safety check)
     if (pInstance->GetSingleCreatureFromStorage(NPC_SAPPHIRON, true))
-        return true;
+    { return true; }
 
     // Set data to special and allow the Go animation to proceed
     pInstance->SetData(TYPE_SAPPHIRON, SPECIAL);

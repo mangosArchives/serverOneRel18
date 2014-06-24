@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -75,7 +84,7 @@ struct MANGOS_DLL_DECL boss_gythAI : public ScriptedAI
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Chromatic Chaos at 50%
         if (!m_bHasChromaticChaos && m_creature->GetHealthPercent() < 50.0f)
@@ -95,28 +104,28 @@ struct MANGOS_DLL_DECL boss_gythAI : public ScriptedAI
         if (uiCorrosiveAcidTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_CORROSIVE_ACID) == CAST_OK)
-                uiCorrosiveAcidTimer = 7000;
+            { uiCorrosiveAcidTimer = 7000; }
         }
         else
-            uiCorrosiveAcidTimer -= uiDiff;
+        { uiCorrosiveAcidTimer -= uiDiff; }
 
         // Freeze_Timer
         if (uiFreezeTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FREEZE) == CAST_OK)
-                uiFreezeTimer = 16000;
+            { uiFreezeTimer = 16000; }
         }
         else
-            uiFreezeTimer -= uiDiff;
+        { uiFreezeTimer -= uiDiff; }
 
         // Flamebreath_Timer
         if (uiFlamebreathTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FLAME_BREATH) == CAST_OK)
-                uiFlamebreathTimer = 10500;
+            { uiFlamebreathTimer = 10500; }
         }
         else
-            uiFlamebreathTimer -= uiDiff;
+        { uiFlamebreathTimer -= uiDiff; }
 
         // Summon Rend
         if (!m_bSummonedRend && m_creature->GetHealthPercent() < 11.0f)

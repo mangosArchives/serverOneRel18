@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -157,7 +166,7 @@ struct MANGOS_DLL_DECL mob_blood_elf_council_voice_triggerAI : public ScriptedAI
                 m_uiAggroYellTimer = 0;
             }
             else
-                m_uiAggroYellTimer -= uiDiff;
+            { m_uiAggroYellTimer -= uiDiff; }
         }
 
         if (m_uiEnrageTimer)
@@ -168,14 +177,14 @@ struct MANGOS_DLL_DECL mob_blood_elf_council_voice_triggerAI : public ScriptedAI
                 for (uint8 i = 0; i < 4; ++i)
                 {
                     if (Creature* pMember = m_pInstance->GetSingleCreatureFromStorage(aCouncilMember[i]))
-                        pMember->CastSpell(pMember, SPELL_BERSERK, true);
+                    { pMember->CastSpell(pMember, SPELL_BERSERK, true); }
                 }
                 // Start yells
                 m_councilDialogue.StartNextDialogueText(SAY_GATH_BERSERK);
                 m_uiEnrageTimer = 0;
             }
             else
-                m_uiEnrageTimer -= uiDiff;
+            { m_uiEnrageTimer -= uiDiff; }
         }
     }
 };
@@ -215,13 +224,13 @@ struct MANGOS_DLL_DECL mob_illidari_councilAI : public ScriptedAI
         DoEndEvent();
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_COUNCIL, DONE);
+        { m_pInstance->SetData(TYPE_COUNCIL, DONE); }
     }
 
     void DoStartEvent()
     {
         if (!m_pInstance || m_bEventBegun)
-            return;
+        { return; }
 
         // Prevent further handling for next council uiMember aggroing
         m_bEventBegun = true;
@@ -230,7 +239,7 @@ struct MANGOS_DLL_DECL mob_illidari_councilAI : public ScriptedAI
         if (Creature* pVoiceTrigger = m_pInstance->GetSingleCreatureFromStorage(NPC_COUNCIL_VOICE))
         {
             if (mob_blood_elf_council_voice_triggerAI* pVoiceAI = dynamic_cast<mob_blood_elf_council_voice_triggerAI*>(pVoiceTrigger->AI()))
-                pVoiceAI->StartVoiceEvent();
+            { pVoiceAI->StartVoiceEvent(); }
         }
 
         DoCastSpellIfCan(m_creature, SPELL_EMPYREAL_BALANCE);
@@ -239,7 +248,7 @@ struct MANGOS_DLL_DECL mob_illidari_councilAI : public ScriptedAI
     void DoEndEvent()
     {
         if (!m_pInstance || m_bEventEnd)
-            return;
+        { return; }
 
         // Prevent further handling for next council uiMember death
         m_bEventEnd = true;
@@ -249,12 +258,12 @@ struct MANGOS_DLL_DECL mob_illidari_councilAI : public ScriptedAI
         {
             Creature* pMember = m_pInstance->GetSingleCreatureFromStorage(aCouncilMember[i]);
             if (pMember && pMember->isAlive())
-                pMember->DealDamage(pMember, pMember->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+            { pMember->DealDamage(pMember, pMember->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); }
         }
 
         // Self kill the voice trigger and the controller
         if (Creature* pVoiceTrigger = m_pInstance->GetSingleCreatureFromStorage(NPC_COUNCIL_VOICE))
-            pVoiceTrigger->DealDamage(pVoiceTrigger, pVoiceTrigger->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+        { pVoiceTrigger->DealDamage(pVoiceTrigger, pVoiceTrigger->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); }
 
         m_creature->DealDamage(m_creature, m_creature->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
     }
@@ -267,10 +276,10 @@ struct MANGOS_DLL_DECL mob_illidari_councilAI : public ScriptedAI
             if (m_uiEquivalencyTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_EMPYREAL_EQUIVALENCY) == CAST_OK)
-                    m_uiEquivalencyTimer = urand(2000, 3000);
+                { m_uiEquivalencyTimer = urand(2000, 3000); }
             }
             else
-                m_uiEquivalencyTimer -= uiDiff;
+            { m_uiEquivalencyTimer -= uiDiff; }
         }
     }
 };
@@ -297,7 +306,7 @@ struct MANGOS_DLL_DECL boss_illidari_councilAI : public ScriptedAI
             if (Creature* pController = m_pInstance->GetSingleCreatureFromStorage(NPC_ILLIDARI_COUNCIL))
             {
                 if (mob_illidari_councilAI* pControlAI = dynamic_cast<mob_illidari_councilAI*>(pController->AI()))
-                    pControlAI->DoStartEvent();
+                { pControlAI->DoStartEvent(); }
             }
 
             m_pInstance->SetData(TYPE_COUNCIL, IN_PROGRESS);
@@ -311,7 +320,7 @@ struct MANGOS_DLL_DECL boss_illidari_councilAI : public ScriptedAI
             if (Creature* pController = m_pInstance->GetSingleCreatureFromStorage(NPC_ILLIDARI_COUNCIL))
             {
                 if (mob_illidari_councilAI* pControlAI = dynamic_cast<mob_illidari_councilAI*>(pController->AI()))
-                    pControlAI->DoEndEvent();
+                { pControlAI->DoEndEvent(); }
             }
 
             m_pInstance->SetData(TYPE_COUNCIL, DONE);
@@ -325,10 +334,10 @@ struct MANGOS_DLL_DECL boss_illidari_councilAI : public ScriptedAI
             // Note: council respawn handled by creature linking
 
             if (Creature* pVoiceTrigger = m_pInstance->GetSingleCreatureFromStorage(NPC_COUNCIL_VOICE))
-                pVoiceTrigger->AI()->EnterEvadeMode();
+            { pVoiceTrigger->AI()->EnterEvadeMode(); }
 
             if (Creature* pController = m_pInstance->GetSingleCreatureFromStorage(NPC_ILLIDARI_COUNCIL))
-                pController->AI()->EnterEvadeMode();
+            { pController->AI()->EnterEvadeMode(); }
 
             m_pInstance->SetData(TYPE_COUNCIL, FAIL);
         }
@@ -387,37 +396,37 @@ struct MANGOS_DLL_DECL boss_gathios_the_shattererAI : public boss_illidari_counc
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiBlessingTimer < uiDiff)
         {
             if (Unit* pTarget = DoSelectLowestHpFriendly(80.0f))
             {
                 if (DoCastSpellIfCan(pTarget, urand(0, 1) ? SPELL_BLESS_SPELLWARD : SPELL_BLESS_PROTECTION) == CAST_OK)
-                    m_uiBlessingTimer = 60000;
+                { m_uiBlessingTimer = 60000; }
             }
         }
         else
-            m_uiBlessingTimer -= uiDiff;
+        { m_uiBlessingTimer -= uiDiff; }
 
         if (m_uiConsecrationTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_CONSECRATION) == CAST_OK)
-                m_uiConsecrationTimer = urand(10000, 15000);
+            { m_uiConsecrationTimer = urand(10000, 15000); }
         }
         else
-            m_uiConsecrationTimer -= uiDiff;
+        { m_uiConsecrationTimer -= uiDiff; }
 
         if (m_uiHammerOfJusticeTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_HAMMER_OF_JUSTICE, SELECT_FLAG_PLAYER | SELECT_FLAG_NOT_IN_MELEE_RANGE))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_HAMMER_OF_JUSTICE) == CAST_OK)
-                    m_uiHammerOfJusticeTimer = 20000;
+                { m_uiHammerOfJusticeTimer = 20000; }
             }
         }
         else
-            m_uiHammerOfJusticeTimer -= uiDiff;
+        { m_uiHammerOfJusticeTimer -= uiDiff; }
 
         if (m_uiSealTimer < uiDiff)
         {
@@ -426,29 +435,29 @@ struct MANGOS_DLL_DECL boss_gathios_the_shattererAI : public boss_illidari_counc
                 m_uiSealTimer = 40000;
 
                 if (urand(0, 1))
-                    m_uiJudgmentTimer = urand(4000, 7000);
+                { m_uiJudgmentTimer = urand(4000, 7000); }
             }
         }
         else
-            m_uiSealTimer -= uiDiff;
+        { m_uiSealTimer -= uiDiff; }
 
         if (m_uiAuraTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, urand(0, 1) ? SPELL_DEVOTION_AURA : SPELL_CHROMATIC_AURA) == CAST_OK)
-                m_uiAuraTimer = 90000;
+            { m_uiAuraTimer = 90000; }
         }
         else
-            m_uiAuraTimer -= uiDiff;
+        { m_uiAuraTimer -= uiDiff; }
 
         if (m_uiJudgmentTimer)
         {
             if (m_uiJudgmentTimer <= uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_JUDGMENT) == CAST_OK)
-                    m_uiJudgmentTimer = 0;
+                { m_uiJudgmentTimer = 0; }
             }
             else
-                m_uiJudgmentTimer -= uiDiff;
+            { m_uiJudgmentTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -504,31 +513,31 @@ struct MANGOS_DLL_DECL boss_high_nethermancer_zerevorAI : public boss_illidari_c
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiDampenMagicTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_DAMPEN_MAGIC) == CAST_OK)
-                m_uiDampenMagicTimer = 110000;              // Almost 2 minutes
+            { m_uiDampenMagicTimer = 110000; }              // Almost 2 minutes
         }
         else
-            m_uiDampenMagicTimer -= uiDiff;
+        { m_uiDampenMagicTimer -= uiDiff; }
 
         if (m_uiArcaneExplosionTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ARCANE_EXPLOSION) == CAST_OK)
-                m_uiArcaneExplosionTimer = urand(5000, 15000);
+            { m_uiArcaneExplosionTimer = urand(5000, 15000); }
         }
         else
-            m_uiArcaneExplosionTimer -= uiDiff;
+        { m_uiArcaneExplosionTimer -= uiDiff; }
 
         if (m_uiArcaneBoltTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_ARCANE_BOLT) == CAST_OK)
-                m_uiArcaneBoltTimer = 3000;
+            { m_uiArcaneBoltTimer = 3000; }
         }
         else
-            m_uiArcaneBoltTimer -= uiDiff;
+        { m_uiArcaneBoltTimer -= uiDiff; }
 
         if (m_uiBlizzardTimer < uiDiff)
         {
@@ -542,7 +551,7 @@ struct MANGOS_DLL_DECL boss_high_nethermancer_zerevorAI : public boss_illidari_c
             }
         }
         else
-            m_uiBlizzardTimer -= uiDiff;
+        { m_uiBlizzardTimer -= uiDiff; }
 
         if (m_uiFlamestrikeTimer < uiDiff)
         {
@@ -556,7 +565,7 @@ struct MANGOS_DLL_DECL boss_high_nethermancer_zerevorAI : public boss_illidari_c
             }
         }
         else
-            m_uiFlamestrikeTimer -= uiDiff;
+        { m_uiFlamestrikeTimer -= uiDiff; }
     }
 };
 
@@ -607,45 +616,45 @@ struct MANGOS_DLL_DECL boss_lady_malandeAI : public boss_illidari_councilAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiEmpoweredSmiteTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_EMPOWERED_SMITE) == CAST_OK)
-                    m_uiEmpoweredSmiteTimer = urand(5000, 15000);
+                { m_uiEmpoweredSmiteTimer = urand(5000, 15000); }
             }
         }
         else
-            m_uiEmpoweredSmiteTimer -= uiDiff;
+        { m_uiEmpoweredSmiteTimer -= uiDiff; }
 
         if (m_uiCircleOfHealingTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_CIRCLE_OF_HEALING) == CAST_OK)
-                m_uiCircleOfHealingTimer = 20000;
+            { m_uiCircleOfHealingTimer = 20000; }
         }
         else
-            m_uiCircleOfHealingTimer -= uiDiff;
+        { m_uiCircleOfHealingTimer -= uiDiff; }
 
         if (m_uiDivineWrathTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_DIVINE_WRATH) == CAST_OK)
-                    m_uiDivineWrathTimer = urand(2000, 5000);
+                { m_uiDivineWrathTimer = urand(2000, 5000); }
             }
         }
         else
-            m_uiDivineWrathTimer -= uiDiff;
+        { m_uiDivineWrathTimer -= uiDiff; }
 
         if (m_uiReflectiveShieldTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_REFLECTIVE_SHIELD) == CAST_OK)
-                m_uiReflectiveShieldTimer = urand(30000, 40000);
+            { m_uiReflectiveShieldTimer = urand(30000, 40000); }
         }
         else
-            m_uiReflectiveShieldTimer -= uiDiff;
+        { m_uiReflectiveShieldTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -687,7 +696,7 @@ struct MANGOS_DLL_DECL boss_veras_darkshadowAI : public boss_illidari_councilAI
     void EnterEvadeMode() override
     {
         if (m_uiVanishEndtimer)
-            return;
+        { return; }
 
         ScriptedAI::EnterEvadeMode();
     }
@@ -695,7 +704,7 @@ struct MANGOS_DLL_DECL boss_veras_darkshadowAI : public boss_illidari_councilAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiVanishEndtimer)
         {
@@ -708,7 +717,7 @@ struct MANGOS_DLL_DECL boss_veras_darkshadowAI : public boss_illidari_councilAI
                 }
             }
             else
-                m_uiVanishEndtimer -= uiDiff;
+            { m_uiVanishEndtimer -= uiDiff; }
 
             // no more abilities during vanish
             return;
@@ -717,18 +726,18 @@ struct MANGOS_DLL_DECL boss_veras_darkshadowAI : public boss_illidari_councilAI
         if (m_uiDeadlyPoisonTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_DEADLY_POISON) == CAST_OK)
-                m_uiDeadlyPoisonTimer = urand(4000, 7000);
+            { m_uiDeadlyPoisonTimer = urand(4000, 7000); }
         }
         else
-            m_uiDeadlyPoisonTimer -= uiDiff;
+        { m_uiDeadlyPoisonTimer -= uiDiff; }
 
         if (m_uiEnvenomTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_ENVENOM) == CAST_OK)
-                m_uiEnvenomTimer = 5000;
+            { m_uiEnvenomTimer = 5000; }
         }
         else
-            m_uiEnvenomTimer -= uiDiff;
+        { m_uiEnvenomTimer -= uiDiff; }
 
         if (m_uiVanishTimer < uiDiff)
         {
@@ -739,7 +748,7 @@ struct MANGOS_DLL_DECL boss_veras_darkshadowAI : public boss_illidari_councilAI
             }
         }
         else
-            m_uiVanishTimer -= uiDiff;
+        { m_uiVanishTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

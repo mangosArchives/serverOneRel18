@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -35,7 +44,7 @@ void instance_scholomance::Initialize()
     memset(&m_auiEncounter, 0, sizeof(m_auiEncounter));
 
     for (uint8 i = 0; i < MAX_EVENTS; ++i)
-        m_mGandlingData[aGandlingEvents[i]] = GandlingEventData();
+    { m_mGandlingData[aGandlingEvents[i]] = GandlingEventData(); }
 }
 
 void instance_scholomance::OnPlayerEnter(Player* /*pPlayer*/)
@@ -54,7 +63,7 @@ void instance_scholomance::OnCreatureCreate(Creature* pCreature)
         case NPC_BONE_MINION:
             GandlingEventMap::iterator find = m_mGandlingData.find(m_uiGandlingEvent);
             if (find != m_mGandlingData.end())
-                find->second.m_sAddGuids.insert(pCreature->GetGUIDLow());
+            { find->second.m_sAddGuids.insert(pCreature->GetGUIDLow()); }
             break;
     }
 }
@@ -79,7 +88,7 @@ void instance_scholomance::OnObjectCreate(GameObject* pGo)
         case GO_VIEWING_ROOM_DOOR:
             // In normal flow of the instance, this door is opened by a dropped key
             if (m_auiEncounter[TYPE_RATTLEGORE] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
     }
 }
@@ -91,7 +100,7 @@ void instance_scholomance::SetData(uint32 uiType, uint32 uiData)
         case TYPE_KIRTONOS:
             // This door is initially closed by DB-scripts, so only use it in case of FAIL, DONE, or on aggro after wipe
             if (m_auiEncounter[uiType] != FAIL && uiData == IN_PROGRESS)
-                return;
+            { return; }
             m_auiEncounter[uiType] = uiData;
             DoUseDoorOrButton(GO_GATE_KIRTONOS);
             break;
@@ -135,7 +144,7 @@ void instance_scholomance::SetData(uint32 uiType, uint32 uiData)
 
     // Summon Gandling
     if (uiData == DONE)
-        DoSpawnGandlingIfCan(false);
+    { DoSpawnGandlingIfCan(false); }
 
     if (uiData == DONE)
     {
@@ -157,24 +166,24 @@ void instance_scholomance::DoSpawnGandlingIfCan(bool bByPlayerEnter)
 {
     // Do not summon, if event finished
     if (m_auiEncounter[TYPE_GANDLING] == DONE)
-        return;
+    { return; }
 
     // Summon only once
     if (GetSingleCreatureFromStorage(NPC_DARKMASTER_GANDLING))
-        return;
+    { return; }
 
     Player* pPlayer = GetPlayerInMap();
     if (!pPlayer)
-        return;
+    { return; }
 
     // Check if all the six bosses are done first
     if (m_auiEncounter[TYPE_MALICIA] == DONE && m_auiEncounter[TYPE_THEOLEN] == DONE && m_auiEncounter[TYPE_POLKELT] == DONE &&
-            m_auiEncounter[TYPE_RAVENIAN] == DONE && m_auiEncounter[TYPE_ALEXEI_BAROV] == DONE && m_auiEncounter[TYPE_ILLUCIA_BAROV] == DONE)
+        m_auiEncounter[TYPE_RAVENIAN] == DONE && m_auiEncounter[TYPE_ALEXEI_BAROV] == DONE && m_auiEncounter[TYPE_ILLUCIA_BAROV] == DONE)
     {
         if (Creature* pGandling = pPlayer->SummonCreature(NPC_DARKMASTER_GANDLING, aGandlingSpawnLocs[0].m_fX, aGandlingSpawnLocs[0].m_fY, aGandlingSpawnLocs[0].m_fZ, aGandlingSpawnLocs[0].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0))
         {
             if (!bByPlayerEnter)
-                DoScriptText(SAY_GANDLING_SPAWN, pGandling);
+            { DoScriptText(SAY_GANDLING_SPAWN, pGandling); }
         }
     }
 }
@@ -183,7 +192,7 @@ void instance_scholomance::HandlePortalEvent(uint32 uiEventId, uint32 uiData)
 {
     GandlingEventMap::iterator find = m_mGandlingData.find(uiEventId);
     if (find == m_mGandlingData.end())
-        return;
+    { return; }
 
     if (uiData == SPECIAL)
     {
@@ -201,8 +210,8 @@ void instance_scholomance::HandlePortalEvent(uint32 uiEventId, uint32 uiData)
     else
     {
         if ((uiData == IN_PROGRESS && !find->second.m_bIsActive) ||
-                (uiData == FAIL && find->second.m_bIsActive) ||
-                (uiData == DONE && find->second.m_bIsActive))
+            (uiData == FAIL && find->second.m_bIsActive) ||
+            (uiData == DONE && find->second.m_bIsActive))
         {
             find->second.m_bIsActive = !find->second.m_bIsActive;
             DoUseDoorOrButton(find->second.m_doorGuid);
@@ -213,7 +222,7 @@ void instance_scholomance::HandlePortalEvent(uint32 uiEventId, uint32 uiData)
 uint32 instance_scholomance::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-        return m_auiEncounter[uiType];
+    { return m_auiEncounter[uiType]; }
 
     return 0;
 }
@@ -234,7 +243,7 @@ void instance_scholomance::Load(const char* chrIn)
 
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
 
     OUT_LOAD_INST_DATA_COMPLETE;
 }

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -67,10 +76,10 @@ struct MANGOS_DLL_DECL mob_lumpAI : public ScriptedAI
     void AttackedBy(Unit* pAttacker) override
     {
         if (m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->IsFriendlyTo(pAttacker))
-            return;
+        { return; }
 
         AttackStart(pAttacker);
     }
@@ -98,10 +107,10 @@ struct MANGOS_DLL_DECL mob_lumpAI : public ScriptedAI
     void Aggro(Unit* pWho) override
     {
         if (m_creature->HasAura(SPELL_VISUAL_SLEEP, EFFECT_INDEX_0))
-            m_creature->RemoveAurasDueToSpell(SPELL_VISUAL_SLEEP);
+        { m_creature->RemoveAurasDueToSpell(SPELL_VISUAL_SLEEP); }
 
         if (!m_creature->IsStandState())
-            m_creature->SetStandState(UNIT_STAND_STATE_STAND);
+        { m_creature->SetStandState(UNIT_STAND_STATE_STAND); }
 
         DoScriptText(urand(0, 1) ? SAY_LUMP_AGGRO_1 : SAY_LUMP_AGGRO_2, m_creature, pWho);
     }
@@ -117,12 +126,12 @@ struct MANGOS_DLL_DECL mob_lumpAI : public ScriptedAI
                 m_bReset = false;
             }
             else
-                m_uiResetTimer -= uiDiff;
+            { m_uiResetTimer -= uiDiff; }
         }
 
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // SpearThrow Timer
         if (m_uiSpearThrowTimer < uiDiff)
@@ -131,7 +140,7 @@ struct MANGOS_DLL_DECL mob_lumpAI : public ScriptedAI
             m_uiSpearThrowTimer = 20000;
         }
         else
-            m_uiSpearThrowTimer -= uiDiff;
+        { m_uiSpearThrowTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -200,7 +209,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
                 DoScriptText(SAY_MAG_MORE, m_creature);
 
                 if (Creature* pTemp = m_creature->SummonCreature(NPC_MURK_PUTRIFIER, m_afAmbushB[0], m_afAmbushB[1], m_afAmbushB[2], 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 25000))
-                    DoScriptText(SAY_MAG_MORE_REPLY, pTemp);
+                { DoScriptText(SAY_MAG_MORE_REPLY, pTemp); }
 
                 m_creature->SummonCreature(NPC_MURK_PUTRIFIER, m_afAmbushB[0] - 2.5f, m_afAmbushB[1] - 2.5f, m_afAmbushB[2], 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 25000);
 
@@ -211,7 +220,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
                 DoScriptText(SAY_MAG_COMPLETE, m_creature);
 
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_TOTEM_KARDASH_H, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_TOTEM_KARDASH_H, m_creature); }
 
                 SetRun();
                 break;
@@ -221,10 +230,10 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_MURK_BRUTE)
-            DoScriptText(SAY_MAG_NO_ESCAPE, pSummoned);
+        { DoScriptText(SAY_MAG_NO_ESCAPE, pSummoned); }
 
         if (pSummoned->IsTotem())
-            return;
+        { return; }
 
         pSummoned->SetWalk(false);
         pSummoned->GetMotionMaster()->MovePoint(0, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ());
@@ -235,7 +244,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
         if (pSpell->Id == SPELL_CHAIN_LIGHTNING)
         {
             if (urand(0, 9))
-                return;
+            { return; }
 
             DoScriptText(SAY_MAG_LIGHTNING, m_creature);
         }
@@ -244,7 +253,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
     void UpdateEscortAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiChainLightningTimer < uiDiff)
         {
@@ -252,7 +261,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
             m_uiChainLightningTimer = urand(7000, 14000);
         }
         else
-            m_uiChainLightningTimer -= uiDiff;
+        { m_uiChainLightningTimer -= uiDiff; }
 
         if (m_creature->GetHealthPercent() < 30.0f)
         {
@@ -262,7 +271,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
                 m_uiHealTimer = 5000;
             }
             else
-                m_uiHealTimer -= uiDiff;
+            { m_uiHealTimer -= uiDiff; }
         }
 
         if (m_uiFrostShockTimer < uiDiff)
@@ -271,7 +280,7 @@ struct MANGOS_DLL_DECL npc_maghar_captiveAI : public npc_escortAI
             m_uiFrostShockTimer = urand(7500, 15000);
         }
         else
-            m_uiFrostShockTimer -= uiDiff;
+        { m_uiFrostShockTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -329,7 +338,7 @@ struct MANGOS_DLL_DECL npc_creditmarker_visit_with_ancestorsAI : public Scripted
                 {
                     // 18840: Sunspring, 18841: Laughing, 18842: Garadar, 18843: Bleeding
                     if (!((Player*)pWho)->GetReqKillOrCastCurrentCount(QUEST_VISIT_WITH_ANCESTORS, creditMarkerId))
-                        ((Player*)pWho)->KilledMonsterCredit(creditMarkerId, m_creature->GetObjectGuid());
+                    { ((Player*)pWho)->KilledMonsterCredit(creditMarkerId, m_creature->GetObjectGuid()); }
                 }
             }
         }

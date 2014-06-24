@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -66,7 +75,7 @@ struct MANGOS_DLL_DECL boss_razuviousAI : public ScriptedAI
     void KilledUnit(Unit* /*Victim*/) override
     {
         if (urand(0, 3))
-            return;
+        { return; }
 
         switch (urand(0, 1))
         {
@@ -82,7 +91,7 @@ struct MANGOS_DLL_DECL boss_razuviousAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_HOPELESS, CAST_TRIGGERED);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_RAZUVIOUS, DONE);
+        { m_pInstance->SetData(TYPE_RAZUVIOUS, DONE); }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -95,37 +104,37 @@ struct MANGOS_DLL_DECL boss_razuviousAI : public ScriptedAI
         }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_RAZUVIOUS, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_RAZUVIOUS, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_RAZUVIOUS, FAIL);
+        { m_pInstance->SetData(TYPE_RAZUVIOUS, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Unbalancing Strike
         if (m_uiUnbalancingStrikeTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_UNBALANCING_STRIKE) == CAST_OK)
-                m_uiUnbalancingStrikeTimer = 30000;
+            { m_uiUnbalancingStrikeTimer = 30000; }
         }
         else
-            m_uiUnbalancingStrikeTimer -= uiDiff;
+        { m_uiUnbalancingStrikeTimer -= uiDiff; }
 
         // Disrupting Shout
         if (m_uiDisruptingShoutTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_DISRUPTING_SHOUT) == CAST_OK)
-                m_uiDisruptingShoutTimer = 25000;
+            { m_uiDisruptingShoutTimer = 25000; }
         }
         else
-            m_uiDisruptingShoutTimer -= uiDiff;
+        { m_uiDisruptingShoutTimer -= uiDiff; }
 
         // Random say
         if (m_uiCommandSoundTimer < uiDiff)
@@ -141,7 +150,7 @@ struct MANGOS_DLL_DECL boss_razuviousAI : public ScriptedAI
             m_uiCommandSoundTimer = 40000;
         }
         else
-            m_uiCommandSoundTimer -= uiDiff;
+        { m_uiCommandSoundTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

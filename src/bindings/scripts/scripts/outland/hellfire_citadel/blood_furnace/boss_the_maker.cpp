@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -75,13 +84,13 @@ struct MANGOS_DLL_DECL boss_the_makerAI : public ScriptedAI
         }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_THE_MAKER_EVENT, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_THE_MAKER_EVENT, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_THE_MAKER_EVENT, FAIL);
+        { m_pInstance->SetData(TYPE_THE_MAKER_EVENT, FAIL); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -94,51 +103,51 @@ struct MANGOS_DLL_DECL boss_the_makerAI : public ScriptedAI
         DoScriptText(SAY_DIE, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_THE_MAKER_EVENT, DONE);
+        { m_pInstance->SetData(TYPE_THE_MAKER_EVENT, DONE); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiAcidSprayTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ACID_SPRAY) == CAST_OK)
-                m_uiAcidSprayTimer = urand(15000, 23000);
+            { m_uiAcidSprayTimer = urand(15000, 23000); }
         }
         else
-            m_uiAcidSprayTimer -= uiDiff;
+        { m_uiAcidSprayTimer -= uiDiff; }
 
         if (m_uiExplodingBreakerTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, m_bIsRegularMode ? SPELL_EXPLODING_BREAKER : SPELL_EXPLODING_BREAKER_H) == CAST_OK)
-                    m_uiExplodingBreakerTimer = urand(4000, 12000);
+                { m_uiExplodingBreakerTimer = urand(4000, 12000); }
             }
         }
         else
-            m_uiExplodingBreakerTimer -= uiDiff;
+        { m_uiExplodingBreakerTimer -= uiDiff; }
 
         if (m_uiDominationTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_DOMINATION) == CAST_OK)
-                    m_uiDominationTimer = urand(15000, 25000);
+                { m_uiDominationTimer = urand(15000, 25000); }
             }
         }
         else
-            m_uiDominationTimer -= uiDiff;
+        { m_uiDominationTimer -= uiDiff; }
 
         if (m_uiKnockdownTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_KNOCKDOWN) == CAST_OK)
-                m_uiKnockdownTimer = urand(4000, 12000);
+            { m_uiKnockdownTimer = urand(4000, 12000); }
         }
         else
-            m_uiKnockdownTimer -= uiDiff;
+        { m_uiKnockdownTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

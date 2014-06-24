@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -100,7 +109,7 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
         DoSpawnNextCrystal();
 
         for (uint8 i = 0; i < countof(aSandVortexSpawnPos); ++i)
-            m_creature->SummonCreature(NPC_SAND_VORTEX, aSandVortexSpawnPos[i][0], aSandVortexSpawnPos[i][1], aSandVortexSpawnPos[i][2], aSandVortexSpawnPos[i][3], TEMPSUMMON_CORPSE_DESPAWN, 0);
+        { m_creature->SummonCreature(NPC_SAND_VORTEX, aSandVortexSpawnPos[i][0], aSandVortexSpawnPos[i][1], aSandVortexSpawnPos[i][2], aSandVortexSpawnPos[i][3], TEMPSUMMON_CORPSE_DESPAWN, 0); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
@@ -116,7 +125,7 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
     void DoSpawnNextCrystal()
     {
         if (!m_pInstance)
-            return;
+        { return; }
 
         Creature* pOssirianTrigger = NULL;
         if (m_uiCrystalPosition == 0)
@@ -124,7 +133,7 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
             // Respawn static spawned crystal trigger
             pOssirianTrigger = m_pInstance->GetSingleCreatureFromStorage(NPC_OSSIRIAN_TRIGGER);
             if (pOssirianTrigger && !pOssirianTrigger->isAlive())
-                pOssirianTrigger->Respawn();
+            { pOssirianTrigger->Respawn(); }
         }
         else
         {
@@ -135,11 +144,11 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
             m_creature->SummonCreature(NPC_OSSIRIAN_TRIGGER, fX, fY, fZ, 0, TEMPSUMMON_CORPSE_DESPAWN, 0);
         }
         if (!pOssirianTrigger)
-            return;
+        { return; }
 
         // Respawn GO near crystal trigger
         if (GameObject* pCrystal = GetClosestGameObjectWithEntry(pOssirianTrigger, GO_OSSIRIAN_CRYSTAL, 10.0f))
-            m_pInstance->DoRespawnGameObject(pCrystal->GetObjectGuid(), 5 * MINUTE);
+        { m_pInstance->DoRespawnGameObject(pCrystal->GetObjectGuid(), 5 * MINUTE); }
 
         // Increase position
         ++m_uiCrystalPosition %= MAX_CRYSTAL_POSITIONS;
@@ -148,7 +157,7 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_OSSIRIAN_TRIGGER)
-            pSummoned->CastSpell(pSummoned, SPELL_SUMMON_CRYSTAL, true);
+        { pSummoned->CastSpell(pSummoned, SPELL_SUMMON_CRYSTAL, true); }
         else if (pSummoned->GetEntry() == NPC_SAND_VORTEX)
         {
             // The movement of this isn't very clear - may require additional research
@@ -172,7 +181,7 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
                 }
             }
             if (!bIsWeaknessSpell)
-                return;
+            { return; }
 
             m_creature->RemoveAurasDueToSpell(SPELL_SUPREME);
             m_uiSupremeTimer = 45000;
@@ -200,7 +209,7 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Supreme
         if (m_uiSupremeTimer <= uiDiff)
@@ -216,37 +225,37 @@ struct MANGOS_DLL_DECL boss_ossirianAI : public ScriptedAI
                 m_uiSupremeTimer = 45000;
             }
             else
-                m_uiSupremeTimer = 5000;
+            { m_uiSupremeTimer = 5000; }
         }
         else
-            m_uiSupremeTimer -= uiDiff;
+        { m_uiSupremeTimer -= uiDiff; }
 
         // Stomp
         if (m_uiStompTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_STOMP) == CAST_OK)
-                m_uiStompTimer = 30000;
+            { m_uiStompTimer = 30000; }
         }
         else
-            m_uiStompTimer -= uiDiff;
+        { m_uiStompTimer -= uiDiff; }
 
         // Cyclone
         if (m_uiCycloneTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CYCLONE) == CAST_OK)
-                m_uiCycloneTimer = 20000;
+            { m_uiCycloneTimer = 20000; }
         }
         else
-            m_uiCycloneTimer -= uiDiff;
+        { m_uiCycloneTimer -= uiDiff; }
 
         // Silence
         if (m_uiSilenceTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SILENCE) == CAST_OK)
-                m_uiSilenceTimer = urand(20000, 30000);
+            { m_uiSilenceTimer = urand(20000, 30000); }
         }
         else
-            m_uiSilenceTimer -= uiDiff;
+        { m_uiSilenceTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -261,7 +270,7 @@ CreatureAI* GetAI_boss_ossirian(Creature* pCreature)
 bool GOUse_go_ossirian_crystal(Player* /*pPlayer*/, GameObject* pGo)
 {
     if (Creature* pOssirianTrigger = GetClosestCreatureWithEntry(pGo, NPC_OSSIRIAN_TRIGGER, 10.0f))
-        pOssirianTrigger->CastSpell(pOssirianTrigger, aWeaknessSpell[urand(0, 4)], false);
+    { pOssirianTrigger->CastSpell(pOssirianTrigger, aWeaknessSpell[urand(0, 4)], false); }
 
     return true;
 }

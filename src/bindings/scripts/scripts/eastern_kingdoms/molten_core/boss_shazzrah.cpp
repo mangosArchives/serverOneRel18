@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -61,61 +70,61 @@ struct MANGOS_DLL_DECL boss_shazzrahAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SHAZZRAH, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_SHAZZRAH, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SHAZZRAH, DONE);
+        { m_pInstance->SetData(TYPE_SHAZZRAH, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SHAZZRAH, NOT_STARTED);
+        { m_pInstance->SetData(TYPE_SHAZZRAH, NOT_STARTED); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Arcane Explosion Timer
         if (m_uiArcaneExplosionTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ARCANE_EXPLOSION) == CAST_OK)
-                m_uiArcaneExplosionTimer = urand(5000, 9000);
+            { m_uiArcaneExplosionTimer = urand(5000, 9000); }
         }
         else
-            m_uiArcaneExplosionTimer -= uiDiff;
+        { m_uiArcaneExplosionTimer -= uiDiff; }
 
         // Shazzrah Curse Timer
         if (m_uiShazzrahCurseTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHAZZRAH_CURSE) == CAST_OK)
-                m_uiShazzrahCurseTimer = 20000;
+            { m_uiShazzrahCurseTimer = 20000; }
         }
         else
-            m_uiShazzrahCurseTimer -= uiDiff;
+        { m_uiShazzrahCurseTimer -= uiDiff; }
 
         // Magic Grounding Timer
         if (m_uiMagicGroundingTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_MAGIC_GROUNDING) == CAST_OK)
-                m_uiMagicGroundingTimer = 35000;
+            { m_uiMagicGroundingTimer = 35000; }
         }
         else
-            m_uiMagicGroundingTimer -= uiDiff;
+        { m_uiMagicGroundingTimer -= uiDiff; }
 
         // Counterspell Timer
         if (m_uiCounterspellTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_COUNTERSPELL) == CAST_OK)
-                m_uiCounterspellTimer = urand(16000, 20000);
+            { m_uiCounterspellTimer = urand(16000, 20000); }
         }
         else
-            m_uiCounterspellTimer -= uiDiff;
+        { m_uiCounterspellTimer -= uiDiff; }
 
         // Blink Timer
         if (m_uiBlinkTimer < uiDiff)
@@ -125,7 +134,7 @@ struct MANGOS_DLL_DECL boss_shazzrahAI : public ScriptedAI
             {
                 // manual, until added effect of dummy properly -- TODO REMOVE HACK
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    m_creature->NearTeleportTo(pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), m_creature->GetOrientation());
+                { m_creature->NearTeleportTo(pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), m_creature->GetOrientation()); }
                 DoResetThreat();
 
                 DoCastSpellIfCan(m_creature, SPELL_ARCANE_EXPLOSION, CAST_TRIGGERED);
@@ -134,7 +143,7 @@ struct MANGOS_DLL_DECL boss_shazzrahAI : public ScriptedAI
             }
         }
         else
-            m_uiBlinkTimer -= uiDiff;
+        { m_uiBlinkTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

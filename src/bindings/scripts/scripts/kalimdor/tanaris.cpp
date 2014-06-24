@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -73,12 +82,12 @@ struct MANGOS_DLL_DECL mob_aquementasAI : public ScriptedAI
     void SendItem(Player* pReceiver)
     {
         if (pReceiver->HasItemCount(ITEM_BOOK_AQUOR, 1) &&
-                pReceiver->HasItemCount(ITEM_SILVERY_CLAWS, 11) &&
-                pReceiver->HasItemCount(ITEM_IRONTREE_HEART, 1) &&
-                !pReceiver->HasItemCount(ITEM_SILVER_TOTEM, 1))
+            pReceiver->HasItemCount(ITEM_SILVERY_CLAWS, 11) &&
+            pReceiver->HasItemCount(ITEM_IRONTREE_HEART, 1) &&
+            !pReceiver->HasItemCount(ITEM_SILVER_TOTEM, 1))
         {
             if (Item* pItem = pReceiver->StoreNewItemInInventorySlot(ITEM_SILVER_TOTEM, 1))
-                pReceiver->SendNewItem(pItem, 1, true, false);
+            { pReceiver->SendNewItem(pItem, 1, true, false); }
         }
     }
 
@@ -88,7 +97,7 @@ struct MANGOS_DLL_DECL mob_aquementasAI : public ScriptedAI
 
         Player* pInvokedPlayer = pWho->GetCharmerOrOwnerPlayerOrPlayerItself();
         if (pInvokedPlayer)
-            SendItem(pInvokedPlayer);
+        { SendItem(pInvokedPlayer); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -101,11 +110,11 @@ struct MANGOS_DLL_DECL mob_aquementasAI : public ScriptedAI
                 m_uiSwitchFactionTimer = 0;
             }
             else
-                m_uiSwitchFactionTimer -= uiDiff;
+            { m_uiSwitchFactionTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiFrostShockTimer < uiDiff)
         {
@@ -113,7 +122,7 @@ struct MANGOS_DLL_DECL mob_aquementasAI : public ScriptedAI
             m_uiFrostShockTimer = 15000;
         }
         else
-            m_uiFrostShockTimer -= uiDiff;
+        { m_uiFrostShockTimer -= uiDiff; }
 
         if (m_uiAquaJetTimer < uiDiff)
         {
@@ -121,7 +130,7 @@ struct MANGOS_DLL_DECL mob_aquementasAI : public ScriptedAI
             m_uiAquaJetTimer = 15000;
         }
         else
-            m_uiAquaJetTimer -= uiDiff;
+        { m_uiAquaJetTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -168,7 +177,7 @@ struct MANGOS_DLL_DECL npc_custodian_of_timeAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
@@ -199,7 +208,7 @@ struct MANGOS_DLL_DECL npc_custodian_of_timeAI : public npc_escortAI
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
-            return;
+        { return; }
 
         if (pWho->GetTypeId() == TYPEID_PLAYER)
         {
@@ -208,7 +217,7 @@ struct MANGOS_DLL_DECL npc_custodian_of_timeAI : public npc_escortAI
                 float fRadius = 10.0f;
 
                 if (m_creature->IsWithinDistInMap(pWho, fRadius))
-                    Start(false, (Player*)pWho);
+                { Start(false, (Player*)pWho); }
             }
         }
     }
@@ -250,7 +259,7 @@ struct MANGOS_DLL_DECL npc_oox17tnAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-            return;
+        { return; }
 
         switch (i)
         {
@@ -269,7 +278,7 @@ struct MANGOS_DLL_DECL npc_oox17tnAI : public npc_escortAI
                 m_creature->SummonCreature(NPC_SHADOW_MAGE, -7486.41f, -4791.55f, 10.54f, 3.26f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 30000);
 
                 if (Creature* pCreature = m_creature->SummonCreature(NPC_SCOFFLAW, -7488.47f, -4800.77f, 9.77f, 2.50f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 30000))
-                    DoScriptText(SAY_OOX17_AMBUSH_REPLY, pCreature);
+                { DoScriptText(SAY_OOX17_AMBUSH_REPLY, pCreature); }
 
                 break;
             case 34:
@@ -312,13 +321,13 @@ bool QuestAccept_npc_oox17tn(Player* pPlayer, Creature* pCreature, const Quest* 
         pCreature->SetStandState(UNIT_STAND_STATE_STAND);
 
         if (pPlayer->GetTeam() == ALLIANCE)
-            pCreature->SetFactionTemporary(FACTION_ESCORT_A_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
+        { pCreature->SetFactionTemporary(FACTION_ESCORT_A_PASSIVE, TEMPFACTION_RESTORE_RESPAWN); }
 
         if (pPlayer->GetTeam() == HORDE)
-            pCreature->SetFactionTemporary(FACTION_ESCORT_H_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
+        { pCreature->SetFactionTemporary(FACTION_ESCORT_H_PASSIVE, TEMPFACTION_RESTORE_RESPAWN); }
 
         if (npc_oox17tnAI* pEscortAI = dynamic_cast<npc_oox17tnAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
     return true;
 }
@@ -337,10 +346,10 @@ bool QuestAccept_npc_oox17tn(Player* pPlayer, Creature* pCreature, const Quest* 
 bool GossipHello_npc_stone_watcher_of_norgannon(Player* pPlayer, Creature* pCreature)
 {
     if (pCreature->isQuestGiver())
-        pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
+    { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
     if (pPlayer->GetQuestStatus(2954) == QUEST_STATUS_INCOMPLETE)
-        pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_NORGANNON_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF);
+    { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_NORGANNON_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF); }
 
     pPlayer->SEND_GOSSIP_MENU(1674, pCreature->GetObjectGuid());
 
@@ -432,7 +441,7 @@ struct MANGOS_DLL_DECL npc_toogaAI : public FollowerAI
                 if (Player* pPlayer = GetLeaderForFollower())
                 {
                     if (pPlayer->GetQuestStatus(QUEST_TOOGA) == QUEST_STATUS_INCOMPLETE)
-                        pPlayer->GroupEventHappens(QUEST_TOOGA, m_creature);
+                    { pPlayer->GroupEventHappens(QUEST_TOOGA, m_creature); }
                 }
 
                 pTorta = pWho;
@@ -446,10 +455,10 @@ struct MANGOS_DLL_DECL npc_toogaAI : public FollowerAI
         FollowerAI::MovementInform(uiMotionType, uiPointId);
 
         if (uiMotionType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         if (uiPointId == POINT_ID_TO_WATER)
-            SetFollowComplete();
+        { SetFollowComplete(); }
     }
 
     void UpdateFollowerAI(const uint32 uiDiff) override
@@ -496,7 +505,7 @@ struct MANGOS_DLL_DECL npc_toogaAI : public FollowerAI
                     ++m_uiPhasePostEvent;
                 }
                 else
-                    m_uiPostEventTimer -= uiDiff;
+                { m_uiPostEventTimer -= uiDiff; }
             }
             //...we are doing regular speech check
             else if (HasFollowState(STATE_FOLLOW_INPROGRESS))
@@ -512,7 +521,7 @@ struct MANGOS_DLL_DECL npc_toogaAI : public FollowerAI
                     }
                 }
                 else
-                    m_uiCheckSpeechTimer -= uiDiff;
+                { m_uiCheckSpeechTimer -= uiDiff; }
             }
 
             return;
@@ -532,7 +541,7 @@ bool QuestAccept_npc_tooga(Player* pPlayer, Creature* pCreature, const Quest* pQ
     if (pQuest->GetQuestId() == QUEST_TOOGA)
     {
         if (npc_toogaAI* pToogaAI = dynamic_cast<npc_toogaAI*>(pCreature->AI()))
-            pToogaAI->StartFollow(pPlayer, FACTION_ESCORT_N_FRIEND_PASSIVE, pQuest);
+        { pToogaAI->StartFollow(pPlayer, FACTION_ESCORT_N_FRIEND_PASSIVE, pQuest); }
     }
 
     return true;

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -60,28 +69,28 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GEDDON, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_GEDDON, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GEDDON, DONE);
+        { m_pInstance->SetData(TYPE_GEDDON, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GEDDON, NOT_STARTED);
+        { m_pInstance->SetData(TYPE_GEDDON, NOT_STARTED); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_bIsArmageddon)                                // Do nothing untill armageddon triggers
-            return;
+        { return; }
 
         // If we are <2% hp cast Armageddom
         if (m_creature->GetHealthPercent() <= 2.0f && !m_bIsArmageddon)
@@ -98,19 +107,19 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
         if (m_uiInfernoTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_INFERNO) == CAST_OK)
-                m_uiInfernoTimer = 45000;
+            { m_uiInfernoTimer = 45000; }
         }
         else
-            m_uiInfernoTimer -= uiDiff;
+        { m_uiInfernoTimer -= uiDiff; }
 
         // Ignite Mana Timer
         if (m_uiIgniteManaTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_IGNITE_MANA) == CAST_OK)
-                m_uiIgniteManaTimer = 30000;
+            { m_uiIgniteManaTimer = 30000; }
         }
         else
-            m_uiIgniteManaTimer -= uiDiff;
+        { m_uiIgniteManaTimer -= uiDiff; }
 
         // Living Bomb Timer
         if (m_uiLivingBombTimer < uiDiff)
@@ -118,11 +127,11 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_LIVING_BOMB) == CAST_OK)
-                    m_uiLivingBombTimer = 35000;
+                { m_uiLivingBombTimer = 35000; }
             }
         }
         else
-            m_uiLivingBombTimer -= uiDiff;
+        { m_uiLivingBombTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

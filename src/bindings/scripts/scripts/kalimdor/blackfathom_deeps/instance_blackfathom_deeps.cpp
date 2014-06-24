@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -44,7 +53,7 @@ void instance_blackfathom_deeps::Initialize()
 void instance_blackfathom_deeps::OnCreatureCreate(Creature* pCreature)
 {
     if (pCreature->GetEntry() == NPC_KELRIS)
-        m_mNpcEntryGuidStore[NPC_KELRIS] = pCreature->GetObjectGuid();
+    { m_mNpcEntryGuidStore[NPC_KELRIS] = pCreature->GetObjectGuid(); }
 }
 
 void instance_blackfathom_deeps::OnObjectCreate(GameObject* pGo)
@@ -53,7 +62,7 @@ void instance_blackfathom_deeps::OnObjectCreate(GameObject* pGo)
     {
         case GO_PORTAL_DOOR:
             if (m_auiEncounter[1] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
 
             m_mGoEntryGuidStore[GO_PORTAL_DOOR] = pGo->GetObjectGuid();
             break;
@@ -62,7 +71,7 @@ void instance_blackfathom_deeps::OnObjectCreate(GameObject* pGo)
         case GO_SHRINE_3:
         case GO_SHRINE_4:
             if (m_auiEncounter[1] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
     }
 }
@@ -71,7 +80,7 @@ void instance_blackfathom_deeps::DoSpawnMobs(uint8 uiWaveIndex)
 {
     Creature* pKelris = GetSingleCreatureFromStorage(NPC_KELRIS);
     if (!pKelris)
-        return;
+    { return; }
 
     float fX_resp, fY_resp, fZ_resp;
 
@@ -80,7 +89,7 @@ void instance_blackfathom_deeps::DoSpawnMobs(uint8 uiWaveIndex)
     for (uint8 i = 0; i < countof(aWaveSummonInformation); ++i)
     {
         if (aWaveSummonInformation[i].m_uiWaveIndex != uiWaveIndex)
-            continue;
+        { continue; }
 
         // Summon mobs at positions
         for (uint8 j = 0; j < MAX_COUNT_POS; ++j)
@@ -95,7 +104,7 @@ void instance_blackfathom_deeps::DoSpawnMobs(uint8 uiWaveIndex)
 
                 // Adapt fPosY slightly in case of higher summon-counts
                 if (aWaveSummonInformation[i].m_aCountAndPos[j].m_uiCount > 1)
-                    fPosY = fPosY - INTERACTION_DISTANCE / 2 + k * INTERACTION_DISTANCE / aWaveSummonInformation[i].m_aCountAndPos[j].m_uiCount;
+                { fPosY = fPosY - INTERACTION_DISTANCE / 2 + k * INTERACTION_DISTANCE / aWaveSummonInformation[i].m_aCountAndPos[j].m_uiCount; }
 
                 if (Creature* pSummoned = pKelris->SummonCreature(aWaveSummonInformation[i].m_uiNpcEntry, fPosX, fPosY, fPosZ, fPosO, TEMPSUMMON_DEAD_DESPAWN, 0))
                 {
@@ -113,7 +122,7 @@ void instance_blackfathom_deeps::SetData(uint32 uiType, uint32 uiData)
     {
         case TYPE_KELRIS:                                   // EventAI must set instance data (1,3) at his death
             if (m_auiEncounter[0] != DONE && uiData == DONE)
-                m_auiEncounter[0] = uiData;
+            { m_auiEncounter[0] = uiData; }
             break;
         case TYPE_SHRINE:
             m_auiEncounter[1] = uiData;
@@ -123,7 +132,7 @@ void instance_blackfathom_deeps::SetData(uint32 uiType, uint32 uiData)
                 ++m_uiWaveCounter;
             }
             else if (uiData == DONE)
-                DoUseDoorOrButton(GO_PORTAL_DOOR);
+            { DoUseDoorOrButton(GO_PORTAL_DOOR); }
             break;
     }
 
@@ -168,7 +177,7 @@ void instance_blackfathom_deeps::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -178,7 +187,7 @@ void instance_blackfathom_deeps::OnCreatureDeath(Creature* pCreature)
 {
     // Only use this function if shrine event is in progress
     if (m_auiEncounter[1] != IN_PROGRESS)
-        return;
+    { return; }
 
     switch (pCreature->GetEntry())
     {
@@ -197,7 +206,7 @@ void instance_blackfathom_deeps::OnCreatureDeath(Creature* pCreature)
     }
 
     if (IsWaveEventFinished())
-        SetData(TYPE_SHRINE, DONE);
+    { SetData(TYPE_SHRINE, DONE); }
 }
 
 // Check if all the summoned event mobs are dead
@@ -205,13 +214,13 @@ bool instance_blackfathom_deeps::IsWaveEventFinished()
 {
     // If not all fires are lighted return
     if (m_uiWaveCounter < MAX_FIRES)
-        return false;
+    { return false; }
 
     // Check if all mobs are dead
     for (uint8 i = 0; i < MAX_FIRES; ++i)
     {
         if (!m_lWaveMobsGuids[i].empty())
-            return false;
+        { return false; }
     }
 
     return true;
@@ -221,7 +230,7 @@ void instance_blackfathom_deeps::Update(uint32 uiDiff)
 {
     // Only use this function if shrine event is in progress
     if (m_auiEncounter[1] != IN_PROGRESS)
-        return;
+    { return; }
 
     for (uint8 i = 0; i < MAX_FIRES; ++i)
     {
@@ -233,7 +242,7 @@ void instance_blackfathom_deeps::Update(uint32 uiDiff)
                 m_uiSpawnMobsTimer[i] = 0;
             }
             else
-                m_uiSpawnMobsTimer[i] -= uiDiff;
+            { m_uiSpawnMobsTimer[i] -= uiDiff; }
         }
     }
 }
@@ -248,10 +257,10 @@ bool GOUse_go_fire_of_akumai(Player* /*pPlayer*/, GameObject* pGo)
     instance_blackfathom_deeps* pInstance = (instance_blackfathom_deeps*)pGo->GetInstanceData();
 
     if (!pInstance)
-        return true;
+    { return true; }
 
     if (pInstance->GetData(TYPE_SHRINE) == DONE)
-        return true;
+    { return true; }
 
     if (pInstance->GetData(TYPE_KELRIS) == DONE)
     {

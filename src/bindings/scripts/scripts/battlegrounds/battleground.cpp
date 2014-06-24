@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -59,7 +68,7 @@ struct MANGOS_DLL_DECL npc_spirit_guideAI : public ScriptedAI
     {
         // auto cast the whole time this spell
         if (!m_creature->GetCurrentSpell(CURRENT_CHANNELED_SPELL))
-            m_creature->CastSpell(m_creature, SPELL_SPIRIT_HEAL_CHANNEL, false);
+        { m_creature->CastSpell(m_creature, SPELL_SPIRIT_HEAL_CHANNEL, false); }
     }
 
     void CorpseRemoved(uint32&) override
@@ -68,7 +77,7 @@ struct MANGOS_DLL_DECL npc_spirit_guideAI : public ScriptedAI
         Map* pMap = m_creature->GetMap();
 
         if (!pMap || !pMap->IsBattleGround())
-            return;
+        { return; }
 
         Map::PlayerList const& PlayerList = pMap->GetPlayers();
 
@@ -76,7 +85,7 @@ struct MANGOS_DLL_DECL npc_spirit_guideAI : public ScriptedAI
         {
             Player* pPlayer = itr->getSource();
             if (!pPlayer || !pPlayer->IsWithinDistInMap(m_creature, 20.0f) || !pPlayer->HasAura(SPELL_WAITING_TO_RESURRECT))
-                continue;
+            { continue; }
 
             // repop player again - now this node won't be counted and another node is searched
             pPlayer->RepopAtGraveyard();
@@ -86,8 +95,8 @@ struct MANGOS_DLL_DECL npc_spirit_guideAI : public ScriptedAI
     void SpellHitTarget(Unit* pUnit, const SpellEntry* pSpellEntry) override
     {
         if (pSpellEntry->Id == SPELL_SPIRIT_HEAL && pUnit->GetTypeId() == TYPEID_PLAYER
-                && pUnit->HasAura(SPELL_WAITING_TO_RESURRECT))
-            pUnit->CastSpell(pUnit, SPELL_SPIRIT_HEAL_MANA, true);
+            && pUnit->HasAura(SPELL_WAITING_TO_RESURRECT))
+        { pUnit->CastSpell(pUnit, SPELL_SPIRIT_HEAL_MANA, true); }
     }
 };
 

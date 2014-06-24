@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -45,8 +54,8 @@ bool AreaTrigger_at_shade_of_eranikus(Player* pPlayer, AreaTriggerEntry const* /
     {
         // Only do stuff, if the player has finished the PreQuest
         if (pPlayer->GetQuestRewardStatus(QUEST_THE_CHARGE_OF_DRAGONFLIGHTS) &&
-                !pPlayer->GetQuestRewardStatus(QUEST_ERANIKUS_TYRANT_OF_DREAMS) &&
-                pPlayer->GetQuestStatus(QUEST_ERANIKUS_TYRANT_OF_DREAMS) != QUEST_STATUS_COMPLETE)
+            !pPlayer->GetQuestRewardStatus(QUEST_ERANIKUS_TYRANT_OF_DREAMS) &&
+            pPlayer->GetQuestStatus(QUEST_ERANIKUS_TYRANT_OF_DREAMS) != QUEST_STATUS_COMPLETE)
         {
             if (pInstance->GetData(TYPE_MALFURION) != DONE)
             {
@@ -128,7 +137,7 @@ struct MANGOS_DLL_DECL npc_malfurionAI : public ScriptedAI
                     ++m_uiSpeech;
                 }
                 else
-                    m_uiSayTimer -= uiDiff;
+                { m_uiSayTimer -= uiDiff; }
             }
         }
     }
@@ -151,25 +160,25 @@ bool ProcessEventId_event_antalarion_statue_activation(uint32 uiEventId, Object*
         {
             // return if event completed
             if (pInstance->GetData(TYPE_ATALARION) != NOT_STARTED)
-                return true;
+            { return true; }
 
             // Send the event id to process
             if (pInstance->ProcessStatueEvent(uiEventId))
             {
                 // Activate the green light if the correct statue is activated
                 if (GameObject* pLight = GetClosestGameObjectWithEntry((GameObject*)pTarget, GO_ATALAI_LIGHT, INTERACTION_DISTANCE))
-                    pInstance->DoRespawnGameObject(pLight->GetObjectGuid(), 30 * MINUTE);
+                { pInstance->DoRespawnGameObject(pLight->GetObjectGuid(), 30 * MINUTE); }
             }
             else
             {
                 // If the wrong statue was activated, then trigger trap
                 // We don't know actually which trap goes to which statue so we need to search for each
                 if (GameObject* pTrap = GetClosestGameObjectWithEntry((GameObject*)pTarget, GO_ATALAI_TRAP_1, INTERACTION_DISTANCE))
-                    pTrap->Use((Unit*)pSource);
+                { pTrap->Use((Unit*)pSource); }
                 else if (GameObject* pTrap = GetClosestGameObjectWithEntry((GameObject*)pTarget, GO_ATALAI_TRAP_2, INTERACTION_DISTANCE))
-                    pTrap->Use((Unit*)pSource);
+                { pTrap->Use((Unit*)pSource); }
                 else if (GameObject* pTrap = GetClosestGameObjectWithEntry((GameObject*)pTarget, GO_ATALAI_TRAP_3, INTERACTION_DISTANCE))
-                    pTrap->Use((Unit*)pSource);
+                { pTrap->Use((Unit*)pSource); }
             }
 
             return true;
@@ -189,7 +198,7 @@ bool ProcessEventId_event_avatar_of_hakkar(uint32 /*uiEventId*/, Object* pSource
         {
             // return if not NOT_STARTED
             if (pInstance->GetData(TYPE_AVATAR) != NOT_STARTED)
-                return true;
+            { return true; }
 
             pInstance->SetData(TYPE_AVATAR, IN_PROGRESS);
 
@@ -207,10 +216,10 @@ bool GOUse_go_eternal_flame(Player* /*pPlayer*/, GameObject* pGo)
     instance_sunken_temple* pInstance = (instance_sunken_temple*)pGo->GetInstanceData();
 
     if (!pInstance)
-        return false;
+    { return false; }
 
     if (pInstance->GetData(TYPE_AVATAR) != IN_PROGRESS)
-        return false;
+    { return false; }
 
     // Set data to special when flame is used
     pInstance->SetData(TYPE_AVATAR, SPECIAL);
@@ -228,7 +237,7 @@ bool EffectDummyCreature_summon_hakkar(Unit* pCaster, uint32 uiSpellId, SpellEff
     if (uiSpellId == SPELL_SUMMON_AVATAR && uiEffIndex == EFFECT_INDEX_0)
     {
         if (!pCaster || pCaster->GetTypeId() != TYPEID_UNIT)
-            return true;
+        { return true; }
 
         // Update entry to avatar of Hakkar and cast some visuals
         ((Creature*)pCaster)->UpdateEntry(NPC_AVATAR_OF_HAKKAR);

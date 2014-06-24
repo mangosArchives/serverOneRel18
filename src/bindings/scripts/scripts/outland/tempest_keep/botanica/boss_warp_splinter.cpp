@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -53,7 +62,7 @@ struct MANGOS_DLL_DECL boss_warp_splinterAI : public ScriptedAI
     {
         // Add the summon spells to a vector for better handling
         for (uint8 i = 0; i < 10; ++i)
-            m_vSummonSpells.push_back(aSaplingsSummonSpells[i]);
+        { m_vSummonSpells.push_back(aSaplingsSummonSpells[i]); }
 
         m_bIsRegularMode = pCreature->GetMap()->IsRegularDifficulty();
         Reset();
@@ -92,7 +101,7 @@ struct MANGOS_DLL_DECL boss_warp_splinterAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_SAPLING)
-            pSummoned->GetMotionMaster()->MoveFollow(m_creature, 0, 0);
+        { pSummoned->GetMotionMaster()->MoveFollow(m_creature, 0, 0); }
     }
 
     // Wrapper to summon all Saplings
@@ -101,7 +110,7 @@ struct MANGOS_DLL_DECL boss_warp_splinterAI : public ScriptedAI
         // Choose 6 random spells out of 10
         std::random_shuffle(m_vSummonSpells.begin(), m_vSummonSpells.end());
         for (uint8 i = 0; i < 6; ++i)
-            DoCastSpellIfCan(m_creature, m_vSummonSpells[i], CAST_TRIGGERED);
+        { DoCastSpellIfCan(m_creature, m_vSummonSpells[i], CAST_TRIGGERED); }
 
         DoCastSpellIfCan(m_creature, SPELL_SUMMON_SAPLINGS, CAST_TRIGGERED);
         DoScriptText(urand(0, 1) ? SAY_SUMMON_1 : SAY_SUMMON_2, m_creature);
@@ -110,25 +119,25 @@ struct MANGOS_DLL_DECL boss_warp_splinterAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // War Stomp
         if (m_uiWarStompTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_WAR_STOMP) == CAST_OK)
-                m_uiWarStompTimer = urand(17000, 38000);
+            { m_uiWarStompTimer = urand(17000, 38000); }
         }
         else
-            m_uiWarStompTimer -= uiDiff;
+        { m_uiWarStompTimer -= uiDiff; }
 
         // Arcane Volley
         if (m_uiArcaneVolleyTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, m_bIsRegularMode ? SPELL_ARCANE_VOLLEY : SPELL_ARCANE_VOLLEY_H) == CAST_OK)
-                m_uiArcaneVolleyTimer = urand(16000, 38000);
+            { m_uiArcaneVolleyTimer = urand(16000, 38000); }
         }
         else
-            m_uiArcaneVolleyTimer -= uiDiff;
+        { m_uiArcaneVolleyTimer -= uiDiff; }
 
         // Summon Treants
         if (m_uiSummonTreantsTimer < uiDiff)
@@ -137,7 +146,7 @@ struct MANGOS_DLL_DECL boss_warp_splinterAI : public ScriptedAI
             m_uiSummonTreantsTimer = urand(37000, 55000);
         }
         else
-            m_uiSummonTreantsTimer -= uiDiff;
+        { m_uiSummonTreantsTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -160,7 +169,7 @@ struct MANGOS_DLL_DECL npc_saplingAI  : public ScriptedAI
     void UpdateAI(const uint32 /*uiDiff*/) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DoMeleeAttackIfReady();
     }

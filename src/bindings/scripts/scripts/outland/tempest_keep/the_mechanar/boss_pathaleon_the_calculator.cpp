@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -102,39 +111,39 @@ struct MANGOS_DLL_DECL boss_pathaleon_the_calculatorAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_PATHALEON, DONE);
+        { m_pInstance->SetData(TYPE_PATHALEON, DONE); }
     }
 
     void JustSummoned(Creature* pSummoned) override
     {
         if (m_creature->getVictim())
-            pSummoned->AI()->AttackStart(m_creature->getVictim());
+        { pSummoned->AI()->AttackStart(m_creature->getVictim()); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiManaTapTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_MANA_TAP, SELECT_FLAG_POWER_MANA))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_MANA_TAP) == CAST_OK)
-                    m_uiManaTapTimer = urand(16000, 34000);
+                { m_uiManaTapTimer = urand(16000, 34000); }
             }
         }
         else
-            m_uiManaTapTimer -= uiDiff;
+        { m_uiManaTapTimer -= uiDiff; }
 
         if (m_uiArcaneTorrentTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ARCANE_TORRENT) == CAST_OK)
-                m_uiArcaneTorrentTimer = urand(40000, 52000);
+            { m_uiArcaneTorrentTimer = urand(40000, 52000); }
         }
         else
-            m_uiArcaneTorrentTimer -= uiDiff;
+        { m_uiArcaneTorrentTimer -= uiDiff; }
 
         if (m_uiDominationTimer < uiDiff)
         {
@@ -148,7 +157,7 @@ struct MANGOS_DLL_DECL boss_pathaleon_the_calculatorAI : public ScriptedAI
             }
         }
         else
-            m_uiDominationTimer -= uiDiff;
+        { m_uiDominationTimer -= uiDiff; }
 
         // Only casting if Heroic Mode is used
         if (!m_bIsRegularMode)
@@ -156,10 +165,10 @@ struct MANGOS_DLL_DECL boss_pathaleon_the_calculatorAI : public ScriptedAI
             if (m_uiArcaneExplosionTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_ARCANE_EXPLOSION_H) == CAST_OK)
-                    m_uiArcaneExplosionTimer = urand(13000, 25000);
+                { m_uiArcaneExplosionTimer = urand(13000, 25000); }
             }
             else
-                m_uiArcaneExplosionTimer -= uiDiff;
+            { m_uiArcaneExplosionTimer -= uiDiff; }
         }
 
         if (!m_bIsEnraged && m_creature->GetHealthPercent() < 21.0f)
@@ -178,21 +187,21 @@ struct MANGOS_DLL_DECL boss_pathaleon_the_calculatorAI : public ScriptedAI
             {
                 uint8 uiMaxWraith = urand(3, 4);
                 for (uint8 i = 0; i < uiMaxWraith; ++i)
-                    DoCastSpellIfCan(m_creature, aWraithSummonSpells[i], CAST_TRIGGERED);
+                { DoCastSpellIfCan(m_creature, aWraithSummonSpells[i], CAST_TRIGGERED); }
 
                 DoScriptText(SAY_SUMMON, m_creature);
                 m_uiSummonTimer = urand(45000, 50000);
             }
             else
-                m_uiSummonTimer -= uiDiff;
+            { m_uiSummonTimer -= uiDiff; }
 
             if (m_uiAngerTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_DISGRUNTLED_ANGER) == CAST_OK)
-                    m_uiAngerTimer = urand(55000, 84000);
+                { m_uiAngerTimer = urand(55000, 84000); }
             }
             else
-                m_uiAngerTimer -= uiDiff;
+            { m_uiAngerTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -215,22 +224,22 @@ struct MANGOS_DLL_DECL mob_nether_wraithAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiArcaneMissilesTimer < uiDiff)
         {
             Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1);
             if (!pTarget)
-                pTarget = m_creature->getVictim();
+            { pTarget = m_creature->getVictim(); }
 
             if (pTarget)
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_ARCANE_BOLT) == CAST_OK)
-                    m_uiArcaneMissilesTimer = urand(5000, 10000);
+                { m_uiArcaneMissilesTimer = urand(5000, 10000); }
             }
         }
         else
-            m_uiArcaneMissilesTimer -= uiDiff;
+        { m_uiArcaneMissilesTimer -= uiDiff; }
 
         if (!m_bHasDetonated && m_creature->GetHealthPercent() < 10.0f)
         {

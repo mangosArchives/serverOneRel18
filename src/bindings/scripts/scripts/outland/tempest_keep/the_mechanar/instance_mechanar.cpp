@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -40,11 +49,11 @@ void instance_mechanar::OnPlayerEnter(Player* pPlayer)
 {
     // Check encounter states
     if (GetData(TYPE_SEPETHREA) != DONE || GetData(TYPE_PATHALEON) == DONE)
-        return;
+    { return; }
 
     // Check if already summoned
     if (GetSingleCreatureFromStorage(NPC_PATHALEON, true))
-        return;
+    { return; }
 
     pPlayer->SummonCreature(aBridgeEventLocs[6][0].m_uiSpawnEntry, aBridgeEventLocs[6][0].m_fX, aBridgeEventLocs[6][0].m_fY, aBridgeEventLocs[6][0].m_fZ, aBridgeEventLocs[6][0].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0);
 }
@@ -63,7 +72,7 @@ void instance_mechanar::OnCreatureCreate(Creature* pCreature)
         case NPC_NETHERBINDER:
         case NPC_FORGE_DESTROYER:
             if (pCreature->IsTemporarySummon())
-                m_sBridgeTrashGuidSet.insert(pCreature->GetObjectGuid());
+            { m_sBridgeTrashGuidSet.insert(pCreature->GetObjectGuid()); }
             break;
     }
 }
@@ -90,7 +99,7 @@ void instance_mechanar::SetData(uint32 uiType, uint32 uiData)
         case TYPE_SEPETHREA:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE)
-                m_uiBridgeEventTimer = 10000;
+            { m_uiBridgeEventTimer = 10000; }
             break;
         case TYPE_PATHALEON:
             m_auiEncounter[uiType] = uiData;
@@ -116,7 +125,7 @@ void instance_mechanar::SetData(uint32 uiType, uint32 uiData)
 uint32 instance_mechanar::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-        return m_auiEncounter[uiType];
+    { return m_auiEncounter[uiType]; }
 
     return 0;
 }
@@ -138,7 +147,7 @@ void instance_mechanar::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -166,9 +175,9 @@ void instance_mechanar::OnCreatureDeath(Creature* pCreature)
                 {
                     // After the 3rd wave wait 10 seconds
                     if (m_uiBridgeEventPhase == 3)
-                        m_uiBridgeEventTimer = 10000;
+                    { m_uiBridgeEventTimer = 10000; }
                     else
-                        DoSpawnBridgeWave();
+                    { DoSpawnBridgeWave(); }
                 }
             }
             break;
@@ -183,7 +192,7 @@ void instance_mechanar::DoSpawnBridgeWave()
         {
             // Skip the blank entries
             if (aBridgeEventLocs[m_uiBridgeEventPhase][i].m_uiSpawnEntry == 0)
-                break;
+            { break; }
 
             if (Creature* pTemp = pPlayer->SummonCreature(aBridgeEventLocs[m_uiBridgeEventPhase][i].m_uiSpawnEntry, aBridgeEventLocs[m_uiBridgeEventPhase][i].m_fX, aBridgeEventLocs[m_uiBridgeEventPhase][i].m_fY, aBridgeEventLocs[m_uiBridgeEventPhase][i].m_fZ, aBridgeEventLocs[m_uiBridgeEventPhase][i].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0))
             {
@@ -217,7 +226,7 @@ void instance_mechanar::Update(uint32 uiDiff)
             m_uiBridgeEventTimer = 0;
         }
         else
-            m_uiBridgeEventTimer -= uiDiff;
+        { m_uiBridgeEventTimer -= uiDiff; }
     }
 }
 

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -62,7 +71,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() != NPC_SPIRESTONE_WARLORD && pSummoned->GetEntry() != NPC_SMOLDERTHORN_BERSERKER)
-            return;
+        { return; }
 
         if (m_creature->getVictim())
         {
@@ -75,7 +84,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // BlastWave
         if (m_uiBlastWaveTimer < uiDiff)
@@ -84,7 +93,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiBlastWaveTimer = 20000;
         }
         else
-            m_uiBlastWaveTimer -= uiDiff;
+        { m_uiBlastWaveTimer -= uiDiff; }
 
         // Shout
         if (m_uiShoutTimer < uiDiff)
@@ -93,7 +102,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiShoutTimer = 10000;
         }
         else
-            m_uiShoutTimer -= uiDiff;
+        { m_uiShoutTimer -= uiDiff; }
 
         // Cleave
         if (m_uiCleaveTimer < uiDiff)
@@ -102,7 +111,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiCleaveTimer = 7000;
         }
         else
-            m_uiCleaveTimer -= uiDiff;
+        { m_uiCleaveTimer -= uiDiff; }
 
         // Knockaway
         if (m_uiKnockawayTimer < uiDiff)
@@ -111,7 +120,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiKnockawayTimer = 14000;
         }
         else
-            m_uiKnockawayTimer -= uiDiff;
+        { m_uiKnockawayTimer -= uiDiff; }
 
         // Summon two Beserks
         if (!m_bSummoned && m_creature->GetHealthPercent() < 51.0f)

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -108,32 +117,32 @@ struct MANGOS_DLL_DECL boss_chromaggusAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_CHROMAGGUS, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_CHROMAGGUS, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_CHROMAGGUS, DONE);
+        { m_pInstance->SetData(TYPE_CHROMAGGUS, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_CHROMAGGUS, FAIL);
+        { m_pInstance->SetData(TYPE_CHROMAGGUS, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Shimmer Timer Timer
         if (m_uiShimmerTimer < uiDiff)
         {
             // Remove old vulnerability spell
             if (m_uiCurrentVulnerabilitySpell)
-                m_creature->RemoveAurasDueToSpell(m_uiCurrentVulnerabilitySpell);
+            { m_creature->RemoveAurasDueToSpell(m_uiCurrentVulnerabilitySpell); }
 
             // Cast new random vurlnabilty on self
             uint32 aSpellId[] = {SPELL_FIRE_VULNERABILITY, SPELL_FROST_VULNERABILITY, SPELL_SHADOW_VULNERABILITY, SPELL_NATURE_VULNERABILITY, SPELL_ARCANE_VULNERABILITY};
@@ -148,25 +157,25 @@ struct MANGOS_DLL_DECL boss_chromaggusAI : public ScriptedAI
             }
         }
         else
-            m_uiShimmerTimer -= uiDiff;
+        { m_uiShimmerTimer -= uiDiff; }
 
         // Breath One Timer
         if (m_uiBreathOneTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, m_uiBreathOneSpell) == CAST_OK)
-                m_uiBreathOneTimer = 60000;
+            { m_uiBreathOneTimer = 60000; }
         }
         else
-            m_uiBreathOneTimer -= uiDiff;
+        { m_uiBreathOneTimer -= uiDiff; }
 
         // Breath Two Timer
         if (m_uiBreathTwoTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, m_uiBreathTwoSpell) == CAST_OK)
-                m_uiBreathTwoTimer = 60000;
+            { m_uiBreathTwoTimer = 60000; }
         }
         else
-            m_uiBreathTwoTimer -= uiDiff;
+        { m_uiBreathTwoTimer -= uiDiff; }
 
         // Affliction Timer
         if (m_uiAfflictionTimer < uiDiff)
@@ -195,10 +204,10 @@ struct MANGOS_DLL_DECL boss_chromaggusAI : public ScriptedAI
 
                     // Chromatic mutation if target is effected by all afflictions
                     if (pUnit->HasAura(SPELL_BROODAF_BLUE, EFFECT_INDEX_0)
-                            && pUnit->HasAura(SPELL_BROODAF_BLACK, EFFECT_INDEX_0)
-                            && pUnit->HasAura(SPELL_BROODAF_RED, EFFECT_INDEX_0)
-                            && pUnit->HasAura(SPELL_BROODAF_BRONZE, EFFECT_INDEX_0)
-                            && pUnit->HasAura(SPELL_BROODAF_GREEN, EFFECT_INDEX_0))
+                        && pUnit->HasAura(SPELL_BROODAF_BLACK, EFFECT_INDEX_0)
+                        && pUnit->HasAura(SPELL_BROODAF_RED, EFFECT_INDEX_0)
+                        && pUnit->HasAura(SPELL_BROODAF_BRONZE, EFFECT_INDEX_0)
+                        && pUnit->HasAura(SPELL_BROODAF_GREEN, EFFECT_INDEX_0))
                     {
                         // target->RemoveAllAuras();
                         // DoCastSpellIfCan(target,SPELL_CHROMATIC_MUT_1);
@@ -209,7 +218,7 @@ struct MANGOS_DLL_DECL boss_chromaggusAI : public ScriptedAI
 
                         // WORKAROUND
                         if (pUnit->GetTypeId() == TYPEID_PLAYER)
-                            m_creature->CastSpell(pUnit, 5, false);
+                        { m_creature->CastSpell(pUnit, 5, false); }
                     }
                 }
             }
@@ -217,7 +226,7 @@ struct MANGOS_DLL_DECL boss_chromaggusAI : public ScriptedAI
             m_uiAfflictionTimer = 10000;
         }
         else
-            m_uiAfflictionTimer -= uiDiff;
+        { m_uiAfflictionTimer -= uiDiff; }
 
         // Frenzy Timer
         if (m_uiFrenzyTimer < uiDiff)
@@ -229,7 +238,7 @@ struct MANGOS_DLL_DECL boss_chromaggusAI : public ScriptedAI
             }
         }
         else
-            m_uiFrenzyTimer -= uiDiff;
+        { m_uiFrenzyTimer -= uiDiff; }
 
         // Enrage if not already enraged and below 20%
         if (!m_bEnraged && m_creature->GetHealthPercent() < 20.0f)

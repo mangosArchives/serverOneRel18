@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -62,14 +71,14 @@ struct MANGOS_DLL_DECL boss_general_angerforgeAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-            pSummoned->AI()->AttackStart(pTarget);
+        { pSummoned->AI()->AttackStart(pTarget); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // MightyBlow_Timer
         if (m_uiMightyBlowTimer < uiDiff)
@@ -78,7 +87,7 @@ struct MANGOS_DLL_DECL boss_general_angerforgeAI : public ScriptedAI
             m_uiMightyBlowTimer = 18000;
         }
         else
-            m_uiMightyBlowTimer -= uiDiff;
+        { m_uiMightyBlowTimer -= uiDiff; }
 
         // HamString_Timer
         if (m_uiHamStringTimer < uiDiff)
@@ -87,7 +96,7 @@ struct MANGOS_DLL_DECL boss_general_angerforgeAI : public ScriptedAI
             m_uiHamStringTimer = 15000;
         }
         else
-            m_uiHamStringTimer -= uiDiff;
+        { m_uiHamStringTimer -= uiDiff; }
 
         // Cleave_Timer
         if (m_uiCleaveTimer < uiDiff)
@@ -96,7 +105,7 @@ struct MANGOS_DLL_DECL boss_general_angerforgeAI : public ScriptedAI
             m_uiCleaveTimer = 9000;
         }
         else
-            m_uiCleaveTimer -= uiDiff;
+        { m_uiCleaveTimer -= uiDiff; }
 
         // Adds_Timer
         if (m_creature->GetHealthPercent() < 21.0f)
@@ -111,7 +120,7 @@ struct MANGOS_DLL_DECL boss_general_angerforgeAI : public ScriptedAI
                 m_uiAddsTimer = 25000;
             }
             else
-                m_uiAddsTimer -= uiDiff;
+            { m_uiAddsTimer -= uiDiff; }
         }
 
         // Summon Medics

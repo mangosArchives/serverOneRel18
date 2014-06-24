@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -86,7 +95,7 @@ struct MANGOS_DLL_DECL npc_kerlonianAI : public FollowerAI
                 if (Player* pPlayer = GetLeaderForFollower())
                 {
                     if (pPlayer->GetQuestStatus(QUEST_SLEEPER_AWAKENED) == QUEST_STATUS_INCOMPLETE)
-                        pPlayer->GroupEventHappens(QUEST_SLEEPER_AWAKENED, m_creature);
+                    { pPlayer->GroupEventHappens(QUEST_SLEEPER_AWAKENED, m_creature); }
 
                     DoScriptText(SAY_KER_END, m_creature);
                 }
@@ -99,7 +108,7 @@ struct MANGOS_DLL_DECL npc_kerlonianAI : public FollowerAI
     void SpellHit(Unit* /*pCaster*/, const SpellEntry* pSpell) override
     {
         if (HasFollowState(STATE_FOLLOW_INPROGRESS | STATE_FOLLOW_PAUSED) && pSpell->Id == SPELL_AWAKEN)
-            ClearSleeping();
+        { ClearSleeping(); }
     }
 
     void SetSleeping()
@@ -140,7 +149,7 @@ struct MANGOS_DLL_DECL npc_kerlonianAI : public FollowerAI
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
         {
             if (!HasFollowState(STATE_FOLLOW_INPROGRESS))
-                return;
+            { return; }
 
             if (!HasFollowState(STATE_FOLLOW_PAUSED))
             {
@@ -150,7 +159,7 @@ struct MANGOS_DLL_DECL npc_kerlonianAI : public FollowerAI
                     m_uiFallAsleepTimer = urand(25000, 90000);
                 }
                 else
-                    m_uiFallAsleepTimer -= uiDiff;
+                { m_uiFallAsleepTimer -= uiDiff; }
             }
 
             return;
@@ -215,7 +224,7 @@ struct MANGOS_DLL_DECL npc_prospector_remtravelAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
@@ -278,7 +287,7 @@ struct MANGOS_DLL_DECL npc_prospector_remtravelAI : public npc_escortAI
     void Aggro(Unit* pWho) override
     {
         if (urand(0, 1))
-            DoScriptText(SAY_REM_AGGRO, m_creature, pWho);
+        { DoScriptText(SAY_REM_AGGRO, m_creature, pWho); }
     }
 
     void JustSummoned(Creature* /*pSummoned*/) override
@@ -300,7 +309,7 @@ bool QuestAccept_npc_prospector_remtravel(Player* pPlayer, Creature* pCreature, 
         pCreature->SetFactionTemporary(FACTION_ESCORT_A_NEUTRAL_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
 
         if (npc_prospector_remtravelAI* pEscortAI = dynamic_cast<npc_prospector_remtravelAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest, true);
+        { pEscortAI->Start(false, pPlayer, pQuest, true); }
     }
 
     return true;
@@ -346,7 +355,7 @@ struct MANGOS_DLL_DECL npc_threshwackonatorAI : public FollowerAI
         m_creature->SetFactionTemporary(FACTION_HOSTILE, TEMPFACTION_RESTORE_RESPAWN);
 
         if (Player* pHolder = GetLeaderForFollower())
-            m_creature->AI()->AttackStart(pHolder);
+        { m_creature->AI()->AttackStart(pHolder); }
 
         SetFollowComplete();
     }
@@ -360,7 +369,7 @@ CreatureAI* GetAI_npc_threshwackonator(Creature* pCreature)
 bool GossipHello_npc_threshwackonator(Player* pPlayer, Creature* pCreature)
 {
     if (pPlayer->GetQuestStatus(QUEST_GYROMAST_REV) == QUEST_STATUS_INCOMPLETE)
-        pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_INSERT_KEY, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_INSERT_KEY, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
 
     pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
     return true;
@@ -434,7 +443,7 @@ struct MANGOS_DLL_DECL npc_volcorAI : public npc_escortAI
     void Reset() override
     {
         if (!HasEscortState(STATE_ESCORT_ESCORTING))
-            m_uiQuestId = 0;
+        { m_uiQuestId = 0; }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -452,7 +461,7 @@ struct MANGOS_DLL_DECL npc_volcorAI : public npc_escortAI
     {
         // No combat for this quest
         if (m_uiQuestId == QUEST_ESCAPE_THROUGH_STEALTH)
-            return;
+        { return; }
 
         npc_escortAI::MoveInLineOfSight(pWho);
     }
@@ -480,7 +489,7 @@ struct MANGOS_DLL_DECL npc_volcorAI : public npc_escortAI
             SetEscortPaused(false);
         }
         else
-            Start(false, pPlayer, pQuest);
+        { Start(false, pPlayer, pQuest); }
     }
 
     void WaypointReached(uint32 uiPointId) override
@@ -507,7 +516,7 @@ struct MANGOS_DLL_DECL npc_volcorAI : public npc_escortAI
             case 15:
                 DoScriptText(SAY_END, m_creature);
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_ESCAPE_THROUGH_FORCE, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_ESCAPE_THROUGH_FORCE, m_creature); }
                 SetEscortPaused(true);
                 m_creature->ForcedDespawn(10000);
                 break;
@@ -517,14 +526,14 @@ struct MANGOS_DLL_DECL npc_volcorAI : public npc_escortAI
                 break;
             case 17:
                 if (Player* pPlayer = GetPlayerForEscort())
-                    DoScriptText(SAY_ESCAPE, m_creature, pPlayer);
+                { DoScriptText(SAY_ESCAPE, m_creature, pPlayer); }
                 break;
             case 18:
                 DoCastSpellIfCan(m_creature, SPELL_MOONSTALKER_FORM);
                 break;
             case 24:
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_ESCAPE_THROUGH_STEALTH, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_ESCAPE_THROUGH_STEALTH, m_creature); }
                 break;
         }
     }
@@ -540,7 +549,7 @@ bool QuestAccept_npc_volcor(Player* pPlayer, Creature* pCreature, const Quest* p
     if (pQuest->GetQuestId() == QUEST_ESCAPE_THROUGH_FORCE || pQuest->GetQuestId() == QUEST_ESCAPE_THROUGH_STEALTH)
     {
         if (npc_volcorAI* pEscortAI = dynamic_cast<npc_volcorAI*>(pCreature->AI()))
-            pEscortAI->StartEscort(pPlayer, pQuest);
+        { pEscortAI->StartEscort(pPlayer, pQuest); }
     }
 
     return true;
@@ -573,11 +582,11 @@ struct MANGOS_DLL_DECL npc_theryluneAI : public npc_escortAI
         {
             case 17:
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_ID_THERYLUNE_ESCAPE, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_ID_THERYLUNE_ESCAPE, m_creature); }
                 break;
             case 19:
                 if (Player* pPlayer = GetPlayerForEscort())
-                    DoScriptText(SAY_THERYLUNE_FINISH, m_creature, pPlayer);
+                { DoScriptText(SAY_THERYLUNE_FINISH, m_creature, pPlayer); }
                 SetRun();
                 break;
         }

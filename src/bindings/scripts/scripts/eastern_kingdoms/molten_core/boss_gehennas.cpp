@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -55,25 +64,25 @@ struct MANGOS_DLL_DECL boss_gehennasAI : public ScriptedAI
     void Aggro(Unit* /*pwho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GEHENNAS, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_GEHENNAS, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GEHENNAS, DONE);
+        { m_pInstance->SetData(TYPE_GEHENNAS, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GEHENNAS, FAIL);
+        { m_pInstance->SetData(TYPE_GEHENNAS, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // ShadowBolt Timer
         if (m_uiShadowBoltTimer < uiDiff)
@@ -81,13 +90,13 @@ struct MANGOS_DLL_DECL boss_gehennasAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SHADOW_BOLT) == CAST_OK)
-                    m_uiShadowBoltTimer = 7000;
+                { m_uiShadowBoltTimer = 7000; }
             }
             else                                            // In case someone attempts soloing, we don't need to scan for targets every tick
-                m_uiShadowBoltTimer = 7000;
+            { m_uiShadowBoltTimer = 7000; }
         }
         else
-            m_uiShadowBoltTimer -= uiDiff;
+        { m_uiShadowBoltTimer -= uiDiff; }
 
         // Rain of Fire Timer
         if (m_uiRainOfFireTimer < uiDiff)
@@ -95,20 +104,20 @@ struct MANGOS_DLL_DECL boss_gehennasAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_RAIN_OF_FIRE) == CAST_OK)
-                    m_uiRainOfFireTimer = urand(4000, 12000);
+                { m_uiRainOfFireTimer = urand(4000, 12000); }
             }
         }
         else
-            m_uiRainOfFireTimer -= uiDiff;
+        { m_uiRainOfFireTimer -= uiDiff; }
 
         // GehennasCurse Timer
         if (m_uiGehennasCurseTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_GEHENNAS_CURSE) == CAST_OK)
-                m_uiGehennasCurseTimer = 30000;
+            { m_uiGehennasCurseTimer = 30000; }
         }
         else
-            m_uiGehennasCurseTimer -= uiDiff;
+        { m_uiGehennasCurseTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

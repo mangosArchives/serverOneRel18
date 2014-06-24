@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -97,7 +106,7 @@ struct MANGOS_DLL_DECL boss_nefarianAI : public ScriptedAI
     void KilledUnit(Unit* pVictim) override
     {
         if (urand(0, 4))
-            return;
+        { return; }
 
         DoScriptText(SAY_SLAY, m_creature, pVictim);
     }
@@ -107,7 +116,7 @@ struct MANGOS_DLL_DECL boss_nefarianAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_NEFARIAN, DONE);
+        { m_pInstance->SetData(TYPE_NEFARIAN, DONE); }
     }
 
     void JustReachedHome() override
@@ -122,7 +131,7 @@ struct MANGOS_DLL_DECL boss_nefarianAI : public ScriptedAI
                 TemporarySummon* pTemporary = (TemporarySummon*)m_creature;
 
                 if (Creature* pNefarius = m_creature->GetMap()->GetCreature(pTemporary->GetSummonerGuid()))
-                    pNefarius->AI()->EnterEvadeMode();
+                { pNefarius->AI()->EnterEvadeMode(); }
             }
 
             m_creature->ForcedDespawn();
@@ -146,52 +155,52 @@ struct MANGOS_DLL_DECL boss_nefarianAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // ShadowFlame_Timer
         if (m_uiShadowFlameTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHADOWFLAME) == CAST_OK)
-                m_uiShadowFlameTimer = 12000;
+            { m_uiShadowFlameTimer = 12000; }
         }
         else
-            m_uiShadowFlameTimer -= uiDiff;
+        { m_uiShadowFlameTimer -= uiDiff; }
 
         // BellowingRoar_Timer
         if (m_uiBellowingRoarTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_BELLOWING_ROAR) == CAST_OK)
-                m_uiBellowingRoarTimer = 30000;
+            { m_uiBellowingRoarTimer = 30000; }
         }
         else
-            m_uiBellowingRoarTimer -= uiDiff;
+        { m_uiBellowingRoarTimer -= uiDiff; }
 
         // VeilOfShadow_Timer
         if (m_uiVeilOfShadowTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_VEIL_OF_SHADOW) == CAST_OK)
-                m_uiVeilOfShadowTimer = 15000;
+            { m_uiVeilOfShadowTimer = 15000; }
         }
         else
-            m_uiVeilOfShadowTimer -= uiDiff;
+        { m_uiVeilOfShadowTimer -= uiDiff; }
 
         // Cleave_Timer
         if (m_uiCleaveTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CLEAVE) == CAST_OK)
-                m_uiCleaveTimer = 7000;
+            { m_uiCleaveTimer = 7000; }
         }
         else
-            m_uiCleaveTimer -= uiDiff;
+        { m_uiCleaveTimer -= uiDiff; }
 
         // TailLash_Timer
         if (m_uiTailLashTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_TAIL_LASH) == CAST_OK)
-                m_uiTailLashTimer = 10000;
+            { m_uiTailLashTimer = 10000; }
         }
         else
-            m_uiTailLashTimer -= uiDiff;
+        { m_uiTailLashTimer -= uiDiff; }
 
         // ClassCall_Timer
         if (m_uiClassCallTimer < uiDiff)
@@ -243,13 +252,13 @@ struct MANGOS_DLL_DECL boss_nefarianAI : public ScriptedAI
             m_uiClassCallTimer = urand(35000, 40000);
         }
         else
-            m_uiClassCallTimer -= uiDiff;
+        { m_uiClassCallTimer -= uiDiff; }
 
         // Phase3 begins when we are below X health
         if (!m_bPhase3 && m_creature->GetHealthPercent() < 20.0f)
         {
             if (m_pInstance)
-                m_pInstance->SetData(TYPE_NEFARIAN, SPECIAL);
+            { m_pInstance->SetData(TYPE_NEFARIAN, SPECIAL); }
             m_bPhase3 = true;
             DoScriptText(SAY_RAISE_SKELETONS, m_creature);
         }

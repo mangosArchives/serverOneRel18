@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -181,13 +190,13 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_ZULJIN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_ZULJIN, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_ZULJIN, FAIL);
+        { m_pInstance->SetData(TYPE_ZULJIN, FAIL); }
 
         // Despawn all feather vortexes
         DoDespawnVortexes();
@@ -213,7 +222,7 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (!m_pInstance)
-            return;
+        { return; }
 
         m_pInstance->SetData(TYPE_ZULJIN, DONE);
     }
@@ -235,7 +244,7 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
         for (GuidList::const_iterator itr = m_lSummonsList.begin(); itr != m_lSummonsList.end(); ++itr)
         {
             if (Creature* pVortex = m_creature->GetMap()->GetCreature(*itr))
-                pVortex->ForcedDespawn();
+            { pVortex->ForcedDespawn(); }
         }
     }
 
@@ -250,7 +259,7 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
 
                 // Attack random target
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    pSummoned->GetMotionMaster()->MoveFollow(pTarget, 0, 0);
+                { pSummoned->GetMotionMaster()->MoveFollow(pTarget, 0, 0); }
                 break;
             case NPC_COLUMN_OF_FIRE:
                 pSummoned->CastSpell(pSummoned, SPELL_PILLAR_TRIGGER, true);
@@ -261,17 +270,17 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
     void MovementInform(uint32 uiMotionType, uint32 uiPointId) override
     {
         if (uiMotionType != POINT_MOTION_TYPE || uiPointId != POINT_ID_CENTER)
-            return;
+        { return; }
 
         // increment phase
         if (m_uiPhase == PHASE_TROLL)
-            m_uiPhase = PHASE_BEAR;
+        { m_uiPhase = PHASE_BEAR; }
         else
-            ++m_uiPhase;
+        { ++m_uiPhase; }
 
         // drain the spirit
         if (Creature* pSpirit = m_pInstance->GetSingleCreatureFromStorage(aZuljinPhases[m_uiPhase].uiSpiritId))
-            pSpirit->CastSpell(m_creature, SPELL_SPIRIT_DRAIN, false);
+        { pSpirit->CastSpell(m_creature, SPELL_SPIRIT_DRAIN, false); }
     }
 
     void SpellHit(Unit* /*pCaster*/, const SpellEntry* pSpell) override
@@ -317,7 +326,7 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim() || m_bIsInTransition)
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() < m_uiHealthCheck)
         {
@@ -341,7 +350,7 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
             if (m_uiPhase != PHASE_TROLL)
             {
                 if (m_creature->HasAura(aZuljinPhases[m_uiPhase].uiSpiritSpellId))
-                    m_creature->RemoveAurasDueToSpell(aZuljinPhases[m_uiPhase].uiSpiritSpellId);
+                { m_creature->RemoveAurasDueToSpell(aZuljinPhases[m_uiPhase].uiSpiritSpellId); }
 
                 // drain spirit
                 if (Creature* pSpirit = m_pInstance->GetSingleCreatureFromStorage(aZuljinPhases[m_uiPhase].uiSpiritId))
@@ -360,21 +369,21 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
                 if (m_uiWhirlwindTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_WHIRLWIND) == CAST_OK)
-                        m_uiWhirlwindTimer = urand(15000, 20000);
+                    { m_uiWhirlwindTimer = urand(15000, 20000); }
                 }
                 else
-                    m_uiWhirlwindTimer -= uiDiff;
+                { m_uiWhirlwindTimer -= uiDiff; }
 
                 if (m_uiGrievousThrowTimer < uiDiff)
                 {
                     if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                     {
                         if (DoCastSpellIfCan(pTarget, SPELL_GRIEVOUS_THROW) == CAST_OK)
-                            m_uiGrievousThrowTimer = 10000;
+                        { m_uiGrievousThrowTimer = 10000; }
                     }
                 }
                 else
-                    m_uiGrievousThrowTimer -= uiDiff;
+                { m_uiGrievousThrowTimer -= uiDiff; }
 
                 break;
             case PHASE_BEAR:
@@ -382,18 +391,18 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
                 if (m_uiParalysisTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_CREEPING_PARALYSIS) == CAST_OK)
-                        m_uiParalysisTimer = 27000;
+                    { m_uiParalysisTimer = 27000; }
                 }
                 else
-                    m_uiParalysisTimer -= uiDiff;
+                { m_uiParalysisTimer -= uiDiff; }
 
                 if (m_uiOverpowerTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_OVERPOWER) == CAST_OK)
-                        m_uiOverpowerTimer = urand(12000, 16000);
+                    { m_uiOverpowerTimer = urand(12000, 16000); }
                 }
                 else
-                    m_uiOverpowerTimer -= uiDiff;
+                { m_uiOverpowerTimer -= uiDiff; }
 
                 break;
             case PHASE_EAGLE:
@@ -409,21 +418,21 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
                         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1, SPELL_CLAW_RAGE, SELECT_FLAG_PLAYER))
                         {
                             if (DoCastSpellIfCan(pTarget, SPELL_CLAW_RAGE) == CAST_OK)
-                                m_uiClawRageTimer = urand(15000, 20000);
+                            { m_uiClawRageTimer = urand(15000, 20000); }
                         }
                     }
                     else
-                        m_uiClawRageTimer -= uiDiff;
+                    { m_uiClawRageTimer -= uiDiff; }
                 }
 
                 if (m_uiLynxRushTimer < uiDiff)
                 {
                     if (!m_uiLynxRushCount)
-                        DoCastSpellIfCan(m_creature, SPELL_LYNX_RUSH);
+                    { DoCastSpellIfCan(m_creature, SPELL_LYNX_RUSH); }
                     else
                     {
                         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                            DoCastSpellIfCan(pTarget, SPELL_LYNX_RUSH_CHARGE);
+                        { DoCastSpellIfCan(pTarget, SPELL_LYNX_RUSH_CHARGE); }
                     }
 
                     ++m_uiLynxRushCount;
@@ -434,10 +443,10 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
                         m_uiLynxRushCount = 0;
                     }
                     else
-                        m_uiLynxRushTimer = 400;
+                    { m_uiLynxRushTimer = 400; }
                 }
                 else
-                    m_uiLynxRushTimer -= uiDiff;
+                { m_uiLynxRushTimer -= uiDiff; }
 
                 break;
             case PHASE_DRAGONHAWK:
@@ -445,26 +454,26 @@ struct MANGOS_DLL_DECL boss_zuljinAI : public ScriptedAI
                 if (m_uiFlameWhirlTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_FLAME_WHIRL) == CAST_OK)
-                        m_uiFlameWhirlTimer = 15000;
+                    { m_uiFlameWhirlTimer = 15000; }
                 }
                 else
-                    m_uiFlameWhirlTimer -= uiDiff;
+                { m_uiFlameWhirlTimer -= uiDiff; }
 
                 if (m_uiPillarOfFireTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_PILLAR) == CAST_OK)
-                        m_uiPillarOfFireTimer = urand(17000, 22000);
+                    { m_uiPillarOfFireTimer = urand(17000, 22000); }
                 }
                 else
-                    m_uiPillarOfFireTimer -= uiDiff;
+                { m_uiPillarOfFireTimer -= uiDiff; }
 
                 if (m_uiFlameBreathTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_FLAME_BREATH) == CAST_OK)
-                        m_uiFlameBreathTimer = 15000;
+                    { m_uiFlameBreathTimer = 15000; }
                 }
                 else
-                    m_uiFlameBreathTimer -= uiDiff;
+                { m_uiFlameBreathTimer -= uiDiff; }
 
                 break;
         }
@@ -502,7 +511,7 @@ struct MANGOS_DLL_DECL npc_feather_vortexAI : public ScriptedAI
             {
                 // Change target on player hit
                 if (Unit* pTarget = pZuljin->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    m_creature->GetMotionMaster()->MoveFollow(pTarget, 0, 0);
+                { m_creature->GetMotionMaster()->MoveFollow(pTarget, 0, 0); }
             }
         }
     }

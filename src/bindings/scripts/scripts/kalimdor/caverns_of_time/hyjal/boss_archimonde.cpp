@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -146,7 +155,7 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
     void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_PLAYER)
-            return;
+        { return; }
 
         switch (urand(0, 2))
         {
@@ -187,7 +196,7 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
             }
         }
         else if (m_pInstance)
-            m_pInstance->SetData(TYPE_ARCHIMONDE, FAIL);
+        { m_pInstance->SetData(TYPE_ARCHIMONDE, FAIL); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -199,7 +208,7 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
 
             // When enough wisps have gathered or boss is low hp, then kill him
             if (m_uiWispCount >= 45 || m_creature->GetHealthPercent() <= 1.0f)
-                pSummoned->CastSpell(pSummoned, SPELL_DENOUEMENT_WISP, false);
+            { pSummoned->CastSpell(pSummoned, SPELL_DENOUEMENT_WISP, false); }
         }
         else if (pSummoned->GetEntry() == NPC_DOOMFIRE)
         {
@@ -226,11 +235,11 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
                 }
             }
             else
-                m_uiDrainNordrassilTimer -= uiDiff;
+            { m_uiDrainNordrassilTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Start epilogue - fight was won!
         if (m_creature->GetHealthPercent() < 10.0f)
@@ -251,10 +260,10 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
                 if (m_uiFingerOfDeathTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, urand(0, 1) ? SPELL_FINGER_DEATH_DUMMY : SPELL_FINGER_DEATH_SCRIPT) == CAST_OK)
-                        m_uiFingerOfDeathTimer = 1000;
+                    { m_uiFingerOfDeathTimer = 1000; }
                 }
                 else
-                    m_uiFingerOfDeathTimer -= uiDiff;
+                { m_uiFingerOfDeathTimer -= uiDiff; }
 
                 if (m_uiSummonWispTimer < uiDiff)
                 {
@@ -264,7 +273,7 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
                     m_uiSummonWispTimer = urand(1000, 1500);
                 }
                 else
-                    m_uiSummonWispTimer -= uiDiff;
+                { m_uiSummonWispTimer -= uiDiff; }
             }
 
             // Stop using the other spells
@@ -282,7 +291,7 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
                 }
             }
             else
-                m_uiEnrageTimer -= uiDiff;
+            { m_uiEnrageTimer -= uiDiff; }
         }
 
         if (m_uiGripOfTheLegionTimer < uiDiff)
@@ -290,11 +299,11 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_GRIP_OF_THE_LEGION) == CAST_OK)
-                    m_uiGripOfTheLegionTimer = urand(5000, 25000);
+                { m_uiGripOfTheLegionTimer = urand(5000, 25000); }
             }
         }
         else
-            m_uiGripOfTheLegionTimer -= uiDiff;
+        { m_uiGripOfTheLegionTimer -= uiDiff; }
 
         if (m_uiAirBurstTimer < uiDiff)
         {
@@ -305,15 +314,15 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
             }
         }
         else
-            m_uiAirBurstTimer -= uiDiff;
+        { m_uiAirBurstTimer -= uiDiff; }
 
         if (m_uiFearTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FEAR) == CAST_OK)
-                m_uiFearTimer = 42000;
+            { m_uiFearTimer = 42000; }
         }
         else
-            m_uiFearTimer -= uiDiff;
+        { m_uiFearTimer -= uiDiff; }
 
         if (m_uiDoomfireTimer < uiDiff)
         {
@@ -324,18 +333,18 @@ struct MANGOS_DLL_DECL boss_archimondeAI : public ScriptedAI
             }
         }
         else
-            m_uiDoomfireTimer -= uiDiff;
+        { m_uiDoomfireTimer -= uiDiff; }
 
         // If we are within range melee the target
         if (m_creature->CanReachWithMeleeAttack(m_creature->getVictim()))
-            DoMeleeAttackIfReady();
+        { DoMeleeAttackIfReady(); }
         // Else spam Finger of Death
         else
         {
             if (!m_creature->IsNonMeleeSpellCasted(false))
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    DoCastSpellIfCan(pTarget, SPELL_FINGER_DEATH);
+                { DoCastSpellIfCan(pTarget, SPELL_FINGER_DEATH); }
             }
         }
     }
@@ -367,12 +376,12 @@ struct MANGOS_DLL_DECL npc_doomfire_spiritAI : public ScriptedAI
             {
                 // Get the closest doomfire
                 if (Creature* pTemp = GetClosestCreatureWithEntry(m_creature, NPC_DOOMFIRE, 5.0f))
-                    m_doomfireGuid = pTemp->GetObjectGuid();
+                { m_doomfireGuid = pTemp->GetObjectGuid(); }
 
                 m_uiDoomfireLoadTimer = 0;
             }
             else
-                m_uiDoomfireLoadTimer -= uiDiff;
+            { m_uiDoomfireLoadTimer -= uiDiff; }
         }
 
         // It's not very clear how should this one move. For the moment just move to random points around on timer
@@ -388,7 +397,7 @@ struct MANGOS_DLL_DECL npc_doomfire_spiritAI : public ScriptedAI
             m_uiChangeTargetTimer = 4000;
         }
         else
-            m_uiChangeTargetTimer -= uiDiff;
+        { m_uiChangeTargetTimer -= uiDiff; }
     }
 };
 

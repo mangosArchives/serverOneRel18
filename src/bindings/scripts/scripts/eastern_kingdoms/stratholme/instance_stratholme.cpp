@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -86,7 +95,7 @@ void instance_stratholme::OnCreatureCreate(Creature* pCreature)
         case NPC_CRIMSON_CONJURER:
             // Only store those in the yard
             if (pCreature->IsWithinDist2d(aTimmyLocation[1].m_fX, aTimmyLocation[1].m_fY, 40.0f))
-                m_suiCrimsonLowGuids.insert(pCreature->GetGUIDLow());
+            { m_suiCrimsonLowGuids.insert(pCreature->GetGUIDLow()); }
             break;
     }
 }
@@ -106,38 +115,38 @@ void instance_stratholme::OnObjectCreate(GameObject* pGo)
         case GO_ZIGGURAT_DOOR_1:
             m_zigguratStorage[0].m_doorGuid = pGo->GetObjectGuid();
             if (m_auiEncounter[TYPE_BARONESS] == DONE || m_auiEncounter[TYPE_BARONESS] == SPECIAL)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             return;
         case GO_ZIGGURAT_DOOR_2:
             m_zigguratStorage[1].m_doorGuid = pGo->GetObjectGuid();
             if (m_auiEncounter[TYPE_NERUB] == DONE || m_auiEncounter[TYPE_NERUB] == SPECIAL)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             return;
         case GO_ZIGGURAT_DOOR_3:
             m_zigguratStorage[2].m_doorGuid = pGo->GetObjectGuid();
             if (m_auiEncounter[TYPE_PALLID] == DONE || m_auiEncounter[TYPE_PALLID] == SPECIAL)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             return;
 
         case GO_ZIGGURAT_DOOR_4:
             if (m_auiEncounter[TYPE_RAMSTEIN] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_ZIGGURAT_DOOR_5:
             if (m_auiEncounter[TYPE_RAMSTEIN] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_PORT_GAUNTLET:
             if (m_auiEncounter[TYPE_BARONESS] == SPECIAL && m_auiEncounter[TYPE_NERUB] == SPECIAL && m_auiEncounter[TYPE_PALLID] == SPECIAL)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_PORT_SLAUGTHER:
             if (m_auiEncounter[TYPE_BARONESS] == SPECIAL && m_auiEncounter[TYPE_NERUB] == SPECIAL && m_auiEncounter[TYPE_PALLID] == SPECIAL)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_PORT_SLAUGHTER_GATE:
             if (m_auiEncounter[TYPE_RAMSTEIN] == DONE)      // Might actually be uneeded
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_PORT_ELDERS:
         case GO_YSIDA_CAGE:
@@ -159,7 +168,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
             {
                 case IN_PROGRESS:
                     if (m_auiEncounter[uiType] == IN_PROGRESS || m_auiEncounter[uiType] == FAIL)
-                        break;
+                    { break; }
 
                     DoOrSimulateScriptTextForThisInstance(SAY_ANNOUNCE_RUN_START, NPC_BARON);
 
@@ -185,7 +194,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                 DoUseDoorOrButton(m_zigguratStorage[uiType - TYPE_BARONESS].m_doorGuid);
             }
             if (uiData == SPECIAL)
-                StartSlaugtherSquare();
+            { StartSlaugtherSquare(); }
             break;
         case TYPE_RAMSTEIN:
             if (uiData == SPECIAL)
@@ -203,7 +212,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                     {
                         ++itr;
                         if (!pAbom->isAlive())
-                            --uiCount;
+                        { --uiCount; }
                     }
                     else
                     {
@@ -226,17 +235,17 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                     {
                         DoScriptText(SAY_ANNOUNCE_RAMSTEIN, pBaron);
                         if (Creature* pRamstein = pBaron->SummonCreature(NPC_RAMSTEIN, aStratholmeLocation[2].m_fX, aStratholmeLocation[2].m_fY, aStratholmeLocation[2].m_fZ, aStratholmeLocation[2].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0))
-                            pRamstein->GetMotionMaster()->MovePoint(0, aStratholmeLocation[3].m_fX, aStratholmeLocation[3].m_fY, aStratholmeLocation[3].m_fZ);
+                        { pRamstein->GetMotionMaster()->MovePoint(0, aStratholmeLocation[3].m_fX, aStratholmeLocation[3].m_fY, aStratholmeLocation[3].m_fZ); }
 
                         debug_log("SD2: Instance Stratholme - Slaugther event: Ramstein spawned.");
                     }
                 }
                 else
-                    debug_log("SD2: Instance Stratholme - Slaugther event: %u Abomnation left to kill.", uiCount);
+                { debug_log("SD2: Instance Stratholme - Slaugther event: %u Abomnation left to kill.", uiCount); }
             }
             // After fail aggroing Ramstein means wipe on Ramstein, so close door again
             if (uiData == IN_PROGRESS && m_auiEncounter[uiType] == FAIL)
-                DoUseDoorOrButton(GO_PORT_GAUNTLET);
+            { DoUseDoorOrButton(GO_PORT_GAUNTLET); }
             if (uiData == DONE)
             {
                 // Open side gate and start summoning skeletons
@@ -254,7 +263,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                         float fX, fY, fZ;
                         pBaron->GetRandomPoint(aStratholmeLocation[6].m_fX, aStratholmeLocation[6].m_fY, aStratholmeLocation[6].m_fZ, 5.0f, fX, fY, fZ);
                         if (Creature* pTemp = pBaron->SummonCreature(NPC_BLACK_GUARD, aStratholmeLocation[6].m_fX, aStratholmeLocation[6].m_fY, aStratholmeLocation[6].m_fZ, aStratholmeLocation[6].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0))
-                            m_luiGuardGUIDs.push_back(pTemp->GetObjectGuid());
+                        { m_luiGuardGUIDs.push_back(pTemp->GetObjectGuid()); }
                     }
 
                     debug_log("SD2: Instance Stratholme - Slaugther event: Summoned 5 guards.");
@@ -271,7 +280,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                 {
                     Creature* pAbom = instance->GetCreature(*itr);
                     if (pAbom && pAbom->GetMotionMaster()->GetCurrentMovementGeneratorType() == POINT_MOTION_TYPE)
-                        pAbom->GetMotionMaster()->MovementExpired();
+                    { pAbom->GetMotionMaster()->MovementExpired(); }
                 }
             }
 
@@ -282,11 +291,11 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
             {
                 // Reached the Baron within time-limit
                 if (m_auiEncounter[TYPE_BARON_RUN] == IN_PROGRESS)
-                    SetData(TYPE_BARON_RUN, DONE);
+                { SetData(TYPE_BARON_RUN, DONE); }
 
                 // Close Slaughterhouse door if needed
                 if (m_auiEncounter[uiType] == FAIL)
-                    DoUseDoorOrButton(GO_PORT_GAUNTLET);
+                { DoUseDoorOrButton(GO_PORT_GAUNTLET); }
             }
             if (uiData == DONE)
             {
@@ -299,10 +308,10 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                         if (Player* pPlayer = itr->getSource())
                         {
                             if (pPlayer->HasAura(SPELL_BARON_ULTIMATUM))
-                                pPlayer->RemoveAurasDueToSpell(SPELL_BARON_ULTIMATUM);
+                            { pPlayer->RemoveAurasDueToSpell(SPELL_BARON_ULTIMATUM); }
 
                             if (pPlayer->GetQuestStatus(QUEST_DEAD_MAN_PLEA) == QUEST_STATUS_INCOMPLETE)
-                                pPlayer->AreaExploredOrEventHappens(QUEST_DEAD_MAN_PLEA);
+                            { pPlayer->AreaExploredOrEventHappens(QUEST_DEAD_MAN_PLEA); }
                         }
                     }
 
@@ -322,7 +331,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
                 DoUseDoorOrButton(GO_PORT_GAUNTLET);
             }
             if (uiData == FAIL)
-                DoUseDoorOrButton(GO_PORT_GAUNTLET);
+            { DoUseDoorOrButton(GO_PORT_GAUNTLET); }
 
             m_auiEncounter[uiType] = uiData;
             break;
@@ -344,18 +353,18 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
         case TYPE_BLACK_GUARDS:
             // Prevent double action
             if (m_auiEncounter[uiType] == uiData)
-                return;
+            { return; }
 
             // Restart after failure, close Gauntlet
             if (uiData == IN_PROGRESS && m_auiEncounter[uiType] == FAIL)
-                DoUseDoorOrButton(GO_PORT_GAUNTLET);
+            { DoUseDoorOrButton(GO_PORT_GAUNTLET); }
             // Wipe case - open gauntlet
             if (uiData == FAIL)
-                DoUseDoorOrButton(GO_PORT_GAUNTLET);
+            { DoUseDoorOrButton(GO_PORT_GAUNTLET); }
             if (uiData == DONE)
             {
                 if (Creature* pBaron = GetSingleCreatureFromStorage(NPC_BARON))
-                    DoScriptText(SAY_UNDEAD_DEFEAT, pBaron);
+                { DoScriptText(SAY_UNDEAD_DEFEAT, pBaron); }
                 DoUseDoorOrButton(GO_ZIGGURAT_DOOR_5);
             }
             m_auiEncounter[uiType] = uiData;
@@ -370,7 +379,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
 
                 // After the second post box prepare to spawn the Post Master
                 if (m_uiPostboxesUsed == 2)
-                    SetData(TYPE_POSTMASTER, SPECIAL);
+                { SetData(TYPE_POSTMASTER, SPECIAL); }
             }
             // No need to save anything here, so return
             return;
@@ -382,7 +391,7 @@ void instance_stratholme::SetData(uint32 uiType, uint32 uiData)
 
                 // When the 5th paladin is killed set data to DONE in order to give the quest credit for the last paladin
                 if (m_uiSilverHandKilled == MAX_SILVERHAND)
-                    SetData(TYPE_TRUE_MASTERS, DONE);
+                { SetData(TYPE_TRUE_MASTERS, DONE); }
             }
             // No need to save anything here, so return
             return;
@@ -420,16 +429,16 @@ void instance_stratholme::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     // Special Treatment for the Ziggurat-Bosses, as otherwise the event couldn't reload
     if (m_auiEncounter[TYPE_BARONESS] == DONE)
-        m_auiEncounter[TYPE_BARONESS] = SPECIAL;
+    { m_auiEncounter[TYPE_BARONESS] = SPECIAL; }
     if (m_auiEncounter[TYPE_NERUB] == DONE)
-        m_auiEncounter[TYPE_NERUB] = SPECIAL;
+    { m_auiEncounter[TYPE_NERUB] = SPECIAL; }
     if (m_auiEncounter[TYPE_PALLID] == DONE)
-        m_auiEncounter[TYPE_PALLID] = SPECIAL;
+    { m_auiEncounter[TYPE_PALLID] = SPECIAL; }
 
     OUT_LOAD_INST_DATA_COMPLETE;
 }
@@ -461,18 +470,18 @@ static bool sortByHeight(Creature* pFirst, Creature* pSecond)
 void instance_stratholme::DoSortZiggurats()
 {
     if (m_luiAcolyteGUIDs.empty())
-        return;
+    { return; }
 
     std::list<Creature*> lAcolytes;                         // Valid pointers, only used locally
     for (GuidList::const_iterator itr = m_luiAcolyteGUIDs.begin(); itr != m_luiAcolyteGUIDs.end(); ++itr)
     {
         if (Creature* pAcolyte = instance->GetCreature(*itr))
-            lAcolytes.push_back(pAcolyte);
+        { lAcolytes.push_back(pAcolyte); }
     }
     m_luiAcolyteGUIDs.clear();
 
     if (lAcolytes.empty())
-        return;
+    { return; }
 
     if (!GetSingleCreatureFromStorage(NPC_THUZADIN_ACOLYTE, true))
     {
@@ -501,12 +510,12 @@ void instance_stratholme::DoSortZiggurats()
         }
 
         if (itr != lAcolytes.end() && !bAlreadyIterated)
-            ++itr;
+        { ++itr; }
     }
 
     // In case some mobs have not been able to be sorted, store their GUIDs again
     for (std::list<Creature*>::const_iterator itr = lAcolytes.begin(); itr != lAcolytes.end(); ++itr)
-        m_luiAcolyteGUIDs.push_back((*itr)->GetObjectGuid());
+    { m_luiAcolyteGUIDs.push_back((*itr)->GetObjectGuid()); }
 
     // Sort Crystal
     for (GuidList::iterator itr = m_luiCrystalGUIDs.begin(); itr != m_luiCrystalGUIDs.end();)
@@ -534,7 +543,7 @@ void instance_stratholme::DoSortZiggurats()
         }
 
         if (itr != m_luiCrystalGUIDs.end() && !bAlreadyIterated)
-            ++itr;
+        { ++itr; }
     }
 }
 
@@ -625,7 +634,7 @@ void instance_stratholme::OnCreatureDeath(Creature* pCreature)
         case NPC_BLACK_GUARD:
             m_luiGuardGUIDs.remove(pCreature->GetObjectGuid());
             if (m_luiGuardGUIDs.empty())
-                SetData(TYPE_BLACK_GUARDS, DONE);
+            { SetData(TYPE_BLACK_GUARDS, DONE); }
 
             break;
 
@@ -640,7 +649,7 @@ void instance_stratholme::OnCreatureDeath(Creature* pCreature)
 
                 // If all courtyard mobs are dead then summon Timmy
                 if (m_suiCrimsonLowGuids.empty())
-                    pCreature->SummonCreature(NPC_TIMMY_THE_CRUEL, aTimmyLocation[0].m_fX, aTimmyLocation[0].m_fY, aTimmyLocation[0].m_fZ, aTimmyLocation[0].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0);
+                { pCreature->SummonCreature(NPC_TIMMY_THE_CRUEL, aTimmyLocation[0].m_fX, aTimmyLocation[0].m_fY, aTimmyLocation[0].m_fZ, aTimmyLocation[0].m_fO, TEMPSUMMON_DEAD_DESPAWN, 0); }
             }
             break;
     }
@@ -651,7 +660,7 @@ void instance_stratholme::ThazudinAcolyteJustDied(Creature* pCreature)
     for (uint8 i = 0; i < MAX_ZIGGURATS; ++i)
     {
         if (m_zigguratStorage[i].m_lZigguratAcolyteGuid.empty())
-            continue;                               // nothing to do anymore for this ziggurat
+        { continue; }                               // nothing to do anymore for this ziggurat
 
         m_zigguratStorage[i].m_lZigguratAcolyteGuid.remove(pCreature->GetObjectGuid());
         if (m_zigguratStorage[i].m_lZigguratAcolyteGuid.empty())
@@ -662,7 +671,7 @@ void instance_stratholme::ThazudinAcolyteJustDied(Creature* pCreature)
 
             // Kill Crystal
             if (Creature* pCrystal = instance->GetCreature(m_zigguratStorage[i].m_crystalGuid))
-                pCrystal->DealDamage(pCrystal, pCrystal->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+            { pCrystal->DealDamage(pCrystal, pCrystal->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); }
 
             switch (i)
             {
@@ -682,13 +691,13 @@ void instance_stratholme::Update(uint32 uiDiff)
         {
             Creature* pBarthilas = GetSingleCreatureFromStorage(NPC_BARTHILAS);
             if (pBarthilas && pBarthilas->isAlive() && !pBarthilas->isInCombat())
-                pBarthilas->NearTeleportTo(aStratholmeLocation[1].m_fX, aStratholmeLocation[1].m_fY, aStratholmeLocation[1].m_fZ, aStratholmeLocation[1].m_fO);
+            { pBarthilas->NearTeleportTo(aStratholmeLocation[1].m_fX, aStratholmeLocation[1].m_fY, aStratholmeLocation[1].m_fZ, aStratholmeLocation[1].m_fO); }
 
             SetData(TYPE_BARTHILAS_RUN, DONE);
             m_uiBarthilasRunTimer = 0;
         }
         else
-            m_uiBarthilasRunTimer -= uiDiff;
+        { m_uiBarthilasRunTimer -= uiDiff; }
     }
 
     if (m_uiBaronRunTimer)
@@ -714,7 +723,7 @@ void instance_stratholme::Update(uint32 uiDiff)
             debug_log("SD2: Instance Stratholme: Baron run event reached end. Event has state %u.", GetData(TYPE_BARON_RUN));
         }
         else
-            m_uiBaronRunTimer -= uiDiff;
+        { m_uiBaronRunTimer -= uiDiff; }
     }
 
     if (m_uiMindlessSummonTimer)
@@ -738,10 +747,10 @@ void instance_stratholme::Update(uint32 uiDiff)
                 m_uiMindlessSummonTimer = 400;
             }
             else
-                m_uiMindlessSummonTimer -= uiDiff;
+            { m_uiMindlessSummonTimer -= uiDiff; }
         }
         else
-            m_uiMindlessSummonTimer = 0;
+        { m_uiMindlessSummonTimer = 0; }
     }
 
     if (m_uiSlaugtherSquareTimer)
@@ -754,7 +763,7 @@ void instance_stratholme::Update(uint32 uiDiff)
                 Creature* pAbom = instance->GetCreature(*itr);
                 // Skip killed and already walking Abomnations
                 if (!pAbom || !pAbom->isAlive() || pAbom->GetMotionMaster()->GetCurrentMovementGeneratorType() == POINT_MOTION_TYPE)
-                    continue;
+                { continue; }
 
                 // Let Move to somewhere in the middle
                 if (!pAbom->isInCombat())
@@ -773,7 +782,7 @@ void instance_stratholme::Update(uint32 uiDiff)
             m_uiSlaugtherSquareTimer = urand(15000, 30000);
         }
         else
-            m_uiSlaugtherSquareTimer -= uiDiff;
+        { m_uiSlaugtherSquareTimer -= uiDiff; }
     }
 }
 

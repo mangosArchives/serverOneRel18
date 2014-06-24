@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -41,7 +50,7 @@ bool instance_blackwing_lair::IsEncounterInProgress() const
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            return true;
+        { return true; }
     }
     return false;
 }
@@ -53,7 +62,7 @@ void instance_blackwing_lair::OnCreatureCreate(Creature* pCreature)
         case NPC_BLACKWING_TECHNICIAN:
             // Sort creatures so we can get only the ones near Vaelastrasz
             if (pCreature->IsWithinDist2d(aNefariusSpawnLoc[0], aNefariusSpawnLoc[1], 50.0f))
-                m_lTechnicianGuids.push_back(pCreature->GetObjectGuid());
+            { m_lTechnicianGuids.push_back(pCreature->GetObjectGuid()); }
             break;
         case NPC_MONSTER_GENERATOR:
             m_vGeneratorGuids.push_back(pCreature->GetObjectGuid());
@@ -83,19 +92,19 @@ void instance_blackwing_lair::OnObjectCreate(GameObject* pGo)
             break;
         case GO_DOOR_RAZORGORE_EXIT:
             if (m_auiEncounter[TYPE_RAZORGORE] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_DOOR_CHROMAGGUS_EXIT:
             if (m_auiEncounter[TYPE_CHROMAGGUS] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_DOOR_VAELASTRASZ:
             if (m_auiEncounter[TYPE_VAELASTRASZ] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_DOOR_LASHLAYER:
             if (m_auiEncounter[TYPE_LASHLAYER] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_BLACK_DRAGON_EGG:
             m_lDragonEggsGuids.push_back(pGo->GetObjectGuid());
@@ -117,9 +126,9 @@ void instance_blackwing_lair::SetData(uint32 uiType, uint32 uiData)
         case TYPE_RAZORGORE:
             m_auiEncounter[uiType] = uiData;
             if (uiData != SPECIAL)
-                DoUseDoorOrButton(GO_DOOR_RAZORGORE_ENTER);
+            { DoUseDoorOrButton(GO_DOOR_RAZORGORE_ENTER); }
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_DOOR_RAZORGORE_EXIT);
+            { DoUseDoorOrButton(GO_DOOR_RAZORGORE_EXIT); }
             else if (uiData == FAIL)
             {
                 m_uiResetTimer = 30000;
@@ -131,7 +140,7 @@ void instance_blackwing_lair::SetData(uint32 uiType, uint32 uiData)
                 for (GuidList::const_iterator itr = m_lDefendersGuids.begin(); itr != m_lDefendersGuids.end(); ++itr)
                 {
                     if (Creature* pDefender = instance->GetCreature(*itr))
-                        pDefender->ForcedDespawn();
+                    { pDefender->ForcedDespawn(); }
                 }
 
                 m_lUsedEggsGuids.clear();
@@ -142,14 +151,14 @@ void instance_blackwing_lair::SetData(uint32 uiType, uint32 uiData)
             m_auiEncounter[uiType] = uiData;
             // Prevent the players from running back to the first room; use if the encounter is not special
             if (uiData != SPECIAL)
-                DoUseDoorOrButton(GO_DOOR_RAZORGORE_EXIT);
+            { DoUseDoorOrButton(GO_DOOR_RAZORGORE_EXIT); }
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_DOOR_VAELASTRASZ);
+            { DoUseDoorOrButton(GO_DOOR_VAELASTRASZ); }
             break;
         case TYPE_LASHLAYER:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_DOOR_LASHLAYER);
+            { DoUseDoorOrButton(GO_DOOR_LASHLAYER); }
             break;
         case TYPE_FIREMAW:
         case TYPE_EBONROC:
@@ -159,24 +168,24 @@ void instance_blackwing_lair::SetData(uint32 uiType, uint32 uiData)
         case TYPE_CHROMAGGUS:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_DOOR_CHROMAGGUS_EXIT);
+            { DoUseDoorOrButton(GO_DOOR_CHROMAGGUS_EXIT); }
             break;
         case TYPE_NEFARIAN:
             // Don't store the same thing twice
             if (m_auiEncounter[uiType] == uiData)
-                break;
+            { break; }
             if (uiData == SPECIAL)
             {
                 // handle missing spell 23362
                 Creature* pNefarius = GetSingleCreatureFromStorage(NPC_LORD_VICTOR_NEFARIUS);
                 if (!pNefarius)
-                    break;
+                { break; }
 
                 for (GuidList::const_iterator itr = m_lDrakonidBonesGuids.begin(); itr != m_lDrakonidBonesGuids.end(); ++itr)
                 {
                     // The Go script will handle the missing spell 23361
                     if (GameObject* pGo = instance->GetGameObject(*itr))
-                        pGo->Use(pNefarius);
+                    { pGo->Use(pNefarius); }
                 }
                 // Don't store special data
                 break;
@@ -189,7 +198,7 @@ void instance_blackwing_lair::SetData(uint32 uiType, uint32 uiData)
                 for (GuidList::const_iterator itr = m_lDrakonidBonesGuids.begin(); itr != m_lDrakonidBonesGuids.end(); ++itr)
                 {
                     if (GameObject* pGo = instance->GetGameObject(*itr))
-                        pGo->SetLootState(GO_JUST_DEACTIVATED);
+                    { pGo->SetLootState(GO_JUST_DEACTIVATED); }
                 }
 
                 m_lDrakonidBonesGuids.clear();
@@ -230,7 +239,7 @@ void instance_blackwing_lair::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -239,7 +248,7 @@ void instance_blackwing_lair::Load(const char* chrIn)
 uint32 instance_blackwing_lair::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-        return m_auiEncounter[uiType];
+    { return m_auiEncounter[uiType]; }
 
     return 0;
 }
@@ -249,7 +258,7 @@ void instance_blackwing_lair::SetData64(uint32 uiData, uint64 uiGuid)
     if (uiData == DATA_DRAGON_EGG)
     {
         if (GameObject* pEgg = instance->GetGameObject(ObjectGuid(uiGuid)))
-            m_lUsedEggsGuids.push_back(pEgg->GetObjectGuid());
+        { m_lUsedEggsGuids.push_back(pEgg->GetObjectGuid()); }
 
         // If all eggs are destroyed, then allow Razorgore to be attacked
         if (m_lUsedEggsGuids.size() == m_lDragonEggsGuids.size())
@@ -301,7 +310,7 @@ void instance_blackwing_lair::OnCreatureDeath(Creature* pCreature)
         DoToggleGameObjectFlags(GO_ORB_OF_DOMINATION, GO_FLAG_NO_INTERACT, false);
 
         if (Creature* pOrbTrigger = GetSingleCreatureFromStorage(NPC_BLACKWING_ORB_TRIGGER))
-            pOrbTrigger->InterruptNonMeleeSpells(false);
+        { pOrbTrigger->InterruptNonMeleeSpells(false); }
     }
 }
 
@@ -316,7 +325,7 @@ void instance_blackwing_lair::Update(uint32 uiDiff)
             if (Creature* pRazorgore = GetSingleCreatureFromStorage(NPC_RAZORGORE))
             {
                 if (!pRazorgore->isAlive())
-                    pRazorgore->Respawn();
+                { pRazorgore->Respawn(); }
             }
 
             // Respawn the Dragon Eggs
@@ -325,25 +334,25 @@ void instance_blackwing_lair::Update(uint32 uiDiff)
                 if (GameObject* pEgg = instance->GetGameObject(*itr))
                 {
                     if (!pEgg->isSpawned())
-                        pEgg->Respawn();
+                    { pEgg->Respawn(); }
                 }
             }
 
             m_uiResetTimer = 0;
         }
         else
-            m_uiResetTimer -= uiDiff;
+        { m_uiResetTimer -= uiDiff; }
     }
 
     if (GetData(TYPE_RAZORGORE) != IN_PROGRESS)
-        return;
+    { return; }
 
     if (m_uiDefenseTimer < uiDiff)
     {
         // Allow Razorgore to spawn the defenders
         Creature* pRazorgore = GetSingleCreatureFromStorage(NPC_RAZORGORE);
         if (!pRazorgore)
-            return;
+        { return; }
 
         // Randomize generators
         std::random_shuffle(m_vGeneratorGuids.begin(), m_vGeneratorGuids.end());
@@ -353,7 +362,7 @@ void instance_blackwing_lair::Update(uint32 uiDiff)
         {
             Creature* pGenerator = instance->GetCreature(m_vGeneratorGuids[i]);
             if (!pGenerator)
-                return;
+            { return; }
 
             pRazorgore->SummonCreature(aRazorgoreSpawns[i], pGenerator->GetPositionX(), pGenerator->GetPositionY(), pGenerator->GetPositionZ(), pGenerator->GetOrientation(), TEMPSUMMON_DEAD_DESPAWN, 0);
         }
@@ -361,7 +370,7 @@ void instance_blackwing_lair::Update(uint32 uiDiff)
         m_uiDefenseTimer = 20000;
     }
     else
-        m_uiDefenseTimer -= uiDiff;
+    { m_uiDefenseTimer -= uiDiff; }
 }
 
 InstanceData* GetInstanceData_instance_blackwing_lair(Map* pMap)

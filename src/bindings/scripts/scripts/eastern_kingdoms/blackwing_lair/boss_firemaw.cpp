@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -56,34 +65,34 @@ struct MANGOS_DLL_DECL boss_firemawAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FIREMAW, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FIREMAW, IN_PROGRESS); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FIREMAW, DONE);
+        { m_pInstance->SetData(TYPE_FIREMAW, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FIREMAW, FAIL);
+        { m_pInstance->SetData(TYPE_FIREMAW, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Shadow Flame Timer
         if (m_uiShadowFlameTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHADOW_FLAME) == CAST_OK)
-                m_uiShadowFlameTimer = urand(15000, 18000);
+            { m_uiShadowFlameTimer = urand(15000, 18000); }
         }
         else
-            m_uiShadowFlameTimer -= uiDiff;
+        { m_uiShadowFlameTimer -= uiDiff; }
 
         // Wing Buffet Timer
         if (m_uiWingBuffetTimer < uiDiff)
@@ -91,22 +100,22 @@ struct MANGOS_DLL_DECL boss_firemawAI : public ScriptedAI
             if (DoCastSpellIfCan(m_creature, SPELL_WING_BUFFET) == CAST_OK)
             {
                 if (m_creature->getThreatManager().getThreat(m_creature->getVictim()))
-                    m_creature->getThreatManager().modifyThreatPercent(m_creature->getVictim(), -75);
+                { m_creature->getThreatManager().modifyThreatPercent(m_creature->getVictim(), -75); }
 
                 m_uiWingBuffetTimer = 25000;
             }
         }
         else
-            m_uiWingBuffetTimer -= uiDiff;
+        { m_uiWingBuffetTimer -= uiDiff; }
 
         // Flame Buffet Timer
         if (m_uiFlameBuffetTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FLAME_BUFFET) == CAST_OK)
-                m_uiFlameBuffetTimer = 5000;
+            { m_uiFlameBuffetTimer = 5000; }
         }
         else
-            m_uiFlameBuffetTimer -= uiDiff;
+        { m_uiFlameBuffetTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

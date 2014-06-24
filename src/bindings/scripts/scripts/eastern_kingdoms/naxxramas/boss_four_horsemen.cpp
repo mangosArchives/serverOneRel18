@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -109,7 +118,7 @@ struct MANGOS_DLL_DECL boss_lady_blaumeuxAI : public ScriptedAI
         DoScriptText(SAY_BLAU_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -123,41 +132,41 @@ struct MANGOS_DLL_DECL boss_lady_blaumeuxAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_SPIRIT_BLAUMEUX, CAST_TRIGGERED);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() <= m_fHealthCheck)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHIELDWALL) == CAST_OK)
-                m_fHealthCheck -= 30.0f;
+            { m_fHealthCheck -= 30.0f; }
         }
 
         if (m_uiMarkTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_MARK_OF_BLAUMEUX) == CAST_OK)
-                m_uiMarkTimer = 12000;
+            { m_uiMarkTimer = 12000; }
         }
         else
-            m_uiMarkTimer -= uiDiff;
+        { m_uiMarkTimer -= uiDiff; }
 
         if (m_uiVoidZoneTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_VOID_ZONE) == CAST_OK)
-                m_uiVoidZoneTimer = 15000;
+            { m_uiVoidZoneTimer = 15000; }
         }
         else
-            m_uiVoidZoneTimer -= uiDiff;
+        { m_uiVoidZoneTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -199,7 +208,7 @@ struct MANGOS_DLL_DECL boss_alexandros_mograineAI : public ScriptedAI
         }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -213,41 +222,41 @@ struct MANGOS_DLL_DECL boss_alexandros_mograineAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_SPIRIT_MOGRAINE, CAST_TRIGGERED);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() <= m_fHealthCheck)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHIELDWALL) == CAST_OK)
-                m_fHealthCheck -= 30.0f;
+            { m_fHealthCheck -= 30.0f; }
         }
 
         if (m_uiMarkTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_MARK_OF_MOGRAINE) == CAST_OK)
-                m_uiMarkTimer = 12000;
+            { m_uiMarkTimer = 12000; }
         }
         else
-            m_uiMarkTimer -= uiDiff;
+        { m_uiMarkTimer -= uiDiff; }
 
         if (m_uiRighteousFireTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_RIGHTEOUS_FIRE) == CAST_OK)
-                m_uiRighteousFireTimer = 15000;
+            { m_uiRighteousFireTimer = 15000; }
         }
         else
-            m_uiRighteousFireTimer -= uiDiff;
+        { m_uiRighteousFireTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -284,7 +293,7 @@ struct MANGOS_DLL_DECL boss_thane_korthazzAI : public ScriptedAI
         DoScriptText(SAY_KORT_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -298,41 +307,41 @@ struct MANGOS_DLL_DECL boss_thane_korthazzAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_SPIRIT_KORTHAZZ, CAST_TRIGGERED);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() <= m_fHealthCheck)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHIELDWALL) == CAST_OK)
-                m_fHealthCheck -= 30.0f;
+            { m_fHealthCheck -= 30.0f; }
         }
 
         if (m_uiMarkTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_MARK_OF_KORTHAZZ) == CAST_OK)
-                m_uiMarkTimer = 12000;
+            { m_uiMarkTimer = 12000; }
         }
         else
-            m_uiMarkTimer -= uiDiff;
+        { m_uiMarkTimer -= uiDiff; }
 
         if (m_uiMeteorTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_METEOR) == CAST_OK)
-                m_uiMeteorTimer = 20000;
+            { m_uiMeteorTimer = 20000; }
         }
         else
-            m_uiMeteorTimer -= uiDiff;
+        { m_uiMeteorTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -369,7 +378,7 @@ struct MANGOS_DLL_DECL boss_sir_zeliekAI : public ScriptedAI
         DoScriptText(SAY_ZELI_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, IN_PROGRESS); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -383,41 +392,41 @@ struct MANGOS_DLL_DECL boss_sir_zeliekAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_SPIRIT_ZELIEK, CAST_TRIGGERED);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, SPECIAL); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL);
+        { m_pInstance->SetData(TYPE_FOUR_HORSEMEN, FAIL); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() <= m_fHealthCheck)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHIELDWALL) == CAST_OK)
-                m_fHealthCheck -= 30.0f;
+            { m_fHealthCheck -= 30.0f; }
         }
 
         if (m_uiMarkTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_MARK_OF_ZELIEK) == CAST_OK)
-                m_uiMarkTimer = 12000;
+            { m_uiMarkTimer = 12000; }
         }
         else
-            m_uiMarkTimer -= uiDiff;
+        { m_uiMarkTimer -= uiDiff; }
 
         if (m_uiHolyWrathTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_HOLY_WRATH) == CAST_OK)
-                m_uiHolyWrathTimer = 15000;
+            { m_uiHolyWrathTimer = 15000; }
         }
         else
-            m_uiHolyWrathTimer -= uiDiff;
+        { m_uiHolyWrathTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

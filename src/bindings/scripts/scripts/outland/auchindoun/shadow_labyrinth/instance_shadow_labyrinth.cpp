@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -48,11 +57,11 @@ void instance_shadow_labyrinth::OnObjectCreate(GameObject* pGo)
     {
         case GO_REFECTORY_DOOR:
             if (m_auiEncounter[2] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_SCREAMING_HALL_DOOR:
             if (m_auiEncounter[3] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
 
         default:
@@ -110,7 +119,7 @@ void instance_shadow_labyrinth::SetData(uint32 uiType, uint32 uiData)
                         DoScriptText(SAY_HELLMAW_INTRO, pHellmaw);
                         pHellmaw->GetMotionMaster()->MoveWaypoint();
                         if (pHellmaw->HasAura(SPELL_BANISH))
-                            pHellmaw->RemoveAurasDueToSpell(SPELL_BANISH);
+                        { pHellmaw->RemoveAurasDueToSpell(SPELL_BANISH); }
                     }
 
                     m_auiEncounter[1] = DONE;
@@ -121,13 +130,13 @@ void instance_shadow_labyrinth::SetData(uint32 uiType, uint32 uiData)
 
         case TYPE_INCITER:
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_REFECTORY_DOOR);
+            { DoUseDoorOrButton(GO_REFECTORY_DOOR); }
             m_auiEncounter[2] = uiData;
             break;
 
         case TYPE_VORPIL:
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_SCREAMING_HALL_DOOR);
+            { DoUseDoorOrButton(GO_SCREAMING_HALL_DOOR); }
             m_auiEncounter[3] = uiData;
             break;
 
@@ -179,7 +188,7 @@ void instance_shadow_labyrinth::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -78,11 +87,11 @@ struct MANGOS_DLL_DECL npc_aeranasAI : public ScriptedAI
                 m_uiFactionTimer = 0;
             }
             else
-                m_uiFactionTimer -= uiDiff;
+            { m_uiFactionTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() < 30.0f)
         {
@@ -100,7 +109,7 @@ struct MANGOS_DLL_DECL npc_aeranasAI : public ScriptedAI
             m_uiShockTimer = 10000;
         }
         else
-            m_uiShockTimer -= uiDiff;
+        { m_uiShockTimer -= uiDiff; }
 
         if (m_uiEnvelopingWindsTimer < uiDiff)
         {
@@ -108,7 +117,7 @@ struct MANGOS_DLL_DECL npc_aeranasAI : public ScriptedAI
             m_uiEnvelopingWindsTimer = 25000;
         }
         else
-            m_uiEnvelopingWindsTimer -= uiDiff;
+        { m_uiEnvelopingWindsTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -139,9 +148,9 @@ struct MANGOS_DLL_DECL npc_ancestral_wolfAI : public npc_escortAI
     npc_ancestral_wolfAI(Creature* pCreature) : npc_escortAI(pCreature)
     {
         if (pCreature->GetOwner() && pCreature->GetOwner()->GetTypeId() == TYPEID_PLAYER)
-            Start(false, (Player*)pCreature->GetOwner());
+        { Start(false, (Player*)pCreature->GetOwner()); }
         else
-            script_error_log("npc_ancestral_wolf can not obtain owner or owner is not a player.");
+        { script_error_log("npc_ancestral_wolf can not obtain owner or owner is not a player."); }
 
         Reset();
     }
@@ -164,7 +173,7 @@ struct MANGOS_DLL_DECL npc_ancestral_wolfAI : public npc_escortAI
             case 50:
                 Creature* pRyga = GetClosestCreatureWithEntry(m_creature, NPC_RYGA, 30.0f);
                 if (pRyga && pRyga->isAlive() && !pRyga->isInCombat())
-                    DoScriptText(SAY_WOLF_WELCOME, pRyga);
+                { DoScriptText(SAY_WOLF_WELCOME, pRyga); }
                 break;
         }
     }
@@ -275,13 +284,13 @@ struct MANGOS_DLL_DECL npc_demoniac_scryerAI : public ScriptedAI
     void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell) override
     {
         if (pTarget->GetEntry() == NPC_HELLFIRE_WARDLING && pSpell->Id == SPELL_SUCKER_DESPAWN_MOB)
-            ((Creature*)pTarget)->ForcedDespawn();
+        { ((Creature*)pTarget)->ForcedDespawn(); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (m_bIsComplete || !m_creature->isAlive())
-            return;
+        { return; }
 
         if (m_uiSpawnButtressTimer <= uiDiff)
         {
@@ -303,7 +312,7 @@ struct MANGOS_DLL_DECL npc_demoniac_scryerAI : public ScriptedAI
             DoSpawnButtress();
         }
         else
-            m_uiSpawnButtressTimer -= uiDiff;
+        { m_uiSpawnButtressTimer -= uiDiff; }
 
         if (m_uiSpawnDemonTimer <= uiDiff)
         {
@@ -311,7 +320,7 @@ struct MANGOS_DLL_DECL npc_demoniac_scryerAI : public ScriptedAI
             m_uiSpawnDemonTimer = 15000;
         }
         else
-            m_uiSpawnDemonTimer -= uiDiff;
+        { m_uiSpawnDemonTimer -= uiDiff; }
     }
 };
 
@@ -327,7 +336,7 @@ bool GossipHello_npc_demoniac_scryer(Player* pPlayer, Creature* pCreature)
         if (pScryerAI->m_bIsComplete)
         {
             if (pPlayer->GetQuestStatus(QUEST_DEMONIAC) == QUEST_STATUS_INCOMPLETE)
-                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_ATTUNE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+            { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_ATTUNE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
 
             pPlayer->SEND_GOSSIP_MENU(GOSSIP_TEXTID_ATTUNED, pCreature->GetObjectGuid());
             return true;
@@ -377,7 +386,7 @@ struct MANGOS_DLL_DECL npc_wounded_blood_elfAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
@@ -412,7 +421,7 @@ struct MANGOS_DLL_DECL npc_wounded_blood_elfAI : public npc_escortAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
-            DoScriptText(SAY_ELF_AGGRO, m_creature);
+        { DoScriptText(SAY_ELF_AGGRO, m_creature); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -434,7 +443,7 @@ bool QuestAccept_npc_wounded_blood_elf(Player* pPlayer, Creature* pCreature, con
         pCreature->SetFactionTemporary(FACTION_ESCORT_H_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
 
         if (npc_wounded_blood_elfAI* pEscortAI = dynamic_cast<npc_wounded_blood_elfAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
 
     return true;
@@ -470,17 +479,17 @@ struct MANGOS_DLL_DECL npc_fel_guard_houndAI : public ScriptedPetAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE || !uiPointId)
-            return;
+        { return; }
 
         if (DoCastSpellIfCan(m_creature, SPELL_FAKE_DOG_SPART) == CAST_OK)
-            m_uiPoodadTimer = 2000;
+        { m_uiPoodadTimer = 2000; }
     }
 
     // Function to allow the boar to move to target
     void DoMoveToCorpse(Unit* pBoar)
     {
         if (!pBoar)
-            return;
+        { return; }
 
         m_bIsPooActive = true;
         m_creature->GetMotionMaster()->MovePoint(1, pBoar->GetPositionX(), pBoar->GetPositionY(), pBoar->GetPositionZ());
@@ -499,11 +508,11 @@ struct MANGOS_DLL_DECL npc_fel_guard_houndAI : public ScriptedPetAI
                 }
             }
             else
-                m_uiPoodadTimer -= uiDiff;
+            { m_uiPoodadTimer -= uiDiff; }
         }
 
         if (!m_bIsPooActive)
-            ScriptedPetAI::UpdateAI(uiDiff);
+        { ScriptedPetAI::UpdateAI(uiDiff); }
     }
 };
 
@@ -520,7 +529,7 @@ bool EffectDummyCreature_npc_fel_guard_hound(Unit* pCaster, uint32 uiSpellId, Sp
         if (pCaster->GetEntry() == NPC_DERANGED_HELBOAR)
         {
             if (npc_fel_guard_houndAI* pHoundAI = dynamic_cast<npc_fel_guard_houndAI*>(pCreatureTarget->AI()))
-                pHoundAI->DoMoveToCorpse(pCaster);
+            { pHoundAI->DoMoveToCorpse(pCaster); }
         }
 
         // always return true when we are handling this spell and effect

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -96,10 +105,10 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (!m_creature->GetPet())
-            DoCastSpellIfCan(m_creature, SPELL_SUMMON_IMP);
+        { DoCastSpellIfCan(m_creature, SPELL_SUMMON_IMP); }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_TERESTIAN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_TERESTIAN, IN_PROGRESS); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -110,7 +119,7 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_TERESTIAN, FAIL);
+        { m_pInstance->SetData(TYPE_TERESTIAN, FAIL); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -144,7 +153,7 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
                 break;
             case NPC_DEMONCHAINS:
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_sacrificeGuid))
-                    pPlayer->RemoveAurasDueToSpell(SPELL_SACRIFICE);
+                { pPlayer->RemoveAurasDueToSpell(SPELL_SACRIFICE); }
                 break;
         }
     }
@@ -154,7 +163,7 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_TERESTIAN, DONE);
+        { m_pInstance->SetData(TYPE_TERESTIAN, DONE); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -165,14 +174,14 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
             if (m_uiSummonKilrekTimer <= uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_IMP) == CAST_OK)
-                    m_uiSummonKilrekTimer = 0;
+                { m_uiSummonKilrekTimer = 0; }
             }
             else
-                m_uiSummonKilrekTimer -= uiDiff;
+            { m_uiSummonKilrekTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiSacrificeTimer < uiDiff)
         {
@@ -188,15 +197,15 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
             }
         }
         else
-            m_uiSacrificeTimer -= uiDiff;
+        { m_uiSacrificeTimer -= uiDiff; }
 
         if (m_uiShadowboltTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_SHADOW_BOLT) == CAST_OK)
-                m_uiShadowboltTimer = 10000;
+            { m_uiShadowboltTimer = 10000; }
         }
         else
-            m_uiShadowboltTimer -= uiDiff;
+        { m_uiShadowboltTimer -= uiDiff; }
 
         if (m_uiSummonTimer)
         {
@@ -209,7 +218,7 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
                 }
             }
             else
-                m_uiSummonTimer -= uiDiff;
+            { m_uiSummonTimer -= uiDiff; }
         }
 
         if (m_uiBerserkTimer)
@@ -217,10 +226,10 @@ struct MANGOS_DLL_DECL boss_terestianAI : public ScriptedAI
             if (m_uiBerserkTimer <= uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_BERSERK) == CAST_OK)
-                    m_uiBerserkTimer = 0;
+                { m_uiBerserkTimer = 0; }
             }
             else
-                m_uiBerserkTimer -= uiDiff;
+            { m_uiBerserkTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -249,10 +258,10 @@ struct MANGOS_DLL_DECL npc_fiendish_portalAI : public ScriptedAI
         if (m_uiSummonTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_FIENDISH_IMP) == CAST_OK)
-                m_uiSummonTimer = 5000;
+            { m_uiSummonTimer = 5000; }
         }
         else
-            m_uiSummonTimer -= uiDiff;
+        { m_uiSummonTimer -= uiDiff; }
     }
 };
 

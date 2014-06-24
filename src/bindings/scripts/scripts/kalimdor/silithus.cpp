@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -258,13 +267,13 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                 break;
             case SAY_FANDRAL_INTRO_2:
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    pFandral->SetFacingToObject(m_creature);
+                { pFandral->SetFacingToObject(m_creature); }
                 break;
             case EMOTE_MERITHRA_GLANCE:
                 if (Creature* pMerithra = m_creature->GetMap()->GetCreature(m_merithraGuid))
                 {
                     if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                        pFandral->SetFacingToObject(pMerithra);
+                    { pFandral->SetFacingToObject(pMerithra); }
                 }
                 break;
             case NPC_ANACHRONOS_QUEST_TRIGGER:
@@ -281,11 +290,11 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                 break;
             case SPELL_GREEN_DRAGON_TRANSFORM:
                 if (Creature* pMerithra = m_creature->GetMap()->GetCreature(m_merithraGuid))
-                    pMerithra->CastSpell(pMerithra, SPELL_GREEN_DRAGON_TRANSFORM, false);
+                { pMerithra->CastSpell(pMerithra, SPELL_GREEN_DRAGON_TRANSFORM, false); }
                 break;
             case SAY_ARYGOS_ATTACK_2:
                 if (Creature* pMerithra = m_creature->GetMap()->GetCreature(m_merithraGuid))
-                    pMerithra->CastSpell(pMerithra, SPELL_MERITHRA_WAKE, false);
+                { pMerithra->CastSpell(pMerithra, SPELL_MERITHRA_WAKE, false); }
                 break;
             case NPC_ARYGOS:
                 // Move Arygos to attack
@@ -310,11 +319,11 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                 break;
             case SPELL_BLUE_DRAGON_TRANSFORM:
                 if (Creature* pArygos = m_creature->GetMap()->GetCreature(m_arygosGuid))
-                    pArygos->CastSpell(pArygos, SPELL_BLUE_DRAGON_TRANSFORM, false);
+                { pArygos->CastSpell(pArygos, SPELL_BLUE_DRAGON_TRANSFORM, false); }
                 break;
             case SPELL_ARYGOS_VENGEANCE:
                 if (Creature* pArygos = m_creature->GetMap()->GetCreature(m_arygosGuid))
-                    pArygos->CastSpell(pArygos, SPELL_ARYGOS_VENGEANCE, false);
+                { pArygos->CastSpell(pArygos, SPELL_ARYGOS_VENGEANCE, false); }
                 break;
             case POINT_ID_DRAGON_ATTACK:
                 // Move Arygos to the exit point
@@ -339,11 +348,11 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                 break;
             case SPELL_RED_DRAGON_TRANSFORM:
                 if (Creature* pCaelestrasz = m_creature->GetMap()->GetCreature(m_CaelestraszGuid))
-                    pCaelestrasz->CastSpell(pCaelestrasz, SPELL_RED_DRAGON_TRANSFORM, false);
+                { pCaelestrasz->CastSpell(pCaelestrasz, SPELL_RED_DRAGON_TRANSFORM, false); }
                 break;
             case SPELL_CAELESTRASZ_MOLTEN_RAIN:
                 if (Creature* pCaelestrasz = m_creature->GetMap()->GetCreature(m_CaelestraszGuid))
-                    pCaelestrasz->CastSpell(pCaelestrasz, SPELL_CAELESTRASZ_MOLTEN_RAIN, false);
+                { pCaelestrasz->CastSpell(pCaelestrasz, SPELL_CAELESTRASZ_MOLTEN_RAIN, false); }
                 break;
             case SAY_ANACHRONOS_SEAL_1:
                 // Send Caelestrasz on flight
@@ -355,11 +364,11 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                     pCaelestrasz->ForcedDespawn(9000);
                 }
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    m_creature->SetFacingToObject(pFandral);
+                { m_creature->SetFacingToObject(pFandral); }
                 break;
             case SAY_FANDRAL_SEAL_2:
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    pFandral->SetFacingToObject(m_creature);
+                { pFandral->SetFacingToObject(m_creature); }
                 break;
             case POINT_ID_GATE:
                 // Send Anachronos to the gate
@@ -383,7 +392,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
             case SAY_FANDRAL_SEAL_6:
                 // Here Anachronos should continue to cast something
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    pFandral->CastSpell(pFandral, SPELL_CALL_ANCIENTS, false);
+                { pFandral->CastSpell(pFandral, SPELL_CALL_ANCIENTS, false); }
                 break;
             case EMOTE_FANDRAL_EXHAUSTED:
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
@@ -395,12 +404,12 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
             case DATA_HANDLE_SCEPTER:
                 // Give the scepter to Fandral (it should equip it somehow)
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    DoScriptText(EMOTE_ANACHRONOS_SCEPTER, m_creature, pFandral);
+                { DoScriptText(EMOTE_ANACHRONOS_SCEPTER, m_creature, pFandral); }
                 m_creature->SetStandState(UNIT_STAND_STATE_KNEEL);
                 break;
             case SAY_FANDRAL_EPILOGUE_4:
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    pFandral->SetStandState(UNIT_STAND_STATE_STAND);
+                { pFandral->SetStandState(UNIT_STAND_STATE_STAND); }
                 break;
             case POINT_ID_SCEPTER_2:
                 m_creature->SetStandState(UNIT_STAND_STATE_STAND);
@@ -408,7 +417,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
             case EMOTE_FANDRAL_SHATTER:
                 // Shatter the scepter
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    pFandral->CastSpell(pFandral, SPELL_SHATTER_HAMMER, false);
+                { pFandral->CastSpell(pFandral, SPELL_SHATTER_HAMMER, false); }
                 break;
             case SAY_ANACHRONOS_EPILOGUE_6:
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
@@ -420,7 +429,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
             case POINT_ID_EPILOGUE:
                 // Make Fandral leave
                 if (Creature* pFandral = m_creature->GetMap()->GetCreature(m_fandralGuid))
-                    pFandral->GetMotionMaster()->MovePoint(POINT_ID_EXIT, aEternalBoardMovement[7].m_fX, aEternalBoardMovement[7].m_fY, aEternalBoardMovement[7].m_fZ);
+                { pFandral->GetMotionMaster()->MovePoint(POINT_ID_EXIT, aEternalBoardMovement[7].m_fX, aEternalBoardMovement[7].m_fY, aEternalBoardMovement[7].m_fZ); }
                 break;
             case POINT_ID_SCEPTER_1:
                 // Anachronos collects the pieces
@@ -448,7 +457,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
     void DoSummonDragons()
     {
         for (uint8 i = 0; i < MAX_DRAGONS; ++i)
-            m_creature->SummonCreature(aEternalBoardNPCs[i].m_uiEntry, aEternalBoardNPCs[i].m_fX, aEternalBoardNPCs[i].m_fY, aEternalBoardNPCs[i].m_fZ, aEternalBoardNPCs[i].m_fO, TEMPSUMMON_CORPSE_DESPAWN, 0);
+        { m_creature->SummonCreature(aEternalBoardNPCs[i].m_uiEntry, aEternalBoardNPCs[i].m_fX, aEternalBoardNPCs[i].m_fY, aEternalBoardNPCs[i].m_fZ, aEternalBoardNPCs[i].m_fO, TEMPSUMMON_CORPSE_DESPAWN, 0); }
 
         // Also summon the 3 anubisath conquerors
         float fX, fY, fZ;
@@ -488,7 +497,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
         for (GuidList::const_iterator itr = m_lQirajiWarriorsList.begin(); itr != m_lQirajiWarriorsList.end(); ++itr)
         {
             if (Creature* pTemp = m_creature->GetMap()->GetCreature(*itr))
-                pTemp->ForcedDespawn();
+            { pTemp->ForcedDespawn(); }
         }
     }
 
@@ -525,7 +534,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
     void MovementInform(uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         switch (uiPointId)
         {
@@ -558,7 +567,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
     void SummonedMovementInform(Creature* pSummoned, uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         if (pSummoned->GetEntry() == NPC_FANDRAL_STAGHELM)
         {
@@ -616,7 +625,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                     case 2:
                         // Complete quest and despawn gate
                         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                            pPlayer->GroupEventHappens(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD, m_creature);
+                        { pPlayer->GroupEventHappens(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD, m_creature); }
                         m_creature->SetStandState(UNIT_STAND_STATE_STAND);
                         m_uiEventTimer = 4000;
                         break;
@@ -638,7 +647,7 @@ struct MANGOS_DLL_DECL npc_anachronos_the_ancientAI : public ScriptedAI, private
                 ++m_uiEventStage;
             }
             else
-                m_uiEventTimer -= uiDiff;
+            { m_uiEventTimer -= uiDiff; }
         }
     }
 };
@@ -655,13 +664,13 @@ bool QuestAcceptGO_crystalline_tear(Player* pPlayer, GameObject* pGo, const Ques
     {
         // Check if event is already in progress first
         if (GetClosestCreatureWithEntry(pGo, NPC_ANACHRONOS_THE_ANCIENT, 90.0f))
-            return true;
+        { return true; }
 
         if (Creature* pAnachronos = pPlayer->SummonCreature(NPC_ANACHRONOS_THE_ANCIENT, pGo->GetPositionX(), pGo->GetPositionY(), pGo->GetPositionZ(), 3.75f, TEMPSUMMON_CORPSE_DESPAWN, 0))
         {
             // Send the player's guid in order to handle the quest complete
             if (npc_anachronos_the_ancientAI* pAnachronosAI = dynamic_cast<npc_anachronos_the_ancientAI*>(pAnachronos->AI()))
-                pAnachronosAI->m_playerGuid = pPlayer->GetObjectGuid();
+            { pAnachronosAI->m_playerGuid = pPlayer->GetObjectGuid(); }
         }
     }
 

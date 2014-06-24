@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos-one.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -131,16 +140,16 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
 
         // summon the other 4 portals
         for (uint8 i = 0; i < MAX_PORTALS; ++i)
-            m_creature->SummonCreature(NPC_VOID_PORTAL, aVorpilLocation[i].m_fX, aVorpilLocation[i].m_fY, aVorpilLocation[i].m_fZ, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+        { m_creature->SummonCreature(NPC_VOID_PORTAL, aVorpilLocation[i].m_fX, aVorpilLocation[i].m_fY, aVorpilLocation[i].m_fZ, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0); }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_VORPIL, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_VORPIL, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_VORPIL, FAIL);
+        { m_pInstance->SetData(TYPE_VORPIL, FAIL); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -151,10 +160,10 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_VOID_TRAVELER)
-            pSummoned->GetMotionMaster()->MoveFollow(m_creature, 0.0f, 0.0f);
+        { pSummoned->GetMotionMaster()->MoveFollow(m_creature, 0.0f, 0.0f); }
 
         if (pSummoned->GetEntry() == NPC_VOID_PORTAL)
-            pSummoned->CastSpell(pSummoned, SPELL_VOID_PORTAL_VISUAL, true);
+        { pSummoned->CastSpell(pSummoned, SPELL_VOID_PORTAL_VISUAL, true); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
@@ -162,7 +171,7 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_VORPIL, DONE);
+        { m_pInstance->SetData(TYPE_VORPIL, DONE); }
     }
 
     // Wrapper to teleport all players to the platform - Workaround for missing spell
@@ -190,7 +199,7 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiRainOfFireTimer)
         {
@@ -200,23 +209,23 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
                 DoTeleportToPlatform();
 
                 if (DoCastSpellIfCan(m_creature, m_bIsRegularMode ? SPELL_RAIN_OF_FIRE : SPELL_RAIN_OF_FIRE_H, CAST_INTERRUPT_PREVIOUS) == CAST_OK)
-                    m_uiRainOfFireTimer = 0;
+                { m_uiRainOfFireTimer = 0; }
 
                 SetCombatMovement(true);
 
                 return;                                     // Nothing more todo after the players had been teleported
             }
             else
-                m_uiRainOfFireTimer -= uiDiff;
+            { m_uiRainOfFireTimer -= uiDiff; }
         }
 
         if (m_uiShadowBoltVolleyTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SHADOW_BOLT_VOLLEY) == CAST_OK)
-                m_uiShadowBoltVolleyTimer = urand(10000, 26000);
+            { m_uiShadowBoltVolleyTimer = urand(10000, 26000); }
         }
         else
-            m_uiShadowBoltVolleyTimer -= uiDiff;
+        { m_uiShadowBoltVolleyTimer -= uiDiff; }
 
         if (m_uiDrawShadowsTimer < uiDiff)
         {
@@ -227,7 +236,7 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
             }
         }
         else
-            m_uiDrawShadowsTimer -= uiDiff;
+        { m_uiDrawShadowsTimer -= uiDiff; }
 
         if (m_uiVoidTravelerTimer < uiDiff)
         {
@@ -238,7 +247,7 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
             }
         }
         else
-            m_uiVoidTravelerTimer -= uiDiff;
+        { m_uiVoidTravelerTimer -= uiDiff; }
 
         if (!m_bIsRegularMode)
         {
@@ -247,11 +256,11 @@ struct MANGOS_DLL_DECL boss_grandmaster_vorpilAI : public ScriptedAI
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_BANISH_H) == CAST_OK)
-                        m_uiBanishTimer = urand(17000, 23000);
+                    { m_uiBanishTimer = urand(17000, 23000); }
                 }
             }
             else
-                m_uiBanishTimer -= uiDiff;
+            { m_uiBanishTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -309,7 +318,7 @@ struct MANGOS_DLL_DECL npc_void_travelerAI : public ScriptedAI
                 }
             }
             else
-                m_uiDeathTimer -= uiDiff;
+            { m_uiDeathTimer -= uiDiff; }
         }
     }
 };
