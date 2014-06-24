@@ -1,6 +1,6 @@
 /**
- * mangos-zero is a full featured server for World of Warcraft in its vanilla
- * version, supporting clients for patch 1.12.x.
+ * mangos-one is a full featured server for World of Warcraft in its first
+ * expansion version, supporting clients for patch 2.4.3.
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -86,13 +86,13 @@ class Sha1Hash
          *
          * @return uint8
          */
-        uint8* GetDigest(void) { return mDigest; }
+        uint8* GetDigest(void) { return mDigest; };
         /**
          * @brief
          *
          * @return int
          */
-        int GetLength(void) { return SHA_DIGEST_LENGTH; }
+        int GetLength(void) { return SHA_DIGEST_LENGTH; };
 
     private:
         SHA_CTX mC; /**< TODO */

@@ -1,6 +1,6 @@
 /**
- * mangos-zero is a full featured server for World of Warcraft in its vanilla
- * version, supporting clients for patch 1.12.x.
+ * mangos-one is a full featured server for World of Warcraft in its first
+ * expansion version, supporting clients for patch 2.4.3.
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -74,7 +74,7 @@ bool DBCFileLoader::Load(const char* filename, const char* fmt)
     if (fread(&recordSize, 4, 1, f) != 1)                   // Size of a record
     {
         fclose(f);
-        return false;
+        { return false; }
     }
 
     EndianConvert(recordSize);

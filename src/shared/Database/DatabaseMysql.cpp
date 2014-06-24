@@ -1,6 +1,6 @@
 /**
- * mangos-zero is a full featured server for World of Warcraft in its vanilla
- * version, supporting clients for patch 1.12.x.
+ * mangos-one is a full featured server for World of Warcraft in its first
+ * expansion version, supporting clients for patch 2.4.3.
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -471,7 +471,7 @@ bool MySqlPreparedStatement::execute()
 
     if (mysql_stmt_execute(m_stmt))
     {
-        sLog.outError("SQL: can not execute '%s'", m_szFmt.c_str());
+        sLog.outError("SQL: cannot execute '%s'", m_szFmt.c_str());
         sLog.outError("SQL ERROR: %s", mysql_stmt_error(m_stmt));
         return false;
     }

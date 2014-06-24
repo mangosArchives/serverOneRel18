@@ -408,7 +408,7 @@ std::wstring GetMainPartOfName(std::wstring wname, uint32 declension)
 {
     // supported only Cyrillic cases
     if (wname.size() < 1 || !isCyrillicCharacter(wname[0]) || declension > 5)
-        return wname;
+    { return wname; }
 
     // Important: end length must be <= MAX_INTERNAL_PLAYER_NAME-MAX_PLAYER_NAME (3 currently)
 
@@ -444,7 +444,7 @@ std::wstring GetMainPartOfName(std::wstring wname, uint32 declension)
         size_t len = size_t((*itr)[-1]);                    // get length from string size field
 
         if (wname.substr(wname.size() - len, len) == *itr)
-            return wname.substr(0, wname.size() - len);
+        { return wname.substr(0, wname.size() - len); }
     }
 
     return wname;
