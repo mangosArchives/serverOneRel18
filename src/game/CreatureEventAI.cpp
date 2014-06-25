@@ -899,7 +899,7 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
             m_creature->UpdateEntry(action.update_template.creatureId, action.update_template.team ? HORDE : ALLIANCE);
             break;
         case ACTION_T_DIE:
-            if (m_creature->isDead())
+            if (m_creature->IsDead())
             {
                 sLog.outErrorEventAI("Event %d ACTION_T_DIE on dead creature. Creature %d", EventId, m_creature->GetEntry());
                 return;

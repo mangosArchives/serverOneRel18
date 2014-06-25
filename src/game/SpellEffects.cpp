@@ -4368,7 +4368,7 @@ void Spell::EffectSummonPet(SpellEffectIndex eff_idx)
         if ((petentry == 0 || OldSummon->GetEntry() == petentry) && OldSummon->getPetType() != SUMMON_PET)
         {
             // pet in corpse state can't be summoned
-            if (OldSummon->isDead())
+            if (OldSummon->IsDead())
                 return;
 
             OldSummon->GetMap()->Remove((Creature*)OldSummon, false);

@@ -2112,7 +2112,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void SetFacingToObject(WorldObject* pObject);
 
         bool IsAlive() const { return (m_deathState == ALIVE); };
-        bool isDead() const { return (m_deathState == DEAD || m_deathState == CORPSE); };
+        bool IsDead() const { return (m_deathState == DEAD || m_deathState == CORPSE); };
         DeathState getDeathState() const { return m_deathState; };
         virtual void SetDeathState(DeathState s);           // overwritten in Creature/Player/Pet
 
@@ -2140,7 +2140,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
                 return guid;
             return GetObjectGuid();
         }
-        bool isCharmedOwnedByPlayerOrPlayer() const { return GetCharmerOrOwnerOrOwnGuid().IsPlayer(); }
+        bool IsCharmedOwnedByPlayerOrPlayer() const { return GetCharmerOrOwnerOrOwnGuid().IsPlayer(); }
 
         Player* GetSpellModOwner() const;
 
@@ -2334,10 +2334,10 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         bool canDetectInvisibilityOf(Unit const* u) const;
 
         // virtual functions for all world objects types
-        bool isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const override;
+        bool IsVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const override;
         // function for low level grid visibility checks in player/creature cases
         virtual bool IsVisibleInGridForPlayer(Player* pl) const = 0;
-        bool isInvisibleForAlive() const;
+        bool IsInvisibleForAlive() const;
 
         TrackedAuraTargetMap&       GetTrackedAuraTargets(TrackedAuraType type)       { return m_trackedAuraTargets[type]; }
         TrackedAuraTargetMap const& GetTrackedAuraTargets(TrackedAuraType type) const { return m_trackedAuraTargets[type]; }

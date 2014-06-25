@@ -7112,10 +7112,10 @@ bool Unit::IsVisibleForOrDetect(Unit const* u, WorldObject const* viewPoint, boo
     if (GetCharmerOrOwnerGuid() == u->GetObjectGuid())
         return true;
 
-    // isInvisibleForAlive() those units can only be seen by dead or if other
+    // IsInvisibleForAlive() those units can only be seen by dead or if other
     // unit is also invisible for alive.. if an isinvisibleforalive unit dies we
     // should be able to see it too
-    if (u->IsAlive() && IsAlive() && isInvisibleForAlive() != u->isInvisibleForAlive())
+    if (u->IsAlive() && IsAlive() && IsInvisibleForAlive() != u->IsInvisibleForAlive())
         if (u->GetTypeId() != TYPEID_PLAYER || !((Player*)u)->isGameMaster())
             return false;
 
@@ -8071,13 +8071,13 @@ void Unit::ApplyDiminishingAura(DiminishingGroup group, bool apply)
     }
 }
 
-bool Unit::isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const
+bool Unit::IsVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const
 {
     return IsVisibleForOrDetect(u, viewPoint, false, inVisibleList, false);
 }
 
 /// returns true if creature can't be seen by alive units
-bool Unit::isInvisibleForAlive() const
+bool Unit::IsInvisibleForAlive() const
 {
     if (m_AuraFlags & UNIT_AURAFLAG_ALIVE_INVISIBLE)
         return true;

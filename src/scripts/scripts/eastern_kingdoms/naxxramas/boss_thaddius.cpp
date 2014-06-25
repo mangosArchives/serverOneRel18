@@ -515,7 +515,7 @@ struct MANGOS_DLL_DECL boss_thaddiusAddsAI : public ScriptedAI
 
     bool IsCountingDead()
     {
-        return m_bFakeDeath || m_creature->isDead();
+        return m_bFakeDeath || m_creature->IsDead();
     }
 
     void PauseCombatMovement()

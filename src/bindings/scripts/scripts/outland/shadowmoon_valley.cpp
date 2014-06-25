@@ -1064,7 +1064,7 @@ struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovement
                 m_bEventFailed = true;
             }
         }
-        else if (pPlayer->isDead() || !pPlayer->IsWithinDistInMap(m_creature, EVENT_AREA_RADIUS))
+        else if (pPlayer->IsDead() || !pPlayer->IsWithinDistInMap(m_creature, EVENT_AREA_RADIUS))
         {
             pPlayer->FailQuest(QUEST_BATTLE_OF_THE_CRIMSON_WATCH);
             m_bEventFailed = true;

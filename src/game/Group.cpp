@@ -1731,7 +1731,7 @@ static void RewardGroupAtKill_helper(Player* pGroupGuy, Unit* pVictim, uint32 co
  */
 void Group::RewardGroupAtKill(Unit* pVictim, Player* player_tap)
 {
-    bool PvP = pVictim->isCharmedOwnedByPlayerOrPlayer();
+    bool PvP = pVictim->IsCharmedOwnedByPlayerOrPlayer();
 
     // prepare data for near group iteration (PvP and !PvP cases)
     uint32 xp = 0;

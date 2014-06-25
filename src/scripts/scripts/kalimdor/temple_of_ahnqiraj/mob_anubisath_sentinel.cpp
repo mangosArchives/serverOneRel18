@@ -80,7 +80,7 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
 
             if (Creature* pBuddy = m_creature->GetMap()->GetCreature(*itr))
             {
-                if (pBuddy->isDead())
+                if (pBuddy->IsDead())
                     pBuddy->Respawn();
             }
         }
