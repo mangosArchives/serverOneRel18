@@ -169,7 +169,7 @@ void instance_karazhan::SetData(uint32 uiType, uint32 uiData)
                 // Respawn Midnight on Fail
                 if (Creature* pMidnight = GetSingleCreatureFromStorage(NPC_MIDNIGHT))
                 {
-                    if (!pMidnight->isAlive())
+                    if (!pMidnight->IsAlive())
                     { pMidnight->Respawn(); }
                 }
             }

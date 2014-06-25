@@ -208,7 +208,7 @@ bool hyjalAI::IsEventInProgress() const
     for (uint8 i = 0; i < 2; ++i)
     {
         Creature* pBoss = m_creature->GetMap()->GetCreature(m_aBossGuid[i]);
-        if (pBoss && pBoss->isAlive())
+        if (pBoss && pBoss->IsAlive())
         { return true; }
     }
 
@@ -221,7 +221,7 @@ void hyjalAI::EnterEvadeMode()
     m_creature->DeleteThreatList();
     m_creature->CombatStop(true);
 
-    if (m_creature->isAlive())
+    if (m_creature->IsAlive())
     { m_creature->GetMotionMaster()->MoveTargetedHome(); }
 
     m_creature->SetLootRecipient(NULL);
@@ -498,7 +498,7 @@ void hyjalAI::UpdateAI(const uint32 uiDiff)
             {
                 if (Creature* pTemp = m_pInstance->instance->GetCreature(*itr))
                 {
-                    if (!pTemp->isAlive() || pTemp->getVictim())
+                    if (!pTemp->IsAlive() || pTemp->getVictim())
                     { continue; }
 
                     pTemp->SetWalk(false);

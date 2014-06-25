@@ -426,7 +426,7 @@ SpellAuraProcResult Unit::HandleHasteAuraProc(Unit* pVictim, uint32 damage, Aura
     }
 
     // default case
-    if (!target || (target != this && !target->isAlive()))
+    if (!target || (target != this && !target->IsAlive()))
         return SPELL_AURA_PROC_FAILED;
 
     if (cooldown && GetTypeId() == TYPEID_PLAYER && ((Player*)this)->HasSpellCooldown(triggered_spell_id))
@@ -990,7 +990,7 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
             // Vampiric Touch
             if (dummySpell->SpellFamilyFlags & UI64LIT(0x0000040000000000))
             {
-                if (!pVictim || !pVictim->isAlive())
+                if (!pVictim || !pVictim->IsAlive())
                     return SPELL_AURA_PROC_FAILED;
 
                 // pVictim is caster of aura
@@ -1007,7 +1007,7 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
                     // Vampiric Embrace
                 case 15286:
                 {
-                    if (!pVictim || !pVictim->isAlive())
+                    if (!pVictim || !pVictim->IsAlive())
                         return SPELL_AURA_PROC_FAILED;
 
                     // pVictim is caster of aura
@@ -1567,7 +1567,7 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
     }
 
     // default case
-    if (!target || (target != this && !target->isAlive()))
+    if (!target || (target != this && !target->IsAlive()))
         return SPELL_AURA_PROC_FAILED;
 
     if (cooldown && GetTypeId() == TYPEID_PLAYER && ((Player*)this)->HasSpellCooldown(triggered_spell_id))
@@ -1654,9 +1654,9 @@ SpellAuraProcResult Unit::HandleProcTriggerSpellAuraProc(Unit* pVictim, uint32 d
                 case 40336:                                 // Mana Drain Trigger
                 case 46939:                                 // Black Bow of the Betrayer
                     // On successful melee or ranged attack gain 8 mana and if possible drain 8 mana from the target.
-                    if (isAlive())
+                    if (IsAlive())
                         CastSpell(this, 29471, true, castItem, triggeredByAura);
-                    if (pVictim && pVictim->isAlive())
+                    if (pVictim && pVictim->IsAlive())
                         CastSpell(pVictim, 27526, true, castItem, triggeredByAura);
                     return SPELL_AURA_PROC_OK;
                 case 31255:                                 // Deadly Swiftness (Rank 1)
@@ -1789,7 +1789,7 @@ SpellAuraProcResult Unit::HandleProcTriggerSpellAuraProc(Unit* pVictim, uint32 d
             // Pyroclasm
             if (auraSpellInfo->SpellIconID == 1137)
             {
-                if (!pVictim || !pVictim->isAlive() || pVictim == this || procSpell == NULL)
+                if (!pVictim || !pVictim->IsAlive() || pVictim == this || procSpell == NULL)
                     return SPELL_AURA_PROC_FAILED;
                 // Calculate spell tick count for spells
                 uint32 tick = 1; // Default tick = 1
@@ -2014,7 +2014,7 @@ SpellAuraProcResult Unit::HandleProcTriggerSpellAuraProc(Unit* pVictim, uint32 d
             // Lightning Capacitor
             else if (auraSpellInfo->Id == 37657)
             {
-                if (!pVictim || !pVictim->isAlive())
+                if (!pVictim || !pVictim->IsAlive())
                     return SPELL_AURA_PROC_FAILED;
                 // stacking
                 CastSpell(this, 37658, true, NULL, triggeredByAura);
@@ -2093,7 +2093,7 @@ SpellAuraProcResult Unit::HandleProcTriggerSpellAuraProc(Unit* pVictim, uint32 d
                 if (int32(GetHealth()) - int32(damage) >= health30)
                     return SPELL_AURA_PROC_FAILED;
 
-                if (pVictim && pVictim->isAlive())
+                if (pVictim && pVictim->IsAlive())
                     pVictim->getThreatManager().modifyThreatPercent(this, -10);
 
                 basepoints[0] = triggerAmount * GetMaxHealth() / 100;
@@ -2174,7 +2174,7 @@ SpellAuraProcResult Unit::HandleProcTriggerSpellAuraProc(Unit* pVictim, uint32 d
         target = !(procFlags & PROC_FLAG_SUCCESSFUL_POSITIVE_SPELL) && IsPositiveSpell(trigger_spell_id) ? this : pVictim;
 
     // default case
-    if (!target || (target != this && !target->isAlive()))
+    if (!target || (target != this && !target->IsAlive()))
         return SPELL_AURA_PROC_FAILED;
 
     if (basepoints[EFFECT_INDEX_0] || basepoints[EFFECT_INDEX_1] || basepoints[EFFECT_INDEX_2])
@@ -2210,7 +2210,7 @@ SpellAuraProcResult Unit::HandleOverrideClassScriptAuraProc(Unit* pVictim, uint3
 {
     int32 scriptId = triggeredByAura->GetModifier()->m_miscvalue;
 
-    if (!pVictim || !pVictim->isAlive())
+    if (!pVictim || !pVictim->IsAlive())
         return SPELL_AURA_PROC_FAILED;
 
     Item* castItem = triggeredByAura->GetCastItemGuid() && GetTypeId() == TYPEID_PLAYER
@@ -2420,7 +2420,7 @@ SpellAuraProcResult Unit::HandleManaShieldAuraProc(Unit* pVictim, uint32 /*damag
     }
 
     // default case
-    if (!target || (target != this && !target->isAlive()))
+    if (!target || (target != this && !target->IsAlive()))
         return SPELL_AURA_PROC_FAILED;
 
     if (cooldown && GetTypeId() == TYPEID_PLAYER && ((Player*)this)->HasSpellCooldown(triggered_spell_id))

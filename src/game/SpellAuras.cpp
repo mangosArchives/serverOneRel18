@@ -533,12 +533,12 @@ void AreaAura::Update(uint32 diff)
                         for (GroupReference* itr = pGroup->GetFirstMember(); itr != NULL; itr = itr->next())
                         {
                             Player* Target = itr->getSource();
-                            if (Target && Target->isAlive() && Target->GetSubGroup() == subgroup && caster->IsFriendlyTo(Target))
+                            if (Target && Target->IsAlive() && Target->GetSubGroup() == subgroup && caster->IsFriendlyTo(Target))
                             {
                                 if (caster->IsWithinDistInMap(Target, m_radius))
                                     targets.push_back(Target);
                                 Pet* pet = Target->GetPet();
-                                if (pet && pet->isAlive() && caster->IsWithinDistInMap(pet, m_radius))
+                                if (pet && pet->IsAlive() && caster->IsWithinDistInMap(pet, m_radius))
                                     targets.push_back(pet);
                             }
                         }
@@ -1090,7 +1090,7 @@ void Aura::TriggerSpell()
                         Cell::VisitGridObjects(triggerTarget, searcher, 15.0f);
 
                         for (std::list<Creature*>::const_iterator itr = lList.begin(); itr != lList.end(); ++itr)
-                            if ((*itr)->isAlive())
+                            if ((*itr)->IsAlive())
                                 (*itr)->AddThreat(triggerTarget, float(5000));
 
                         return;
@@ -2067,10 +2067,10 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
     // AT REMOVE
     else
     {
-        if (IsQuestTameSpell(GetId()) && target->isAlive())
+        if (IsQuestTameSpell(GetId()) && target->IsAlive())
         {
             Unit* caster = GetCaster();
-            if (!caster || !caster->isAlive())
+            if (!caster || !caster->IsAlive())
                 return;
 
             uint32 finalSpellId = 0;
@@ -3324,7 +3324,7 @@ void Aura::HandleModPossess(bool apply, bool Real)
 
         target->CombatStop(true);
         target->DeleteThreatList();
-        target->getHostileRefManager().deleteReferences();
+        target->GetHostileRefManager().deleteReferences();
 
         if (CharmInfo* charmInfo = target->InitCharmInfo(target))
         {
@@ -3365,7 +3365,7 @@ void Aura::HandleModPossess(bool apply, bool Real)
 
         target->CombatStop(true);
         target->DeleteThreatList();
-        target->getHostileRefManager().deleteReferences();
+        target->GetHostileRefManager().deleteReferences();
 
         target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PLAYER_CONTROLLED);
 
@@ -3486,7 +3486,7 @@ void Aura::HandleModCharm(bool apply, bool Real)
 
         target->CombatStop(true);
         target->DeleteThreatList();
-        target->getHostileRefManager().deleteReferences();
+        target->GetHostileRefManager().deleteReferences();
 
         if (target->GetTypeId() == TYPEID_UNIT)
         {
@@ -3563,7 +3563,7 @@ void Aura::HandleModCharm(bool apply, bool Real)
 
         target->CombatStop(true);
         target->DeleteThreatList();
-        target->getHostileRefManager().deleteReferences();
+        target->GetHostileRefManager().deleteReferences();
 
         if (target->GetTypeId() == TYPEID_UNIT)
         {
@@ -3703,7 +3703,7 @@ void Aura::HandleAuraModStun(bool apply, bool Real)
 
         if (!target->hasUnitState(UNIT_STAT_ROOT))        // prevent allow move if have also root effect
         {
-            if (target->getVictim() && target->isAlive())
+            if (target->getVictim() && target->IsAlive())
                 target->SetTargetGuid(target->getVictim()->GetObjectGuid());
 
             target->SetRoot(false);
@@ -4021,7 +4021,7 @@ void Aura::HandleModThreat(bool apply, bool Real)
 
     Unit* target = GetTarget();
 
-    if (!target->isAlive())
+    if (!target->IsAlive())
         return;
 
     int level_diff = 0;
@@ -4057,17 +4057,17 @@ void Aura::HandleAuraModTotalThreat(bool apply, bool Real)
 
     Unit* target = GetTarget();
 
-    if (!target->isAlive() || target->GetTypeId() != TYPEID_PLAYER)
+    if (!target->IsAlive() || target->GetTypeId() != TYPEID_PLAYER)
         return;
 
     Unit* caster = GetCaster();
 
-    if (!caster || !caster->isAlive())
+    if (!caster || !caster->IsAlive())
         return;
 
     float threatMod = apply ? float(m_modifier.m_amount) : float(-m_modifier.m_amount);
 
-    target->getHostileRefManager().threatAssist(caster, threatMod, GetSpellProto());
+    target->GetHostileRefManager().threatAssist(caster, threatMod, GetSpellProto());
 }
 
 void Aura::HandleModTaunt(bool apply, bool Real)
@@ -4078,12 +4078,12 @@ void Aura::HandleModTaunt(bool apply, bool Real)
 
     Unit* target = GetTarget();
 
-    if (!target->isAlive() || !target->CanHaveThreatList())
+    if (!target->IsAlive() || !target->CanHaveThreatList())
         return;
 
     Unit* caster = GetCaster();
 
-    if (!caster || !caster->isAlive())
+    if (!caster || !caster->IsAlive())
         return;
 
     if (apply)
@@ -5861,7 +5861,7 @@ void Aura::PeriodicTick()
         case SPELL_AURA_PERIODIC_DAMAGE_PERCENT:
         {
             // don't damage target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             Unit* pCaster = GetCaster();
@@ -5988,14 +5988,14 @@ void Aura::PeriodicTick()
         case SPELL_AURA_PERIODIC_HEALTH_FUNNEL:
         {
             // don't damage target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             Unit* pCaster = GetCaster();
             if (!pCaster)
                 return;
 
-            if (!pCaster->isAlive())
+            if (!pCaster->IsAlive())
                 return;
 
             if (spellProto->Effect[GetEffIndex()] == SPELL_EFFECT_PERSISTENT_AREA_AURA &&
@@ -6052,7 +6052,7 @@ void Aura::PeriodicTick()
             pCaster->ProcDamageAndSpell(target, procAttacker, procVictim, PROC_EX_NORMAL_HIT, pdamage, BASE_ATTACK, spellProto);
             int32 new_damage = pCaster->DealDamage(target, pdamage, &cleanDamage, DOT, GetSpellSchoolMask(spellProto), spellProto, false);
 
-            if (!target->isAlive() && pCaster->IsNonMeleeSpellCasted(false))
+            if (!target->IsAlive() && pCaster->IsNonMeleeSpellCasted(false))
                 for (uint32 i = CURRENT_FIRST_NON_MELEE_SPELL; i < CURRENT_MAX_SPELL; ++i)
                     if (Spell* spell = pCaster->GetCurrentSpell(CurrentSpellTypes(i)))
                         if (spell->m_spellInfo->Id == GetId())
@@ -6064,14 +6064,14 @@ void Aura::PeriodicTick()
             uint32 heal = pCaster->SpellHealingBonusTaken(pCaster, spellProto, int32(new_damage * multiplier), DOT, GetStackAmount());
 
             int32 gain = pCaster->DealHeal(pCaster, heal, spellProto);
-            pCaster->getHostileRefManager().threatAssist(pCaster, gain * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
+            pCaster->GetHostileRefManager().threatAssist(pCaster, gain * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
             break;
         }
         case SPELL_AURA_PERIODIC_HEAL:
         case SPELL_AURA_OBS_MOD_HEALTH:
         {
             // don't heal target if not alive, mostly death persistent effects from items
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             Unit* pCaster = GetCaster();
@@ -6087,7 +6087,7 @@ void Aura::PeriodicTick()
                 return;
 
             // heal for caster damage (must be alive)
-            if (target != pCaster && spellProto->SpellVisual == 163 && !pCaster->isAlive())
+            if (target != pCaster && spellProto->SpellVisual == 163 && !pCaster->IsAlive())
                 return;
 
             // ignore non positive values (can be result apply spellmods to aura damage
@@ -6120,7 +6120,7 @@ void Aura::PeriodicTick()
                 if (BattleGround* bg = ((Player*)pCaster)->GetBattleGround())
                     bg->UpdatePlayerScore(((Player*)pCaster), SCORE_HEALING_DONE, gain);
 
-            target->getHostileRefManager().threatAssist(pCaster, float(gain) * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
+            target->GetHostileRefManager().threatAssist(pCaster, float(gain) * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
 
             // heal for caster damage
             if (target != pCaster && spellProto->SpellVisual == 163)
@@ -6150,7 +6150,7 @@ void Aura::PeriodicTick()
         case SPELL_AURA_PERIODIC_MANA_LEECH:
         {
             // don't damage target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             if (m_modifier.m_miscvalue < 0 || m_modifier.m_miscvalue >= MAX_POWERS)
@@ -6166,7 +6166,7 @@ void Aura::PeriodicTick()
             if (!pCaster)
                 return;
 
-            if (!pCaster->isAlive())
+            if (!pCaster->IsAlive())
                 return;
 
             if (GetSpellProto()->Effect[GetEffIndex()] == SPELL_EFFECT_PERSISTENT_AREA_AURA &&
@@ -6256,7 +6256,7 @@ void Aura::PeriodicTick()
         case SPELL_AURA_PERIODIC_ENERGIZE:
         {
             // don't energize target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             // ignore non positive values (can be result apply spellmods to aura damage
@@ -6279,13 +6279,13 @@ void Aura::PeriodicTick()
             int32 gain = target->ModifyPower(power, pdamage);
 
             if (Unit* pCaster = GetCaster())
-                target->getHostileRefManager().threatAssist(pCaster, float(gain) * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
+                target->GetHostileRefManager().threatAssist(pCaster, float(gain) * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
             break;
         }
         case SPELL_AURA_OBS_MOD_MANA:
         {
             // don't energize target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             // ignore non positive values (can be result apply spellmods to aura damage
@@ -6305,13 +6305,13 @@ void Aura::PeriodicTick()
             int32 gain = target->ModifyPower(POWER_MANA, pdamage);
 
             if (Unit* pCaster = GetCaster())
-                target->getHostileRefManager().threatAssist(pCaster, float(gain) * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
+                target->GetHostileRefManager().threatAssist(pCaster, float(gain) * 0.5f * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
             break;
         }
         case SPELL_AURA_POWER_BURN_MANA:
         {
             // don't mana burn target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             Unit* pCaster = GetCaster();
@@ -6326,7 +6326,7 @@ void Aura::PeriodicTick()
 
             Powers powerType = Powers(m_modifier.m_miscvalue);
 
-            if (!target->isAlive() || target->getPowerType() != powerType)
+            if (!target->IsAlive() || target->getPowerType() != powerType)
                 return;
 
             // resilience reduce mana draining effect at spell crit damage reduction (added in 2.4)
@@ -6362,18 +6362,18 @@ void Aura::PeriodicTick()
         case SPELL_AURA_MOD_REGEN:
         {
             // don't heal target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             int32 gain = target->ModifyHealth(m_modifier.m_amount);
             if (Unit* caster = GetCaster())
-                target->getHostileRefManager().threatAssist(caster, float(gain) * 0.5f  * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
+                target->GetHostileRefManager().threatAssist(caster, float(gain) * 0.5f  * sSpellMgr.GetSpellThreatMultiplier(spellProto), spellProto);
             break;
         }
         case SPELL_AURA_MOD_POWER_REGEN:
         {
             // don't energize target if not alive, possible death persistent effects
-            if (!target->isAlive())
+            if (!target->IsAlive())
                 return;
 
             Powers pt = target->getPowerType();
@@ -7318,7 +7318,7 @@ void SpellAuraHolder::HandleSpellSpecificBoosts(bool apply)
                 case 34477:
                 {
                     if (!apply)
-                        m_target->getHostileRefManager().ResetThreatRedirection();
+                        m_target->GetHostileRefManager().ResetThreatRedirection();
                     return;
                 }
                 default:

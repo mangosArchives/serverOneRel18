@@ -149,7 +149,7 @@ void instance_blood_furnace::SetData(uint32 uiType, uint32 uiData)
                         {
                             if (Creature* pOrc = instance->GetCreature(*itr))
                             {
-                                if (!pOrc->isAlive())
+                                if (!pOrc->IsAlive())
                                 { pOrc->Respawn(); }
                             }
                         }
@@ -347,7 +347,7 @@ void instance_blood_furnace::DoSortBroggokOrcs()
                     if (pOrc->IsWithinDistInMap(pDoor, 15.0f))
                     {
                         m_aBroggokEvent[i].m_sSortedOrcGuids.insert(pOrc->GetObjectGuid());
-                        if (!pOrc->isAlive())
+                        if (!pOrc->IsAlive())
                         { pOrc->Respawn(); }
                         break;
                     }

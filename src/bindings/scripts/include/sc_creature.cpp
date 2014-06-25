@@ -56,7 +56,7 @@ bool ScriptedAI::IsVisible(Unit* pWho) const
     if (!pWho)
     { return false; }
 
-    return m_creature->IsWithinDist(pWho, VISIBLE_RANGE) && pWho->isVisibleForOrDetect(m_creature, m_creature, true);
+    return m_creature->IsWithinDist(pWho, VISIBLE_RANGE) && pWho->IsVisibleForOrDetect(m_creature, m_creature, true);
 }
 
 /**
@@ -70,7 +70,7 @@ bool ScriptedAI::IsVisible(Unit* pWho) const
  */
 void ScriptedAI::MoveInLineOfSight(Unit* pWho)
 {
-    if (m_creature->CanInitiateAttack() && pWho->isTargetableForAttack() &&
+    if (m_creature->CanInitiateAttack() && pWho->IsTargetableForAttack() &&
         m_creature->IsHostileTo(pWho) && pWho->isInAccessablePlaceFor(m_creature))
     {
         if (!m_creature->CanFly() && m_creature->GetDistanceZ(pWho) > CREATURE_Z_ATTACK_RANGE)
@@ -148,7 +148,7 @@ void ScriptedAI::EnterEvadeMode()
     m_creature->DeleteThreatList();
     m_creature->CombatStop(true);
 
-    if (m_creature->isAlive())
+    if (m_creature->IsAlive())
     { m_creature->GetMotionMaster()->MoveTargetedHome(); }
 
     m_creature->SetLootRecipient(NULL);

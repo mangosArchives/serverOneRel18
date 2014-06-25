@@ -623,7 +623,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     }
 
     /* Don't let the player get stuck logging in with no corpse */
-    if (!pCurrChar->isAlive())
+    if (!pCurrChar->IsAlive())
     {
         pCurrChar->SendCorpseReclaimDelay(true);
     }

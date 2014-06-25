@@ -416,7 +416,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket& recv_data)
                 return;                                 // cheating?
 
             // resurrect the player
-            if (!_player->isAlive())
+            if (!_player->IsAlive())
             {
                 _player->ResurrectPlayer(1.0f);
                 _player->SpawnCorpseBones();
@@ -487,7 +487,7 @@ void WorldSession::HandleLeaveBattlefieldOpcode(WorldPacket& recv_data)
     //    return;
 
     // not allow leave battleground in combat
-    if (_player->isInCombat())
+    if (_player->IsInCombat())
         if (BattleGround* bg = _player->GetBattleGround())
             if (bg->GetStatus() != STATUS_WAIT_LEAVE)
                 return;

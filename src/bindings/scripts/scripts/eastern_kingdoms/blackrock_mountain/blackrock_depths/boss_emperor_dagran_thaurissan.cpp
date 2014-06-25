@@ -77,7 +77,7 @@ struct MANGOS_DLL_DECL boss_emperor_dagran_thaurissanAI : public ScriptedAI
 
         if (Creature* pPrincess = m_pInstance->GetSingleCreatureFromStorage(NPC_PRINCESS))
         {
-            if (pPrincess->isAlive())
+            if (pPrincess->IsAlive())
             {
                 pPrincess->SetFactionTemporary(FACTION_NEUTRAL, TEMPFACTION_NONE);
                 pPrincess->AI()->EnterEvadeMode();
@@ -191,7 +191,7 @@ struct MANGOS_DLL_DECL boss_moira_bronzebeardAI : public ScriptedAI
             if (Creature* pEmperor = m_pInstance->GetSingleCreatureFromStorage(NPC_EMPEROR))
             {
                 // if evade, then check if he is alive. If not, start make portal
-                if (!pEmperor->isAlive())
+                if (!pEmperor->IsAlive())
                 { m_creature->CastSpell(m_creature, SPELL_OPEN_PORTAL, false); }
             }
         }
@@ -235,7 +235,7 @@ struct MANGOS_DLL_DECL boss_moira_bronzebeardAI : public ScriptedAI
         {
             if (Creature* pEmperor = m_pInstance->GetSingleCreatureFromStorage(NPC_EMPEROR))
             {
-                if (pEmperor->isAlive() && pEmperor->GetHealthPercent() != 100.0f)
+                if (pEmperor->IsAlive() && pEmperor->GetHealthPercent() != 100.0f)
                 { DoCastSpellIfCan(pEmperor, SPELL_HEAL); }
             }
 

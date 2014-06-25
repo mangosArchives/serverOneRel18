@@ -150,7 +150,7 @@ struct MANGOS_DLL_DECL boss_the_lurker_belowAI : public Scripted_NoMovementAI
                 AttackStart(pTarget);
 
             // Set victim to old target (if not while Spout)
-            if (pOldTarget && pOldTarget->isAlive() && m_uiPhase != PHASE_SPOUT)
+            if (pOldTarget && pOldTarget->IsAlive() && m_uiPhase != PHASE_SPOUT)
             {
                 m_creature->SetTargetGuid(pOldTarget->GetObjectGuid());
                 m_creature->SetInFront(pOldTarget);

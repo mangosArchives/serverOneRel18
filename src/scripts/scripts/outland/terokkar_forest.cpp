@@ -385,7 +385,7 @@ struct MANGOS_DLL_DECL npc_letollAI : public npc_escortAI
         {
             float fAngle = uiCount < MAX_RESEARCHER ? M_PI / MAX_RESEARCHER - (uiCount * 2 * M_PI / MAX_RESEARCHER) : 0.0f;
 
-            if ((*itr)->isAlive() && !(*itr)->isInCombat())
+            if ((*itr)->IsAlive() && !(*itr)->IsInCombat())
                 (*itr)->GetMotionMaster()->MoveFollow(m_creature, 2.5f, fAngle);
 
             ++uiCount;
@@ -406,7 +406,7 @@ struct MANGOS_DLL_DECL npc_letollAI : public npc_escortAI
                     continue;
                 }
 
-                if ((*itr)->isAlive() && (*itr)->IsWithinDistInMap(m_creature, 20.0f))
+                if ((*itr)->IsAlive() && (*itr)->IsWithinDistInMap(m_creature, 20.0f))
                     return (*itr);
             }
         }
@@ -453,7 +453,7 @@ struct MANGOS_DLL_DECL npc_letollAI : public npc_escortAI
 
     void Aggro(Unit* pWho) override
     {
-        if (pWho->isInCombat() && pWho->GetTypeId() == TYPEID_UNIT && pWho->GetEntry() == NPC_BONE_SIFTER)
+        if (pWho->IsInCombat() && pWho->GetTypeId() == TYPEID_UNIT && pWho->GetEntry() == NPC_BONE_SIFTER)
             DoScriptText(SAY_LE_HELP_HIM, m_creature);
     }
 
@@ -461,7 +461,7 @@ struct MANGOS_DLL_DECL npc_letollAI : public npc_escortAI
     {
         Player* pPlayer = GetPlayerForEscort();
 
-        if (pPlayer && pPlayer->isAlive())
+        if (pPlayer && pPlayer->IsAlive())
             pSummoned->AI()->AttackStart(pPlayer);
         else
             pSummoned->AI()->AttackStart(m_creature);

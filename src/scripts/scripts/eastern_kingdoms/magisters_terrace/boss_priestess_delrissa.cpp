@@ -117,7 +117,7 @@ struct MANGOS_DLL_DECL boss_priestess_delrissaAI : public ScriptedAI
     void DoInitializeCompanions()
     {
         // can be called if creature are dead, so avoid
-        if (!m_creature->isAlive())
+        if (!m_creature->IsAlive())
             return;
 
         // it's empty, so first time
@@ -237,7 +237,7 @@ struct MANGOS_DLL_DECL boss_priestess_delrissaAI : public ScriptedAI
         // Use the Medallion if CC - only on heroic. Not sure how many times they are allowed to use it.
         if (!m_bIsRegularMode && m_uiMedallionTimer)
         {
-            if (m_creature->isFrozen() || m_creature->hasUnitState(UNIT_STAT_CAN_NOT_REACT))
+            if (m_creature->IsFrozen() || m_creature->hasUnitState(UNIT_STAT_CAN_NOT_REACT))
             {
                 if (m_uiMedallionTimer <= uiDiff)
                 {
@@ -353,7 +353,7 @@ struct MANGOS_DLL_DECL priestess_companion_commonAI : public ScriptedAI
         // Use the Medallion if CC - only on heroic. Not sure how many times they are allowed to use it.
         if (!m_bIsRegularMode && m_uiMedallionTimer)
         {
-            if (m_creature->isFrozen() || m_creature->hasUnitState(UNIT_STAT_CAN_NOT_REACT))
+            if (m_creature->IsFrozen() || m_creature->hasUnitState(UNIT_STAT_CAN_NOT_REACT))
             {
                 if (m_uiMedallionTimer <= uiDiff)
                 {

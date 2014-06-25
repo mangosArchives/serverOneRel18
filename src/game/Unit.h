@@ -2033,7 +2033,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
 
         bool IsTaxiFlying()  const { return hasUnitState(UNIT_STAT_TAXI_FLIGHT); }
 
-        bool isInCombat()  const { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
+        bool IsInCombat()  const { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
         void SetInCombatState(bool PvP, Unit* enemy = NULL);
         void SetInCombatWith(Unit* enemy);
         void ClearInCombat();
@@ -2064,11 +2064,11 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         bool isInRoots() const { return HasAuraType(SPELL_AURA_MOD_ROOT); }
         bool IsPolymorphed() const;
 
-        bool isFrozen() const;
+        bool IsFrozen() const;
 
         void RemoveSpellbyDamageTaken(AuraType auraType, uint32 damage);
 
-        bool isTargetableForAttack(bool inversAlive = false) const;
+        bool IsTargetableForAttack(bool inversAlive = false) const;
         bool isPassiveToHostile() { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PASSIVE); }
 
         virtual bool IsInWater() const;
@@ -2111,7 +2111,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void SetFacingTo(float ori);
         void SetFacingToObject(WorldObject* pObject);
 
-        bool isAlive() const { return (m_deathState == ALIVE); };
+        bool IsAlive() const { return (m_deathState == ALIVE); };
         bool isDead() const { return (m_deathState == DEAD || m_deathState == CORPSE); };
         DeathState getDeathState() const { return m_deathState; };
         virtual void SetDeathState(DeathState s);           // overwritten in Creature/Player/Pet
@@ -2169,7 +2169,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void RemoveGuardians();
         Pet* FindGuardianWithEntry(uint32 entry);
 
-        bool isCharmed() const { return !GetCharmerGuid().IsEmpty(); }
+        bool IsCharmed() const { return !GetCharmerGuid().IsEmpty(); }
 
         CharmInfo* GetCharmInfo() { return m_charmInfo; }
         CharmInfo* InitCharmInfo(Unit* charm);
@@ -2330,7 +2330,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void UpdateVisibilityAndView() override;            // overwrite WorldObject::UpdateVisibilityAndView()
 
         // common function for visibility checks for player/creatures with detection code
-        bool isVisibleForOrDetect(Unit const* u, WorldObject const* viewPoint, bool detect, bool inVisibleList = false, bool is3dDistance = true) const;
+        bool IsVisibleForOrDetect(Unit const* u, WorldObject const* viewPoint, bool detect, bool inVisibleList = false, bool is3dDistance = true) const;
         bool canDetectInvisibilityOf(Unit const* u) const;
 
         // virtual functions for all world objects types
@@ -2358,7 +2358,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         ThreatManager const& getThreatManager() const { return m_ThreatManager; }
         void addHatedBy(HostileReference* pHostileReference) { m_HostileRefManager.insertFirst(pHostileReference); };
         void removeHatedBy(HostileReference* /*pHostileReference*/) { /* nothing to do yet */ }
-        HostileRefManager& getHostileRefManager() { return m_HostileRefManager; }
+        HostileRefManager& GetHostileRefManager() { return m_HostileRefManager; }
 
         Aura* GetAura(uint32 spellId, SpellEffectIndex effindex);
         Aura* GetAura(AuraType type, SpellFamily family, uint64 familyFlag, ObjectGuid casterGuid = ObjectGuid());

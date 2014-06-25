@@ -230,7 +230,7 @@ struct MANGOS_DLL_DECL mob_arugal_voidwalkerAI : public ScriptedAI
         m_bWPDone = true;
 
         Creature* pLeader = m_creature->GetMap()->GetCreature(m_leaderGuid);
-        if (pLeader && pLeader->isAlive())
+        if (pLeader && pLeader->IsAlive())
         {
             m_creature->GetMotionMaster()->MoveFollow(pLeader, 1.0f, M_PI / 2 * m_uiPosition);
         }
@@ -242,7 +242,7 @@ struct MANGOS_DLL_DECL mob_arugal_voidwalkerAI : public ScriptedAI
             GetCreatureListWithEntryInGrid(lVoidwalkerList, m_creature, NPC_VOIDWALKER, 50.0f);
             for (std::list<Creature*>::iterator itr = lVoidwalkerList.begin(); itr != lVoidwalkerList.end(); ++itr)
             {
-                if ((*itr)->isAlive())
+                if ((*itr)->IsAlive())
                 {
                     if (mob_arugal_voidwalkerAI* pVoidwalkerAI = dynamic_cast<mob_arugal_voidwalkerAI*>((*itr)->AI()))
                     {
@@ -285,7 +285,7 @@ struct MANGOS_DLL_DECL mob_arugal_voidwalkerAI : public ScriptedAI
             m_bWPDone = false;
         }
 
-        if (!m_creature->isInCombat())
+        if (!m_creature->IsInCombat())
         { return; }
 
         if (m_uiDarkOffering < uiDiff)
@@ -366,7 +366,7 @@ struct MANGOS_DLL_DECL mob_arugal_voidwalkerAI : public ScriptedAI
         GetCreatureListWithEntryInGrid(lVoidwalkerList, m_creature, NPC_VOIDWALKER, 50.0f);
         for (std::list<Creature*>::iterator itr = lVoidwalkerList.begin(); itr != lVoidwalkerList.end(); ++itr)
         {
-            if ((*itr)->isAlive())
+            if ((*itr)->IsAlive())
                 if (mob_arugal_voidwalkerAI* pVoidwalkerAI = dynamic_cast<mob_arugal_voidwalkerAI*>((*itr)->AI()))
                 { pVoidwalkerAI->ReceiveWaypoint(m_uiCurrentPoint, m_bReverse); }
         }
@@ -886,7 +886,7 @@ struct MANGOS_DLL_DECL npc_deathstalker_vincentAI : public ScriptedAI
 
     void UpdateAI(const uint32 uiDiff) override
     {
-        if (m_creature->isInCombat() && m_creature->getFaction() == FACTION_FRIENDLY)
+        if (m_creature->IsInCombat() && m_creature->getFaction() == FACTION_FRIENDLY)
         { EnterEvadeMode(); }
 
         ScriptedAI::UpdateAI(uiDiff);

@@ -941,7 +941,7 @@ uint16 TerrainInfo::GetAreaFlag(float x, float y, float z, bool* isOutdoors) con
     if (isOutdoors)
     {
         if (haveAreaInfo)
-            *isOutdoors = IsOutdoorWMO(mogpFlags, GetMapId());
+            { *isOutdoors = IsOutdoorWMO(mogpFlags, GetMapId()); }
         else
             { *isOutdoors = true; }
     }

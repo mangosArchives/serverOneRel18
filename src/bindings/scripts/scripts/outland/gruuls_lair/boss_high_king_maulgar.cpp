@@ -231,7 +231,7 @@ struct MANGOS_DLL_DECL Council_Base_AI : public ScriptedAI
         { return; }
 
         Creature* pMaulgar = m_pInstance->GetSingleCreatureFromStorage(NPC_MAULGAR);
-        if (pMaulgar && pMaulgar->isAlive())
+        if (pMaulgar && pMaulgar->IsAlive())
         {
             if (boss_high_king_maulgarAI* pMaulgarAI = dynamic_cast<boss_high_king_maulgarAI*>(pMaulgar->AI()))
             { pMaulgarAI->EventCouncilDeath(); }

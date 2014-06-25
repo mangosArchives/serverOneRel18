@@ -56,7 +56,7 @@ struct MANGOS_DLL_DECL boss_ambassador_hellmawAI : public ScriptedAI
         m_bIsRegularMode = pCreature->GetMap()->IsRegularDifficulty();
         Reset();
 
-        if (m_pInstance && m_creature->isAlive())
+        if (m_pInstance && m_creature->IsAlive())
         {
             if (m_pInstance->GetData(TYPE_OVERSEER) != DONE)
             { DoCastSpellIfCan(m_creature, SPELL_BANISH, CAST_TRIGGERED); }

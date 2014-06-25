@@ -133,7 +133,7 @@ struct MANGOS_DLL_DECL boss_alythessAI : public ScriptedAI
             // Respawn dead sister
             if (Creature* pSister = m_pInstance->GetSingleCreatureFromStorage(NPC_SACROLASH))
             {
-                if (!pSister->isAlive())
+                if (!pSister->IsAlive())
                     pSister->Respawn();
             }
         }
@@ -172,7 +172,7 @@ struct MANGOS_DLL_DECL boss_alythessAI : public ScriptedAI
         {
             if (Creature* pSacrolash = m_pInstance->GetSingleCreatureFromStorage(NPC_SACROLASH))
             {
-                if (!pSacrolash->isAlive())
+                if (!pSacrolash->IsAlive())
                 {
                     m_pInstance->SetData(TYPE_EREDAR_TWINS, DONE);
                     DoScriptText(SAY_ALYTHESS_DEAD, m_creature);
@@ -326,7 +326,7 @@ struct MANGOS_DLL_DECL boss_sacrolashAI : public ScriptedAI
             // Respawn dead sister
             if (Creature* pSister = m_pInstance->GetSingleCreatureFromStorage(NPC_ALYTHESS))
             {
-                if (!pSister->isAlive())
+                if (!pSister->IsAlive())
                     pSister->Respawn();
             }
         }
@@ -352,7 +352,7 @@ struct MANGOS_DLL_DECL boss_sacrolashAI : public ScriptedAI
         {
             if (Creature* pAlythess = m_pInstance->GetSingleCreatureFromStorage(NPC_ALYTHESS))
             {
-                if (!pAlythess->isAlive())
+                if (!pAlythess->IsAlive())
                 {
                     m_pInstance->SetData(TYPE_EREDAR_TWINS, DONE);
                     DoScriptText(SAY_SACROLASH_DEAD, m_creature);
