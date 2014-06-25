@@ -1119,7 +1119,7 @@ void Player::SetDrunkValue(uint16 newDrunkenValue, uint32 itemId)
     if (newDrunkenState >= DRUNKEN_DRUNK)
         { m_detectInvisibilityMask |= (1 << 6); }
     else
-        m_detectInvisibilityMask &= ~(1 << 6);
+        { m_detectInvisibilityMask &= ~(1 << 6); }
 
     if (newDrunkenState == oldDrunkenState)
         return;
@@ -1552,7 +1552,7 @@ void Player::ToggleAFK()
 
     // afk player not allowed in battleground
     if (isAFK() && InBattleGround() && !InArena())
-        LeaveBattleground();
+        { LeaveBattleground(); }
 }
 
 void Player::ToggleDND()
@@ -1590,7 +1590,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
     // don't let enter battlegrounds without assigned battleground id (for example through areatrigger)...
     // don't let gm level > 1 either
     if (!InBattleGround() && mEntry->IsBattleGroundOrArena())
-        return false;
+        { return false; }
 
     // Get MapEntrance trigger if teleport to other -nonBG- map
     bool assignedAreaTrigger = false;
@@ -2968,7 +2968,7 @@ bool Player::addSpell(uint32 spell_id, bool active, bool learning, bool dependen
                             // mark old spell as disable (SMSG_SUPERCEDED_SPELL replace it in client by new)
                             itr2->second.active = false;
                             if (itr2->second.state != PLAYERSPELL_NEW)
-                                itr2->second.state = PLAYERSPELL_CHANGED;
+                                { itr2->second.state = PLAYERSPELL_CHANGED; }
                             superceded_old = true;          // new spell replace old in action bars and spell book.
                         }
                         else if (sSpellMgr.IsHighRankOfSpell(itr2->first, spell_id))
@@ -3679,7 +3679,7 @@ void Player::InitVisibleBits()
 
     // PLAYER_QUEST_LOG_x also visible bit on official (but only on party/raid)...
     for (uint16 i = PLAYER_QUEST_LOG_1_1; i < PLAYER_QUEST_LOG_25_2; i += MAX_QUEST_OFFSET)
-        updateVisualBits.SetBit(i);
+        { updateVisualBits.SetBit(i); }
 
     // Players visible items are not inventory stuff
     // 431) = 884 (0x374) = main weapon
@@ -5756,7 +5756,7 @@ bool Player::SetPosition(float x, float y, float z, float orientation, bool tele
 
         // group update
         if (GetGroup() && (old_x != x || old_y != y))
-            SetGroupUpdateFlag(GROUP_UPDATE_FLAG_POSITION);
+            { SetGroupUpdateFlag(GROUP_UPDATE_FLAG_POSITION); }
 
         if (GetTrader() && !IsWithinDistInMap(GetTrader(), INTERACTION_DISTANCE))
             GetSession()->SendCancelTrade();   // will close both side trade windows
@@ -5855,7 +5855,7 @@ void Player::CheckAreaExploreAndOutdoor()
                 { continue; }
             SpellEntry const* spellInfo = sSpellStore.LookupEntry(itr->first);
             if (!spellInfo || !IsNeedCastSpellAtOutdoor(spellInfo) || HasAura(itr->first))
-                continue;
+                { continue; }
             CastSpell(this, itr->first, true, NULL);
         }
     }
@@ -7218,7 +7218,7 @@ void Player::CastItemCombatSpell(Unit* Target, WeaponAttackType attType)
                 }
             }
             else if (pEnchant->type[s] != ITEM_ENCHANTMENT_TYPE_COMBAT_SPELL)
-                continue;
+                { continue; }
 
             SpellEntry const* spellInfo = sSpellStore.LookupEntry(proc_spell_id);
             if (!spellInfo)
@@ -7287,7 +7287,7 @@ void Player::CastItemUseSpell(Item* item, SpellCastTargets const& targets, uint8
 
         // wrong triggering type
         if (spellData.SpellTrigger != ITEM_SPELLTRIGGER_ON_USE)
-            continue;
+            { continue; }
 
         SpellEntry const* spellInfo = sSpellStore.LookupEntry(spellData.SpellId);
         if (!spellInfo)
@@ -8315,7 +8315,7 @@ uint32 Player::GetItemCount(uint32 item, bool inBankAlso, Item* skipItem) const
         {
             Bag* pBag = (Bag*)GetItemByPos(INVENTORY_SLOT_BAG_0, i);
             if (pBag)
-                count += pBag->GetItemCount(item, skipItem);
+                { count += pBag->GetItemCount(item, skipItem); }
         }
 
         if (skipItem && skipItem->GetProto()->GemProperties)
@@ -8649,7 +8649,7 @@ bool Player::HasItemOrGemWithIdEquipped(uint32 item, uint32 count, uint8 except_
         {
             tempcount += pItem->GetCount();
             if (tempcount >= count)
-                return true;
+                { return true; }
         }
     }
 
@@ -9556,7 +9556,7 @@ InventoryResult Player::CanEquipItem(uint8 slot, uint16& dest, Item* pItem, bool
                 if (!pProto->CanChangeEquipStateInCombat())
                 {
                     if (IsInCombat())
-                        return EQUIP_ERR_NOT_IN_COMBAT;
+                        { return EQUIP_ERR_NOT_IN_COMBAT; }
 
                     if (BattleGround* bg = GetBattleGround())
                         if (bg->isArena() && bg->GetStatus() == STATUS_IN_PROGRESS)
@@ -9677,7 +9677,7 @@ InventoryResult Player::CanUnequipItem(uint16 pos, bool swap) const
     if (!pProto->CanChangeEquipStateInCombat())
     {
         if (IsInCombat())
-            return EQUIP_ERR_NOT_IN_COMBAT;
+            { return EQUIP_ERR_NOT_IN_COMBAT; }
 
         if (BattleGround* bg = GetBattleGround())
             if (bg->isArena() && bg->GetStatus() == STATUS_IN_PROGRESS)
@@ -14239,7 +14239,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
     // check name limitations
     if (ObjectMgr::CheckPlayerName(m_name) != CHAR_NAME_SUCCESS ||
-            (GetSession()->GetSecurity() == SEC_PLAYER && sObjectMgr.IsReservedName(m_name)))
+        (GetSession()->GetSecurity() == SEC_PLAYER && sObjectMgr.IsReservedName(m_name)))
     {
         delete result;
         CharacterDatabase.PExecute("UPDATE characters SET at_login = at_login | '%u' WHERE guid ='%u'",
@@ -14797,12 +14797,15 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
     return true;
 }
 
+/* Checks to see if the current player can loot the creature specified in arg1
+ * Called from Object::BuildValuesUpdate */
 bool Player::isAllowedToLoot(Creature* creature)
 {
-    // never tapped by any (mob solo kill)
+    /* Nobody tapped the monster (solo kill by another NPC) */
     if (!creature->HasFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_TAPPED))
         { return false; }
 
+    /* If we there is a loot recipient, assign it to recipient */
     if (Player* recipient = creature->GetLootRecipient())
     {
         if (recipient == this)
@@ -14820,7 +14823,7 @@ bool Player::isAllowedToLoot(Creature* creature)
     }
     else
         // prevent other players from looting if the recipient got disconnected
-        return !creature->HasLootRecipient();
+        { return !creature->HasLootRecipient(); }
 }
 
 void Player::_LoadActions(QueryResult* result)
@@ -15378,7 +15381,7 @@ void Player::_LoadQuestStatus(QueryResult* result)
 
     // clear quest log tail
     for (uint16 i = slot; i < MAX_QUEST_LOG_SIZE; ++i)
-        SetQuestSlot(i, 0);
+        { SetQuestSlot(i, 0); }
 }
 
 void Player::_LoadDailyQuestStatus(QueryResult* result)
@@ -15511,7 +15514,7 @@ void Player::_LoadBoundInstances(QueryResult* result)
 
             // since non permanent binds are always solo bind, they can always be reset
             DungeonPersistentState* state = (DungeonPersistentState*)sMapPersistentStateMgr.AddPersistentState(mapEntry, instanceId, Difficulty(difficulty), resetTime, !perm, true);
-            if (state) BindToInstance(state, perm, true);
+            if (state) { BindToInstance(state, perm, true); }
         }
         while (result->NextRow());
         delete result;
@@ -15527,7 +15530,7 @@ InstancePlayerBind* Player::GetBoundInstance(uint32 mapid, Difficulty difficulty
 
     BoundInstancesMap::iterator itr = m_boundInstances[difficulty].find(mapid);
     if (itr != m_boundInstances[difficulty].end())
-        return &itr->second;
+        { return &itr->second; }
     else
         { return NULL; }
 }
@@ -15608,7 +15611,7 @@ DungeonPersistentState* Player::GetBoundInstanceSaveForSelfOrGroup(uint32 mapid)
         // use the player's difficulty setting (it may not be the same as the group's)
         if (Group* group = GetGroup())
             if ((groupBind = group->GetBoundInstance(mapid, this)))
-                state = groupBind->state;
+                { state = groupBind->state; }
     }
 
     return state;
@@ -15696,7 +15699,7 @@ void Player::ConvertInstancesToGroup(Player* player, Group* group, ObjectGuid pl
     {
         player_guid = player->GetObjectGuid();
         if (!group)
-            group = player->GetGroup();
+            { group = player->GetGroup(); }
     }
 
     MANGOS_ASSERT(player_guid);
@@ -16691,11 +16694,11 @@ void Player::ResetInstances(InstanceResetMethod method)
         // if the map is loaded, reset it
         if (Map* map = sMapMgr.FindMap(state->GetMapId(), state->GetInstanceId()))
             if (map->IsDungeon())
-                ((DungeonMap*)map)->Reset(method);
+                { ((DungeonMap*)map)->Reset(method); }
 
         // since this is a solo instance there should not be any players inside
         if (method == INSTANCE_RESET_ALL || method == INSTANCE_RESET_CHANGE_DIFFICULTY)
-            SendResetInstanceSuccess(state->GetMapId());
+            { SendResetInstanceSuccess(state->GetMapId()); }
 
         state->DeleteFromDB();
         m_boundInstances[diff].erase(itr++);
@@ -17162,7 +17165,7 @@ void Player::RemovePetitionsAndSigns(ObjectGuid guid, uint32 type)
             // send update if charter owner in game
             Player* owner = sObjectMgr.GetPlayer(ownerguid);
             if (owner)
-                owner->GetSession()->SendPetitionQueryOpcode(petitionguid);
+                { owner->GetSession()->SendPetitionQueryOpcode(petitionguid); }
         }
         while (result->NextRow());
 
@@ -18199,7 +18202,7 @@ void Player::SetBattleGroundEntryPoint(Player* leader /*= NULL*/)
 {
     // chat command use case, or non-group join
     if (!leader || !leader->IsInWorld() || leader->IsTaxiFlying() || leader->GetMap()->IsDungeon() || leader->GetMap()->IsBattleGroundOrArena())
-        leader = this;
+        { leader = this; }
 
     if (leader->IsInWorld() && !leader->IsTaxiFlying())
     {
@@ -18730,7 +18733,7 @@ void Player::ApplyEquipCooldown(Item* pItem)
 
         // wrong triggering type (note: ITEM_SPELLTRIGGER_ON_NO_DELAY_USE not have cooldown)
         if (spellData.SpellTrigger != ITEM_SPELLTRIGGER_ON_USE)
-            continue;
+            { continue; }
 
         AddSpellCooldown(spellData.SpellId, pItem->GetEntry(), time(NULL) + 30);
 
@@ -18996,7 +18999,7 @@ float Player::GetReputationPriceDiscount(Creature const* pCreature) const
 {
     FactionTemplateEntry const* vendor_faction = pCreature->getFactionTemplateEntry();
     if (!vendor_faction || !vendor_faction->faction)
-        return 1.0f;
+        { return 1.0f; }
 
     ReputationRank rank = GetReputationRank(vendor_faction->faction);
     if (rank <= REP_NEUTRAL)
@@ -19179,7 +19182,7 @@ void Player::AutoUnequipOffhandIfNeed()
     // need unequip offhand for 2h-weapon
     if ((CanDualWield() || offItem->GetProto()->InventoryType == INVTYPE_SHIELD || offItem->GetProto()->InventoryType == INVTYPE_HOLDABLE) &&
             !IsTwoHandUsed())
-        return;
+        { return; }
 
     ItemPosCountVec off_dest;
     uint8 off_msg = CanStoreItem(NULL_BAG, NULL_SLOT, off_dest, offItem, false);
@@ -19520,7 +19523,7 @@ void Player::UpdateAreaDependentAuras()
     // some auras applied at subzone enter
     SpellAreaForAreaMapBounds saBounds = sSpellMgr.GetSpellAreaForAreaMapBounds(m_areaUpdateId);
     for (SpellAreaForAreaMap::const_iterator itr = saBounds.first; itr != saBounds.second; ++itr)
-        itr->second->ApplyOrRemoveSpellIfCan(this, m_zoneUpdateId, m_areaUpdateId, true);
+        { itr->second->ApplyOrRemoveSpellIfCan(this, m_zoneUpdateId, m_areaUpdateId, true); }
 }
 
 struct UpdateZoneDependentPetsHelper

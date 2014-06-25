@@ -318,7 +318,7 @@ struct MANGOS_DLL_DECL boss_kiggler_the_crazedAI : public Council_Base_AI
             if (pVictim->GetTypeId() != TYPEID_PLAYER)
             { return; }
 
-            m_creature->getThreatManager().modifyThreatPercent(pVictim, -75);
+            m_creature->GetThreatManager().modifyThreatPercent(pVictim, -75);
         }
     }
 

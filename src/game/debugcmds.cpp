@@ -649,7 +649,7 @@ bool ChatHandler::HandleDebugAnimCommand(char* args)
 {
     uint32 emote_id;
     if (!ExtractUInt32(&args, emote_id))
-        return false;
+        { return false; }
 
     m_session->GetPlayer()->HandleEmoteCommand(emote_id);
     return true;
@@ -659,7 +659,7 @@ bool ChatHandler::HandleDebugSetAuraStateCommand(char* args)
 {
     int32 state;
     if (!ExtractInt32(&args, state))
-        return false;
+        { return false; }
 
     Unit* unit = getSelectedUnit();
     if (!unit)
@@ -673,7 +673,7 @@ bool ChatHandler::HandleDebugSetAuraStateCommand(char* args)
     {
         // reset all states
         for (int i = 1; i <= 32; ++i)
-            unit->ModifyAuraState(AuraState(i), false);
+            { unit->ModifyAuraState(AuraState(i), false); }
         return true;
     }
 
@@ -694,23 +694,23 @@ bool ChatHandler::HandleSetValueHelper(Object* target, uint32 field, char* typeS
 
     uint32 base;                                            // 0 -> float
     if (!typeStr)
-        base = 10;
+        { base = 10; }
     else if (strncmp(typeStr, "int", strlen(typeStr)) == 0)
-        base = 10;
+        { base = 10; }
     else if (strncmp(typeStr, "hex", strlen(typeStr)) == 0)
-        base = 16;
+        { base = 16; }
     else if (strncmp(typeStr, "bit", strlen(typeStr)) == 0)
-        base = 2;
+        { base = 2; }
     else if (strncmp(typeStr, "float", strlen(typeStr)) == 0)
-        base = 0;
+        { base = 0; }
     else
-        return false;
+        { return false; }
 
     if (base)
     {
         uint32 iValue;
         if (!ExtractUInt32Base(&valStr, iValue, base))
-            return false;
+            { return false; }
 
         DEBUG_LOG(GetMangosString(LANG_SET_UINT), guid.GetString().c_str(), field, iValue);
         target->SetUInt32Value(field , iValue);
@@ -720,7 +720,7 @@ bool ChatHandler::HandleSetValueHelper(Object* target, uint32 field, char* typeS
     {
         float fValue;
         if (!ExtractFloat(&valStr, fValue))
-            return false;
+            { return false; }
 
         DEBUG_LOG(GetMangosString(LANG_SET_FLOAT), guid.GetString().c_str(), field, fValue);
         target->SetFloatValue(field , fValue);
@@ -734,23 +734,23 @@ bool ChatHandler::HandleDebugSetItemValueCommand(char* args)
 {
     uint32 guid;
     if (!ExtractUInt32(&args, guid))
-        return false;
+        { return false; }
 
     uint32 field;
     if (!ExtractUInt32(&args, field))
-        return false;
+        { return false; }
 
     char* typeStr = ExtractOptNotLastArg(&args);
     if (!typeStr)
-        return false;
+        { return false; }
 
     char* valStr = ExtractLiteralArg(&args);
     if (!valStr)
-        return false;
+        { return false; }
 
     Item* item = m_session->GetPlayer()->GetItemByGuid(ObjectGuid(HIGHGUID_ITEM, guid));
     if (!item)
-        return false;
+        { return false; }
 
     return HandleSetValueHelper(item, field, typeStr, valStr);
 }
@@ -767,15 +767,15 @@ bool ChatHandler::HandleDebugSetValueCommand(char* args)
 
     uint32 field;
     if (!ExtractUInt32(&args, field))
-        return false;
+        { return false; }
 
     char* typeStr = ExtractOptNotLastArg(&args);
     if (!typeStr)
-        return false;
+        { return false; }
 
     char* valStr = ExtractLiteralArg(&args);
     if (!valStr)
-        return false;
+        { return false; }
 
     return HandleSetValueHelper(target, field, typeStr, valStr);
 }
@@ -792,17 +792,17 @@ bool ChatHandler::HandleGetValueHelper(Object* target, uint32 field, char* typeS
 
     uint32 base;                                            // 0 -> float
     if (!typeStr)
-        base = 10;
+        { base = 10; }
     else if (strncmp(typeStr, "int", strlen(typeStr)) == 0)
-        base = 10;
+        { base = 10; }
     else if (strncmp(typeStr, "hex", strlen(typeStr)) == 0)
-        base = 16;
+        { base = 16; }
     else if (strncmp(typeStr, "bit", strlen(typeStr)) == 0)
-        base = 2;
+        { base = 2; }
     else if (strncmp(typeStr, "float", strlen(typeStr)) == 0)
-        base = 0;
+        { base = 0; }
     else
-        return false;
+        { return false; }
 
     if (base)
     {
@@ -817,7 +817,7 @@ bool ChatHandler::HandleGetValueHelper(Object* target, uint32 field, char* typeS
                 res.reserve(1 + 32 + 1);
                 res = iValue & (1 << (32 - 1)) ? "0" : " ";
                 for (int i = 32; i > 0; --i)
-                    res += iValue & (1 << (i - 1)) ? "1" : "0";
+                    { res += iValue & (1 << (i - 1)) ? "1" : "0"; }
                 DEBUG_LOG(GetMangosString(LANG_GET_BITSTR), guid.GetString().c_str(), field, res.c_str());
                 PSendSysMessage(LANG_GET_BITSTR_FIELD, guid.GetString().c_str(), field, res.c_str());
                 break;
@@ -846,19 +846,19 @@ bool ChatHandler::HandleDebugGetItemValueCommand(char* args)
 {
     uint32 guid;
     if (!ExtractUInt32(&args, guid))
-        return false;
+        { return false; }
 
     uint32 field;
     if (!ExtractUInt32(&args, field))
-        return false;
+        { return false; }
 
     char* typeStr = ExtractLiteralArg(&args);
     if (!typeStr && *args)                                  // optional arg but check format fail case
-        return false;
+        { return false; }
 
     Item* item = m_session->GetPlayer()->GetItemByGuid(ObjectGuid(HIGHGUID_ITEM, guid));
     if (!item)
-        return false;
+        { return false; }
 
     return HandleGetValueHelper(item, field, typeStr);
 }
@@ -875,11 +875,11 @@ bool ChatHandler::HandleDebugGetValueCommand(char* args)
 
     uint32 field;
     if (!ExtractUInt32(&args, field))
-        return false;
+        { return false; }
 
     char* typeStr = ExtractLiteralArg(&args);
     if (!typeStr && *args)                                  // optional arg but check format fail case
-        return false;
+        { return false; }
 
     return HandleGetValueHelper(target, field, typeStr);
 }
@@ -897,23 +897,23 @@ bool ChatHandler::HandlerDebugModValueHelper(Object* target, uint32 field, char*
 
     uint32 type;                                            // 0 -> float 1 -> int add 2-> bit or 3 -> bit and  4 -> bit and not
     if (strncmp(typeStr, "int", strlen(typeStr)) == 0)
-        type = 1;
+        { type = 1; }
     else if (strncmp(typeStr, "float", strlen(typeStr)) == 0)
-        type = 0;
+        { type = 0; }
     else if (strncmp(typeStr, "|=", strlen("|=") + 1) == 0) // exactly copy
-        type = 2;
+        { type = 2; }
     else if (strncmp(typeStr, "&=", strlen("&=") + 1) == 0) // exactly copy
-        type = 3;
+        { type = 3; }
     else if (strncmp(typeStr, "&=~", strlen("&=~") + 1) == 0) // exactly copy
-        type = 4;
+        { type = 4; }
     else
-        return false;
+        { return false; }
 
     if (type)
     {
         uint32 iValue;
         if (!ExtractUInt32Base(&valStr, iValue, type == 1 ? 10 : 16))
-            return false;
+            { return false; }
 
         uint32 value = target->GetUInt32Value(field);
 
@@ -948,7 +948,7 @@ bool ChatHandler::HandlerDebugModValueHelper(Object* target, uint32 field, char*
     {
         float fValue;
         if (!ExtractFloat(&valStr, fValue))
-            return false;
+            { return false; }
 
         float value = target->GetFloatValue(field);
 
@@ -967,23 +967,23 @@ bool ChatHandler::HandleDebugModItemValueCommand(char* args)
 {
     uint32 guid;
     if (!ExtractUInt32(&args, guid))
-        return false;
+        { return false; }
 
     uint32 field;
     if (!ExtractUInt32(&args, field))
-        return false;
+        { return false; }
 
     char* typeStr = ExtractLiteralArg(&args);
     if (!typeStr)
-        return false;
+        { return false; }
 
     char* valStr = ExtractLiteralArg(&args);
     if (!valStr)
-        return false;
+        { return false; }
 
     Item* item = m_session->GetPlayer()->GetItemByGuid(ObjectGuid(HIGHGUID_ITEM, guid));
     if (!item)
-        return false;
+        { return false; }
 
     return HandlerDebugModValueHelper(item, field, typeStr, valStr);
 }
@@ -1000,15 +1000,15 @@ bool ChatHandler::HandleDebugModValueCommand(char* args)
 
     uint32 field;
     if (!ExtractUInt32(&args, field))
-        return false;
+        { return false; }
 
     char* typeStr = ExtractLiteralArg(&args);
     if (!typeStr && *args)                                  // optional arg but check format fail case
-        return false;
+        { return false; }
 
     char* valStr = ExtractLiteralArg(&args);
     if (!valStr)
-        return false;
+        { return false; }
 
     return HandlerDebugModValueHelper(target, field, typeStr, valStr);
 }
@@ -1017,11 +1017,11 @@ bool ChatHandler::HandleDebugSpellCoefsCommand(char* args)
 {
     uint32 spellid = ExtractSpellIdFromLink(&args);
     if (!spellid)
-        return false;
+        { return false; }
 
     SpellEntry const* spellEntry = sSpellStore.LookupEntry(spellid);
     if (!spellEntry)
-        return false;
+        { return false; }
 
     SpellBonusEntry const* bonus = sSpellMgr.GetSpellBonusData(spellid);
 
@@ -1033,7 +1033,7 @@ bool ChatHandler::HandleDebugSpellCoefsCommand(char* args)
     {
         // Heals (Also count Mana Shield and Absorb effects as heals)
         if (spellEntry->Effect[i] == SPELL_EFFECT_HEAL || spellEntry->Effect[i] == SPELL_EFFECT_HEAL_MAX_HEALTH ||
-                (spellEntry->Effect[i] == SPELL_EFFECT_APPLY_AURA && (spellEntry->EffectApplyAuraName[i] == SPELL_AURA_SCHOOL_ABSORB || spellEntry->EffectApplyAuraName[i] == SPELL_AURA_PERIODIC_HEAL)))
+            (spellEntry->Effect[i] == SPELL_EFFECT_APPLY_AURA && (spellEntry->EffectApplyAuraName[i] == SPELL_AURA_SCHOOL_ABSORB || spellEntry->EffectApplyAuraName[i] == SPELL_AURA_PERIODIC_HEAL)))
         {
             isDirectHeal = true;
             break;
@@ -1068,27 +1068,27 @@ bool ChatHandler::HandleDebugSpellModsCommand(char* args)
 {
     char* typeStr = ExtractLiteralArg(&args);
     if (!typeStr)
-        return false;
+        { return false; }
 
     Opcodes opcode;
     if (strncmp(typeStr, "flat", strlen(typeStr)) == 0)
-        opcode = SMSG_SET_FLAT_SPELL_MODIFIER;
+        { opcode = SMSG_SET_FLAT_SPELL_MODIFIER; }
     else if (strncmp(typeStr, "pct", strlen(typeStr)) == 0)
-        opcode = SMSG_SET_PCT_SPELL_MODIFIER;
+        { opcode = SMSG_SET_PCT_SPELL_MODIFIER; }
     else
-        return false;
+        { return false; }
 
     uint32 effidx;
     if (!ExtractUInt32(&args, effidx) || effidx >= 64)
-        return false;
+        { return false; }
 
     uint32 spellmodop;
     if (!ExtractUInt32(&args, spellmodop) || spellmodop >= MAX_SPELLMOD)
-        return false;
+        { return false; }
 
     int32 value;
     if (!ExtractInt32(&args, value))
-        return false;
+        { return false; }
 
     Player* chr = getSelectedPlayer();
     if (chr == NULL)
@@ -1100,7 +1100,7 @@ bool ChatHandler::HandleDebugSpellModsCommand(char* args)
 
     // check online security
     if (HasLowerSecurity(chr))
-        return false;
+        { return false; }
 
     PSendSysMessage(LANG_YOU_CHANGE_SPELLMODS, opcode == SMSG_SET_FLAT_SPELL_MODIFIER ? "flat" : "pct",
                     spellmodop, value, effidx, GetNameLink(chr).c_str());

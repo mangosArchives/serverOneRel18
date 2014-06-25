@@ -633,9 +633,9 @@ bool CreatureLinkingHolder::CanSpawn(Creature* pCreature)
         if (pMaster && IsSlaveInRangeOfBoss(pCreature, pMaster, pInfo->searchRange))
         {
             if (pInfo->linkingFlag & FLAG_CANT_SPAWN_IF_BOSS_DEAD)
-                return pMaster->IsAlive();
+                { return pMaster->IsAlive(); }
             else if (pInfo->linkingFlag & FLAG_CANT_SPAWN_IF_BOSS_ALIVE)
-                return !pMaster->IsAlive();
+                { return !pMaster->IsAlive(); }
             else
                 { return true; }
         }

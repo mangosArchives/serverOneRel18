@@ -247,4 +247,6 @@ class GMTicketMgr
 };
 
 #define sTicketMgr MaNGOS::Singleton<GMTicketMgr>::Instance()
+
+/** @} */
 #endif

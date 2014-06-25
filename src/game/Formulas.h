@@ -36,6 +36,8 @@ namespace MaNGOS
             return (float)ceil(count * (-0.53177f + 0.59357f * exp((level + 23.54042f) / 26.07859f)));
         }
     }
+
+
     namespace XP
     {
         typedef enum XPColorChar { RED, ORANGE, YELLOW, GREEN, GRAY } XPColorChar;

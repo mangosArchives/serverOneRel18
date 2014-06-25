@@ -570,7 +570,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& file, uint32 account, s
                         delete result;
 
                         if (!changenth(line, 36, "1"))      // characters.at_login set to "rename on login"
-                            ROLLBACK(DUMP_FILE_BROKEN);
+                            { ROLLBACK(DUMP_FILE_BROKEN); }
 
                         nameInvalidated = true;
                     }
@@ -578,7 +578,7 @@ DumpReturn PlayerDumpReader::LoadDump(const std::string& file, uint32 account, s
                 else
                 {
                     if (!changenth(line, 3, name.c_str()))  // characters.name update
-                        ROLLBACK(DUMP_FILE_BROKEN);
+                        { ROLLBACK(DUMP_FILE_BROKEN); }
 
                     nameInvalidated = true;
                 }

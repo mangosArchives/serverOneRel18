@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /**
@@ -108,16 +114,16 @@ void WorldSession::HandleSendMail(WorldPacket& recv_data)
     // packet read complete, now do check
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     if (receiver.empty())
-        return;
+        { return; }
 
     Player* pl = _player;
 
     ObjectGuid rc;
     if (normalizePlayerName(receiver))
-        rc = sObjectMgr.GetPlayerGuidByName(receiver);
+        { rc = sObjectMgr.GetPlayerGuidByName(receiver); }
 
     if (!rc)
     {
@@ -237,9 +243,9 @@ void WorldSession::HandleSendMail(WorldPacket& recv_data)
     {
         uint32 rc_account = 0;
         if (receive)
-            rc_account = receive->GetSession()->GetAccountId();
+            { rc_account = receive->GetSession()->GetAccountId(); }
         else
-            rc_account = sObjectMgr.GetPlayerAccountIdByGUID(rc);
+            { rc_account = sObjectMgr.GetPlayerAccountIdByGUID(rc); }
 
         if (items_count > 0)
         {
@@ -307,14 +313,14 @@ void WorldSession::HandleMailMarkAsRead(WorldPacket& recv_data)
     recv_data >> mailId;
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     Player* pl = _player;
 
     if (Mail* m = pl->GetMail(mailId))
     {
         if (pl->unReadMails)
-            --pl->unReadMails;
+            { --pl->unReadMails; }
         m->checked = m->checked | MAIL_CHECK_MASK_READ;
         pl->m_mailsUpdated = true;
         m->state = MAIL_STATE_CHANGED;
@@ -338,7 +344,7 @@ void WorldSession::HandleMailDelete(WorldPacket& recv_data)
     recv_data.read_skip<uint32>();                          // mailTemplateId
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     Player* pl = _player;
     pl->m_mailsUpdated = true;
@@ -374,7 +380,7 @@ void WorldSession::HandleMailReturnToSender(WorldPacket& recv_data)
     recv_data.read_skip<uint64>();                          // original sender GUID for return to, not used
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     Player* pl = _player;
     Mail* m = pl->GetMail(mailId);
@@ -398,16 +404,16 @@ void WorldSession::HandleMailReturnToSender(WorldPacket& recv_data)
     {
         MailDraft draft;
         if (m->mailTemplateId)
-            draft.SetMailTemplate(m->mailTemplateId, false);// items already included
+            { draft.SetMailTemplate(m->mailTemplateId, false); }// items already included
         else
-            draft.SetSubjectAndBodyId(m->subject, m->itemTextId);
+            { draft.SetSubjectAndBodyId(m->subject, m->itemTextId); }
 
         if (m->HasItems())
         {
             for (MailItemInfoVec::iterator itr2 = m->items.begin(); itr2 != m->items.end(); ++itr2)
             {
                 if (Item* item = pl->GetMItem(itr2->item_guid))
-                    draft.AddItem(item);
+                    { draft.AddItem(item); }
 
                 pl->RemoveMItem(itr2->item_guid);
             }
@@ -433,7 +439,7 @@ void WorldSession::HandleMailTakeItem(WorldPacket& recv_data)
     recv_data >> itemId;                                    // item guid low
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     Player* pl = _player;
 
@@ -481,13 +487,13 @@ void WorldSession::HandleMailTakeItem(WorldPacket& recv_data)
                     sender_accId = sObjectMgr.GetPlayerAccountIdByGUID(sender_guid);
 
                     if (!sObjectMgr.GetPlayerNameByGUID(sender_guid, sender_name))
-                        sender_name = sObjectMgr.GetMangosStringForDBCLocale(LANG_UNKNOWN);
+                        { sender_name = sObjectMgr.GetMangosStringForDBCLocale(LANG_UNKNOWN); }
                 }
                 sLog.outCommand(GetAccountId(), "GM %s (Account: %u) receive mail item: %s (Entry: %u Count: %u) and send COD money: %u to player: %s (Account: %u)",
                                 GetPlayerName(), GetAccountId(), it->GetProto()->Name1, it->GetEntry(), it->GetCount(), m->COD, sender_name.c_str(), sender_accId);
             }
             else if (!sender)
-                sender_accId = sObjectMgr.GetPlayerAccountIdByGUID(sender_guid);
+                { sender_accId = sObjectMgr.GetPlayerAccountIdByGUID(sender_guid); }
 
             // check player existence
             if (sender || sender_accId)
@@ -515,7 +521,7 @@ void WorldSession::HandleMailTakeItem(WorldPacket& recv_data)
         pl->SendMailResult(mailId, MAIL_ITEM_TAKEN, MAIL_OK, 0, itemId, count);
     }
     else
-        pl->SendMailResult(mailId, MAIL_ITEM_TAKEN, MAIL_ERR_EQUIP_ERROR, msg);
+        { pl->SendMailResult(mailId, MAIL_ITEM_TAKEN, MAIL_ERR_EQUIP_ERROR, msg); }
 }
 /**
  * Handles the packet sent by the client when taking money from the mail.
@@ -528,7 +534,7 @@ void WorldSession::HandleMailTakeMoney(WorldPacket& recv_data)
     recv_data >> mailId;
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     Player* pl = _player;
 
@@ -563,7 +569,7 @@ void WorldSession::HandleGetMailList(WorldPacket& recv_data)
     recv_data >> mailboxGuid;
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     // client can't work with packets > max int16 value
     const uint32 maxPacketSize = 32767;
@@ -578,11 +584,11 @@ void WorldSession::HandleGetMailList(WorldPacket& recv_data)
     {
         // packet send mail count as uint8, prevent overflow
         if (mailsCount >= 254)
-            break;
+            { break; }
 
         // skip deleted or not delivered (deliver delay not expired) mails
         if ((*itr)->state == MAIL_STATE_DELETED || cur_time < (*itr)->deliver_time)
-            continue;
+            { continue; }
 
         uint8 item_count = (*itr)->items.size();            // max count is MAX_MAIL_ITEMS (12)
 
@@ -603,7 +609,7 @@ void WorldSession::HandleGetMailList(WorldPacket& recv_data)
             case MAIL_CREATURE:
             case MAIL_GAMEOBJECT:
             case MAIL_AUCTION:
-                data << uint32((*itr)->sender);             // creature/gameobject entry, auction id
+                data << (uint32)(*itr)->sender;             // creature/gameobject entry, auction id
                 break;
             case MAIL_ITEM:                                 // item entry (?) sender = "Unknown", NYI
                 data << uint32(0);                          // item entry
@@ -705,7 +711,7 @@ void WorldSession::HandleMailCreateTextItem(WorldPacket& recv_data)
     recv_data.read_skip<uint32>();                          // mailTemplateId, non need, Mail store own 100% correct value anyway
 
     if (!CheckMailBox(mailboxGuid))
-        return;
+        { return; }
 
     Player* pl = _player;
 
@@ -764,7 +770,7 @@ void WorldSession::HandleMailCreateTextItem(WorldPacket& recv_data)
 /**
  * No idea when this is called.
  */
-void WorldSession::HandleQueryNextMailTime(WorldPacket & /**recv_data*/)
+void WorldSession::HandleQueryNextMailTime(WorldPacket& /**recv_data*/)
 {
     WorldPacket data(MSG_QUERY_NEXT_MAIL_TIME, 8);
 
@@ -780,11 +786,11 @@ void WorldSession::HandleQueryNextMailTime(WorldPacket & /**recv_data*/)
             Mail* m = (*itr);
             // must be not checked yet
             if (m->checked & MAIL_CHECK_MASK_READ)
-                continue;
+                { continue; }
 
             // and already delivered
             if (now < m->deliver_time)
-                continue;
+                { continue; }
 
             data << ObjectGuid(HIGHGUID_PLAYER, m->sender); // sender guid
 
@@ -805,7 +811,7 @@ void WorldSession::HandleQueryNextMailTime(WorldPacket & /**recv_data*/)
 
             ++count;
             if (count == 2)                                 // do not display more than 2 mails
-                break;
+                { break; }
         }
         data.put<uint32>(4, count);
     }

@@ -873,7 +873,7 @@ uint32 Unit::DealDamage(Unit* pVictim, uint32 damage, CleanDamage const* cleanDa
         }
 
         // polymorphed, hex and other negative transformed cases
-        uint32 morphSpell = pVictim->getTransForm();
+        uint32 morphSpell = pVictim->GetTransform();
         if (morphSpell && !IsPositiveSpell(morphSpell))
         {
             if (SpellEntry const* morphEntry = sSpellStore.LookupEntry(morphSpell))
@@ -7491,7 +7491,7 @@ void Unit::SetSpeedRate(UnitMoveType mtype, float rate, bool forced)
     {
         m_speed_rate[mtype] = rate;
 
-        propagateSpeedChange();
+        PropagateSpeedChange();
 
         const uint16 SetSpeed2Opc_table[MAX_MOVE_TYPE][2] =
         {
@@ -8082,7 +8082,7 @@ bool Unit::IsInvisibleForAlive() const
     if (m_AuraFlags & UNIT_AURAFLAG_ALIVE_INVISIBLE)
         return true;
     // TODO: maybe spiritservices also have just an aura
-    return isSpiritService();
+    return IsSpiritService();
 }
 
 uint32 Unit::GetCreatureType() const
@@ -9245,7 +9245,7 @@ void Unit::SetStandState(uint8 state)
 
 bool Unit::IsPolymorphed() const
 {
-    return GetSpellSpecific(getTransForm()) == SPELL_MAGE_POLYMORPH;
+    return GetSpellSpecific(GetTransform()) == SPELL_MAGE_POLYMORPH;
 }
 
 void Unit::SetDisplayId(uint32 modelId)

@@ -231,7 +231,7 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
             DoScriptText(SAY_WATCH_WHISPER, m_creature, pTarget);
 
             m_watchTargetGuid = pTarget->GetObjectGuid();
-            m_fTargetThreat = m_creature->getThreatManager().getThreat(pTarget);
+            m_fTargetThreat = m_creature->GetThreatManager().getThreat(pTarget);
             m_uiWatchTimer = 6000;
 
             // Could use this instead of hard coded timer for the above (but no script access),
@@ -265,7 +265,7 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
                 Player* pWatchTarget = m_creature->GetMap()->GetPlayer(m_watchTargetGuid);
 
                 // If threat is higher that previously saved, mandokir will act
-                if (pWatchTarget && pWatchTarget->IsAlive() && m_creature->getThreatManager().getThreat(pWatchTarget) > m_fTargetThreat)
+                if (pWatchTarget && pWatchTarget->IsAlive() && m_creature->GetThreatManager().getThreat(pWatchTarget) > m_fTargetThreat)
                 {
                     if (!m_creature->IsWithinLOSInMap(pWatchTarget))
                     { m_creature->CastSpell(pWatchTarget, SPELL_SUMMON_PLAYER, true); }
@@ -314,7 +314,7 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
             {
                 uint8 uiTargetInRangeCount = 0;
 
-                ThreatList const& tList = m_creature->getThreatManager().getThreatList();
+                ThreatList const& tList = m_creature->GetThreatManager().getThreatList();
                 for (ThreatList::const_iterator i = tList.begin(); i != tList.end(); ++i)
                 {
                     Unit* pTarget = m_creature->GetMap()->GetUnit((*i)->getUnitGuid());

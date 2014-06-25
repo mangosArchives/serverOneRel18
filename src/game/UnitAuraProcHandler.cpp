@@ -2094,7 +2094,7 @@ SpellAuraProcResult Unit::HandleProcTriggerSpellAuraProc(Unit* pVictim, uint32 d
                     return SPELL_AURA_PROC_FAILED;
 
                 if (pVictim && pVictim->IsAlive())
-                    pVictim->getThreatManager().modifyThreatPercent(this, -10);
+                    pVictim->GetThreatManager().modifyThreatPercent(this, -10);
 
                 basepoints[0] = triggerAmount * GetMaxHealth() / 100;
                 trigger_spell_id = 31616;

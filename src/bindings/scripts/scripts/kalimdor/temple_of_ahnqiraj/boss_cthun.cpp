@@ -218,8 +218,8 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
         Unit* pTarget = NULL;
         Unit* pOldTarget = m_creature->getVictim();
 
-        if (!m_creature->getThreatManager().isThreatListEmpty())
-        { pTarget = m_creature->getThreatManager().getHostileTarget(); }
+        if (!m_creature->GetThreatManager().isThreatListEmpty())
+        { pTarget = m_creature->GetThreatManager().getHostileTarget(); }
 
         if (pTarget)
         {
@@ -520,8 +520,8 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
         Unit* pTarget = NULL;
         Unit* pOldTarget = m_creature->getVictim();
 
-        if (!m_creature->getThreatManager().isThreatListEmpty())
-        { pTarget = m_creature->getThreatManager().getHostileTarget(); }
+        if (!m_creature->GetThreatManager().isThreatListEmpty())
+        { pTarget = m_creature->GetThreatManager().getHostileTarget(); }
 
         if (pTarget)
         {

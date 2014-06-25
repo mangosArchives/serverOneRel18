@@ -1361,9 +1361,9 @@ class MANGOS_DLL_SPEC Player : public Unit
         void ModifyMoney(int32 d)
         {
             if (d < 0)
-                SetMoney(GetMoney() > uint32(-d) ? GetMoney() + d : 0);
+                { SetMoney(GetMoney() > uint32(-d) ? GetMoney() + d : 0); }
             else
-                SetMoney(GetMoney() < uint32(MAX_MONEY_AMOUNT - d) ? GetMoney() + d : MAX_MONEY_AMOUNT);
+                { SetMoney(GetMoney() < uint32(MAX_MONEY_AMOUNT - d) ? GetMoney() + d : MAX_MONEY_AMOUNT); }
 
             // "At Gold Limit"
             if (GetMoney() >= MAX_MONEY_AMOUNT)
@@ -1879,7 +1879,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         {
             for (int i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
                 if (m_bgBattleGroundQueueID[i].bgQueueTypeId != BATTLEGROUND_QUEUE_NONE)
-                    return true;
+                    { return true; }
             return false;
         }
 
@@ -1888,14 +1888,14 @@ class MANGOS_DLL_SPEC Player : public Unit
         {
             for (int i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
                 if (m_bgBattleGroundQueueID[i].bgQueueTypeId == bgQueueTypeId)
-                    return i;
+                    { return i; }
             return PLAYER_MAX_BATTLEGROUND_QUEUES;
         }
         bool IsInvitedForBattleGroundQueueType(BattleGroundQueueTypeId bgQueueTypeId) const
         {
             for (int i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
                 if (m_bgBattleGroundQueueID[i].bgQueueTypeId == bgQueueTypeId)
-                    return m_bgBattleGroundQueueID[i].invitedToInstance != 0;
+                    { return m_bgBattleGroundQueueID[i].invitedToInstance != 0; }
             return false;
         }
         bool InBattleGroundQueueForBattleGroundQueueType(BattleGroundQueueTypeId bgQueueTypeId) const
@@ -1926,7 +1926,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         {
             for (int i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
                 if (m_bgBattleGroundQueueID[i].bgQueueTypeId == BATTLEGROUND_QUEUE_NONE)
-                    return true;
+                    { return true; }
             return false;
         }
         void RemoveBattleGroundQueueId(BattleGroundQueueTypeId val)
@@ -1945,13 +1945,13 @@ class MANGOS_DLL_SPEC Player : public Unit
         {
             for (int i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
                 if (m_bgBattleGroundQueueID[i].bgQueueTypeId == bgQueueTypeId)
-                    m_bgBattleGroundQueueID[i].invitedToInstance = instanceId;
+                    { m_bgBattleGroundQueueID[i].invitedToInstance = instanceId; }
         }
         bool IsInvitedForBattleGroundInstance(uint32 instanceId) const
         {
             for (int i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
                 if (m_bgBattleGroundQueueID[i].invitedToInstance == instanceId)
-                    return true;
+                    { return true; }
             return false;
         }
         WorldLocation const& GetBattleGroundEntryPoint() const { return m_bgData.joinPos; }
@@ -1983,7 +1983,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         void SetRestTime(uint32 v) { m_restTime = v; }
 
         /*********************************************************/
-        /***              ENVIROMENTAL SYSTEM                  ***/
+        /***              ENVIRONMENTAL SYSTEM                  ***/
         /*********************************************************/
 
         uint32 EnvironmentalDamage(EnviromentalDamage type, uint32 damage);
@@ -2136,7 +2136,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         uint8 GetOriginalSubGroup() const { return m_originalGroup.getSubGroup(); }
         void SetOriginalGroup(Group* group, int8 subgroup = -1);
 
-        GridReference<Player> &GetGridRef() { return m_gridRef; }
+        GridReference<Player>& GetGridRef() { return m_gridRef; }
         MapReference& GetMapRef() { return m_mapRef; }
 
         bool isAllowedToLoot(Creature* creature);
@@ -2378,7 +2378,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         void ScheduleDelayedOperation(uint32 operation)
         {
             if (operation < DELAYED_END)
-                m_DelayedOperations |= operation;
+                { m_DelayedOperations |= operation; }
         }
 
         Unit* m_mover;
@@ -2435,7 +2435,7 @@ void RemoveItemsSetItem(Player* player, ItemPrototype const* proto);
 template <class T> T Player::ApplySpellMod(uint32 spellId, SpellModOp op, T& basevalue, Spell const* spell)
 {
     SpellEntry const* spellInfo = sSpellStore.LookupEntry(spellId);
-    if (!spellInfo) return 0;
+    if (!spellInfo) { return 0; }
     int32 totalpct = 0;
     int32 totalflat = 0;
     for (SpellModList::iterator itr = m_spellMods[op].begin(); itr != m_spellMods[op].end(); ++itr)
@@ -2443,18 +2443,18 @@ template <class T> T Player::ApplySpellMod(uint32 spellId, SpellModOp op, T& bas
         SpellModifier* mod = *itr;
 
         if (!IsAffectedBySpellmod(spellInfo, mod, spell))
-            continue;
+            { continue; }
         if (mod->type == SPELLMOD_FLAT)
-            totalflat += mod->value;
+            { totalflat += mod->value; }
         else if (mod->type == SPELLMOD_PCT)
         {
             // skip percent mods for null basevalue (most important for spell mods with charges )
             if (basevalue == T(0))
-                continue;
+                { continue; }
 
             // special case (skip >10sec spell casts for instant cast setting)
             if (mod->op == SPELLMOD_CASTING_TIME  && basevalue >= T(10 * IN_MILLISECONDS) && mod->value <= -100)
-                continue;
+                { continue; }
 
             totalpct += mod->value;
         }
@@ -2462,7 +2462,7 @@ template <class T> T Player::ApplySpellMod(uint32 spellId, SpellModOp op, T& bas
         if (mod->charges > 0)
         {
             if (!spell)
-                spell = FindCurrentSpellBySpellId(spellId);
+                { spell = FindCurrentSpellBySpellId(spellId); }
 
             // avoid double use spellmod charge by same spell
             if (!mod->lastAffected || mod->lastAffected != spell)

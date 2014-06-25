@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "ObjectPosSelector.h"
@@ -27,11 +33,11 @@ ObjectPosSelector::ObjectPosSelector(float x, float y, float dist, float searche
 {
     // if size == 0, m_anglestep will become 0 -> freeze
     if (searchedForSize == 0.0f)
-        searchedForSize = DEFAULT_WORLD_OBJECT_SIZE;
+        { searchedForSize = DEFAULT_WORLD_OBJECT_SIZE; }
 
     // undefined behaviour
     if (m_searcherDist == 0.0f)
-        m_searcherDist = DEFAULT_WORLD_OBJECT_SIZE;
+        { m_searcherDist = DEFAULT_WORLD_OBJECT_SIZE; }
 
     m_searchedForReqHAngle = atan(OCCUPY_POS_ANGLE_ATAN_FACTOR * searchedForSize / m_searcherDist);
 
@@ -58,15 +64,15 @@ void ObjectPosSelector::AddUsedArea(WorldObject const* obj, float angle, float d
 
     // skip some unexpected results.
     if (dist == 0.0f)
-        return;
+        { return; }
 
     // (half) angle that obj occupies
     float sr_angle = atan(OCCUPY_POS_ANGLE_ATAN_FACTOR * obj->GetObjectBoundingRadius() / dist);
 
     if (angle >= 0)
-        m_UsedAreaLists[USED_POS_PLUS].insert(UsedArea(angle, OccupiedArea(sr_angle, obj)));
+        { m_UsedAreaLists[USED_POS_PLUS].insert(UsedArea(angle, OccupiedArea(sr_angle, obj))); }
     else
-        m_UsedAreaLists[USED_POS_MINUS].insert(UsedArea(-angle, OccupiedArea(sr_angle, obj)));
+        { m_UsedAreaLists[USED_POS_MINUS].insert(UsedArea(-angle, OccupiedArea(sr_angle, obj))); }
 }
 
 /**
@@ -121,7 +127,7 @@ void ObjectPosSelector::InitializeAngle(UsedAreaSide side)
         m_stepAngle[side] = std::max(m_searchedForReqHAngle + otherArea.second.angleOffset - otherArea.first, 0.0f);
     }
     else                                                    // Other side empty. start from 0
-        m_stepAngle[side] = 0.0f;
+        { m_stepAngle[side] = 0.0f; }
 
     // As m_stepAngle will be incremented first in ::NextSideAngle
     m_stepAngle[side] -= m_searchedForReqHAngle;
@@ -143,17 +149,17 @@ bool ObjectPosSelector::NextAngle(float& angle)
         if (m_stepAngle[USED_POS_PLUS] < M_PI_F && m_stepAngle[USED_POS_PLUS] <= m_stepAngle[USED_POS_MINUS])
         {
             if (NextSideAngle(USED_POS_PLUS, angle))
-                return true;
+                { return true; }
         }
         // -- direction less updated
         else if (m_stepAngle[USED_POS_MINUS] < M_PI_F)
         {
             if (NextSideAngle(USED_POS_MINUS, angle))
-                return true;
+                { return true; }
         }
         // both sides finishes
         else
-            break;
+            { break; }
     }
 
     // no angles
@@ -176,7 +182,7 @@ bool ObjectPosSelector::NextSideAngle(UsedAreaSide side, float& angle)
 
     // prevent jump to another side
     if (m_stepAngle[side] > M_PI_F)
-        return false;
+        { return false; }
 
     // no used area anymore on this side
     if (m_nextUsedAreaItr[side] == m_UsedAreaLists[side].end())
@@ -187,7 +193,7 @@ bool ObjectPosSelector::NextSideAngle(UsedAreaSide side, float& angle)
 
     // Already occupied and no better found
     if ((m_searchPosFor && m_nextUsedAreaItr[side]->second.occupyingObj == m_searchPosFor) ||
-         // Next occupied is too far away
+        // Next occupied is too far away
         (m_stepAngle[side] + m_searchedForReqHAngle < m_nextUsedAreaItr[side]->first - m_nextUsedAreaItr[side]->second.angleOffset))
     {
         angle = m_stepAngle[side] * SignOf(side);
@@ -212,13 +218,13 @@ bool ObjectPosSelector::NextSideAngle(UsedAreaSide side, float& angle)
 bool ObjectPosSelector::NextUsedAngle(float& angle)
 {
     if (m_nextUsedAreaItr[USED_POS_PLUS] == m_UsedAreaLists[USED_POS_PLUS].end() &&
-            m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end())
-        return false;
+        m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end())
+        { return false; }
 
     // ++ direction less updated
     if (m_nextUsedAreaItr[USED_POS_PLUS] != m_UsedAreaLists[USED_POS_PLUS].end() &&
-            (m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end() ||
-             m_nextUsedAreaItr[USED_POS_PLUS]->first <= m_nextUsedAreaItr[USED_POS_MINUS]->first))
+        (m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end() ||
+         m_nextUsedAreaItr[USED_POS_PLUS]->first <= m_nextUsedAreaItr[USED_POS_MINUS]->first))
     {
         angle = m_nextUsedAreaItr[USED_POS_PLUS]->first * SignOf(USED_POS_PLUS);
         ++m_nextUsedAreaItr[USED_POS_PLUS];

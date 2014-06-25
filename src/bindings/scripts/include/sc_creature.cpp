@@ -422,19 +422,19 @@ void FillSpellSummary()
 
 void ScriptedAI::DoResetThreat()
 {
-    if (!m_creature->CanHaveThreatList() || m_creature->getThreatManager().isThreatListEmpty())
+    if (!m_creature->CanHaveThreatList() || m_creature->GetThreatManager().isThreatListEmpty())
     {
         script_error_log("DoResetThreat called for creature that either can not have threat list or has empty threat list (m_creature entry = %d)", m_creature->GetEntry());
         return;
     }
 
-    ThreatList const& tList = m_creature->getThreatManager().getThreatList();
+    ThreatList const& tList = m_creature->GetThreatManager().getThreatList();
     for (ThreatList::const_iterator itr = tList.begin(); itr != tList.end(); ++itr)
     {
         Unit* pUnit = m_creature->GetMap()->GetUnit((*itr)->getUnitGuid());
 
-        if (pUnit && m_creature->getThreatManager().getThreat(pUnit))
-        { m_creature->getThreatManager().modifyThreatPercent(pUnit, -100); }
+        if (pUnit && m_creature->GetThreatManager().getThreat(pUnit))
+        { m_creature->GetThreatManager().modifyThreatPercent(pUnit, -100); }
     }
 }
 

@@ -33,11 +33,10 @@ enum DumpTableType
 {
     DTT_CHARACTER,      //    -> guid, name                 // characters
 
-    DTT_CHAR_TABLE,     //                                  // character_action,
-    // character_aura
-    // character_homebind, character_queststatus,
-    // character_reputation, character_spell,
-    // character_spell_cooldown, character_ticket
+    DTT_CHAR_TABLE,     //                                  // character_action, character_aura, character_homebind,
+    // character_queststatus, character_reputation,
+    // character_spell, character_spell_cooldown, character_ticket,
+    // character_tutorial
 
     DTT_CHAR_NAME_TABLE,// <- guid, name                    // character_declinedname
 

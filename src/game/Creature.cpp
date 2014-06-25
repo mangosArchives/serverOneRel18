@@ -145,7 +145,7 @@ Creature::Creature(CreatureSubtype subtype) : Unit(),
     m_corpseDecayTimer(0), m_respawnTime(0), m_respawnDelay(25), m_corpseDelay(60), m_respawnradius(5.0f), m_aggroDelay(0),
     m_subtype(subtype), m_defaultMovementType(IDLE_MOTION_TYPE), m_equipmentId(0),
     m_AlreadyCallAssistance(false), m_AlreadySearchedAssistance(false),
-    m_regenHealth(true), m_AI_locked(false), m_isDeadByDefault(false),
+    m_regenHealth(true), m_AI_locked(false), m_IsDeadByDefault(false),
     m_temporaryFactionFlags(TEMPFACTION_NONE),
     m_meleeDamageSchoolMask(SPELL_SCHOOL_MASK_NORMAL), m_originalEntry(0),
     m_creatureInfo(NULL)
@@ -199,7 +199,7 @@ void Creature::RemoveCorpse()
     if (!IsInWorld())                            // can be despawned by update pool
         { return; }
 
-    if ((GetDeathState() != CORPSE && !m_isDeadByDefault) || (GetDeathState() != ALIVE && m_isDeadByDefault))
+    if ((GetDeathState() != CORPSE && !m_IsDeadByDefault) || (GetDeathState() != ALIVE && m_IsDeadByDefault))
         { return; }
 
     DEBUG_FILTER_LOG(LOG_FILTER_AI_AND_MOVEGENSS, "Removing corpse of %s ", GetGuidStr().c_str());
@@ -500,7 +500,7 @@ void Creature::Update(uint32 update_diff, uint32 diff)
                 SelectLevel(cinfo);
                 UpdateAllStats();  // to be sure stats is correct regarding level of the creature
                 SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_NONE);
-                if (m_isDeadByDefault)
+                if (m_IsDeadByDefault)
                 {
                     SetDeathState(JUST_DIED);
                     SetHealth(0);
@@ -526,7 +526,7 @@ void Creature::Update(uint32 update_diff, uint32 diff)
         {
             Unit::Update(update_diff, diff);
 
-            if (m_isDeadByDefault)
+            if (m_IsDeadByDefault)
                 { break; }
 
             if (m_corpseDecayTimer <= update_diff)
@@ -554,7 +554,7 @@ void Creature::Update(uint32 update_diff, uint32 diff)
             else
                 m_aggroDelay -= update_diff;
 
-            if (m_isDeadByDefault)
+            if (m_IsDeadByDefault)
             {
                 if (m_corpseDecayTimer <= update_diff)
                 {
@@ -792,7 +792,7 @@ bool Creature::Create(uint32 guidlow, CreatureCreatePos& cPos, CreatureInfo cons
 
 bool Creature::IsTrainerOf(Player* pPlayer, bool msg) const
 {
-    if (!isTrainer())
+    if (!IsTrainer())
         { return false; }
 
     TrainerSpellData const* cSpells = GetTrainerSpells();
@@ -890,7 +890,7 @@ bool Creature::IsTrainerOf(Player* pPlayer, bool msg) const
 
 bool Creature::CanInteractWithBattleMaster(Player* pPlayer, bool msg) const
 {
-    if (!isBattleMaster())
+    if (!IsBattleMaster())
         { return false; }
 
     BattleGroundTypeId bgTypeId = sBattleGroundMgr.GetBattleMasterBG(GetEntry());
@@ -1093,7 +1093,7 @@ void Creature::SaveToDB(uint32 mapid, uint8 spawnMask)
     data.currentwaypoint = 0;
     data.curhealth = GetHealth();
     data.curmana = GetPower(POWER_MANA);
-    data.is_dead = m_isDeadByDefault;
+    data.is_dead = m_IsDeadByDefault;
     // prevent add data integrity problems
     data.movementType = !m_respawnradius && GetDefaultMovementType() == RANDOM_MOTION_TYPE
                         ? IDLE_MOTION_TYPE : GetDefaultMovementType();
@@ -1312,8 +1312,8 @@ bool Creature::LoadFromDB(uint32 guidlow, Map* map)
 
     m_respawnDelay = data->spawntimesecs;
     m_corpseDelay = std::min(m_respawnDelay * 9 / 10, m_corpseDelay); // set corpse delay to 90% of the respawn delay
-    m_isDeadByDefault = data->is_dead;
-    m_deathState = m_isDeadByDefault ? DEAD : ALIVE;
+    m_IsDeadByDefault = data->is_dead;
+    m_deathState = m_IsDeadByDefault ? DEAD : ALIVE;
 
     m_respawnTime  = map->GetPersistentState()->GetCreatureRespawnTime(GetGUIDLow());
 
@@ -1519,7 +1519,7 @@ float Creature::GetAttackDistance(Unit const* pl) const
 
 void Creature::SetDeathState(DeathState s)
 {
-    if ((s == JUST_DIED && !m_isDeadByDefault) || (s == JUST_ALIVED && m_isDeadByDefault))
+    if ((s == JUST_DIED && !m_IsDeadByDefault) || (s == JUST_ALIVED && m_IsDeadByDefault))
     {
         m_corpseDecayTimer = m_corpseDelay * IN_MILLISECONDS; // the max/default time for corpse decay (before creature is looted/AllLootRemovedFromCorpse() is called)
         m_respawnTime = time(NULL) + m_respawnDelay;        // respawn delay (spawntimesecs)
@@ -1757,7 +1757,7 @@ bool Creature::IsVisibleInGridForPlayer(Player* pl) const
     // Live player (or with not release body see live creatures or death creatures with corpse disappearing time > 0
     if (pl->IsAlive() || pl->GetDeathTimer() > 0)
     {
-        return (IsAlive() || m_corpseDecayTimer > 0 || (m_isDeadByDefault && m_deathState == CORPSE));
+        return (IsAlive() || m_corpseDecayTimer > 0 || (m_IsDeadByDefault && m_deathState == CORPSE));
     }
 
     // Dead player see live creatures near own corpse
@@ -2085,7 +2085,7 @@ Unit* Creature::SelectAttackingTarget(AttackingTarget target, uint32 position, S
         { return NULL; }
 
     // ThreatList m_threatlist;
-    ThreatList const& threatlist = getThreatManager().getThreatList();
+    ThreatList const& threatlist = GetThreatManager().getThreatList();
     ThreatList::const_iterator itr = threatlist.begin();
     ThreatList::const_reverse_iterator ritr = threatlist.rbegin();
 
@@ -2469,7 +2469,7 @@ void Creature::FillGuidsListFromThreatList(GuidVector& guids, uint32 maxamount /
     if (!CanHaveThreatList())
         { return; }
 
-    ThreatList const& threats = getThreatManager().getThreatList();
+    ThreatList const& threats = GetThreatManager().getThreatList();
 
     maxamount = maxamount > 0 ? std::min(maxamount, uint32(threats.size())) : threats.size();
 

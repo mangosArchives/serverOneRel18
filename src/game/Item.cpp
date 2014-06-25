@@ -185,15 +185,15 @@ bool ItemCanGoIntoBag(ItemPrototype const* pProto, ItemPrototype const* pBagProt
                     return true;
                 case ITEM_SUBCLASS_SOUL_CONTAINER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_SOUL_SHARDS))
-                        return false;
+                        { return false; }
                     return true;
                 case ITEM_SUBCLASS_HERB_CONTAINER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_HERBS))
-                        return false;
+                        { return false; }
                     return true;
                 case ITEM_SUBCLASS_ENCHANTING_CONTAINER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_ENCHANTING_SUPP))
-                        return false;
+                        { return false; }
                     return true;
                 case ITEM_SUBCLASS_MINING_CONTAINER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_MINING_SUPP))
@@ -201,7 +201,7 @@ bool ItemCanGoIntoBag(ItemPrototype const* pProto, ItemPrototype const* pBagProt
                     return true;
                 case ITEM_SUBCLASS_ENGINEERING_CONTAINER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_ENGINEERING_SUPP))
-                        return false;
+                        { return false; }
                     return true;
                 case ITEM_SUBCLASS_GEM_CONTAINER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_GEMS))
@@ -219,11 +219,11 @@ bool ItemCanGoIntoBag(ItemPrototype const* pProto, ItemPrototype const* pBagProt
             {
                 case ITEM_SUBCLASS_QUIVER:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_ARROWS))
-                        return false;
+                        { return false; }
                     return true;
                 case ITEM_SUBCLASS_AMMO_POUCH:
                     if (!(pProto->BagFamily & BAG_FAMILY_MASK_BULLETS))
-                        return false;
+                        { return false; }
                     return true;
                 default:
                     return false;

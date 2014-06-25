@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +24,16 @@
 
 #ifndef _VMAPDEFINITIONS_H
 #define _VMAPDEFINITIONS_H
+
 #include <cstring>
 
 #define LIQUID_TILE_SIZE (533.333f / 128.f)
 
 namespace VMAP
 {
-    const char VMAP_MAGIC[] = "VMAP_4.0";                   // used in final vmap files
-    const char RAW_VMAP_MAGIC[] = "VMAPs05";                // used in extracted vmap files with raw data
-    const char GAMEOBJECT_MODELS[] = "temp_gameobject_models";
+    const char VMAP_MAGIC[] = "VMAP_4.0";                       /**< used in final vmap files */
+    const char RAW_VMAP_MAGIC[] = "VMAPs05";                    /**< used in extracted vmap files with raw data */
+    const char GAMEOBJECT_MODELS[] = "temp_gameobject_models";  /**< TODO */
 
     /**
      * @brief defined in TileAssembler.cpp currently

@@ -1867,9 +1867,9 @@ bool ChatHandler::isValidChatMessage(const char* message)
                                 int8 dbIndex = sObjectMgr.GetIndexForLocale(LocaleConstant(i));
                                 if (dbIndex == -1 || il == NULL || (size_t)dbIndex >= il->Name.size())
                                     // using strange database/client combinations can lead to this case
-                                    expectedName = linkedItem->Name1;
+                                    { expectedName = linkedItem->Name1; }
                                 else
-                                    expectedName = il->Name[dbIndex];
+                                    { expectedName = il->Name[dbIndex]; }
                                 if (suffix)
                                 {
                                     expectedName += " ";
@@ -2343,8 +2343,8 @@ char* ChatHandler::ExtractLinkArg(char** args, char const* const* linkTypes /*= 
             // exactly string with follow : or |
             int l = strlen(linkTypes[linktype_idx]);
             if (strncmp(tail, linkTypes[linktype_idx], l) == 0 &&
-                    (tail[l] == ':' || tail[l] == '|'))
-                break;
+                (tail[l] == ':' || tail[l] == '|'))
+                { break; }
         }
 
         // is search fail?

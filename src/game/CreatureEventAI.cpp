@@ -672,16 +672,16 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
         }
         case ACTION_T_THREAT_SINGLE_PCT:
             if (Unit* target = GetTargetByType(action.threat_single_pct.target, pActionInvoker, pAIEventSender, reportTargetError))
-                m_creature->getThreatManager().modifyThreatPercent(target, action.threat_single_pct.percent);
+                { m_creature->GetThreatManager().modifyThreatPercent(target, action.threat_single_pct.percent); }
             else if (reportTargetError)
                 { sLog.outErrorEventAI("Event %u - NULL target for ACTION_T_THREAT_SINGLE_PCT(%u), target-type %u", EventId, action.type, action.threat_single_pct.target); }
             break;
         case ACTION_T_THREAT_ALL_PCT:
         {
-            ThreatList const& threatList = m_creature->getThreatManager().getThreatList();
+            ThreatList const& threatList = m_creature->GetThreatManager().getThreatList();
             for (ThreatList::const_iterator i = threatList.begin(); i != threatList.end(); ++i)
                 if (Unit* Temp = m_creature->GetMap()->GetUnit((*i)->getUnitGuid()))
-                    m_creature->getThreatManager().modifyThreatPercent(Temp, action.threat_all_pct.percent);
+                    { m_creature->GetThreatManager().modifyThreatPercent(Temp, action.threat_all_pct.percent); }
             break;
         }
         case ACTION_T_QUEST_EVENT:
@@ -779,7 +779,7 @@ void CreatureEventAI::ProcessAction(CreatureEventAI_Action const& action, uint32
             break;
         case ACTION_T_CAST_EVENT_ALL:
         {
-            ThreatList const& threatList = m_creature->getThreatManager().getThreatList();
+            ThreatList const& threatList = m_creature->GetThreatManager().getThreatList();
             for (ThreatList::const_iterator i = threatList.begin(); i != threatList.end(); ++i)
                 if (Player* temp = m_creature->GetMap()->GetPlayer((*i)->getUnitGuid()))
                     { temp->CastedCreatureOrGO(action.cast_event_all.creatureId, m_creature->GetObjectGuid(), action.cast_event_all.spellId); }
@@ -1348,22 +1348,22 @@ inline Unit* CreatureEventAI::GetTargetByType(uint32 Target, Unit* pActionInvoke
             return resTarget;
         case TARGET_T_HOSTILE_SECOND_AGGRO:
             resTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_TOPAGGRO, 1, forSpellId, selectFlags);
-            if (!resTarget && ((forSpellId == 0 && selectFlags == 0 && m_creature->getThreatManager().getThreatList().size() > 1) || m_creature->getThreatManager().getThreatList().empty()))
+            if (!resTarget && ((forSpellId == 0 && selectFlags == 0 && m_creature->GetThreatManager().getThreatList().size() > 1) || m_creature->GetThreatManager().getThreatList().empty()))
                 { isError = true; }
             return resTarget;
         case TARGET_T_HOSTILE_LAST_AGGRO:
             resTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_BOTTOMAGGRO, 0, forSpellId, selectFlags);
-            if (!resTarget && m_creature->getThreatManager().getThreatList().empty())
+            if (!resTarget && m_creature->GetThreatManager().getThreatList().empty())
                 { isError = true; }
             return resTarget;
         case TARGET_T_HOSTILE_RANDOM:
             resTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, forSpellId, selectFlags);
-            if (!resTarget && m_creature->getThreatManager().getThreatList().empty())
+            if (!resTarget && m_creature->GetThreatManager().getThreatList().empty())
                 { isError = true; }
             return resTarget;
         case TARGET_T_HOSTILE_RANDOM_NOT_TOP:
             resTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1, forSpellId, selectFlags);
-            if (!resTarget && ((forSpellId == 0 && selectFlags == 0 && m_creature->getThreatManager().getThreatList().size() > 1) || m_creature->getThreatManager().getThreatList().empty()))
+            if (!resTarget && ((forSpellId == 0 && selectFlags == 0 && m_creature->GetThreatManager().getThreatList().size() > 1) || m_creature->GetThreatManager().getThreatList().empty()))
                 { isError = true; }
             return resTarget;
         case TARGET_T_HOSTILE_RANDOM_PLAYER:
@@ -1373,7 +1373,7 @@ inline Unit* CreatureEventAI::GetTargetByType(uint32 Target, Unit* pActionInvoke
             return resTarget;
         case TARGET_T_HOSTILE_RANDOM_NOT_TOP_PLAYER:
             resTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1, forSpellId, SELECT_FLAG_PLAYER | selectFlags);
-            if (!resTarget && ((forSpellId == 0 && selectFlags == 0 && m_creature->getThreatManager().getThreatList().size() > 1) || m_creature->getThreatManager().getThreatList().empty()))
+            if (!resTarget && ((forSpellId == 0 && selectFlags == 0 && m_creature->GetThreatManager().getThreatList().size() > 1) || m_creature->GetThreatManager().getThreatList().empty()))
                 { isError = true; }
             return resTarget;
         case TARGET_T_ACTION_INVOKER:

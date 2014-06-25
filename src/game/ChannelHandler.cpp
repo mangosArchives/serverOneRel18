@@ -31,18 +31,18 @@ void WorldSession::HandleJoinChannelOpcode(WorldPacket& recvPacket)
 
     uint32 channel_id;
     uint8 unknown1, unknown2;
-    std::string channelname, pass;
+    std::string channelName, pass;
 
     recvPacket >> channel_id >> unknown1 >> unknown2;
-    recvPacket >> channelname;
+    recvPacket >> channelName;
 
-    if (channelname.empty())
+    if (channelName.empty())
         { return; }
 
     recvPacket >> pass;
     if (ChannelMgr* cMgr = channelMgr(_player->GetTeam()))
         //the channel id needs to be checkd for lfg (explanation?)
-        if (Channel* chn = cMgr->GetJoinChannel(channelname, channel_id))
+        if (Channel* chn = cMgr->GetJoinChannel(channelName, channel_id))
             chn->Join(_player, pass.c_str());
 }
 
@@ -56,7 +56,7 @@ void WorldSession::HandleLeaveChannelOpcode(WorldPacket& recvPacket)
     recvPacket >> channelname;
 
     if (channelname.empty())
-        return;
+        { return; }
 
     if (ChannelMgr* cMgr = channelMgr(_player->GetTeam()))
     {

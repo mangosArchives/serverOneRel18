@@ -113,7 +113,7 @@ enum ItemPrototypeFlags
     ITEM_FLAG_PARTY_LOOT                      = 0x00000800, // items which can be looted by all party members
     ITEM_FLAG_UNK12                           = 0x00001000, // not used in pre-3.x
     ITEM_FLAG_CHARTER                         = 0x00002000, // arena/guild charter
-    ITEM_FLAG_UNK14                           = 0x00004000,
+    ITEM_FLAG_LETTER                          = 0x00004000, // readable letter items
     ITEM_FLAG_UNK15                           = 0x00008000, // a lot of items have this
     ITEM_FLAG_UNK16                           = 0x00010000, // a lot of items have this
     ITEM_FLAG_UNK17                           = 0x00020000, // last used flag in 1.12.1

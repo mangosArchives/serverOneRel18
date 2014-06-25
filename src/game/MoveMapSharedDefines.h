@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +25,8 @@
 #ifndef _MOVE_MAP_SHARED_DEFINES_H
 #define _MOVE_MAP_SHARED_DEFINES_H
 
-#include "Platform/Define.h"
 #include "../recastnavigation/Detour/Include/DetourNavMesh.h"
+#include "Platform/Define.h"
 
 #define MMAP_MAGIC 0x4d4d4150   // 'MMAP'
 #define MMAP_VERSION 4
@@ -51,7 +54,7 @@ enum NavTerrain
     NAV_UNUSED2 = 0x20,
     NAV_UNUSED3 = 0x40,
     NAV_UNUSED4 = 0x80
-                  // we only have 8 bits
+    // we only have 8 bits
 };
 
 #endif  // _MOVE_MAP_SHARED_DEFINES_H
