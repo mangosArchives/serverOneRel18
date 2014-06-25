@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -197,11 +200,17 @@ enum SpellCastTargetFlags
     TARGET_FLAG_UNK2            = 0x00010000,       ///< pguid, not used in any spells (can be set dynamically)
 };
 
+/**
+ * Used in \ref Unit::HasAura for example, also used in \ref Spell::m_currentBasePoints. These
+ * reference the three effects a \ref Spell can have which do different things, for instance it
+ * can be applying a \ref Aura. For a reference see QSW which you can get at
+ * https://bitbucket.org/sidsukana/qsw
+ */
 enum SpellEffectIndex
 {
-    EFFECT_INDEX_0     = 0,
-    EFFECT_INDEX_1     = 1,
-    EFFECT_INDEX_2     = 2
+    EFFECT_INDEX_0     = 0, ///< The first spell effect
+    EFFECT_INDEX_1     = 1, ///< The second spell effect
+    EFFECT_INDEX_2     = 2  ///< The third spell effect
 };
 
 #define MAX_EFFECT_INDEX 3

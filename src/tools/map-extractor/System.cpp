@@ -1,6 +1,6 @@
 /**
- * mangos-one is a full featured server for World of Warcraft in its first
- * expansion version, supporting clients for patch 2.4.3.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -79,8 +79,8 @@ map_id* map_ids;                    /**< TODO */
 uint16* areas;                      /**< TODO */
 uint16* LiqType;                    /**< TODO */
 char output_path[128] = ".";        /**< TODO */
-char input_path[128]  = ".";        /**< TODO */
-uint32 maxAreaId      = 0;          /**< TODO */
+char input_path[128] = ".";         /**< TODO */
+uint32 maxAreaId = 0;               /**< TODO */
 
 /**
  * @brief Data types which can be extracted
@@ -92,17 +92,17 @@ enum Extract
     EXTRACT_DBC = 2
 };
 
-int   CONF_extract                 = EXTRACT_MAP | EXTRACT_DBC; /**< Select data for extract */
-bool  CONF_allow_height_limit      = true;                      /**< Allows to limit minimum height */
-float CONF_use_minHeight           = -500.0f;                   /**< Default minimum height */
+int   CONF_extract = EXTRACT_MAP | EXTRACT_DBC; /**< Select data for extract */
+bool  CONF_allow_height_limit       = true;     /**< Allows to limit minimum height */
+float CONF_use_minHeight            = -500.0f;  /**< Default minimum height */
 
-bool  CONF_allow_float_to_int      = true;                      /**< Allows float to int conversion */
-float CONF_float_to_int8_limit     = 2.0f;                      /**< Max accuracy = val/256 */
-float CONF_float_to_int16_limit    = 2048.0f;                   /**< Max accuracy = val/65536 */
-float CONF_flat_height_delta_limit = 0.005f;                    /**< If max - min less this value - surface is flat */
-float CONF_flat_liquid_delta_limit = 0.001f;                    /**< If max - min less this value - liquid surface is flat */
+bool  CONF_allow_float_to_int      = true;      /**< Allows float to int conversion */
+float CONF_float_to_int8_limit     = 2.0f;      /**< Max accuracy = val/256 */
+float CONF_float_to_int16_limit    = 2048.0f;   /**< Max accuracy = val/65536 */
+float CONF_flat_height_delta_limit = 0.005f;    /**< If max - min less this value - surface is flat */
+float CONF_flat_liquid_delta_limit = 0.001f;    /**< If max - min less this value - liquid surface is flat */
 
-const char* CONF_mpq_list[] =                                   /**< List MPQ for extract from */
+const char* CONF_mpq_list[] = /**< List MPQ for extract from */
 {
     "common.MPQ",
     "common-2.MPQ",
@@ -756,7 +756,7 @@ bool ConvertADT(char* filename, char* filename2, int cell_y, int cell_x)
             }
 
             if (!count && liquid_flags[i][j])
-            { fprintf(stderr, "Wrong liquid type detected in MCLQ chunk"); }
+                { fprintf(stderr, "Wrong liquid type detected in MCLQ chunk"); }
 
             for (int y = 0; y <= ADT_CELL_SIZE; y++)
             {
@@ -819,7 +819,7 @@ bool ConvertADT(char* filename, char* filename2, int cell_y, int cell_x)
                 }
 
                 if (!count && liquid_flags[i][j])
-                { printf("Wrong liquid type detected in MH2O chunk"); }
+                    { printf("Wrong liquid type detected in MH2O chunk"); }
 
                 float* height = h2o->getLiquidHeightMap(h);
                 int pos = 0;

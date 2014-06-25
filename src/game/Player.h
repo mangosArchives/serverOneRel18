@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef _PLAYER_H
@@ -192,7 +198,7 @@ struct ActionButton
         {
             packedData = newData;
             if (uState != ACTIONBUTTON_NEW)
-                uState = ACTIONBUTTON_CHANGED;
+                { uState = ACTIONBUTTON_CHANGED; }
         }
     }
 };
@@ -227,7 +233,7 @@ struct PlayerClassInfo
 
 struct PlayerLevelInfo
 {
-    PlayerLevelInfo() { for (int i = 0; i < MAX_STATS; ++i) stats[i] = 0; }
+    PlayerLevelInfo() { for (int i = 0; i < MAX_STATS; ++i) { stats[i] = 0; } }
 
     uint8 stats[MAX_STATS];
 };
@@ -796,7 +802,7 @@ class MANGOS_DLL_SPEC PlayerTaxi
                 return true;
             }
             else
-                return false;
+                { return false; }
         }
         void AppendTaximaskTo(ByteBuffer& data, bool all);
 
@@ -908,6 +914,8 @@ class MANGOS_DLL_SPEC Player : public Unit
         explicit Player(WorldSession* session);
         ~Player();
 
+        time_t lastTimeLooted;
+
         void CleanupsBeforeDelete() override;
 
         static UpdateMask updateVisualBits;
@@ -969,18 +977,18 @@ class MANGOS_DLL_SPEC Player : public Unit
         // mount_id can be used in scripting calls
         void ContinueTaxiFlight();
         bool isAcceptTickets() const { return GetSession()->GetSecurity() >= SEC_GAMEMASTER && (m_ExtraFlags & PLAYER_EXTRA_GM_ACCEPT_TICKETS); }
-        void SetAcceptTicket(bool on) { if (on) m_ExtraFlags |= PLAYER_EXTRA_GM_ACCEPT_TICKETS; else m_ExtraFlags &= ~PLAYER_EXTRA_GM_ACCEPT_TICKETS; }
+        void SetAcceptTicket(bool on) { if (on) { m_ExtraFlags |= PLAYER_EXTRA_GM_ACCEPT_TICKETS; } else { m_ExtraFlags &= ~PLAYER_EXTRA_GM_ACCEPT_TICKETS; } }
         bool isAcceptWhispers() const { return m_ExtraFlags & PLAYER_EXTRA_ACCEPT_WHISPERS; }
-        void SetAcceptWhispers(bool on) { if (on) m_ExtraFlags |= PLAYER_EXTRA_ACCEPT_WHISPERS; else m_ExtraFlags &= ~PLAYER_EXTRA_ACCEPT_WHISPERS; }
+        void SetAcceptWhispers(bool on) { if (on) { m_ExtraFlags |= PLAYER_EXTRA_ACCEPT_WHISPERS; } else { m_ExtraFlags &= ~PLAYER_EXTRA_ACCEPT_WHISPERS; } }
         bool isGameMaster() const { return m_ExtraFlags & PLAYER_EXTRA_GM_ON; }
         void SetGameMaster(bool on);
         bool isGMChat() const { return GetSession()->GetSecurity() >= SEC_MODERATOR && (m_ExtraFlags & PLAYER_EXTRA_GM_CHAT); }
-        void SetGMChat(bool on) { if (on) m_ExtraFlags |= PLAYER_EXTRA_GM_CHAT; else m_ExtraFlags &= ~PLAYER_EXTRA_GM_CHAT; }
-        bool isTaxiCheater() const { return m_ExtraFlags & PLAYER_EXTRA_TAXICHEAT; }
-        void SetTaxiCheater(bool on) { if (on) m_ExtraFlags |= PLAYER_EXTRA_TAXICHEAT; else m_ExtraFlags &= ~PLAYER_EXTRA_TAXICHEAT; }
+        void SetGMChat(bool on) { if (on) { m_ExtraFlags |= PLAYER_EXTRA_GM_CHAT; } else { m_ExtraFlags &= ~PLAYER_EXTRA_GM_CHAT; } }
+        bool IsTaxiCheater() const { return m_ExtraFlags & PLAYER_EXTRA_TAXICHEAT; }
+        void SetTaxiCheater(bool on) { if (on) { m_ExtraFlags |= PLAYER_EXTRA_TAXICHEAT; } else { m_ExtraFlags &= ~PLAYER_EXTRA_TAXICHEAT; } }
         bool isGMVisible() const { return !(m_ExtraFlags & PLAYER_EXTRA_GM_INVISIBLE); }
         void SetGMVisible(bool on);
-        void SetPvPDeath(bool on) { if (on) m_ExtraFlags |= PLAYER_EXTRA_PVP_DEATH; else m_ExtraFlags &= ~PLAYER_EXTRA_PVP_DEATH; }
+        void SetPvPDeath(bool on) { if (on) { m_ExtraFlags |= PLAYER_EXTRA_PVP_DEATH; } else { m_ExtraFlags &= ~PLAYER_EXTRA_PVP_DEATH; } }
 
         // 0 = own auction, -1 = enemy auction, 1 = goblin auction
         int GetAuctionAccessMode() const { return m_ExtraFlags & PLAYER_EXTRA_AUCTION_ENEMY ? -1 : (m_ExtraFlags & PLAYER_EXTRA_AUCTION_NEUTRAL ? 1 : 0); }
@@ -989,9 +997,9 @@ class MANGOS_DLL_SPEC Player : public Unit
             m_ExtraFlags &= ~(PLAYER_EXTRA_AUCTION_ENEMY | PLAYER_EXTRA_AUCTION_NEUTRAL);
 
             if (state < 0)
-                m_ExtraFlags |= PLAYER_EXTRA_AUCTION_ENEMY;
+                { m_ExtraFlags |= PLAYER_EXTRA_AUCTION_ENEMY; }
             else if (state > 0)
-                m_ExtraFlags |= PLAYER_EXTRA_AUCTION_NEUTRAL;
+                { m_ExtraFlags |= PLAYER_EXTRA_AUCTION_NEUTRAL; }
         }
 
 
@@ -1050,7 +1058,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         Item* GetWeaponForAttack(WeaponAttackType attackType, bool nonbroken, bool useable) const;
         Item* GetShield(bool useable = false) const;
         static uint32 GetAttackBySlot(uint8 slot);          // MAX_ATTACK if not weapon slot
-        std::vector<Item*> &GetItemUpdateQueue() { return m_itemUpdateQueue; }
+        std::vector<Item*>& GetItemUpdateQueue() { return m_itemUpdateQueue; }
         static bool IsInventoryPos(uint16 pos) { return IsInventoryPos(pos >> 8, pos & 255); }
         static bool IsInventoryPos(uint8 bag, uint8 slot);
         static bool IsEquipmentPos(uint16 pos) { return IsEquipmentPos(pos >> 8, pos & 255); }
@@ -1075,7 +1083,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         InventoryResult CanStoreItem(uint8 bag, uint8 slot, ItemPosCountVec& dest, Item* pItem, bool swap = false) const
         {
             if (!pItem)
-                return EQUIP_ERR_ITEM_NOT_FOUND;
+                { return EQUIP_ERR_ITEM_NOT_FOUND; }
             uint32 count = pItem->GetCount();
             return _CanStoreItem(bag, slot, dest, pItem->GetEntry(), count, pItem, swap, NULL);
         }

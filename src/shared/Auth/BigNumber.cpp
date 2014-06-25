@@ -1,6 +1,6 @@
 /**
- * mangos-one is a full featured server for World of Warcraft in its first
- * expansion version, supporting clients for patch 2.4.3.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -67,7 +67,7 @@ void BigNumber::SetBinary(const uint8* bytes, int len)
 {
     uint8 t[1000];
     for (int i = 0; i < len; ++i)
-    { t[i] = bytes[len - 1 - i]; }
+        { t[i] = bytes[len - 1 - i]; }
     BN_bin2bn(t, len, _bn);
 }
 
@@ -180,7 +180,7 @@ uint8* BigNumber::AsByteArray(int minSize)
 
     // If we need more bytes than length of BigNumber set the rest to 0
     if (length > GetNumBytes())
-    { memset((void*)_array, 0, length); }
+        { memset((void*)_array, 0, length); }
 
     BN_bn2bin(_bn, (unsigned char*)_array);
 

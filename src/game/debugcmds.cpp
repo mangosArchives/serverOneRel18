@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Common.h"
@@ -36,27 +42,27 @@
 bool ChatHandler::HandleDebugSendSpellFailCommand(char* args)
 {
     if (!*args)
-        return false;
+        { return false; }
 
     uint32 failnum;
     if (!ExtractUInt32(&args, failnum) || failnum > 255)
-        return false;
+        { return false; }
 
     uint32 failarg1;
     if (!ExtractOptUInt32(&args, failarg1, 0))
-        return false;
+        { return false; }
 
     uint32 failarg2;
     if (!ExtractOptUInt32(&args, failarg2, 0))
-        return false;
+        { return false; }
 
     WorldPacket data(SMSG_CAST_FAILED, 5);
     data << uint32(133);
     data << uint8(failnum);
     if (failarg1 || failarg2)
-        data << uint32(failarg1);
+        { data << uint32(failarg1); }
     if (failarg2)
-        data << uint32(failarg2);
+        { data << uint32(failarg2); }
 
     m_session->SendPacket(&data);
 
@@ -75,11 +81,11 @@ bool ChatHandler::HandleDebugSendPoiCommand(char* args)
 
     uint32 icon;
     if (!ExtractUInt32(&args, icon))
-        return false;
+        { return false; }
 
     uint32 flags;
     if (!ExtractUInt32(&args, flags))
-        return false;
+        { return false; }
 
     DETAIL_LOG("Command : POI, NPC = %u, icon = %u flags = %u", target->GetGUIDLow(), icon, flags);
     pPlayer->PlayerTalkClass->SendPointOfInterest(target->GetPositionX(), target->GetPositionY(), Poi_Icon(icon), flags, 30, "Test POI");
@@ -89,7 +95,7 @@ bool ChatHandler::HandleDebugSendPoiCommand(char* args)
 bool ChatHandler::HandleDebugSendEquipErrorCommand(char* args)
 {
     if (!*args)
-        return false;
+        { return false; }
 
     uint8 msg = atoi(args);
     m_session->GetPlayer()->SendEquipError(InventoryResult(msg), NULL, NULL);
@@ -99,7 +105,7 @@ bool ChatHandler::HandleDebugSendEquipErrorCommand(char* args)
 bool ChatHandler::HandleDebugSendSellErrorCommand(char* args)
 {
     if (!*args)
-        return false;
+        { return false; }
 
     uint8 msg = atoi(args);
     m_session->GetPlayer()->SendSellError(SellResult(msg), 0, ObjectGuid(), 0);
@@ -109,7 +115,7 @@ bool ChatHandler::HandleDebugSendSellErrorCommand(char* args)
 bool ChatHandler::HandleDebugSendBuyErrorCommand(char* args)
 {
     if (!*args)
-        return false;
+        { return false; }
 
     uint8 msg = atoi(args);
     m_session->GetPlayer()->SendBuyError(BuyResult(msg), 0, 0, 0);
@@ -120,7 +126,7 @@ bool ChatHandler::HandleDebugSendOpcodeCommand(char* /*args*/)
 {
     Unit* unit = getSelectedUnit();
     if (!unit || (unit->GetTypeId() != TYPEID_PLAYER))
-        unit = m_session->GetPlayer();
+        { unit = m_session->GetPlayer(); }
 
     std::ifstream stream("opcode.txt");
     if (!stream.is_open())
@@ -139,7 +145,7 @@ bool ChatHandler::HandleDebugSendOpcodeCommand(char* /*args*/)
     while (stream >> type)
     {
         if (type == "")
-            break;
+            { break; }
 
         if (type == "uint8")
         {
@@ -203,11 +209,11 @@ bool ChatHandler::HandleDebugUpdateWorldStateCommand(char* args)
 {
     uint32 world;
     if (!ExtractUInt32(&args, world))
-        return false;
+        { return false; }
 
     uint32 state;
     if (!ExtractUInt32(&args, state))
-        return false;
+        { return false; }
 
     m_session->GetPlayer()->SendUpdateWorldState(world, state);
     return true;
@@ -219,7 +225,7 @@ bool ChatHandler::HandleDebugPlayCinematicCommand(char* args)
     // #cinematicid - ID decimal number from CinemaicSequences.dbc (1st column)
     uint32 dwId;
     if (!ExtractUInt32(&args, dwId))
-        return false;
+        { return false; }
 
     if (!sCinematicSequencesStore.LookupEntry(dwId))
     {
@@ -239,7 +245,7 @@ bool ChatHandler::HandleDebugPlaySoundCommand(char* args)
     // #soundid - ID decimal number from SoundEntries.dbc (1st column)
     uint32 dwSoundId;
     if (!ExtractUInt32(&args, dwSoundId))
-        return false;
+        { return false; }
 
     if (!sSoundEntriesStore.LookupEntry(dwSoundId))
     {
@@ -257,9 +263,9 @@ bool ChatHandler::HandleDebugPlaySoundCommand(char* args)
     }
 
     if (m_session->GetPlayer()->GetSelectionGuid())
-        unit->PlayDistanceSound(dwSoundId, m_session->GetPlayer());
+        { unit->PlayDistanceSound(dwSoundId, m_session->GetPlayer()); }
     else
-        unit->PlayDirectSound(dwSoundId, m_session->GetPlayer());
+        { unit->PlayDirectSound(dwSoundId, m_session->GetPlayer()); }
 
     PSendSysMessage(LANG_YOU_HEAR_SOUND, dwSoundId);
     return true;
@@ -272,7 +278,7 @@ bool ChatHandler::HandleDebugSendChannelNotifyCommand(char* args)
 
     uint32 code;
     if (!ExtractUInt32(&args, code) || code > 255)
-        return false;
+        { return false; }
 
     WorldPacket data(SMSG_CHANNEL_NOTIFY, (1 + 10));
     data << uint8(code);                                    // notify type
@@ -290,7 +296,7 @@ bool ChatHandler::HandleDebugSendChatMsgCommand(char* args)
 
     uint32 type;
     if (!ExtractUInt32(&args, type) || type > 255)
-        return false;
+        { return false; }
 
     WorldPacket data;
     ChatHandler::BuildChatPacket(data, ChatMsg(type), msg, LANG_UNIVERSAL, CHAT_TAG_NONE, m_session->GetPlayer()->GetObjectGuid(), m_session->GetPlayerName());
@@ -302,7 +308,7 @@ bool ChatHandler::HandleDebugSendQuestPartyMsgCommand(char* args)
 {
     uint32 msg;
     if (!ExtractUInt32(&args, msg))
-        return false;
+        { return false; }
 
     m_session->GetPlayer()->SendPushToPartyResponse(m_session->GetPlayer(), msg);
     return true;
@@ -312,17 +318,17 @@ bool ChatHandler::HandleDebugGetLootRecipientCommand(char* /*args*/)
 {
     Creature* target = getSelectedCreature();
     if (!target)
-        return false;
+        { return false; }
 
     if (!target->HasLootRecipient())
-        SendSysMessage("loot recipient: no loot recipient");
+        { SendSysMessage("loot recipient: no loot recipient"); }
     else if (Player* recipient = target->GetLootRecipient())
         PSendSysMessage("loot recipient: %s with raw data %s from group %u",
                         recipient->GetGuidStr().c_str(),
                         target->GetLootRecipientGuid().GetString().c_str(),
                         target->GetLootGroupRecipientId());
     else
-        SendSysMessage("loot recipient: offline ");
+        { SendSysMessage("loot recipient: offline "); }
 
     return true;
 }
@@ -337,7 +343,7 @@ bool ChatHandler::HandleDebugSendQuestInvalidMsgCommand(char* args)
 bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
 {
     if (!*args)
-        return false;
+        { return false; }
 
     ItemUpdateState state = ITEM_UNCHANGED;
     bool list_queue = false, check_all = false;
@@ -365,14 +371,14 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
         state_str = "removed";
     }
     else if (strncmp(args, "queue", strlen(args)) == 0)
-        list_queue = true;
+        { list_queue = true; }
     else if (strncmp(args, "all", strlen(args)) == 0)
-        check_all = true;
+        { check_all = true; }
     else
-        return false;
+        { return false; }
 
     Player* player = getSelectedPlayer();
-    if (!player) player = m_session->GetPlayer();
+    if (!player) { player = m_session->GetPlayer(); }
 
     if (!list_queue && !check_all)
     {
@@ -381,10 +387,10 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
         for (uint8 i = PLAYER_SLOT_START; i < PLAYER_SLOT_END; ++i)
         {
             if (i >= BUYBACK_SLOT_START && i < BUYBACK_SLOT_END)
-                continue;
+                { continue; }
 
             Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, i);
-            if (!item) continue;
+            if (!item) { continue; }
             if (!item->IsBag())
             {
                 if (item->GetState() == state)
@@ -408,11 +414,11 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
 
     if (list_queue)
     {
-        std::vector<Item*> &updateQueue = player->GetItemUpdateQueue();
+        std::vector<Item*>& updateQueue = player->GetItemUpdateQueue();
         for (size_t i = 0; i < updateQueue.size(); ++i)
         {
             Item* item = updateQueue[i];
-            if (!item) continue;
+            if (!item) { continue; }
 
             Bag* container = item->GetContainer();
             uint8 bag_slot = container ? container->GetSlot() : uint8(INVENTORY_SLOT_BAG_0);
@@ -430,20 +436,20 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
                             item->GetGuidStr().c_str(), bag_slot, item->GetSlot(), st.c_str());
         }
         if (updateQueue.empty())
-            PSendSysMessage("updatequeue empty");
+            { PSendSysMessage("updatequeue empty"); }
     }
 
     if (check_all)
     {
         bool error = false;
-        std::vector<Item*> &updateQueue = player->GetItemUpdateQueue();
+        std::vector<Item*>& updateQueue = player->GetItemUpdateQueue();
         for (uint8 i = PLAYER_SLOT_START; i < PLAYER_SLOT_END; ++i)
         {
             if (i >= BUYBACK_SLOT_START && i < BUYBACK_SLOT_END)
-                continue;
+                { continue; }
 
             Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, i);
-            if (!item) continue;
+            if (!item) { continue; }
 
             if (item->GetSlot() != i)
             {
@@ -506,7 +512,7 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
                 for (uint8 j = 0; j < bag->GetBagSize(); ++j)
                 {
                     Item* item2 = bag->GetItemByPos(j);
-                    if (!item2) continue;
+                    if (!item2) { continue; }
 
                     if (item2->GetSlot() != j)
                     {
@@ -577,7 +583,7 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
         for (size_t i = 0; i < updateQueue.size(); ++i)
         {
             Item* item = updateQueue[i];
-            if (!item) continue;
+            if (!item) { continue; }
 
             if (item->GetOwnerGuid() != player->GetObjectGuid())
             {
@@ -594,7 +600,7 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
                 error = true; continue;
             }
 
-            if (item->GetState() == ITEM_REMOVED) continue;
+            if (item->GetState() == ITEM_REMOVED) { continue; }
             Item* test = player->GetItemByPos(item->GetBagSlot(), item->GetSlot());
 
             if (test == NULL)
@@ -613,7 +619,7 @@ bool ChatHandler::HandleDebugGetItemStateCommand(char* args)
             }
         }
         if (!error)
-            SendSysMessage("All OK!");
+            { SendSysMessage("All OK!"); }
     }
 
     return true;

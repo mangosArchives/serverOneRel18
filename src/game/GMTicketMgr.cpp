@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,32 +41,31 @@ void GMTicketMgr::LoadGMTickets()
     QueryResult* result = CharacterDatabase.Query(
                               //      0     1            2              3                                  4
                               "SELECT guid, ticket_text, response_text, UNIX_TIMESTAMP(ticket_lastchange), ticket_id FROM character_ticket ORDER BY ticket_id ASC");
-
+    
     if (!result)
     {
         BarGoLink bar(1);
-
+        
         bar.step();
-
+        
         sLog.outString();
         sLog.outString(">> Loaded `character_ticket`, table is empty.");
         return;
     }
-
+    
     BarGoLink bar(result->GetRowCount());
-
+    
     do
     {
         bar.step();
-
+        
         Field* fields = result->Fetch();
-
+        
         uint32 guidlow = fields[0].GetUInt32();
         if (!guidlow)
             { continue; }
 
         ObjectGuid guid = ObjectGuid(HIGHGUID_PLAYER, guidlow);
-
         GMTicket& ticket = m_GMTicketMap[guid];
 
         if (ticket.GetPlayerGuid())                         // already exist
@@ -77,7 +79,7 @@ void GMTicketMgr::LoadGMTickets()
     }
     while (result->NextRow());
     delete result;
-
+    
     sLog.outString();
     sLog.outString(">> Loaded " SIZEFMTD " GM tickets", GetTicketCount());
 }

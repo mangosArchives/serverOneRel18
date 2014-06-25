@@ -1,6 +1,6 @@
 /**
- * mangos-zero is a full featured server for World of Warcraft in its vanilla
- * version, supporting clients for patch 1.12.x.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -182,7 +182,7 @@ ModelInstance::ModelInstance(MPQFile& f, const char* ModelInstName, uint32 mapID
     fclose(input);
 
     if (nVertices == 0 || file_read <= 0)
-    { return; }
+        { return; }
 
     uint16 adtId = 0;// not used for models
     uint32 flags = MOD_M2;

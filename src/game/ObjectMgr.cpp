@@ -926,7 +926,7 @@ void ObjectMgr::LoadCreatureItemTemplates()
 
         if (!eqInfo)
             { continue; }
-		        
+                
             EquipmentInfoItem const* itemProto = GetEquipmentInfoItem(eqInfo->entry);
 
             if (itemProto->InventoryType != INVTYPE_WEAPON &&

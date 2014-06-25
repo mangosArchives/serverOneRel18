@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +34,7 @@ enum AccountOpResult
     AOR_OK,
     AOR_NAME_TOO_LONG,
     AOR_PASS_TOO_LONG,
-    AOR_NAME_ALREDY_EXIST,
+    AOR_NAME_ALREADY_EXIST,
     AOR_NAME_NOT_EXIST,
     AOR_DB_INTERNAL_ERROR
 };

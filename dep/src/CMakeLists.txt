@@ -15,10 +15,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 add_subdirectory(g3dlite)
-if(USE_SOAP)
-  add_subdirectory(gsoap)
-endif()
-
-if(WIN32)
-  add_subdirectory(zlib)
-endif()
+add_subdirectory(gsoap)
+add_subdirectory(zlib)
+add_subdirectory(bzip2)

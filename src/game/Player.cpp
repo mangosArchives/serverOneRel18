@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Player.h"
@@ -167,7 +173,7 @@ void PlayerTaxi::LoadTaxiMask(const char* data)
     int index;
     Tokens::iterator iter;
     for (iter = tokens.begin(), index = 0;
-            (index < TaxiMaskSize) && (iter != tokens.end()); ++iter, ++index)
+         (index < TaxiMaskSize) && (iter != tokens.end()); ++iter, ++index)
     {
         // load and set bits only for existing taxi nodes
         m_taximask[index] = sTaxiNodesMask[index] & uint32(atol((*iter).c_str()));
@@ -179,12 +185,12 @@ void PlayerTaxi::AppendTaximaskTo(ByteBuffer& data, bool all)
     if (all)
     {
         for (uint8 i = 0; i < TaxiMaskSize; ++i)
-            data << uint32(sTaxiNodesMask[i]);              // all existing nodes
+            { data << uint32(sTaxiNodesMask[i]); }              // all existing nodes
     }
     else
     {
         for (uint8 i = 0; i < TaxiMaskSize; ++i)
-            data << uint32(m_taximask[i]);                  // known nodes
+            { data << uint32(m_taximask[i]); }                  // known nodes
     }
 }
 
@@ -201,11 +207,11 @@ bool PlayerTaxi::LoadTaxiDestinationsFromString(const std::string& values, Team 
     }
 
     if (m_TaxiDestinations.empty())
-        return true;
+        { return true; }
 
     // Check integrity
     if (m_TaxiDestinations.size() < 2)
-        return false;
+        { return false; }
 
     for (size_t i = 1; i < m_TaxiDestinations.size(); ++i)
     {
@@ -213,12 +219,12 @@ bool PlayerTaxi::LoadTaxiDestinationsFromString(const std::string& values, Team 
         uint32 path;
         sObjectMgr.GetTaxiPath(m_TaxiDestinations[i - 1], m_TaxiDestinations[i], path, cost);
         if (!path)
-            return false;
+            { return false; }
     }
 
     // can't load taxi path without mount set (quest taxi path?)
     if (!sObjectMgr.GetTaxiMountDisplayId(GetTaxiSource(), team, true))
-        return false;
+        { return false; }
 
     return true;
 }
@@ -226,12 +232,12 @@ bool PlayerTaxi::LoadTaxiDestinationsFromString(const std::string& values, Team 
 std::string PlayerTaxi::SaveTaxiDestinationsToString()
 {
     if (m_TaxiDestinations.empty())
-        return "";
+        { return ""; }
 
     std::ostringstream ss;
 
     for (size_t i = 0; i < m_TaxiDestinations.size(); ++i)
-        ss << m_TaxiDestinations[i] << " ";
+        { ss << m_TaxiDestinations[i] << " "; }
 
     return ss.str();
 }
@@ -239,7 +245,7 @@ std::string PlayerTaxi::SaveTaxiDestinationsToString()
 uint32 PlayerTaxi::GetCurrentTaxiPath() const
 {
     if (m_TaxiDestinations.size() < 2)
-        return 0;
+        { return 0; }
 
     uint32 path;
     uint32 cost;
@@ -252,7 +258,7 @@ uint32 PlayerTaxi::GetCurrentTaxiPath() const
 std::ostringstream& operator<< (std::ostringstream& ss, PlayerTaxi const& taxi)
 {
     for (int i = 0; i < TaxiMaskSize; ++i)
-        ss << taxi.m_taximask[i] << " ";
+        { ss << taxi.m_taximask[i] << " "; }
     return ss;
 }
 
@@ -271,7 +277,7 @@ bool SpellModifier::isAffectedOnSpell(SpellEntry const* spell) const
     SpellEntry const* affect_spell = sSpellStore.LookupEntry(spellId);
     // False if affect_spell == NULL or spellFamily not equal
     if (!affect_spell || affect_spell->SpellFamilyName != spell->SpellFamilyName)
-        return false;
+        { return false; }
     return spell->IsFitToFamilyMask(mask);
 }
 
@@ -291,7 +297,7 @@ bool TradeData::HasItem(ObjectGuid item_guid) const
 {
     for (int i = 0; i < TRADE_SLOT_COUNT; ++i)
         if (m_items[i] == item_guid)
-            return true;
+            { return true; }
     return false;
 }
 
@@ -306,7 +312,7 @@ void TradeData::SetItem(TradeSlots slot, Item* item)
     ObjectGuid itemGuid = item ? item->GetObjectGuid() : ObjectGuid();
 
     if (m_items[slot] == itemGuid)
-        return;
+        { return; }
 
     m_items[slot] = itemGuid;
 
@@ -317,7 +323,7 @@ void TradeData::SetItem(TradeSlots slot, Item* item)
 
     // need remove possible trader spell applied to changed item
     if (slot == TRADE_SLOT_NONTRADED)
-        GetTraderData()->SetSpell(0);
+        { GetTraderData()->SetSpell(0); }
 
     // need remove possible player spell applied (possible move reagent)
     SetSpell(0);
@@ -328,7 +334,7 @@ void TradeData::SetSpell(uint32 spell_id, Item* castItem /*= NULL*/)
     ObjectGuid itemGuid = castItem ? castItem->GetObjectGuid() : ObjectGuid();
 
     if (m_spell == spell_id && m_spellCastItem == itemGuid)
-        return;
+        { return; }
 
     m_spell = spell_id;
     m_spellCastItem = itemGuid;
@@ -343,7 +349,7 @@ void TradeData::SetSpell(uint32 spell_id, Item* castItem /*= NULL*/)
 void TradeData::SetMoney(uint32 money)
 {
     if (m_money == money)
-        return;
+        { return; }
 
     m_money = money;
 
@@ -356,9 +362,9 @@ void TradeData::SetMoney(uint32 money)
 void TradeData::Update(bool for_trader /*= true*/)
 {
     if (for_trader)
-        m_trader->GetSession()->SendUpdateTrade(true);      // player state for trader
+        { m_trader->GetSession()->SendUpdateTrade(true); }      // player state for trader
     else
-        m_player->GetSession()->SendUpdateTrade(false);     // player state for player
+        { m_player->GetSession()->SendUpdateTrade(false); }     // player state for player
 }
 
 void TradeData::SetAccepted(bool state, bool crosssend /*= false*/)
@@ -368,9 +374,9 @@ void TradeData::SetAccepted(bool state, bool crosssend /*= false*/)
     if (!state)
     {
         if (crosssend)
-            m_trader->GetSession()->SendTradeStatus(TRADE_STATUS_BACK_TO_TRADE);
+            { m_trader->GetSession()->SendTradeStatus(TRADE_STATUS_BACK_TO_TRADE); }
         else
-            m_player->GetSession()->SendTradeStatus(TRADE_STATUS_BACK_TO_TRADE);
+            { m_player->GetSession()->SendTradeStatus(TRADE_STATUS_BACK_TO_TRADE); }
     }
 }
 
@@ -400,7 +406,7 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
 
     // players always accept
     if (GetSession()->GetSecurity() == SEC_PLAYER)
-        SetAcceptWhispers(true);
+        { SetAcceptWhispers(true); }
 
     m_comboPoints = 0;
 
@@ -462,7 +468,7 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
     m_lastLiquid = NULL;
 
     for (int i = 0; i < MAX_TIMERS; ++i)
-        m_MirrorTimer[i] = DISABLED_MIRROR_TIMER;
+        { m_MirrorTimer[i] = DISABLED_MIRROR_TIMER; }
 
     m_MirrorTimerFlags = UNDERWATER_NONE;
     m_MirrorTimerFlagsLast = UNDERWATER_NONE;
@@ -511,7 +517,7 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
     m_itemUpdateQueueBlocked = false;
 
     for (int i = 0; i < MAX_MOVE_TYPE; ++i)
-        m_forced_speed_changes[i] = 0;
+        { m_forced_speed_changes[i] = 0; }
 
     m_stableSlots = 0;
 
@@ -564,10 +570,10 @@ Player::~Player()
 
     // all mailed items should be deleted, also all mail should be deallocated
     for (PlayerMails::const_iterator itr =  m_mail.begin(); itr != m_mail.end(); ++itr)
-        delete *itr;
+        { delete *itr; }
 
     for (ItemMap::const_iterator iter = mMitems.begin(); iter != mMitems.end(); ++iter)
-        delete iter->second;                                // if item is duplicated... then server may crash ... but that item should be deallocated
+        { delete iter->second; }                                // if item is duplicated... then server may crash ... but that item should be deallocated
 
     delete PlayerTalkClass;
 
@@ -577,7 +583,7 @@ Player::~Player()
     }
 
     for (size_t x = 0; x < ItemSetEff.size(); ++x)
-        delete ItemSetEff[x];
+        { delete ItemSetEff[x]; }
 
     // clean up player-instance binds, may unload some instance saves
     for (uint8 i = 0; i < MAX_DIFFICULTY; ++i)
@@ -631,7 +637,7 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
     }
 
     for (int i = 0; i < PLAYER_SLOTS_COUNT; ++i)
-        m_items[i] = NULL;
+        { m_items[i] = NULL; }
 
     SetLocationMapId(info->mapId);
     Relocate(info->positionX, info->positionY, info->positionZ, info->orientation);
@@ -680,9 +686,9 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
 
     // set starting level
     if (GetSession()->GetSecurity() >= SEC_MODERATOR)
-        SetUInt32Value(UNIT_FIELD_LEVEL, sWorld.getConfig(CONFIG_UINT32_START_GM_LEVEL));
+        { SetUInt32Value(UNIT_FIELD_LEVEL, sWorld.getConfig(CONFIG_UINT32_START_GM_LEVEL)); }
     else
-        SetUInt32Value(UNIT_FIELD_LEVEL, sWorld.getConfig(CONFIG_UINT32_START_PLAYER_LEVEL));
+        { SetUInt32Value(UNIT_FIELD_LEVEL, sWorld.getConfig(CONFIG_UINT32_START_PLAYER_LEVEL)); }
 
     SetUInt32Value(PLAYER_FIELD_COINAGE, sWorld.getConfig(CONFIG_UINT32_START_PLAYER_MONEY));
     SetHonorPoints(sWorld.getConfig(CONFIG_UINT32_START_HONOR_POINTS));
@@ -714,7 +720,7 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
 
     // original action bar
     for (PlayerCreateInfoActions::const_iterator action_itr = info->action.begin(); action_itr != info->action.end(); ++action_itr)
-        addActionButton(action_itr->button, action_itr->action, action_itr->type);
+        { addActionButton(action_itr->button, action_itr->action, action_itr->type); }
 
     // original items
     uint32 raceClassGender = GetUInt32Value(UNIT_FIELD_BYTES_0) & 0x00FFFFFF;
@@ -737,14 +743,14 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
         for (int j = 0; j < MAX_OUTFIT_ITEMS; ++j)
         {
             if (oEntry->ItemId[j] <= 0)
-                continue;
+                { continue; }
 
             uint32 item_id = oEntry->ItemId[j];
 
             // just skip, reported in ObjectMgr::LoadItemPrototypes
             ItemPrototype const* iProto = ObjectMgr::GetItemPrototype(item_id);
             if (!iProto)
-                continue;
+                { continue; }
 
             // BuyCount by default
             int32 count = iProto->BuyCount;
@@ -756,11 +762,11 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
                 {
                     case 11:                                // food
                         if (iProto->Stackable > 4)
-                            count = 4;
+                            { count = 4; }
                         break;
                     case 59:                                // drink
                         if (iProto->Stackable > 2)
-                            count = 2;
+                            { count = 2; }
                         break;
                 }
             }
@@ -770,7 +776,7 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
     }
 
     for (PlayerCreateInfoItems::const_iterator item_id_itr = info->item.begin(); item_id_itr != info->item.end(); ++item_id_itr)
-        StoreNewItemInBestSlots(item_id_itr->item_id, item_id_itr->item_amount);
+        { StoreNewItemInBestSlots(item_id_itr->item_id, item_id_itr->item_amount); }
 
     // bags and main-hand weapon must equipped at this moment
     // now second pass for not equipped (offhand weapon/shield if it attempt equipped before main-hand weapon)
@@ -20384,7 +20390,7 @@ void Player::SetRestType(RestType n_r_type, uint32 areaTriggerId /*= 0*/)
 
         // Set player to FFA PVP when not in rested environment.
         if (sWorld.IsFFAPvPRealm())
-            SetFFAPvP(true);
+            { SetFFAPvP(true); }
     }
     else
     {
@@ -20394,7 +20400,7 @@ void Player::SetRestType(RestType n_r_type, uint32 areaTriggerId /*= 0*/)
         time_inn_enter = time(NULL);
 
         if (sWorld.IsFFAPvPRealm())
-            SetFFAPvP(false);
+            { SetFFAPvP(false); }
     }
 }
 
@@ -20435,11 +20441,11 @@ AreaLockStatus Player::GetAreaTriggerLockStatus(AreaTrigger const* at, uint32& m
     miscRequirement = 0;
 
     if (!at)
-        return AREA_LOCKSTATUS_UNKNOWN_ERROR;
+        { return AREA_LOCKSTATUS_UNKNOWN_ERROR; }
 
     MapEntry const* mapEntry = sMapStore.LookupEntry(at->target_mapId);
     if (!mapEntry)
-        return AREA_LOCKSTATUS_UNKNOWN_ERROR;
+        { return AREA_LOCKSTATUS_UNKNOWN_ERROR; }
 
     bool isRegularTargetMap = !mapEntry->IsDungeon() || GetDifficulty() == REGULAR_DIFFICULTY;
 
@@ -20456,7 +20462,7 @@ AreaLockStatus Player::GetAreaTriggerLockStatus(AreaTrigger const* at, uint32& m
 
     // Gamemaster can always enter
     if (isGameMaster())
-        return AREA_LOCKSTATUS_OK;
+        { return AREA_LOCKSTATUS_OK; }
 
     // Level Requirements
     if (getLevel() < at->requiredLevel && !sWorld.getConfig(CONFIG_BOOL_INSTANCE_IGNORE_LEVEL))
@@ -20473,13 +20479,13 @@ AreaLockStatus Player::GetAreaTriggerLockStatus(AreaTrigger const* at, uint32& m
     // Raid Requirements
     if (mapEntry->IsRaid() && !sWorld.getConfig(CONFIG_BOOL_INSTANCE_IGNORE_RAID))
         if (!GetGroup() || !GetGroup()->isRaidGroup())
-            return AREA_LOCKSTATUS_RAID_LOCKED;
+            { return AREA_LOCKSTATUS_RAID_LOCKED; }
 
     // Item Requirements: must have requiredItem OR requiredItem2, report the first one that's missing
     if (at->requiredItem)
     {
         if (!HasItemCount(at->requiredItem, 1) &&
-                (!at->requiredItem2 || !HasItemCount(at->requiredItem2, 1)))
+            (!at->requiredItem2 || !HasItemCount(at->requiredItem2, 1)))
         {
             miscRequirement = at->requiredItem;
             return AREA_LOCKSTATUS_MISSING_ITEM;
@@ -20526,18 +20532,18 @@ AreaLockStatus Player::GetAreaTriggerLockStatus(AreaTrigger const* at, uint32& m
     {
         // can not enter if the instance is full (player cap), GMs don't count
         if (((DungeonMap*)map)->GetPlayersCountExceptGMs() >= ((DungeonMap*)map)->GetMaxPlayers())
-            return AREA_LOCKSTATUS_INSTANCE_IS_FULL;
+            { return AREA_LOCKSTATUS_INSTANCE_IS_FULL; }
 
         // In Combat check
         if (map && map->GetInstanceData() && map->GetInstanceData()->IsEncounterInProgress())
-            return AREA_LOCKSTATUS_ZONE_IN_COMBAT;
+            { return AREA_LOCKSTATUS_ZONE_IN_COMBAT; }
 
         // Bind Checks
         InstancePlayerBind* pBind = GetBoundInstance(at->target_mapId, GetDifficulty());
         if (pBind && pBind->perm && pBind->state != state)
-            return AREA_LOCKSTATUS_HAS_BIND;
+            { return AREA_LOCKSTATUS_HAS_BIND; }
         if (pBind && pBind->perm && pBind->state != map->GetPersistentState())
-            return AREA_LOCKSTATUS_HAS_BIND;
+            { return AREA_LOCKSTATUS_HAS_BIND; }
     }
 
     return AREA_LOCKSTATUS_OK;

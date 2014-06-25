@@ -509,3 +509,5 @@ if(PCH)
     endif()
   endif()
 endif()
+
+add_subdirectory(AuctionHouseBot)

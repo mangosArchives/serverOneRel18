@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +51,7 @@
  */
 typedef ACE_SHLIB_HANDLE MANGOS_LIBRARY_HANDLE;
 
-#define MANGOS_SCRIPT_NAME "mangos-scripts"
+#define MANGOS_SCRIPT_NAME "mangosscript"
 #define MANGOS_SCRIPT_SUFFIX ACE_DLL_SUFFIX
 #define MANGOS_SCRIPT_PREFIX ACE_DLL_PREFIX
 #define MANGOS_LOAD_LIBRARY(libname)    ACE_OS::dlopen(libname)

@@ -52,7 +52,7 @@ ConfVersion=2010062001
 #
 #    LogFile
 #        Logfile name
-#        Default: "realm-list.log"
+#        Default: "Realmd.log"
 #                 "" - empty name disable creating log file
 #
 #    LogTimestamp

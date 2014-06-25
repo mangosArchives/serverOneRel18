@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -498,7 +501,7 @@ bool ChatHandler::HandleAccountCreateCommand(char* args)
             SendSysMessage(LANG_ACCOUNT_TOO_LONG);
             SetSentErrorMessage(true);
             return false;
-        case AOR_NAME_ALREDY_EXIST:
+        case AOR_NAME_ALREADY_EXIST:
             SendSysMessage(LANG_ACCOUNT_ALREADY_EXIST);
             SetSentErrorMessage(true);
             return false;

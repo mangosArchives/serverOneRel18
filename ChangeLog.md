@@ -1,11 +1,10 @@
-CHANGELOG for 0.19
-==================
+MaNGOS One Changelog
+====================
+This change log references the relevant changes (bug and security fixes) done
+in recent versions.
 
-This changelog references the relevant changes (bug and security fixes) done
-in 0.19 minor versions.
-
-* 0.19 (2014-07-xx)
-=======
+0.19 (2014-07-xx)
+--------------------------------
 Major changes for this build which require your attention when upgrading include
 awesome things such as these:
 
@@ -52,23 +51,14 @@ Also numerous minor fixes and improvements have been added, such as:
   less confusing messages for identical issues.
 * In-game commands `goname` and `namego` have been replaced with `appear` and
   `summon`. If you happen to find other commands with weird naming, let us know!
-* We've done extensive house-keeping and removed many TBC specific code parts,
+* We have done extensive house-keeping and removed many TBC specific code parts,
   and replaced TBC specific values with the proper vanilla WoW counterparts.
   This includes the TBC spell modifiers, which now have been dropped and are no
   longer available.
 * Unprivileged player accounts will no longer be able to execute mangos dot
   commands in the in-game chat. If you need this, enable `PlayerCommands` in
   the mangosd configuration. The default setting is off.
->>>>>>> 208599f... Chat commands disabled for normal players.
 
-Major changes for this build which require your attention when upgrading include
-awesome things such as these:
-
- * The *mangos-one* build system has been overhauled, and we are now using CMake
-   only. For Linux and FreeBSD users this means you can *always* use packages as
-   provided by your distribution, and for Windows users this means you'll now
-   have to download and install dependencies just once. Build times for all of
-   the supported platforms should have noticeable reduced.
  * The tools for map extraction and generation from the game client are finally
    first class citizens when you build *mangos-one*, and will be built, too.
  * SOAP bindings for the world server are now optional, and will be disabled by

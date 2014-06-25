@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,16 +92,16 @@ class MANGOS_DLL_SPEC InstanceData
         virtual void OnObjectCreate(GameObject*) {}
 
         // called on creature creation
-        virtual void OnCreatureCreate(Creature * /*creature*/) {}
+        virtual void OnCreatureCreate(Creature* /*creature*/) {}
 
         // called on creature enter combat
-        virtual void OnCreatureEnterCombat(Creature * /*creature*/) {}
+        virtual void OnCreatureEnterCombat(Creature* /*creature*/) {}
 
         // called on creature evade
-        virtual void OnCreatureEvade(Creature * /*creature*/) {}
+        virtual void OnCreatureEvade(Creature* /*creature*/) {}
 
         // called on creature death
-        virtual void OnCreatureDeath(Creature * /*creature*/) {}
+        virtual void OnCreatureDeath(Creature* /*creature*/) {}
 
         // All-purpose data storage 64 bit
         virtual uint64 GetData64(uint32 /*Data*/) const { return 0; }

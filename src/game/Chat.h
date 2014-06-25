@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOSSERVER_CHAT_H
@@ -62,10 +68,10 @@ enum ChatCommandSearchResult
 
 enum PlayerChatTag
 {
-    CHAT_TAG_NONE               = 0x00,
-    CHAT_TAG_AFK                = 0x01,
-    CHAT_TAG_DND                = 0x02,
-    CHAT_TAG_GM                 = 0x04,
+    CHAT_TAG_NONE               = 0,
+    CHAT_TAG_AFK                = 1,
+    CHAT_TAG_DND                = 2,
+    CHAT_TAG_GM                 = 3,
 };
 typedef uint32 ChatTagFlags;
 
@@ -399,9 +405,9 @@ class MANGOS_DLL_SPEC ChatHandler
         bool HandleReloadBattleEventCommand(char* args);
         bool HandleReloadCommandCommand(char* args);
         bool HandleReloadConditionsCommand(char* args);
-        bool HandleReloadCreaturesStatsCommand(char* args);
         bool HandleReloadCreatureQuestRelationsCommand(char* args);
         bool HandleReloadCreatureQuestInvRelationsCommand(char* args);
+        bool HandleReloadCreaturesStatsCommand(char* args);
         bool HandleReloadDbScriptStringCommand(char* args);
         bool HandleReloadDBScriptsOnCreatureDeathCommand(char* args);
         bool HandleReloadDBScriptsOnEventCommand(char* args);
@@ -530,8 +536,8 @@ class MANGOS_DLL_SPEC ChatHandler
         bool HandleDismountCommand(char* args);
         bool HandleSaveCommand(char* args);
 
-        bool HandleNamegoCommand(char* args);
-        bool HandleGonameCommand(char* args);
+        bool HandleSummonCommand(char* args);
+        bool HandleAppearCommand(char* args);
         bool HandleGroupgoCommand(char* args);
         bool HandleRecallCommand(char* args);
         bool HandleAnnounceCommand(char* args);

@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Channel.h"
@@ -35,15 +41,15 @@ Channel::Channel(const std::string& name, uint32 channel_id)
         m_flags |= CHANNEL_FLAG_GENERAL;                    // for all built-in channels
 
         if (ch->flags & CHANNEL_DBC_FLAG_TRADE)             // for trade channel
-            m_flags |= CHANNEL_FLAG_TRADE;
+            { m_flags |= CHANNEL_FLAG_TRADE; }
 
         if (ch->flags & CHANNEL_DBC_FLAG_CITY_ONLY2)        // for city only channels
-            m_flags |= CHANNEL_FLAG_CITY;
+            { m_flags |= CHANNEL_FLAG_CITY; }
 
         if (ch->flags & CHANNEL_DBC_FLAG_LFG)               // for LFG channel
-            m_flags |= CHANNEL_FLAG_LFG;
+            { m_flags |= CHANNEL_FLAG_LFG; }
         else                                                // for all other channels
-            m_flags |= CHANNEL_FLAG_NOT_LFG;
+            { m_flags |= CHANNEL_FLAG_NOT_LFG; }
     }
     else                                                    // it's custom channel
     {
@@ -111,7 +117,6 @@ void Channel::Join(Player* player, const char* password)
 
     MakeYouJoined(&data);
     SendToOne(&data, guid);
-
     JoinNotify(guid);
 
     // if no owner first logged will become
@@ -157,7 +162,7 @@ void Channel::Leave(Player* player, bool send)
         SendToAll(&data);
     }
 
-    LeaveNotify(guid);
+        LeaveNotify(guid);
 
     if (changeowner)
     {
@@ -515,10 +520,13 @@ void Channel::Announce(Player* player)
 
     WorldPacket data;
     if (m_announce)
+    {
         MakeAnnouncementsOn(&data, guid);
+    }
     else
+    {
         MakeAnnouncementsOff(&data, guid);
-
+    }
     SendToAll(&data);
 }
 
@@ -547,10 +555,13 @@ void Channel::Moderate(Player* player)
 
     WorldPacket data;
     if (m_moderate)
+    {
         MakeModerationOn(&data, guid);
+    }
     else
+    {
         MakeModerationOff(&data, guid);
-
+    }
     SendToAll(&data);
 }
 
@@ -659,7 +670,7 @@ void Channel::SetOwner(ObjectGuid guid, bool exclaim)
         // [] will re-add player after it possible removed
         PlayerList::iterator p_itr = m_players.find(m_ownerGuid);
         if (p_itr != m_players.end())
-            p_itr->second.SetOwner(false);
+            { p_itr->second.SetOwner(false); }
     }
 
     m_ownerGuid = guid;
@@ -684,15 +695,21 @@ void Channel::SetOwner(ObjectGuid guid, bool exclaim)
 void Channel::SendToAll(WorldPacket* data, ObjectGuid guid)
 {
     for (PlayerList::const_iterator i = m_players.begin(); i != m_players.end(); ++i)
+    {
         if (Player* plr = sObjectMgr.GetPlayer(i->first))
+        {
             if (!guid || !plr->GetSocial()->HasIgnore(guid))
+            {
                 plr->GetSession()->SendPacket(data);
+            }
+        }
+    }
 }
 
 void Channel::SendToOne(WorldPacket* data, ObjectGuid who)
 {
     if (Player* plr = ObjectMgr::GetPlayer(who))
-        plr->GetSession()->SendPacket(data);
+        { plr->GetSession()->SendPacket(data); }
 }
 
 void Channel::Voice(ObjectGuid /*guid1*/, ObjectGuid /*guid2*/)
@@ -780,7 +797,7 @@ void Channel::MakeChannelOwner(WorldPacket* data)
     std::string name = "";
 
     if (!sObjectMgr.GetPlayerNameByGUID(m_ownerGuid, name) || name.empty())
-        name = "PLAYER_NOT_FOUND";
+        { name = "PLAYER_NOT_FOUND"; }
 
     MakeNotifyPacket(data, CHAT_CHANNEL_OWNER_NOTICE);
     *data << ((IsConstant() || !m_ownerGuid) ? "Nobody" : name);

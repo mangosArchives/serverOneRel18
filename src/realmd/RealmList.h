@@ -1,5 +1,6 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
  *
  * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
@@ -43,11 +44,21 @@ struct RealmBuildInfo
     int hotfix_version; /**< TODO */
 };
 
+enum RealmVersion
+{
+    REALM_VERSION_VANILLA = 0,
+    REALM_VERSION_TBC     = 1,
+    REALM_VERSION_WOTLK   = 2,
+    REALM_VERSION_CATA    = 3,
+    REALM_VERSION_MOP     = 4,
+    REALM_VERSION_COUNT   = 5
+};
+
 /**
- * @brief
- *
- * @param _build
- * @return const RealmBuildInfo
+ * This is used to make a link between build number and actual wow version that
+ * it belongs to. To get the connection between them, ie turn a build into a version
+ * one would use \ref RealmList::BelongsToVersion the other way around is not available
+ * as it does not make sense and isn't needed.
  */
 RealmBuildInfo const* FindBuildInfo(uint16 _build);
 
@@ -64,15 +75,15 @@ typedef std::set<uint32> RealmBuilds;
  */
 struct Realm
 {
-    std::string address; /**< TODO */
-    uint8 icon; /**< TODO */
-    RealmFlags realmflags;                                  /**< realmflags */
-    uint8 timezone; /**< TODO */
-    uint32 m_ID; /**< TODO */
-    AccountTypes allowedSecurityLevel;                      /**< current allowed join security level (show as locked for not fit accounts) */
-    float populationLevel; /**< TODO */
-    RealmBuilds realmbuilds;                                /**< list of supported builds (updated in DB by mangosd) */
-    RealmBuildInfo realmBuildInfo;                          /**< build info for show version in list */
+    std::string address;
+    uint8 icon;
+    RealmFlags realmflags;                                  // realmflags
+    uint8 timezone;
+    uint32 m_ID;
+    AccountTypes allowedSecurityLevel;                      // current allowed join security level (show as locked for not fit accounts)
+    float populationLevel;
+    RealmBuilds realmbuilds;                                // list of supported builds (updated in DB by mangosd)
+    RealmBuildInfo realmBuildInfo;                          // build info for show version in list
 };
 
 /**
@@ -104,7 +115,7 @@ class RealmList
          * @brief
          *
          */
-        ~RealmList() {}
+        ~RealmList() {};
 
         /**
          * @brief
@@ -136,7 +147,7 @@ class RealmList
          *
          * @return uint32
          */
-        uint32 size() const { return m_realms.size(); }
+        uint32 size() const { return m_realms.size(); };
     private:
         /**
          * @brief

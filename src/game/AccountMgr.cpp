@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "AccountMgr.h"
@@ -38,18 +44,18 @@ AccountMgr::~AccountMgr()
 AccountOpResult AccountMgr::CreateAccount(std::string username, std::string password)
 {
     if (utf8length(username) > MAX_ACCOUNT_STR)
-        return AOR_NAME_TOO_LONG;                           // username's too long
+        { return AOR_NAME_TOO_LONG; }                           // username's too long
 
     normalizeString(username);
     normalizeString(password);
 
     if (GetId(username))
     {
-        return AOR_NAME_ALREDY_EXIST;                       // username does already exist
+        { return AOR_NAME_ALREADY_EXIST; }                       // username does already exist
     }
 
     if (!LoginDatabase.PExecute("INSERT INTO account(username,sha_pass_hash,joindate) VALUES('%s','%s',NOW())", username.c_str(), CalculateShaPassHash(username, password).c_str()))
-        return AOR_DB_INTERNAL_ERROR;                       // unexpected error
+        { return AOR_DB_INTERNAL_ERROR; }                       // unexpected error
     LoginDatabase.Execute("INSERT INTO realmcharacters (realmid, acctid, numchars) SELECT realmlist.id, account.id, 0 FROM realmlist,account LEFT JOIN realmcharacters ON acctid=account.id WHERE acctid IS NULL");
 
     return AOR_OK;                                          // everything's fine
@@ -65,7 +71,7 @@ AccountOpResult AccountMgr::CreateAccount(std::string username, std::string pass
 
     if (GetId(username))
     {
-        return AOR_NAME_ALREDY_EXIST;                       // username does already exist
+        return AOR_NAME_ALREADY_EXIST;                       // username does already exist
     }
 
     if (!LoginDatabase.PExecute("INSERT INTO account(username,sha_pass_hash,joindate,expansion) VALUES('%s','%s',NOW(),'%u')", username.c_str(), CalculateShaPassHash(username, password).c_str(), expansion))
@@ -79,7 +85,7 @@ AccountOpResult AccountMgr::DeleteAccount(uint32 accid)
 {
     QueryResult* result = LoginDatabase.PQuery("SELECT 1 FROM account WHERE id='%u'", accid);
     if (!result)
-        return AOR_NAME_NOT_EXIST;                          // account doesn't exist
+        { return AOR_NAME_NOT_EXIST; }                          // account doesn't exist
     delete result;
 
     // existing characters list
@@ -113,7 +119,7 @@ AccountOpResult AccountMgr::DeleteAccount(uint32 accid)
     LoginDatabase.CommitTransaction();
 
     if (!res)
-        return AOR_DB_INTERNAL_ERROR;                       // unexpected error;
+        { return AOR_DB_INTERNAL_ERROR; }                       // unexpected error;
 
     return AOR_OK;
 }
@@ -122,14 +128,14 @@ AccountOpResult AccountMgr::ChangeUsername(uint32 accid, std::string new_uname, 
 {
     QueryResult* result = LoginDatabase.PQuery("SELECT 1 FROM account WHERE id='%u'", accid);
     if (!result)
-        return AOR_NAME_NOT_EXIST;                          // account doesn't exist
+        { return AOR_NAME_NOT_EXIST; }                          // account doesn't exist
     delete result;
 
     if (utf8length(new_uname) > MAX_ACCOUNT_STR)
-        return AOR_NAME_TOO_LONG;
+        { return AOR_NAME_TOO_LONG; }
 
     if (utf8length(new_passwd) > MAX_ACCOUNT_STR)
-        return AOR_PASS_TOO_LONG;
+        { return AOR_PASS_TOO_LONG; }
 
     normalizeString(new_uname);
     normalizeString(new_passwd);
@@ -139,7 +145,7 @@ AccountOpResult AccountMgr::ChangeUsername(uint32 accid, std::string new_uname, 
 
     if (!LoginDatabase.PExecute("UPDATE account SET v='0',s='0',username='%s',sha_pass_hash='%s' WHERE id='%u'", safe_new_uname.c_str(),
                                 CalculateShaPassHash(new_uname, new_passwd).c_str(), accid))
-        return AOR_DB_INTERNAL_ERROR;                       // unexpected error
+        { return AOR_DB_INTERNAL_ERROR; }                       // unexpected error
 
     return AOR_OK;
 }
@@ -149,17 +155,17 @@ AccountOpResult AccountMgr::ChangePassword(uint32 accid, std::string new_passwd)
     std::string username;
 
     if (!GetName(accid, username))
-        return AOR_NAME_NOT_EXIST;                          // account doesn't exist
+        { return AOR_NAME_NOT_EXIST; }                          // account doesn't exist
 
     if (utf8length(new_passwd) > MAX_ACCOUNT_STR)
-        return AOR_PASS_TOO_LONG;
+        { return AOR_PASS_TOO_LONG; }
 
     normalizeString(new_passwd);
 
     // also reset s and v to force update at next realmd login
     if (!LoginDatabase.PExecute("UPDATE account SET v='0', s='0', sha_pass_hash='%s' WHERE id='%u'",
                                 CalculateShaPassHash(username, new_passwd).c_str(), accid))
-        return AOR_DB_INTERNAL_ERROR;                       // unexpected error
+        { return AOR_DB_INTERNAL_ERROR; }                       // unexpected error
 
     return AOR_OK;
 }
@@ -169,7 +175,7 @@ uint32 AccountMgr::GetId(std::string username)
     LoginDatabase.escape_string(username);
     QueryResult* result = LoginDatabase.PQuery("SELECT id FROM account WHERE username = '%s'", username.c_str());
     if (!result)
-        return 0;
+        { return 0; }
     else
     {
         uint32 id = (*result)[0].GetUInt32();
@@ -216,14 +222,14 @@ uint32 AccountMgr::GetCharactersCount(uint32 acc_id)
         return charcount;
     }
     else
-        return 0;
+        { return 0; }
 }
 
 bool AccountMgr::CheckPassword(uint32 accid, std::string passwd)
 {
     std::string username;
     if (!GetName(accid, username))
-        return false;
+        { return false; }
 
     normalizeString(passwd);
 
@@ -243,7 +249,7 @@ bool AccountMgr::normalizeString(std::string& utf8str)
     size_t wstr_len = MAX_ACCOUNT_STR;
 
     if (!Utf8toWStr(utf8str, wstr_buf, wstr_len))
-        return false;
+        { return false; }
 
     for (uint32 i = 0; i <= wstr_len; ++i)
         wstr_buf[i] = wcharToUpperOnlyLatin(wstr_buf[i]);

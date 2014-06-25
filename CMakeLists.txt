@@ -20,7 +20,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(MaNGOS)
-set(MANGOS_VERSION 0.18.1)
+set(MANGOS_VERSION 0.19)
 
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
@@ -152,8 +152,8 @@ endif()
 # Win32 delivered packages
 if(WIN32)
   set(MYSQL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/dep/include/mysql)
-  set(MYSQL_LIBRARY ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/libmySQL.lib)
-  set(MYSQL_DEBUG_LIBRARY ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/libmySQL.lib)
+  set(MYSQL_LIBRARY ${CMAKE_SOURCE_DIR}/dep/lib/libmySQL.lib)
+  set(MYSQL_DEBUG_LIBRARY ${CMAKE_SOURCE_DIR}/dep/lib/libmySQL.lib)
   set(OPENSSL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/dep/include/openssl)
   set(OPENSSL_LIBRARIES ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/libeay32.lib)
   set(OPENSSL_DEBUG_LIBRARIES ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/libeay32.lib)
@@ -400,6 +400,7 @@ set_directory_properties(PROPERTIES COMPILE_DEFINITIONS_RELEASE "${DEFINITIONS_R
 set_directory_properties(PROPERTIES COMPILE_DEFINITIONS_DEBUG "${DEFINITIONS_DEBUG}")
 
 add_subdirectory(src)
+
 # if(SQL)
 #   add_subdirectory(sql)
 # endif()

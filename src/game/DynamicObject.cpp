@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #include "Common.h"
@@ -42,7 +48,7 @@ void DynamicObject::AddToWorld()
 {
     ///- Register the dynamicObject for guid lookup
     if (!IsInWorld())
-        GetMap()->GetObjectsStore().insert<DynamicObject>(GetObjectGuid(), (DynamicObject*)this);
+        { GetMap()->GetObjectsStore().insert<DynamicObject>(GetObjectGuid(), (DynamicObject*)this); }
 
     Object::AddToWorld();
 }
@@ -131,9 +137,9 @@ void DynamicObject::Update(uint32 /*update_diff*/, uint32 p_time)
     bool deleteThis = false;
 
     if (m_aliveDuration > int32(p_time))
-        m_aliveDuration -= p_time;
+        { m_aliveDuration -= p_time; }
     else
-        deleteThis = true;
+        { deleteThis = true; }
 
     // have radius and work as persistent effect
     if (m_radius)
@@ -191,18 +197,18 @@ void DynamicObject::Delay(int32 delaytime)
             ++iter;
         }
         else
-            m_affected.erase(iter++);
+            { m_affected.erase(iter++); }
     }
 }
 
 bool DynamicObject::isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const
 {
     if (!IsInWorld() || !u->IsInWorld())
-        return false;
+        { return false; }
 
     // always seen by owner
     if (GetCasterGuid() == u->GetObjectGuid())
-        return true;
+        { return true; }
 
     // normal case
     return IsWithinDistInMap(viewPoint, GetMap()->GetVisibilityDistance() + (inVisibleList ? World::GetVisibleObjectGreyDistance() : 0.0f), false);
@@ -211,15 +217,15 @@ bool DynamicObject::isVisibleForInState(Player const* u, WorldObject const* view
 bool DynamicObject::IsHostileTo(Unit const* unit) const
 {
     if (Unit* owner = GetCaster())
-        return owner->IsHostileTo(unit);
+        { return owner->IsHostileTo(unit); }
     else
-        return false;
+        { return false; }
 }
 
 bool DynamicObject::IsFriendlyTo(Unit const* unit) const
 {
     if (Unit* owner = GetCaster())
-        return owner->IsFriendlyTo(unit);
+        { return owner->IsFriendlyTo(unit); }
     else
-        return true;
+        { return true; }
 }

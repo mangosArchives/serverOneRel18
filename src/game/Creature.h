@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOSSERVER_CREATURE_H
@@ -81,19 +87,19 @@ struct CreatureInfo
     uint32  FactionAlliance;
     uint32  FactionHorde;
     float   Scale;
-    uint32  Family;                                        // enum CreatureFamily values (optional)
-    uint32  CreatureType;                                  // enum CreatureType values
+    uint32  Family;                                         // enum CreatureFamily values (optional)
+    uint32  CreatureType;                                   // enum CreatureType values
     uint32  InhabitType;
     bool    RegenerateHealth;
     bool    RacialLeader;
     uint32  NpcFlags;
-    uint32  UnitFlags;                                     // enum UnitFlags mask values
+    uint32  UnitFlags;                                      // enum UnitFlags mask values
     uint32  DynamicFlags;
     uint32  ExtraFlags;
-    uint32  CreatureTypeFlags;                             // enum CreatureTypeFlags mask values
+    uint32  CreatureTypeFlags;                              // enum CreatureTypeFlags mask values
     float   SpeedWalk;
     float   SpeedRun;
-    uint32  UnitClass;                                     // enum Classes. Note only 4 classes are known for creatures.
+    uint32  UnitClass;                                      // enum Classes. Note only 4 classes are known for creatures.
     uint32  Rank;
     int32   Expansion;
     float   HealthMultiplier;
@@ -153,11 +159,11 @@ struct CreatureInfo
     SkillType GetRequiredLootSkill() const
     {
         if (CreatureTypeFlags & CREATURE_TYPEFLAGS_HERBLOOT)
-            return SKILL_HERBALISM;
+            { return SKILL_HERBALISM; }
         else if (CreatureTypeFlags & CREATURE_TYPEFLAGS_MININGLOOT)
-            return SKILL_MINING;
+            { return SKILL_MINING; }
         else
-            return SKILL_SKINNING;                          // normal case
+            { return SKILL_SKINNING; }                          // normal case
     }
 
     bool isTameable() const
@@ -353,7 +359,7 @@ struct VendorItemData
 
     VendorItem* GetItem(uint32 slot) const
     {
-        if (slot >= m_items.size()) return NULL;
+        if (slot >= m_items.size()) { return NULL; }
         return m_items[slot];
     }
     bool Empty() const { return m_items.empty(); }
@@ -369,7 +375,7 @@ struct VendorItemData
     void Clear()
     {
         for (VendorItemList::const_iterator itr = m_items.begin(); itr != m_items.end(); ++itr)
-            delete(*itr);
+            { delete(*itr); }
         m_items.clear();
     }
 };
@@ -541,7 +547,7 @@ class MANGOS_DLL_SPEC Creature : public Unit
         bool IsElite() const
         {
             if (IsPet())
-                return false;
+                { return false; }
 
             uint32 rank = GetCreatureInfo()->Rank;
             return rank != CREATURE_ELITE_NORMAL && rank != CREATURE_ELITE_RARE;
@@ -550,7 +556,7 @@ class MANGOS_DLL_SPEC Creature : public Unit
         bool IsWorldBoss() const
         {
             if (IsPet())
-                return false;
+                { return false; }
 
             return GetCreatureInfo()->Rank == CREATURE_ELITE_WORLDBOSS;
         }
@@ -708,15 +714,15 @@ class MANGOS_DLL_SPEC Creature : public Unit
         bool HasQuest(uint32 quest_id) const override;
         bool HasInvolvedQuest(uint32 quest_id)  const override;
 
-        GridReference<Creature> &GetGridRef() { return m_gridRef; }
+        GridReference<Creature>& GetGridRef() { return m_gridRef; }
         bool IsRegeneratingHealth() { return m_regenHealth; }
         virtual uint8 GetPetAutoSpellSize() const { return CREATURE_MAX_SPELLS; }
         virtual uint32 GetPetAutoSpellOnPos(uint8 pos) const
         {
             if (pos >= CREATURE_MAX_SPELLS || m_charmInfo->GetCharmSpell(pos)->GetType() != ACT_ENABLED)
-                return 0;
+                { return 0; }
             else
-                return m_charmInfo->GetCharmSpell(pos)->GetAction();
+                { return m_charmInfo->GetCharmSpell(pos)->GetAction(); }
         }
 
         void SetCombatStartPosition(float x, float y, float z) { m_combatStartX = x; m_combatStartY = y; m_combatStartZ = z; }
@@ -737,7 +743,6 @@ class MANGOS_DLL_SPEC Creature : public Unit
 
         void SetVirtualItem(VirtualItemSlot slot, uint32 item_id);
         void SetVirtualItemRaw(VirtualItemSlot slot, uint32 display_id, uint32 info0, uint32 info1);
-
     protected:
         bool MeetsSelectAttackingRequirement(Unit* pTarget, SpellEntry const* pSpellInfo, uint32 selectFlags) const;
 
@@ -766,6 +771,7 @@ class MANGOS_DLL_SPEC Creature : public Unit
         float m_respawnradius;
 
         CreatureSubtype m_subtype;                          // set in Creatures subclasses for fast it detect without dynamic_cast use
+
         void RegenerateMana();
         void RegenerateHealth();
         MovementGeneratorType m_defaultMovementType;
@@ -791,7 +797,7 @@ class MANGOS_DLL_SPEC Creature : public Unit
 
     private:
         GridReference<Creature> m_gridRef;
-        CreatureInfo const* m_creatureInfo;                 // in heroic mode can different from sObjectMgr::GetCreatureTemplate(GetEntry())
+        CreatureInfo const* m_creatureInfo;
 };
 
 class ForcedDespawnDelayEvent : public BasicEvent

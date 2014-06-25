@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.2.5a, 4.2.3 and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef MANGOSSERVER_GAMEOBJECT_H
@@ -611,9 +617,9 @@ class MANGOS_DLL_SPEC GameObject : public WorldObject
         {
             time_t now = time(NULL);
             if (m_respawnTime > now)
-                return m_respawnTime;
+                { return m_respawnTime; }
             else
-                return now;
+                { return now; }
         }
 
         void SetRespawnTime(time_t respawn)
@@ -709,7 +715,7 @@ class MANGOS_DLL_SPEC GameObject : public WorldObject
         void SetCapturePointSlider(float value, bool isLocked);
         float GetCapturePointSliderValue() const { return m_captureSlider; }
 
-        GridReference<GameObject> &GetGridRef() { return m_gridRef; }
+        GridReference<GameObject>& GetGridRef() { return m_gridRef; }
 
         GameObjectModel* m_model;
 
