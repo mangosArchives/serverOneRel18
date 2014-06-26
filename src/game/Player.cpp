@@ -14317,7 +14317,6 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
     // load home bind and check in same time class/race pair, it used later for restore broken positions
     if (!_LoadHomeBind(holder->GetResult(PLAYER_LOGIN_QUERY_LOADHOMEBIND)))
     {
-        delete result;
         return false;
     }
 
