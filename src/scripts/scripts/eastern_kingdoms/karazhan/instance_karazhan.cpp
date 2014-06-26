@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -60,20 +69,20 @@ bool instance_karazhan::IsEncounterInProgress() const
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            return true;
+        { return true; }
     }
 
     return false;
 }
 
-void instance_karazhan::OnPlayerEnter(Player* pPlayer)
+void instance_karazhan::OnPlayerEnter(Player* /*pPlayer*/)
 {
     if (!m_uiTeam)                                          // very first player to enter
         m_uiTeam = pPlayer->GetTeam();
 
     // If the opera event is already set, return
     if (GetData(TYPE_OPERA_PERFORMANCE) != 0)
-        return;
+    { return; }
 
     // Set the Opera Performance type on the first player enter
     SetData(TYPE_OPERA_PERFORMANCE, urand(OPERA_EVENT_WIZARD_OZ, OPERA_EVENT_ROMULO_AND_JUL));
@@ -105,9 +114,9 @@ void instance_karazhan::OnCreatureCreate(Creature* pCreature)
             break;
         case NPC_NIGHTBANE_HELPER:
             if (pCreature->GetPositionZ() < 100.0f)
-                m_lNightbaneGroundTriggers.push_back(pCreature->GetObjectGuid());
+            { m_lNightbaneGroundTriggers.push_back(pCreature->GetObjectGuid()); }
             else
-                m_lNightbaneAirTriggers.push_back(pCreature->GetObjectGuid());
+            { m_lNightbaneAirTriggers.push_back(pCreature->GetObjectGuid()); }
             break;
         case NPC_INVISIBLE_STALKER:
             if (pCreature->GetPositionY() < -1870.0f)
@@ -147,15 +156,15 @@ void instance_karazhan::OnObjectCreate(GameObject* pGo)
         case GO_STAGE_DOOR_LEFT:
         case GO_STAGE_DOOR_RIGHT:
             if (m_auiEncounter[3] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_GAMESMANS_HALL_EXIT_DOOR:
             if (m_auiEncounter[8] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_SIDE_ENTRANCE_DOOR:
             if (m_auiEncounter[3] == DONE)
-                pGo->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_LOCKED);
+            { pGo->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_LOCKED); }
             break;
         case GO_STAGE_CURTAIN:
         case GO_PRIVATE_LIBRARY_DOOR:
@@ -200,7 +209,7 @@ void instance_karazhan::SetData(uint32 uiType, uint32 uiData)
                 if (Creature* pMidnight = GetSingleCreatureFromStorage(NPC_MIDNIGHT))
                 {
                     if (!pMidnight->IsAlive())
-                        pMidnight->Respawn();
+                    { pMidnight->Respawn(); }
                 }
             }
             break;
@@ -211,10 +220,10 @@ void instance_karazhan::SetData(uint32 uiType, uint32 uiData)
         case TYPE_OPERA:
             // Don't store the same data twice
             if (uiData == m_auiEncounter[uiType])
-                break;
+            { break; }
             m_auiEncounter[uiType] = uiData;
             if (uiData == IN_PROGRESS)
-                m_uiOzDeathCount = 0;
+            { m_uiOzDeathCount = 0; }
             if (uiData == DONE)
             {
                 DoUseDoorOrButton(GO_STAGE_DOOR_LEFT);
@@ -223,7 +232,7 @@ void instance_karazhan::SetData(uint32 uiType, uint32 uiData)
             }
             // use curtain only for event start or fail
             else
-                DoUseDoorOrButton(GO_STAGE_CURTAIN);
+            { DoUseDoorOrButton(GO_STAGE_CURTAIN); }
             break;
         case TYPE_CURATOR:
         case TYPE_TERESTIAN:
@@ -231,9 +240,9 @@ void instance_karazhan::SetData(uint32 uiType, uint32 uiData)
             break;
         case TYPE_ARAN:
             if (uiData == FAIL || uiData == DONE)
-                DoToggleGameObjectFlags(GO_PRIVATE_LIBRARY_DOOR, GO_FLAG_LOCKED, false);
+            { DoToggleGameObjectFlags(GO_PRIVATE_LIBRARY_DOOR, GO_FLAG_LOCKED, false); }
             if (uiData == IN_PROGRESS)
-                DoToggleGameObjectFlags(GO_PRIVATE_LIBRARY_DOOR, GO_FLAG_LOCKED, true);
+            { DoToggleGameObjectFlags(GO_PRIVATE_LIBRARY_DOOR, GO_FLAG_LOCKED, true); }
             m_auiEncounter[uiType] = uiData;
             break;
         case TYPE_NETHERSPITE:
@@ -331,10 +340,10 @@ void instance_karazhan::SetData(uint32 uiType, uint32 uiData)
 uint32 instance_karazhan::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-        return m_auiEncounter[uiType];
+    { return m_auiEncounter[uiType]; }
 
     if (uiType == TYPE_OPERA_PERFORMANCE)
-        return m_uiOperaEvent;
+    { return m_uiOperaEvent; }
 
     return 0;
 }
@@ -358,7 +367,7 @@ void instance_karazhan::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)               // Do not load an encounter as "In Progress" - reset it instead.
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -379,7 +388,7 @@ void instance_karazhan::OnCreatureDeath(Creature* pCreature)
                 if (Creature* pCrone = pCreature->SummonCreature(NPC_CRONE, afChroneSpawnLoc[0], afChroneSpawnLoc[1], afChroneSpawnLoc[2], afChroneSpawnLoc[3], TEMPSUMMON_DEAD_DESPAWN, 0))
                 {
                     if (pCreature->getVictim())
-                        pCrone->AI()->AttackStart(pCreature->getVictim());
+                    { pCrone->AI()->AttackStart(pCreature->getVictim()); }
                 }
             }
             break;
@@ -524,7 +533,7 @@ void instance_karazhan::DoMoveChessPieceToSides(uint32 uiSpellId, uint32 uiFacti
 void instance_karazhan::DoPrepareOperaStage(Creature* pOrganizer)
 {
     if (!pOrganizer)
-        return;
+    { return; }
 
     debug_log("SD2: Barnes Opera Event - Introduction complete - preparing encounter %d", GetData(TYPE_OPERA_PERFORMANCE));
 
@@ -533,17 +542,17 @@ void instance_karazhan::DoPrepareOperaStage(Creature* pOrganizer)
     {
         case OPERA_EVENT_WIZARD_OZ:
             for (uint8 i = 0; i < MAX_OZ_OPERA_MOBS; ++i)
-                pOrganizer->SummonCreature(aOperaLocOz[i].uiEntry, aOperaLocOz[i].fX, aOperaLocOz[i].fY, aOperaLocOz[i].fZ, aOperaLocOz[i].fO, TEMPSUMMON_DEAD_DESPAWN, 0);
+            { pOrganizer->SummonCreature(aOperaLocOz[i].uiEntry, aOperaLocOz[i].fX, aOperaLocOz[i].fY, aOperaLocOz[i].fZ, aOperaLocOz[i].fO, TEMPSUMMON_DEAD_DESPAWN, 0); }
             DoRespawnGameObject(GO_OZ_BACKDROP, 12 * HOUR);
             for (GuidList::const_iterator itr = m_lOperaHayGuidList.begin(); itr != m_lOperaHayGuidList.end(); ++itr)
-                DoRespawnGameObject(*itr, 12 * HOUR);
+            { DoRespawnGameObject(*itr, 12 * HOUR); }
             break;
         case OPERA_EVENT_RED_RIDING_HOOD:
             pOrganizer->SummonCreature(aOperaLocWolf.uiEntry, aOperaLocWolf.fX, aOperaLocWolf.fY, aOperaLocWolf.fZ, aOperaLocWolf.fO, TEMPSUMMON_DEAD_DESPAWN, 0);
             DoRespawnGameObject(GO_HOOD_BACKDROP, 12 * HOUR);
             DoRespawnGameObject(GO_HOOD_HOUSE,    12 * HOUR);
             for (GuidList::const_iterator itr = m_lOperaTreeGuidList.begin(); itr != m_lOperaTreeGuidList.end(); ++itr)
-                DoRespawnGameObject(*itr, 12 * HOUR);
+            { DoRespawnGameObject(*itr, 12 * HOUR); }
             break;
         case OPERA_EVENT_ROMULO_AND_JUL:
             pOrganizer->SummonCreature(aOperaLocJul.uiEntry, aOperaLocJul.fX, aOperaLocJul.fY, aOperaLocJul.fZ, aOperaLocJul.fO, TEMPSUMMON_DEAD_DESPAWN, 0);

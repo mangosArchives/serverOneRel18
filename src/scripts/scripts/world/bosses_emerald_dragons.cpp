@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -80,16 +89,16 @@ struct MANGOS_DLL_DECL boss_emerald_dragonAI : public ScriptedAI
     {
         // Mark killed players with Mark of Nature
         if (pVictim->GetTypeId() == TYPEID_PLAYER)
-            pVictim->CastSpell(pVictim, SPELL_MARK_OF_NATURE_PLAYER, true, NULL, NULL, m_creature->GetObjectGuid());
+        { pVictim->CastSpell(pVictim, SPELL_MARK_OF_NATURE_PLAYER, true, NULL, NULL, m_creature->GetObjectGuid()); }
     }
 
     void JustSummoned(Creature* pSummoned) override
     {
         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-            pSummoned->AI()->AttackStart(pTarget);
+        { pSummoned->AI()->AttackStart(pTarget); }
 
         if (pSummoned->GetEntry() == NPC_DREAM_FOG)
-            pSummoned->CastSpell(pSummoned, SPELL_DREAM_FOG, true, NULL, NULL, m_creature->GetObjectGuid());
+        { pSummoned->CastSpell(pSummoned, SPELL_DREAM_FOG, true, NULL, NULL, m_creature->GetObjectGuid()); }
     }
 
     // Return true, if succeeded
@@ -102,15 +111,15 @@ struct MANGOS_DLL_DECL boss_emerald_dragonAI : public ScriptedAI
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Trigger special ability function at 75, 50 and 25% health
         if (m_creature->GetHealthPercent() < 100.0f - m_uiEventCounter * 25.0f && DoSpecialDragonAbility())
-            ++m_uiEventCounter;
+        { ++m_uiEventCounter; }
 
         // Call dragon specific virtual function
         if (!UpdateDragonAI(uiDiff))
-            return;
+        { return; }
 
         if (m_uiSeepingFogTimer < uiDiff)
         {
@@ -119,23 +128,23 @@ struct MANGOS_DLL_DECL boss_emerald_dragonAI : public ScriptedAI
             m_uiSeepingFogTimer = urand(120000, 150000);    // Rather Guesswork, but one Fog has 2min duration, hence a bit longer
         }
         else
-            m_uiSeepingFogTimer -= uiDiff;
+        { m_uiSeepingFogTimer -= uiDiff; }
 
         if (m_uiNoxiousBreathTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_NOXIOUS_BREATH) == CAST_OK)
-                m_uiNoxiousBreathTimer = urand(14000, 20000);
+            { m_uiNoxiousBreathTimer = urand(14000, 20000); }
         }
         else
-            m_uiNoxiousBreathTimer -= uiDiff;
+        { m_uiNoxiousBreathTimer -= uiDiff; }
 
         if (m_uiTailsweepTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_TAILSWEEP) == CAST_OK)
-                m_uiTailsweepTimer = 2000;
+            { m_uiTailsweepTimer = 2000; }
         }
         else
-            m_uiTailsweepTimer -= uiDiff;
+        { m_uiTailsweepTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -177,7 +186,7 @@ struct MANGOS_DLL_DECL boss_emerissAI : public boss_emerald_dragonAI
     {
         // summon a mushroom on the spot the player dies
         if (pVictim->GetTypeId() == TYPEID_PLAYER)
-            pVictim->CastSpell(pVictim, SPELL_PUTRID_MUSHROOM, true, NULL, NULL, m_creature->GetObjectGuid());
+        { pVictim->CastSpell(pVictim, SPELL_PUTRID_MUSHROOM, true, NULL, NULL, m_creature->GetObjectGuid()); }
 
         boss_emerald_dragonAI::KilledUnit(pVictim);
     }
@@ -203,10 +212,10 @@ struct MANGOS_DLL_DECL boss_emerissAI : public boss_emerald_dragonAI
         {
             Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0);
             if (pTarget && DoCastSpellIfCan(pTarget, SPELL_VOLATILE_INFECTION) == CAST_OK)
-                m_uiVolatileInfectionTimer = urand(7000, 12000);
+            { m_uiVolatileInfectionTimer = urand(7000, 12000); }
         }
         else
-            m_uiVolatileInfectionTimer -= uiDiff;
+        { m_uiVolatileInfectionTimer -= uiDiff; }
 
         return true;
     }
@@ -269,7 +278,7 @@ struct MANGOS_DLL_DECL boss_lethonAI : public boss_emerald_dragonAI
             // This might not be supported currently by core, but this spell's visual should be dependend on the player
             // Also possible that this was no problem due to the special way these NPCs had been summoned in classic times
             if (Creature* pSummoned = pTarget->SummonCreature(NPC_SPIRIT_SHADE, 0.0f, 0.0f, 0.0f, pTarget->GetOrientation(), TEMPSUMMON_DEAD_DESPAWN, 0))
-                pSummoned->CastSpell(pSummoned, SPELL_SPIRIT_SHAPE_VISUAL, true, NULL, NULL, pTarget->GetObjectGuid());
+            { pSummoned->CastSpell(pSummoned, SPELL_SPIRIT_SHAPE_VISUAL, true, NULL, NULL, pTarget->GetObjectGuid()); }
         }
     }
 
@@ -277,9 +286,9 @@ struct MANGOS_DLL_DECL boss_lethonAI : public boss_emerald_dragonAI
     {
         // Move the shade to lethon
         if (pSummoned->GetEntry() == NPC_SPIRIT_SHADE)
-            pSummoned->GetMotionMaster()->MoveFollow(m_creature, 0.0f, 0.0f);
+        { pSummoned->GetMotionMaster()->MoveFollow(m_creature, 0.0f, 0.0f); }
         else
-            boss_emerald_dragonAI::JustSummoned(pSummoned);
+        { boss_emerald_dragonAI::JustSummoned(pSummoned); }
     }
 };
 
@@ -363,7 +372,7 @@ struct MANGOS_DLL_DECL boss_taerarAI : public boss_emerald_dragonAI
 
         // Remove Unselectable if needed
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
-            m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+        { m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE); }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -401,7 +410,7 @@ struct MANGOS_DLL_DECL boss_taerarAI : public boss_emerald_dragonAI
 
             // If all shades are dead then unbanish the boss
             if (m_uiShadesDead == 3)
-                DoUnbanishBoss();
+            { DoUnbanishBoss(); }
         }
     }
 
@@ -420,9 +429,9 @@ struct MANGOS_DLL_DECL boss_taerarAI : public boss_emerald_dragonAI
         if (m_uiShadesTimeoutTimer)
         {
             if (m_uiShadesTimeoutTimer <= uiDiff)
-                DoUnbanishBoss();
+            { DoUnbanishBoss(); }
             else
-                m_uiShadesTimeoutTimer -= uiDiff;
+            { m_uiShadesTimeoutTimer -= uiDiff; }
 
             // Prevent further spells or timer handling while banished
             return false;
@@ -433,19 +442,19 @@ struct MANGOS_DLL_DECL boss_taerarAI : public boss_emerald_dragonAI
         {
             Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0);
             if (pTarget && DoCastSpellIfCan(pTarget, SPELL_ARCANE_BLAST) == CAST_OK)
-                m_uiArcaneBlastTimer = urand(7000, 12000);
+            { m_uiArcaneBlastTimer = urand(7000, 12000); }
         }
         else
-            m_uiArcaneBlastTimer -= uiDiff;
+        { m_uiArcaneBlastTimer -= uiDiff; }
 
         // Bellowing Roar Timer
         if (m_uiBellowingRoarTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_BELLOWING_ROAR) == CAST_OK)
-                m_uiBellowingRoarTimer = urand(20000, 30000);
+            { m_uiBellowingRoarTimer = urand(20000, 30000); }
         }
         else
-            m_uiBellowingRoarTimer -= uiDiff;
+        { m_uiBellowingRoarTimer -= uiDiff; }
 
         return true;
     }
@@ -497,7 +506,7 @@ struct MANGOS_DLL_DECL boss_ysondreAI : public boss_emerald_dragonAI
         DoScriptText(SAY_SUMMON_DRUIDS, m_creature);
 
         for (int i = 0; i < 10; ++i)
-            DoCastSpellIfCan(m_creature, SPELL_SUMMON_DRUIDS, CAST_TRIGGERED);
+        { DoCastSpellIfCan(m_creature, SPELL_SUMMON_DRUIDS, CAST_TRIGGERED); }
 
         return true;
     }
@@ -509,10 +518,10 @@ struct MANGOS_DLL_DECL boss_ysondreAI : public boss_emerald_dragonAI
         {
             Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0);
             if (pTarget && DoCastSpellIfCan(pTarget, SPELL_LIGHTNING_WAVE) == CAST_OK)
-                m_uiLightningWaveTimer = urand(7000, 12000);
+            { m_uiLightningWaveTimer = urand(7000, 12000); }
         }
         else
-            m_uiLightningWaveTimer -= uiDiff;
+        { m_uiLightningWaveTimer -= uiDiff; }
 
         return true;
     }

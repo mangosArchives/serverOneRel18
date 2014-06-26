@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -91,13 +100,13 @@ struct MANGOS_DLL_DECL boss_vexallusAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_VEXALLUS, FAIL);
+        { m_pInstance->SetData(TYPE_VEXALLUS, FAIL); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_VEXALLUS, DONE);
+        { m_pInstance->SetData(TYPE_VEXALLUS, DONE); }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -105,13 +114,13 @@ struct MANGOS_DLL_DECL boss_vexallusAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_VEXALLUS, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_VEXALLUS, IN_PROGRESS); }
     }
 
     void JustSummoned(Creature* pSummoned) override
     {
         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-            pSummoned->GetMotionMaster()->MoveFollow(pTarget, 0.0f, 0.0f);
+        { pSummoned->GetMotionMaster()->MoveFollow(pTarget, 0.0f, 0.0f); }
 
         pSummoned->CastSpell(pSummoned, SPELL_ENERGY_PASSIVE, true, NULL, NULL, m_creature->GetObjectGuid());
         pSummoned->CastSpell(pSummoned, SPELL_ENERGY_BOLT, true, NULL, NULL, m_creature->GetObjectGuid());
@@ -120,7 +129,7 @@ struct MANGOS_DLL_DECL boss_vexallusAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (!m_bEnraged)
         {
@@ -139,7 +148,7 @@ struct MANGOS_DLL_DECL boss_vexallusAI : public ScriptedAI
                 ++m_uiIntervalHealthAmount;
 
                 if (m_bIsRegularMode)
-                    DoCastSpellIfCan(m_creature, SPELL_SUMMON_PURE_ENERGY);
+                { DoCastSpellIfCan(m_creature, SPELL_SUMMON_PURE_ENERGY); }
                 else
                 {
                     DoCastSpellIfCan(m_creature, SPELL_SUMMON_PURE_ENERGY1_H, CAST_TRIGGERED);
@@ -152,32 +161,32 @@ struct MANGOS_DLL_DECL boss_vexallusAI : public ScriptedAI
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                 {
                     if (DoCastSpellIfCan(pTarget, m_bIsRegularMode ? SPELL_CHAIN_LIGHTNING : SPELL_CHAIN_LIGHTNING_H) == CAST_OK)
-                        m_uiChainLightningTimer = 8000;
+                    { m_uiChainLightningTimer = 8000; }
                 }
             }
             else
-                m_uiChainLightningTimer -= uiDiff;
+            { m_uiChainLightningTimer -= uiDiff; }
 
             if (m_uiArcaneShockTimer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                 {
                     if (DoCastSpellIfCan(pTarget, m_bIsRegularMode ? SPELL_ARCANE_SHOCK : SPELL_ARCANE_SHOCK_H) == CAST_OK)
-                        m_uiArcaneShockTimer = 8000;
+                    { m_uiArcaneShockTimer = 8000; }
                 }
             }
             else
-                m_uiArcaneShockTimer -= uiDiff;
+            { m_uiArcaneShockTimer -= uiDiff; }
         }
         else
         {
             if (m_uiOverloadTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_OVERLOAD) == CAST_OK)
-                    m_uiOverloadTimer = 2000;
+                { m_uiOverloadTimer = 2000; }
             }
             else
-                m_uiOverloadTimer -= uiDiff;
+            { m_uiOverloadTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -206,10 +215,10 @@ struct MANGOS_DLL_DECL mob_pure_energyAI : public ScriptedAI
                 Creature* pVex = m_creature->GetMap()->GetCreature(pTemporary->GetSummonerGuid());
 
                 if (!pVex || !pVex->IsAlive())
-                    return;
+                { return; }
 
                 if (Player* pPlayer = pKiller->GetCharmerOrOwnerPlayerOrPlayerItself())
-                    pPlayer->CastSpell(pPlayer, SPELL_ENERGY_FEEDBACK, true, NULL, NULL, pVex->GetObjectGuid());
+                { pPlayer->CastSpell(pPlayer, SPELL_ENERGY_FEEDBACK, true, NULL, NULL, pVex->GetObjectGuid()); }
             }
         }
     }

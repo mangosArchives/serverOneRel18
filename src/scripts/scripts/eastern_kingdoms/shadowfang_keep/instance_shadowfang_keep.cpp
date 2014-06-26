@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -45,7 +54,7 @@ void instance_shadowfang_keep::OnCreatureCreate(Creature* pCreature)
         case NPC_VINCENT:
             // If Arugal has done the intro, make Vincent dead!
             if (m_auiEncounter[4] == DONE)
-                pCreature->SetStandState(UNIT_STAND_STATE_DEAD);
+            { pCreature->SetStandState(UNIT_STAND_STATE_DEAD); }
             break;
 
         default:
@@ -60,17 +69,17 @@ void instance_shadowfang_keep::OnObjectCreate(GameObject* pGo)
     {
         case GO_COURTYARD_DOOR:
             if (m_auiEncounter[0] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
             // For this we ignore voidwalkers, because if the server restarts
             // They won't be there, but Fenrus is dead so the door can't be opened!
         case GO_SORCERER_DOOR:
             if (m_auiEncounter[2] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_ARUGAL_DOOR:
             if (m_auiEncounter[3] == DONE)
-                pGo->SetGoState(GO_STATE_ACTIVE);
+            { pGo->SetGoState(GO_STATE_ACTIVE); }
             break;
         case GO_ARUGAL_FOCUS:
             break;
@@ -99,25 +108,25 @@ void instance_shadowfang_keep::SetData(uint32 uiType, uint32 uiData)
     {
         case TYPE_FREE_NPC:
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_COURTYARD_DOOR);
+            { DoUseDoorOrButton(GO_COURTYARD_DOOR); }
             m_auiEncounter[0] = uiData;
             break;
         case TYPE_RETHILGORE:
             if (uiData == DONE)
-                DoSpeech();
+            { DoSpeech(); }
             m_auiEncounter[1] = uiData;
             break;
         case TYPE_FENRUS:
             if (uiData == DONE)
             {
                 if (Creature* pFenrus = GetSingleCreatureFromStorage(NPC_FENRUS))
-                    pFenrus->SummonCreature(NPC_ARCHMAGE_ARUGAL, -136.89f, 2169.17f, 136.58f, 2.794f, TEMPSUMMON_TIMED_DESPAWN, 30000);
+                { pFenrus->SummonCreature(NPC_ARCHMAGE_ARUGAL, -136.89f, 2169.17f, 136.58f, 2.794f, TEMPSUMMON_TIMED_DESPAWN, 30000); }
             }
             m_auiEncounter[2] = uiData;
             break;
         case TYPE_NANDOS:
             if (uiData == DONE)
-                DoUseDoorOrButton(GO_ARUGAL_DOOR);
+            { DoUseDoorOrButton(GO_ARUGAL_DOOR); }
             m_auiEncounter[3] = uiData;
             break;
         case TYPE_INTRO:
@@ -128,7 +137,7 @@ void instance_shadowfang_keep::SetData(uint32 uiType, uint32 uiData)
             {
                 m_auiEncounter[5]++;
                 if (m_auiEncounter[5] > 3)
-                    DoUseDoorOrButton(GO_SORCERER_DOOR);
+                { DoUseDoorOrButton(GO_SORCERER_DOOR); }
             }
             break;
     }
@@ -180,7 +189,7 @@ void instance_shadowfang_keep::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-            m_auiEncounter[i] = NOT_STARTED;
+        { m_auiEncounter[i] = NOT_STARTED; }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -52,7 +61,7 @@ struct MANGOS_DLL_DECL npc_tapoke_slim_jahnAI : public npc_escortAI
     void Reset() override
     {
         if (!HasEscortState(STATE_ESCORT_ESCORTING))
-            m_bFriendSummoned = false;
+        { m_bFriendSummoned = false; }
     }
 
     void WaypointReached(uint32 uiPointId) override
@@ -61,7 +70,7 @@ struct MANGOS_DLL_DECL npc_tapoke_slim_jahnAI : public npc_escortAI
         {
             case 2:
                 if (m_creature->HasStealthAura())
-                    m_creature->RemoveSpellsCausingAura(SPELL_AURA_MOD_STEALTH);
+                { m_creature->RemoveSpellsCausingAura(SPELL_AURA_MOD_STEALTH); }
 
                 SetRun();
                 m_creature->SetFactionTemporary(FACTION_ENEMY, TEMPFACTION_RESTORE_RESPAWN | TEMPFACTION_RESTORE_COMBAT_STOP);
@@ -83,16 +92,16 @@ struct MANGOS_DLL_DECL npc_tapoke_slim_jahnAI : public npc_escortAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (Player* pPlayer = GetPlayerForEscort())
-            pSummoned->AI()->AttackStart(pPlayer);
+        { pSummoned->AI()->AttackStart(pPlayer); }
     }
 
     void AttackedBy(Unit* pAttacker) override
     {
         if (m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->IsFriendlyTo(pAttacker))
-            return;
+        { return; }
 
         AttackStart(pAttacker);
     }
@@ -133,13 +142,13 @@ bool QuestAccept_npc_mikhail(Player* pPlayer, Creature* pCreature, const Quest* 
         Creature* pSlim = GetClosestCreatureWithEntry(pCreature, NPC_TAPOKE_SLIM_JAHN, 25.0f);
 
         if (!pSlim)
-            return false;
+        { return false; }
 
         if (!pSlim->HasStealthAura())
-            pSlim->CastSpell(pSlim, SPELL_STEALTH, true);
+        { pSlim->CastSpell(pSlim, SPELL_STEALTH, true); }
 
         if (npc_tapoke_slim_jahnAI* pEscortAI = dynamic_cast<npc_tapoke_slim_jahnAI*>(pSlim->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
     return false;
 }

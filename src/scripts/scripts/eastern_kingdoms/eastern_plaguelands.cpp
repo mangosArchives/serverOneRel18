@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -117,7 +126,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
             case NPC_SCOURGE_FOOTSOLDIER:
             case NPC_THE_CLEANER:
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                    pSummoned->AI()->AttackStart(pPlayer);
+                { pSummoned->AI()->AttackStart(pPlayer); }
                 break;
             case NPC_SCOURGE_ARCHER:
                 // ToDo: make these ones attack the peasants
@@ -130,7 +139,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
     void SummonedMovementInform(Creature* pSummoned, uint32 uiMotionType, uint32 uiPointId) override
     {
         if (uiMotionType != POINT_MOTION_TYPE || !uiPointId)
-            return;
+        { return; }
 
         if (uiPointId)
         {
@@ -143,10 +152,10 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
 
             // Event ended
             if (m_uiSaveCounter >= 50 && m_uiCurrentWave == 5)
-                DoBalanceEventEnd();
+            { DoBalanceEventEnd(); }
             // Phase ended
             else if (m_uiSaveCounter + m_uiKillCounter == m_uiCurrentWave * MAX_PEASANTS)
-                DoHandlePhaseEnd();
+            { DoHandlePhaseEnd(); }
         }
     }
 
@@ -160,13 +169,13 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
             if (m_uiKillCounter == MAX_PEASANTS)
             {
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                    pPlayer->FailQuest(QUEST_BALANCE_OF_LIGHT_AND_SHADOW);
+                { pPlayer->FailQuest(QUEST_BALANCE_OF_LIGHT_AND_SHADOW); }
 
                 DoScriptText(SAY_EVENT_FAIL_1, m_creature);
                 m_uiSadEndTimer = 4000;
             }
             else if (m_uiSaveCounter + m_uiKillCounter == m_uiCurrentWave * MAX_PEASANTS)
-                DoHandlePhaseEnd();
+            { DoHandlePhaseEnd(); }
         }
     }
 
@@ -184,7 +193,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
                 {
                     // Only the first mob needs to yell
                     if (!i)
-                        DoScriptText(aPeasantSpawnYells[urand(0, 2)], pTemp);
+                    { DoScriptText(aPeasantSpawnYells[urand(0, 2)], pTemp); }
                 }
             }
 
@@ -202,20 +211,20 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
         else if (uiSummonId == NPC_SCOURGE_ARCHER)
         {
             for (uint8 i = 0; i < MAX_ARCHERS; ++i)
-                m_creature->SummonCreature(NPC_SCOURGE_ARCHER, aArcherSpawn[i][0], aArcherSpawn[i][1], aArcherSpawn[i][2], aArcherSpawn[i][3], TEMPSUMMON_DEAD_DESPAWN, 0);
+            { m_creature->SummonCreature(NPC_SCOURGE_ARCHER, aArcherSpawn[i][0], aArcherSpawn[i][1], aArcherSpawn[i][2], aArcherSpawn[i][3], TEMPSUMMON_DEAD_DESPAWN, 0); }
         }
     }
 
     void DoHandlePhaseEnd()
     {
         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-            pPlayer->CastSpell(pPlayer, SPELL_BLESSING_OF_NORDRASSIL, true);
+        { pPlayer->CastSpell(pPlayer, SPELL_BLESSING_OF_NORDRASSIL, true); }
 
         DoScriptText(SAY_PHASE_HEAL, m_creature);
 
         // Send next wave
         if (m_uiCurrentWave < 5)
-            DoSummonWave();
+        { DoSummonWave(); }
     }
 
     void DoStartBalanceEvent(Player* pPlayer)
@@ -228,7 +237,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
     void DoBalanceEventEnd()
     {
         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-            pPlayer->AreaExploredOrEventHappens(QUEST_BALANCE_OF_LIGHT_AND_SHADOW);
+        { pPlayer->AreaExploredOrEventHappens(QUEST_BALANCE_OF_LIGHT_AND_SHADOW); }
 
         DoScriptText(SAY_EVENT_END, m_creature);
         DoDespawnSummons(true);
@@ -242,7 +251,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
             if (Creature* pTemp = m_creature->GetMap()->GetCreature(*itr))
             {
                 if (bIsEventEnd && (pTemp->GetEntry() == NPC_INJURED_PEASANT || pTemp->GetEntry() == NPC_PLAGUED_PEASANT))
-                    continue;
+                { continue; }
 
                 pTemp->ForcedDespawn();
             }
@@ -274,7 +283,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
                 ++m_uiPhase;
             }
             else
-                m_uiEventTimer -= uiDiff;
+            { m_uiEventTimer -= uiDiff; }
         }
 
         // Handle event end in case of fail
@@ -288,7 +297,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
                 m_uiSadEndTimer = 0;
             }
             else
-                m_uiSadEndTimer -= uiDiff;
+            { m_uiSadEndTimer -= uiDiff; }
         }
     }
 };
@@ -303,7 +312,7 @@ bool QuestAccept_npc_eris_havenfire(Player* pPlayer, Creature* pCreature, const 
     if (pQuest->GetQuestId() == QUEST_BALANCE_OF_LIGHT_AND_SHADOW)
     {
         if (npc_eris_havenfireAI* pErisAI = dynamic_cast<npc_eris_havenfireAI*>(pCreature->AI()))
-            pErisAI->DoStartBalanceEvent(pPlayer);
+        { pErisAI->DoStartBalanceEvent(pPlayer); }
     }
 
     return true;

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -63,7 +72,7 @@ struct MANGOS_DLL_DECL npc_deathstalker_erlandAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-            return;
+        { return; }
 
         switch (i)
         {
@@ -76,7 +85,7 @@ struct MANGOS_DLL_DECL npc_deathstalker_erlandAI : public npc_escortAI
                 break;
             case 14:
                 if (Creature* pRane = GetClosestCreatureWithEntry(m_creature, NPC_RANE, 45.0f))
-                    DoScriptText(SAY_RANE, pRane, m_creature);
+                { DoScriptText(SAY_RANE, pRane, m_creature); }
                 break;
             case 15:
                 DoScriptText(SAY_RANE_REPLY, m_creature);
@@ -89,7 +98,7 @@ struct MANGOS_DLL_DECL npc_deathstalker_erlandAI : public npc_escortAI
                 break;
             case 25:
                 if (Creature* pQuinn = GetClosestCreatureWithEntry(m_creature, NPC_QUINN, 45.0f))
-                    DoScriptText(SAY_QUINN_REPLY, pQuinn, m_creature);
+                { DoScriptText(SAY_QUINN_REPLY, pQuinn, m_creature); }
                 break;
             case 26:
                 DoScriptText(SAY_BYE, m_creature);
@@ -117,7 +126,7 @@ bool QuestAccept_npc_deathstalker_erland(Player* pPlayer, Creature* pCreature, c
         DoScriptText(SAY_START_1, pCreature);
 
         if (npc_deathstalker_erlandAI* pEscortAI = dynamic_cast<npc_deathstalker_erlandAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
     return true;
 }
@@ -206,7 +215,7 @@ struct MANGOS_DLL_DECL npc_deathstalker_faerleiaAI : public ScriptedAI
     void JustDied(Unit* /*pKiller*/) override
     {
         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-            pPlayer->SendQuestFailed(QUEST_PYREWOOD_AMBUSH);
+        { pPlayer->SendQuestFailed(QUEST_PYREWOOD_AMBUSH); }
 
         FinishEvent();
     }
@@ -235,7 +244,7 @@ struct MANGOS_DLL_DECL npc_deathstalker_faerleiaAI : public ScriptedAI
                 DoScriptText(SAY_COMPLETED, m_creature);
 
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                    pPlayer->GroupEventHappens(QUEST_PYREWOOD_AMBUSH, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_PYREWOOD_AMBUSH, m_creature); }
 
                 FinishEvent();
             }
@@ -275,11 +284,11 @@ struct MANGOS_DLL_DECL npc_deathstalker_faerleiaAI : public ScriptedAI
                 ++m_uiWaveCount;
             }
             else
-                m_uiWaveTimer -= uiDiff;
+            { m_uiWaveTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DoMeleeAttackIfReady();
     }
@@ -292,7 +301,7 @@ bool QuestAccept_npc_deathstalker_faerleia(Player* pPlayer, Creature* pCreature,
         DoScriptText(SAY_START, pCreature, pPlayer);
 
         if (npc_deathstalker_faerleiaAI* pFaerleiaAI = dynamic_cast<npc_deathstalker_faerleiaAI*>(pCreature->AI()))
-            pFaerleiaAI->StartEvent(pPlayer);
+        { pFaerleiaAI->StartEvent(pPlayer); }
     }
     return true;
 }

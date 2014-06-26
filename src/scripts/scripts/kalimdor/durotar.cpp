@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -79,16 +88,16 @@ struct MANGOS_DLL_DECL npc_lazy_peonAI : public ScriptedAI
                 m_creature->GetMotionMaster()->MovePoint(1, fX, fY, fZ);
             }
             else
-                m_creature->GetMotionMaster()->MovePoint(2, fX, fY, fZ);
+            { m_creature->GetMotionMaster()->MovePoint(2, fX, fY, fZ); }
         }
         else
-            script_error_log("No GameObject of entry %u was found in range or something really bad happened.", GO_LUMBERPILE);
+        { script_error_log("No GameObject of entry %u was found in range or something really bad happened.", GO_LUMBERPILE); }
     }
 
     void MovementInform(uint32 uiMotionType, uint32 uiPointId) override
     {
         if (uiMotionType != POINT_MOTION_TYPE || !uiPointId)
-            return;
+        { return; }
 
         m_creature->HandleEmote(EMOTE_STATE_WORK_CHOPWOOD);
         // TODO - random bevahior for self-invoked awakening guesswork
@@ -107,15 +116,15 @@ struct MANGOS_DLL_DECL npc_lazy_peonAI : public ScriptedAI
                 m_uiResetSleepTimer = 0;
             }
             else
-                m_uiResetSleepTimer -= uiDiff;
+            { m_uiResetSleepTimer -= uiDiff; }
         }
 
         if (m_uiStopSleepingTimer)
         {
             if (m_uiStopSleepingTimer <= uiDiff)
-                StartLumbering(m_creature);
+            { StartLumbering(m_creature); }
             else
-                m_uiStopSleepingTimer -= uiDiff;
+            { m_uiStopSleepingTimer -= uiDiff; }
         }
     }
 };
@@ -131,10 +140,10 @@ bool EffectDummyCreature_lazy_peon_awake(Unit* pCaster, uint32 uiSpellId, SpellE
     if (uiSpellId == SPELL_AWAKEN_PEON && uiEffIndex == EFFECT_INDEX_0)
     {
         if (!pCreatureTarget->HasAura(SPELL_PEON_SLEEP) || pCaster->GetTypeId() != TYPEID_PLAYER || pCreatureTarget->GetEntry() != NPC_SLEEPING_PEON)
-            return true;
+        { return true; }
 
         if (npc_lazy_peonAI* pPeonAI = dynamic_cast<npc_lazy_peonAI*>(pCreatureTarget->AI()))
-            pPeonAI->StartLumbering(pCaster);
+        { pPeonAI->StartLumbering(pCaster); }
 
         // always return true when we are handling this spell and effect
         return true;

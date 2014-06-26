@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -121,7 +130,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
         }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_NOTH, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_NOTH, IN_PROGRESS); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -139,25 +148,25 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_NOTH, DONE);
+        { m_pInstance->SetData(TYPE_NOTH, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_NOTH, FAIL);
+        { m_pInstance->SetData(TYPE_NOTH, FAIL); }
     }
 
     void SpellHit(Unit* pCaster, const SpellEntry* pSpell) override
     {
         if (pCaster == m_creature && pSpell->Effect[EFFECT_INDEX_0] == SPELL_EFFECT_LEAP)
-            DoCastSpellIfCan(m_creature, SPELL_CRIPPLE);
+        { DoCastSpellIfCan(m_creature, SPELL_CRIPPLE); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiPhase == PHASE_GROUND)
         {
@@ -182,7 +191,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                     }
                 }
                 else
-                    m_uiPhaseTimer -= uiDiff;
+                { m_uiPhaseTimer -= uiDiff; }
             }
 
             if (m_uiBlinkTimer < uiDiff)
@@ -199,7 +208,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                 }
             }
             else
-                m_uiBlinkTimer -= uiDiff;
+            { m_uiBlinkTimer -= uiDiff; }
 
             if (m_uiCurseTimer < uiDiff)
             {
@@ -207,7 +216,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                 m_uiCurseTimer = 28000;
             }
             else
-                m_uiCurseTimer -= uiDiff;
+            { m_uiCurseTimer -= uiDiff; }
 
             if (m_uiSummonTimer < uiDiff)
             {
@@ -223,7 +232,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                     };
 
                     for (uint8 i = 0; i < 2; ++i)
-                        DoCastSpellIfCan(m_creature, auiSpellSummonPlaguedWarrior[urand(0, 2)], CAST_TRIGGERED);
+                    { DoCastSpellIfCan(m_creature, auiSpellSummonPlaguedWarrior[urand(0, 2)], CAST_TRIGGERED); }
                 }
                 else
                 {
@@ -233,7 +242,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                 m_uiSummonTimer = 30000;
             }
             else
-                m_uiSummonTimer -= uiDiff;
+            { m_uiSummonTimer -= uiDiff; }
 
             DoMeleeAttackIfReady();
         }
@@ -261,7 +270,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                 }
             }
             else
-                m_uiPhaseTimer -= uiDiff;
+            { m_uiPhaseTimer -= uiDiff; }
 
             if (m_uiSummonTimer < uiDiff)
             {
@@ -283,7 +292,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                     case PHASE_SKELETON_1:
                     {
                         for (uint8 i = 0; i < 4; ++i)
-                            DoCastSpellIfCan(m_creature, auiSpellSummonPlaguedChampion[urand(0, 9)], CAST_TRIGGERED);
+                        { DoCastSpellIfCan(m_creature, auiSpellSummonPlaguedChampion[urand(0, 9)], CAST_TRIGGERED); }
 
                         break;
                     }
@@ -299,7 +308,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                     case PHASE_SKELETON_3:
                     {
                         for (uint8 i = 0; i < 4; ++i)
-                            DoCastSpellIfCan(m_creature, auiSpellSummonPlaguedGuardian[urand(0, 3)], CAST_TRIGGERED);
+                        { DoCastSpellIfCan(m_creature, auiSpellSummonPlaguedGuardian[urand(0, 3)], CAST_TRIGGERED); }
 
                         break;
                     }
@@ -308,7 +317,7 @@ struct MANGOS_DLL_DECL boss_nothAI : public ScriptedAI
                 m_uiSummonTimer = 30000;
             }
             else
-                m_uiSummonTimer -= uiDiff;
+            { m_uiSummonTimer -= uiDiff; }
         }
     }
 };

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -70,35 +79,35 @@ struct MANGOS_DLL_DECL boss_hungarfenAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->GetHealthPercent() <= 20.0f && !m_bHasSpores)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FOUL_SPORES) == CAST_OK)
-                m_bHasSpores = true;
+            { m_bHasSpores = true; }
         }
 
         if (m_uiMushroomTimer < uiDiff)
         {
             // Summon a mushroom exactly on target position
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                m_creature->SummonCreature(NPC_UNDERBOG_MUSHROOM, pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 0, TEMPSUMMON_CORPSE_DESPAWN, 0);
+            { m_creature->SummonCreature(NPC_UNDERBOG_MUSHROOM, pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 0, TEMPSUMMON_CORPSE_DESPAWN, 0); }
 
             m_uiMushroomTimer = m_bIsRegularMode ? 10000 : 5000;
         }
         else
-            m_uiMushroomTimer -= uiDiff;
+        { m_uiMushroomTimer -= uiDiff; }
 
         if (m_uiAcidGeyserTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_ACID_GEYSER) == CAST_OK)
-                    m_uiAcidGeyserTimer = urand(10000, 17500);
+                { m_uiAcidGeyserTimer = urand(10000, 17500); }
             }
         }
         else
-            m_uiAcidGeyserTimer -= uiDiff;
+        { m_uiAcidGeyserTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -142,7 +151,7 @@ struct MANGOS_DLL_DECL mob_underbog_mushroomAI : public ScriptedAI
                 }
             }
             else
-                m_uiSporeTimer -= uiDiff;
+            { m_uiSporeTimer -= uiDiff; }
         }
 
         if (m_uiGrowTimer)
@@ -150,10 +159,10 @@ struct MANGOS_DLL_DECL mob_underbog_mushroomAI : public ScriptedAI
             if (m_uiGrowTimer <= uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_GROW) == CAST_OK)
-                    m_uiGrowTimer = 3000;
+                { m_uiGrowTimer = 3000; }
             }
             else
-                m_uiGrowTimer -= uiDiff;
+            { m_uiGrowTimer -= uiDiff; }
         }
 
         if (m_uiShrinkTimer)
@@ -164,7 +173,7 @@ struct MANGOS_DLL_DECL mob_underbog_mushroomAI : public ScriptedAI
                 m_uiShrinkTimer = 0;
             }
             else
-                m_uiShrinkTimer -= uiDiff;
+            { m_uiShrinkTimer -= uiDiff; }
         }
     }
 };

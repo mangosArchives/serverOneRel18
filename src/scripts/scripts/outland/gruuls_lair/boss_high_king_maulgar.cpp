@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -101,7 +110,7 @@ struct MANGOS_DLL_DECL boss_high_king_maulgarAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_MAULGAR_EVENT, FAIL);
+        { m_pInstance->SetData(TYPE_MAULGAR_EVENT, FAIL); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -120,7 +129,7 @@ struct MANGOS_DLL_DECL boss_high_king_maulgarAI : public ScriptedAI
 
         // Set data to Special on Death
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_MAULGAR_EVENT, SPECIAL);
+        { m_pInstance->SetData(TYPE_MAULGAR_EVENT, SPECIAL); }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -128,7 +137,7 @@ struct MANGOS_DLL_DECL boss_high_king_maulgarAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_MAULGAR_EVENT, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_MAULGAR_EVENT, IN_PROGRESS); }
     }
 
     void EventCouncilDeath()
@@ -145,31 +154,31 @@ struct MANGOS_DLL_DECL boss_high_king_maulgarAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiArcingSmashTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ARCING_SMASH) == CAST_OK)
-                m_uiArcingSmashTimer = urand(8000, 12000);
+            { m_uiArcingSmashTimer = urand(8000, 12000); }
         }
         else
-            m_uiArcingSmashTimer -= uiDiff;
+        { m_uiArcingSmashTimer -= uiDiff; }
 
         if (m_uiWhirlwindTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_WHIRLWIND) == CAST_OK)
-                m_uiWhirlwindTimer = urand(30000, 40000);
+            { m_uiWhirlwindTimer = urand(30000, 40000); }
         }
         else
-            m_uiWhirlwindTimer -= uiDiff;
+        { m_uiWhirlwindTimer -= uiDiff; }
 
         if (m_uiMightyBlowTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MIGHTY_BLOW) == CAST_OK)
-                m_uiMightyBlowTimer = urand(20000, 35000);
+            { m_uiMightyBlowTimer = urand(20000, 35000); }
         }
         else
-            m_uiMightyBlowTimer -= uiDiff;
+        { m_uiMightyBlowTimer -= uiDiff; }
 
         if (!m_bPhase2 && m_creature->GetHealthPercent() < 50.0f)
         {
@@ -187,19 +196,19 @@ struct MANGOS_DLL_DECL boss_high_king_maulgarAI : public ScriptedAI
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_CHARGE) == CAST_OK)
-                        m_uiChargeTimer = urand(14000, 20000);
+                    { m_uiChargeTimer = urand(14000, 20000); }
                 }
             }
             else
-                m_uiChargeTimer -= uiDiff;
+            { m_uiChargeTimer -= uiDiff; }
 
             if (m_uiFearTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_FEAR) == CAST_OK)
-                    m_uiFearTimer = urand(20000, 35000);
+                { m_uiFearTimer = urand(20000, 35000); }
             }
             else
-                m_uiFearTimer -= uiDiff;
+            { m_uiFearTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -219,13 +228,13 @@ struct MANGOS_DLL_DECL Council_Base_AI : public ScriptedAI
     void JustDied(Unit* /*pVictim*/) override
     {
         if (!m_pInstance)
-            return;
+        { return; }
 
         Creature* pMaulgar = m_pInstance->GetSingleCreatureFromStorage(NPC_MAULGAR);
         if (pMaulgar && pMaulgar->IsAlive())
         {
             if (boss_high_king_maulgarAI* pMaulgarAI = dynamic_cast<boss_high_king_maulgarAI*>(pMaulgar->AI()))
-                pMaulgarAI->EventCouncilDeath();
+            { pMaulgarAI->EventCouncilDeath(); }
         }
 
         // Set data to Special on Death
@@ -252,31 +261,31 @@ struct MANGOS_DLL_DECL boss_olm_the_summonerAI : public Council_Base_AI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiDarkDecayTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_DARK_DECAY) == CAST_OK)
-                m_uiDarkDecayTimer = 20000;
+            { m_uiDarkDecayTimer = 20000; }
         }
         else
-            m_uiDarkDecayTimer -= uiDiff;
+        { m_uiDarkDecayTimer -= uiDiff; }
 
         if (m_uiDeathCoilTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_DEATH_COIL) == CAST_OK)
-                m_uiDeathCoilTimer = urand(8000, 13000);
+            { m_uiDeathCoilTimer = urand(8000, 13000); }
         }
         else
-            m_uiDeathCoilTimer -= uiDiff;
+        { m_uiDeathCoilTimer -= uiDiff; }
 
         if (m_uiSummonTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_WILD_FELHUNTER) == CAST_OK)
-                m_uiSummonTimer = urand(25000, 35000);
+            { m_uiSummonTimer = urand(25000, 35000); }
         }
         else
-            m_uiSummonTimer -= uiDiff;
+        { m_uiSummonTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -307,7 +316,7 @@ struct MANGOS_DLL_DECL boss_kiggler_the_crazedAI : public Council_Base_AI
         if (pSpell->Id == SPELL_ARCANE_EXPLOSION)
         {
             if (pVictim->GetTypeId() != TYPEID_PLAYER)
-                return;
+            { return; }
 
             m_creature->GetThreatManager().modifyThreatPercent(pVictim, -75);
         }
@@ -316,7 +325,7 @@ struct MANGOS_DLL_DECL boss_kiggler_the_crazedAI : public Council_Base_AI
     void AttackStart(Unit* pWho) override
     {
         if (!pWho)
-            return;
+        { return; }
 
         if (m_creature->Attack(pWho, false))
         {
@@ -331,42 +340,42 @@ struct MANGOS_DLL_DECL boss_kiggler_the_crazedAI : public Council_Base_AI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiGreatherPolymorphTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_GREATER_POLYMORPH) == CAST_OK)
-                    m_uiGreatherPolymorphTimer = urand(15000, 20000);
+                { m_uiGreatherPolymorphTimer = urand(15000, 20000); }
             }
         }
         else
-            m_uiGreatherPolymorphTimer -= uiDiff;
+        { m_uiGreatherPolymorphTimer -= uiDiff; }
 
         if (m_uiLightningBoltTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_LIGHTNING_BOLT) == CAST_OK)
-                m_uiLightningBoltTimer = urand(2500, 4000);
+            { m_uiLightningBoltTimer = urand(2500, 4000); }
         }
         else
-            m_uiLightningBoltTimer -= uiDiff;
+        { m_uiLightningBoltTimer -= uiDiff; }
 
         if (m_uiArcaneShockTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_ARCANE_SHOCK) == CAST_OK)
-                m_uiArcaneShockTimer = urand(15000, 20000);
+            { m_uiArcaneShockTimer = urand(15000, 20000); }
         }
         else
-            m_uiArcaneShockTimer -= uiDiff;
+        { m_uiArcaneShockTimer -= uiDiff; }
 
         if (m_uiArcaneExplosionTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ARCANE_EXPLOSION) == CAST_OK)
-                m_uiArcaneExplosionTimer = 30000;
+            { m_uiArcaneExplosionTimer = 30000; }
         }
         else
-            m_uiArcaneExplosionTimer -= uiDiff;
+        { m_uiArcaneExplosionTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -391,34 +400,34 @@ struct MANGOS_DLL_DECL boss_blindeye_the_seerAI : public Council_Base_AI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiGreaterPowerWordShieldTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_GREATER_PW_SHIELD) == CAST_OK)
-                m_uiGreaterPowerWordShieldTimer = urand(30000, 40000);
+            { m_uiGreaterPowerWordShieldTimer = urand(30000, 40000); }
         }
         else
-            m_uiGreaterPowerWordShieldTimer -= uiDiff;
+        { m_uiGreaterPowerWordShieldTimer -= uiDiff; }
 
         if (m_uiHealTimer < uiDiff)
         {
             if (Unit* pTarget = DoSelectLowestHpFriendly(50.0f))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_HEAL) == CAST_OK)
-                    m_uiHealTimer = urand(15000, 40000);
+                { m_uiHealTimer = urand(15000, 40000); }
             }
         }
         else
-            m_uiHealTimer -= uiDiff;
+        { m_uiHealTimer -= uiDiff; }
 
         if (m_uiPrayerofHealingTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_PRAYEROFHEALING) == CAST_OK)
-                m_uiPrayerofHealingTimer = urand(35000, 50000);
+            { m_uiPrayerofHealingTimer = urand(35000, 50000); }
         }
         else
-            m_uiPrayerofHealingTimer -= uiDiff;
+        { m_uiPrayerofHealingTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -443,7 +452,7 @@ struct MANGOS_DLL_DECL boss_krosh_firehandAI : public Council_Base_AI
     void AttackStart(Unit* pWho) override
     {
         if (!pWho)
-            return;
+        { return; }
 
         if (m_creature->Attack(pWho, true))
         {
@@ -458,23 +467,23 @@ struct MANGOS_DLL_DECL boss_krosh_firehandAI : public Council_Base_AI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiGreaterFireballTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_GREATER_FIREBALL) == CAST_OK)
-                m_uiGreaterFireballTimer = 3200;
+            { m_uiGreaterFireballTimer = 3200; }
         }
         else
-            m_uiGreaterFireballTimer -= uiDiff;
+        { m_uiGreaterFireballTimer -= uiDiff; }
 
         if (m_uiSpellShieldTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SPELLSHIELD) == CAST_OK)
-                m_uiSpellShieldTimer = 30000;
+            { m_uiSpellShieldTimer = 30000; }
         }
         else
-            m_uiSpellShieldTimer -= uiDiff;
+        { m_uiSpellShieldTimer -= uiDiff; }
 
         if (m_uiBlastWaveTimer < uiDiff)
         {
@@ -494,7 +503,7 @@ struct MANGOS_DLL_DECL boss_krosh_firehandAI : public Council_Base_AI
             m_uiBlastWaveTimer = 6000;
         }
         else
-            m_uiBlastWaveTimer -= uiDiff;
+        { m_uiBlastWaveTimer -= uiDiff; }
     }
 };
 

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -89,12 +98,12 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
         Creature* pCreature = m_creature->GetMap()->GetCreature(guid);
 
         if (!pCreature)
-            return;
+        { return; }
 
         if (bReset)
         {
             if (!pCreature->IsInEvadeMode() && pCreature->IsAlive())
-                pCreature->AI()->EnterEvadeMode();
+            { pCreature->AI()->EnterEvadeMode(); }
 
             pCreature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             pCreature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PASSIVE);
@@ -105,7 +114,7 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
             pCreature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PASSIVE);
 
             if (!pCreature->IsAlive())
-                return;
+            { return; }
 
             pCreature->SetStandState(UNIT_STAND_STATE_STAND);
 
@@ -114,7 +123,7 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
                 {
                     if (pPlayer->IsAlive())
-                        pCreature->AI()->AttackStart(pPlayer);
+                    { pCreature->AI()->AttackStart(pPlayer); }
                 }
             }
         }
@@ -130,10 +139,10 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PASSIVE);
 
         if (Creature* pCreepjack = GetClosestCreatureWithEntry(m_creature, ENTRY_CREEPJACK, 20.0f))
-            m_creepjackGuid = pCreepjack->GetObjectGuid();
+        { m_creepjackGuid = pCreepjack->GetObjectGuid(); }
 
         if (Creature* pMalone = GetClosestCreatureWithEntry(m_creature, ENTRY_MALONE, 20.0f))
-            m_maloneGuid = pMalone->GetObjectGuid();
+        { m_maloneGuid = pMalone->GetObjectGuid(); }
 
         bEvent = true;
     }
@@ -163,7 +172,7 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
             case 5: DoScriptText(SAY_ATTACK, m_creature, pPlayer);  return 3000;
             case 6:
                 if (!m_creature->IsInCombat() && pPlayer->IsAlive())
-                    AttackStart(pPlayer);
+                { AttackStart(pPlayer); }
 
                 SetRuffies(m_creepjackGuid, true, false);
                 SetRuffies(m_maloneGuid, true, false);
@@ -177,10 +186,10 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
     void AttackedBy(Unit* pAttacker) override
     {
         if (m_creature->getVictim())
-            return;
+        { return; }
 
         if (!bActiveAttack)
-            return;
+        { return; }
 
         AttackStart(pAttacker);
     }
@@ -188,7 +197,7 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
     void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
     {
         if (uiDamage < m_creature->GetHealth())
-            return;
+        { return; }
 
         // damage will kill, this is pretty much the same as 1%HP left
         if (bEvent)
@@ -212,13 +221,13 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
         if (bEvent && !bActiveAttack)
         {
             if (m_uiSayTimer < diff)
-                m_uiSayTimer = NextStep(++m_uiStep);
+            { m_uiSayTimer = NextStep(++m_uiStep); }
             else
-                m_uiSayTimer -= diff;
+            { m_uiSayTimer -= diff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DoMeleeAttackIfReady();
     }
@@ -227,10 +236,10 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
 bool GossipHello_npc_dirty_larry(Player* pPlayer, Creature* pCreature)
 {
     if (pCreature->isQuestGiver())
-        pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
+    { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
     if (pPlayer->GetQuestStatus(QUEST_WHAT_BOOK) == QUEST_STATUS_INCOMPLETE)
-        pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, GOSSIP_ITEM_BOOK, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    { pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, GOSSIP_ITEM_BOOK, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
 
     pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
     return true;
@@ -241,7 +250,7 @@ bool GossipSelect_npc_dirty_larry(Player* pPlayer, Creature* pCreature, uint32 /
     if (uiAction == GOSSIP_ACTION_INFO_DEF + 1)
     {
         if (npc_dirty_larryAI* pLarryAI = dynamic_cast<npc_dirty_larryAI*>(pCreature->AI()))
-            pLarryAI->StartEvent(pPlayer);
+        { pLarryAI->StartEvent(pPlayer); }
 
         pPlayer->CLOSE_GOSSIP_MENU();
     }
@@ -313,9 +322,9 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
     npc_khadgars_servantAI(Creature* pCreature) : npc_escortAI(pCreature)
     {
         if (pCreature->GetOwner() && pCreature->GetOwner()->GetTypeId() == TYPEID_PLAYER)
-            Start(false, (Player*)pCreature->GetOwner());
+        { Start(false, (Player*)pCreature->GetOwner()); }
         else
-            script_error_log("npc_khadgars_servant can not obtain owner or owner is not a player.");
+        { script_error_log("npc_khadgars_servant can not obtain owner or owner is not a player."); }
 
         Reset();
     }
@@ -341,17 +350,17 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
             {
                 case NPC_HAGGARD:
                     if (Player* pPlayer = GetPlayerForEscort())
-                        DoScriptText(SAY_KHAD_HAGGARD, pWho, pPlayer);
+                    { DoScriptText(SAY_KHAD_HAGGARD, pWho, pPlayer); }
                     m_uiRandomTalkCooldown = 7500;
                     break;
                 case NPC_ANCHORITE:
                     if (Player* pPlayer = GetPlayerForEscort())
-                        DoScriptText(SAY_KHAD_ALDOR_GREET, pWho, pPlayer);
+                    { DoScriptText(SAY_KHAD_ALDOR_GREET, pWho, pPlayer); }
                     m_uiRandomTalkCooldown = 7500;
                     break;
                 case NPC_ARCANIST:
                     if (Player* pPlayer = GetPlayerForEscort())
-                        DoScriptText(SAY_KHAD_SCRYER_GREET, pWho, pPlayer);
+                    { DoScriptText(SAY_KHAD_SCRYER_GREET, pWho, pPlayer); }
                     m_uiRandomTalkCooldown = 7500;
                     break;
             }
@@ -361,7 +370,7 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
     void WaypointStart(uint32 uiPointId) override
     {
         if (uiPointId == 2)
-            DoScriptText(SAY_KHAD_SERV_0, m_creature);
+        { DoScriptText(SAY_KHAD_SERV_0, m_creature); }
     }
 
     void WaypointReached(uint32 uiPointId) override
@@ -372,7 +381,7 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
         {
             case 0:
                 if (Creature* pKhadgar = GetClosestCreatureWithEntry(m_creature, NPC_KHADGAR, 10.0f))
-                    DoScriptText(SAY_KHAD_START, pKhadgar);
+                { DoScriptText(SAY_KHAD_START, pKhadgar); }
                 break;
             case 5:
             case 24:
@@ -384,11 +393,11 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
                 break;
             case 34:
                 if (Creature* pIzzard = GetClosestCreatureWithEntry(m_creature, NPC_IZZARD, 10.0f))
-                    DoScriptText(SAY_KHAD_MIND_YOU, pIzzard);
+                { DoScriptText(SAY_KHAD_MIND_YOU, pIzzard); }
                 break;
             case 35:
                 if (Creature* pAdyria = GetClosestCreatureWithEntry(m_creature, NPC_ADYRIA, 10.0f))
-                    DoScriptText(SAY_KHAD_MIND_ALWAYS, pAdyria);
+                { DoScriptText(SAY_KHAD_MIND_ALWAYS, pAdyria); }
                 break;
         }
     }
@@ -398,9 +407,9 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
         if (m_uiRandomTalkCooldown)
         {
             if (m_uiRandomTalkCooldown <= uiDiff)
-                m_uiRandomTalkCooldown = 0;
+            { m_uiRandomTalkCooldown = 0; }
             else
-                m_uiRandomTalkCooldown -= uiDiff;
+            { m_uiRandomTalkCooldown -= uiDiff; }
         }
 
         if (HasEscortState(STATE_ESCORT_PAUSED))
@@ -413,7 +422,7 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
                 Player* pPlayer = GetPlayerForEscort();
 
                 if (!pPlayer)
-                    return;
+                { return; }
 
                 switch (m_uiPointId)
                 {
@@ -443,7 +452,7 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
                         {
                             case 5:
                                 if (Creature* pShanir = GetClosestCreatureWithEntry(m_creature, NPC_SHANIR, 15.0f))
-                                    DoScriptText(SAY_KHAD_INJURED, pShanir, pPlayer);
+                                { DoScriptText(SAY_KHAD_INJURED, pShanir, pPlayer); }
 
                                 DoScriptText(SAY_KHAD_SERV_5, m_creature, pPlayer);
                                 break;
@@ -535,7 +544,7 @@ struct MANGOS_DLL_DECL npc_khadgars_servantAI : public npc_escortAI
                 }
             }
             else
-                m_uiTalkTimer -= uiDiff;
+            { m_uiTalkTimer -= uiDiff; }
         }
     }
 };
@@ -584,7 +593,7 @@ struct MANGOS_DLL_DECL npc_salsalabimAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiMagneticPullTimer < uiDiff)
         {
@@ -592,7 +601,7 @@ struct MANGOS_DLL_DECL npc_salsalabimAI : public ScriptedAI
             m_uiMagneticPullTimer = 15000;
         }
         else
-            m_uiMagneticPullTimer -= uiDiff;
+        { m_uiMagneticPullTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -613,7 +622,7 @@ bool GossipHello_npc_salsalabim(Player* pPlayer, Creature* pCreature)
     else
     {
         if (pCreature->isQuestGiver())
-            pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
+        { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
         pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
     }

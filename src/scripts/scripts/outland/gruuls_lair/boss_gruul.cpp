@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -87,13 +96,13 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GRUUL_EVENT, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_GRUUL_EVENT, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GRUUL_EVENT, FAIL);
+        { m_pInstance->SetData(TYPE_GRUUL_EVENT, FAIL); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -111,7 +120,7 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_GRUUL_EVENT, DONE);
+        { m_pInstance->SetData(TYPE_GRUUL_EVENT, DONE); }
     }
 
     void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell) override
@@ -137,7 +146,7 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
             pTarget->CastSpell(pTarget, SPELL_SHATTER_EFFECT, true);
 
             if (pTarget->HasAura(SPELL_STONED))
-                pTarget->RemoveAurasDueToSpell(SPELL_STONED);
+            { pTarget->RemoveAurasDueToSpell(SPELL_STONED); }
 
             // clear this, if we are still performing
             if (m_bPerformingGroundSlam)
@@ -148,7 +157,7 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
                 if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != CHASE_MOTION_TYPE)
                 {
                     if (m_creature->getVictim())
-                        m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim());
+                    { m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim()); }
                 }
             }
         }
@@ -157,7 +166,7 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Gruul can cast this spell up to 30 times
         if (m_uiGrowthTimer < uiDiff)
@@ -169,7 +178,7 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
             }
         }
         else
-            m_uiGrowthTimer -= uiDiff;
+        { m_uiGrowthTimer -= uiDiff; }
 
         if (m_bPerformingGroundSlam)
         {
@@ -183,11 +192,11 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
 
                     // Give a little time to the players to undo the damage from shatter
                     if (m_uiReverberationTimer < 10000)
-                        m_uiReverberationTimer += 10000;
+                    { m_uiReverberationTimer += 10000; }
                 }
             }
             else
-                m_uiGroundSlamTimer -= uiDiff;
+            { m_uiGroundSlamTimer -= uiDiff; }
         }
         else
         {
@@ -195,23 +204,23 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
             if (m_uiHurtfulStrikeTimer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_TOPAGGRO, 1, SPELL_HURTFUL_STRIKE, SELECT_FLAG_PLAYER))
-                    DoCastSpellIfCan(pTarget, SPELL_HURTFUL_STRIKE);
+                { DoCastSpellIfCan(pTarget, SPELL_HURTFUL_STRIKE); }
                 else
-                    DoCastSpellIfCan(m_creature->getVictim(), SPELL_HURTFUL_STRIKE);
+                { DoCastSpellIfCan(m_creature->getVictim(), SPELL_HURTFUL_STRIKE); }
 
                 m_uiHurtfulStrikeTimer = 8000;
             }
             else
-                m_uiHurtfulStrikeTimer -= uiDiff;
+            { m_uiHurtfulStrikeTimer -= uiDiff; }
 
             // Reverberation
             if (m_uiReverberationTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_REVERBERATION) == CAST_OK)
-                    m_uiReverberationTimer = urand(15000, 25000);
+                { m_uiReverberationTimer = urand(15000, 25000); }
             }
             else
-                m_uiReverberationTimer -= uiDiff;
+            { m_uiReverberationTimer -= uiDiff; }
 
             // Cave In
             if (m_uiCaveInTimer < uiDiff)
@@ -221,14 +230,14 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
                     if (DoCastSpellIfCan(pTarget, SPELL_CAVE_IN) == CAST_OK)
                     {
                         if (m_uiCaveInStaticTimer >= 4000)
-                            m_uiCaveInStaticTimer -= 2000;
+                        { m_uiCaveInStaticTimer -= 2000; }
 
                         m_uiCaveInTimer = m_uiCaveInStaticTimer;
                     }
                 }
             }
             else
-                m_uiCaveInTimer -= uiDiff;
+            { m_uiCaveInTimer -= uiDiff; }
 
             // Ground Slam, Gronn Lord's Grasp, Stoned, Shatter
             if (m_uiGroundSlamTimer < uiDiff)
@@ -244,7 +253,7 @@ struct MANGOS_DLL_DECL boss_gruulAI : public ScriptedAI
                 }
             }
             else
-                m_uiGroundSlamTimer -= uiDiff;
+            { m_uiGroundSlamTimer -= uiDiff; }
 
             DoMeleeAttackIfReady();
         }

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -75,19 +84,19 @@ struct MANGOS_DLL_DECL boss_fankrissAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FANKRISS, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FANKRISS, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FANKRISS, FAIL);
+        { m_pInstance->SetData(TYPE_FANKRISS, FAIL); }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FANKRISS, DONE);
+        { m_pInstance->SetData(TYPE_FANKRISS, DONE); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -95,36 +104,36 @@ struct MANGOS_DLL_DECL boss_fankrissAI : public ScriptedAI
         if (pSummoned->GetEntry() == NPC_SPAWN_FANKRISS)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                pSummoned->AI()->AttackStart(pTarget);
+            { pSummoned->AI()->AttackStart(pTarget); }
         }
         else if (pSummoned->GetEntry() == NPC_VEKNISS_HATCHLING)
         {
             if (Player* pTarget = m_creature->GetMap()->GetPlayer(m_EntangleTargetGuid))
-                pSummoned->AI()->AttackStart(pTarget);
+            { pSummoned->AI()->AttackStart(pTarget); }
         }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiMortalWoundTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MORTAL_WOUND) == CAST_OK)
-                m_uiMortalWoundTimer = urand(7000, 14000);
+            { m_uiMortalWoundTimer = urand(7000, 14000); }
         }
         else
-            m_uiMortalWoundTimer -= uiDiff;
+        { m_uiMortalWoundTimer -= uiDiff; }
 
         if (m_uiSummonWormTimer < uiDiff)
         {
             uint8 uiSpawnIndex = urand(0, 2);
             if (DoCastSpellIfCan(m_creature, aSummonWormSpells[uiSpawnIndex]) == CAST_OK)
-                m_uiSummonWormTimer = urand(15000, 40000);
+            { m_uiSummonWormTimer = urand(15000, 40000); }
         }
         else
-            m_uiSummonWormTimer -= uiDiff;
+        { m_uiSummonWormTimer -= uiDiff; }
 
         // Teleporting Random Target to one of the three tunnels and spawn 4 hatchlings near the gamer.
         if (m_uiEntangleTimer < uiDiff)
@@ -141,7 +150,7 @@ struct MANGOS_DLL_DECL boss_fankrissAI : public ScriptedAI
             }
         }
         else
-            m_uiEntangleTimer -= uiDiff;
+        { m_uiEntangleTimer -= uiDiff; }
 
         // Summon 4 Hatchlings around the target
         if (m_uiEntangleSummonTimer)
@@ -160,7 +169,7 @@ struct MANGOS_DLL_DECL boss_fankrissAI : public ScriptedAI
                 }
             }
             else
-                m_uiEntangleSummonTimer -= uiDiff;
+            { m_uiEntangleSummonTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();

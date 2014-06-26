@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -133,19 +142,19 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
     void DoYellForPeonAggro(Unit* pWho)
     {
         if (m_uiPeonEngagedCount >= 4)
-            return;
+        { return; }
 
         DoScriptText(PeonAttacked[m_uiPeonEngagedCount].id, m_creature);
         ++m_uiPeonEngagedCount;
 
         if (pWho)
-            m_lastEventInvokerGuid = pWho->GetObjectGuid();
+        { m_lastEventInvokerGuid = pWho->GetObjectGuid(); }
     }
 
     void DoYellForPeonDeath(Unit* pKiller)
     {
         if (m_uiPeonKilledCount >= 4)
-            return;
+        { return; }
 
         DoScriptText(PeonDies[m_uiPeonKilledCount].id, m_creature);
         ++m_uiPeonKilledCount;
@@ -157,7 +166,7 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
             m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
 
             if (pKiller)
-                AttackStart(pKiller);
+            { AttackStart(pKiller); }
         }
     }
 
@@ -173,7 +182,7 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
         std::list<Creature*> lFelConverts;
         GetCreatureListWithEntryInGrid(lFelConverts, m_creature, NPC_FEL_ORC_CONVERT, 40.0f);
         for (std::list<Creature*>::iterator itr = lFelConverts.begin(); itr != lFelConverts.end(); ++itr)
-            (*itr)->DealDamage(*itr, (*itr)->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+        { (*itr)->DealDamage(*itr, (*itr)->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); }
 
         m_bIsIntroEvent = false;
         m_uiPeonEngagedCount = 4;
@@ -182,13 +191,13 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
 
         if (Unit* pEnemy = m_creature->GetMap()->GetUnit(m_lastEventInvokerGuid))
-            AttackStart(pEnemy);
+        { AttackStart(pEnemy); }
     }
 
     void AttackStart(Unit* pWho) override
     {
         if (m_bIsIntroEvent || !m_bIsMainEvent)
-            return;
+        { return; }
 
         if (m_creature->Attack(pWho, true))
         {
@@ -197,9 +206,9 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
             pWho->SetInCombatWith(m_creature);
 
             if (m_bPhase)
-                DoStartNoMovement(pWho);
+            { DoStartNoMovement(pWho); }
             else
-                DoStartMovement(pWho);
+            { DoStartMovement(pWho); }
         }
     }
 
@@ -214,11 +223,11 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
             m_lastEventInvokerGuid = pWho->GetObjectGuid();
 
             if (m_pInstance)
-                m_pInstance->SetData(TYPE_NETHEKURSE, IN_PROGRESS);
+            { m_pInstance->SetData(TYPE_NETHEKURSE, IN_PROGRESS); }
         }
 
         if (m_bIsIntroEvent || !m_bIsMainEvent)
-            return;
+        { return; }
 
         ScriptedAI::MoveInLineOfSight(pWho);
     }
@@ -252,7 +261,7 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
         DoScriptText(SAY_DIE, m_creature);
 
         if (!m_pInstance)
-            return;
+        { return; }
 
         m_pInstance->SetData(TYPE_NETHEKURSE, DONE);
     }
@@ -260,14 +269,14 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_NETHEKURSE, FAIL);
+        { m_pInstance->SetData(TYPE_NETHEKURSE, FAIL); }
 
         std::list<Creature*> lFelConverts;
         GetCreatureListWithEntryInGrid(lFelConverts, m_creature, NPC_FEL_ORC_CONVERT, 40.0f);
         for (std::list<Creature*>::iterator itr = lFelConverts.begin(); itr != lFelConverts.end(); ++itr)
         {
             if (!(*itr)->IsAlive())
-                (*itr)->Respawn();
+            { (*itr)->Respawn(); }
         }
     }
 
@@ -276,22 +285,22 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
         if (m_bIsIntroEvent)
         {
             if (!m_pInstance)
-                return;
+            { return; }
 
             if (m_pInstance->GetData(TYPE_NETHEKURSE) == IN_PROGRESS)
             {
                 if (m_uiIntroEventTimer < uiDiff)
-                    DoTauntPeons();
+                { DoTauntPeons(); }
                 else
-                    m_uiIntroEventTimer -= uiDiff;
+                { m_uiIntroEventTimer -= uiDiff; }
             }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (!m_bIsMainEvent)
-            return;
+        { return; }
 
         if (m_bPhase)
         {
@@ -307,30 +316,30 @@ struct MANGOS_DLL_DECL boss_grand_warlock_nethekurseAI : public ScriptedAI
                 m_uiCleaveTimer = urand(6000, 8500);
             }
             else
-                m_uiCleaveTimer -= uiDiff;
+            { m_uiCleaveTimer -= uiDiff; }
         }
         else
         {
             if (m_uiShadowFissureTimer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    DoCastSpellIfCan(pTarget, SPELL_SHADOW_FISSURE);
+                { DoCastSpellIfCan(pTarget, SPELL_SHADOW_FISSURE); }
                 m_uiShadowFissureTimer = urand(7500, 15000);
             }
             else
-                m_uiShadowFissureTimer -= uiDiff;
+            { m_uiShadowFissureTimer -= uiDiff; }
 
             if (m_uiDeathCoilTimer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    DoCastSpellIfCan(pTarget, SPELL_DEATH_COIL);
+                { DoCastSpellIfCan(pTarget, SPELL_DEATH_COIL); }
                 m_uiDeathCoilTimer = urand(15000, 20000);
             }
             else
-                m_uiDeathCoilTimer -= uiDiff;
+            { m_uiDeathCoilTimer -= uiDiff; }
 
             if (m_creature->GetHealthPercent() <= 20.0f)
-                m_bPhase = true;
+            { m_bPhase = true; }
 
             DoMeleeAttackIfReady();
         }
@@ -367,12 +376,12 @@ struct MANGOS_DLL_DECL mob_fel_orc_convertAI : public ScriptedAI
             if (pKurse && m_creature->IsWithinDist(pKurse, 45.0f))
             {
                 if (boss_grand_warlock_nethekurseAI* pKurseAI = dynamic_cast<boss_grand_warlock_nethekurseAI*>(pKurse->AI()))
-                    pKurseAI->DoYellForPeonAggro(pWho);
+                { pKurseAI->DoYellForPeonAggro(pWho); }
 
                 if (m_pInstance->GetData(TYPE_NETHEKURSE) == IN_PROGRESS)
-                    return;
+                { return; }
                 else
-                    m_pInstance->SetData(TYPE_NETHEKURSE, IN_PROGRESS);
+                { m_pInstance->SetData(TYPE_NETHEKURSE, IN_PROGRESS); }
             }
         }
     }
@@ -382,12 +391,12 @@ struct MANGOS_DLL_DECL mob_fel_orc_convertAI : public ScriptedAI
         if (m_pInstance)
         {
             if (m_pInstance->GetData(TYPE_NETHEKURSE) != IN_PROGRESS)
-                return;
+            { return; }
 
             if (Creature* pKurse = m_pInstance->GetSingleCreatureFromStorage(NPC_NETHEKURSE))
             {
                 if (boss_grand_warlock_nethekurseAI* pKurseAI = dynamic_cast<boss_grand_warlock_nethekurseAI*>(pKurse->AI()))
-                    pKurseAI->DoYellForPeonDeath(pKiller);
+                { pKurseAI->DoYellForPeonDeath(pKiller); }
             }
         }
     }
@@ -395,7 +404,7 @@ struct MANGOS_DLL_DECL mob_fel_orc_convertAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiHemorrhageTimer < uiDiff)
         {
@@ -403,7 +412,7 @@ struct MANGOS_DLL_DECL mob_fel_orc_convertAI : public ScriptedAI
             m_uiHemorrhageTimer = 15000;
         }
         else
-            m_uiHemorrhageTimer -= uiDiff;
+        { m_uiHemorrhageTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

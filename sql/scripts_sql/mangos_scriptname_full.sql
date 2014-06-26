@@ -214,6 +214,9 @@ UPDATE creature_template SET ScriptName='npc_beaten_corpse' WHERE entry=10668;
 UPDATE creature_template SET ScriptName='npc_gilthares' WHERE entry=3465;
 UPDATE creature_template SET ScriptName='npc_taskmaster_fizzule' WHERE entry=7233;
 UPDATE creature_template SET ScriptName='npc_twiggy_flathead' WHERE entry=6248;
+UPDATE creature_template SET ScriptName='npc_regthar_deathgate' WHERE entry=3389;
+UPDATE creature_template SET ScriptName='npc_horde_defender' WHERE entry=9457;
+UPDATE creature_template SET ScriptName='npc_horde_defender' WHERE entry=9458;
 DELETE FROM scripted_areatrigger WHERE entry=522;
 INSERT INTO scripted_areatrigger VALUES (522,'at_twiggy_flathead');
 UPDATE creature_template SET ScriptName='npc_wizzlecranks_shredder' WHERE entry=3439;
@@ -454,6 +457,7 @@ UPDATE creature_template SET ScriptName='npc_kroshius' WHERE entry=14467;
 
 /* FERALAS */
 UPDATE creature_template SET ScriptName='npc_oox22fe' WHERE entry=7807;
+UPDATE gameobject_template SET ScriptName='go_gordunni_trap' WHERE entry=144050;
 
 /* GHOSTLANDS */
 UPDATE creature_template SET ScriptName='npc_ranger_lilatha' WHERE entry=16295;

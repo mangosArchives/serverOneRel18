@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -113,7 +122,7 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
         }
 
         if (!m_pSpawnAssoc)
-            error_db_log("SD2: Creature template entry %u has ScriptName npc_air_force_bots, but it's not handled by that script", pCreature->GetEntry());
+        { error_db_log("SD2: Creature template entry %u has ScriptName npc_air_force_bots, but it's not handled by that script", pCreature->GetEntry()); }
         else
         {
             CreatureInfo const* spawnedTemplate = GetCreatureTemplateStore(m_pSpawnAssoc->m_uiSpawnedCreatureEntry);
@@ -137,7 +146,7 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
         Creature* pSummoned = m_creature->SummonCreature(m_pSpawnAssoc->m_uiSpawnedCreatureEntry, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 300000);
 
         if (pSummoned)
-            m_spawnedGuid = pSummoned->GetObjectGuid();
+        { m_spawnedGuid = pSummoned->GetObjectGuid(); }
         else
         {
             error_db_log("SD2: npc_air_force_bots: wasn't able to spawn creature %u", m_pSpawnAssoc->m_uiSpawnedCreatureEntry);
@@ -152,7 +161,7 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
         Creature* pCreature = m_creature->GetMap()->GetCreature(m_spawnedGuid);
 
         if (pCreature && pCreature->IsAlive())
-            return pCreature;
+        { return pCreature; }
 
         return NULL;
     }
@@ -160,7 +169,7 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (!m_pSpawnAssoc)
-            return;
+        { return; }
 
         if (pWho->IsTargetableForAttack() && m_creature->IsHostileTo(pWho))
         {
@@ -168,20 +177,20 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
 
             // airforce guards only spawn for players
             if (!pPlayerTarget)
-                return;
+            { return; }
 
             Creature* pLastSpawnedGuard = m_spawnedGuid ? GetSummonedGuard() : NULL;
 
             // prevent calling GetCreature at next MoveInLineOfSight call - speedup
             if (!pLastSpawnedGuard)
-                m_spawnedGuid.Clear();
+            { m_spawnedGuid.Clear(); }
 
             switch (m_pSpawnAssoc->m_SpawnType)
             {
                 case SPAWNTYPE_ALARMBOT:
                 {
                     if (!pWho->IsWithinDistInMap(m_creature, RANGE_GUARDS_MARK))
-                        return;
+                    { return; }
 
                     Aura* pMarkAura = pWho->GetAura(SPELL_GUARDS_MARK, EFFECT_INDEX_0);
                     if (pMarkAura)
@@ -192,22 +201,22 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
                             pLastSpawnedGuard = SummonGuard();
 
                             if (!pLastSpawnedGuard)
-                                return;
+                            { return; }
                         }
 
                         if (pMarkAura->GetAuraDuration() < AURA_DURATION_TIME_LEFT)
                         {
                             if (!pLastSpawnedGuard->getVictim())
-                                pLastSpawnedGuard->AI()->AttackStart(pWho);
+                            { pLastSpawnedGuard->AI()->AttackStart(pWho); }
                         }
                     }
                     else
                     {
                         if (!pLastSpawnedGuard)
-                            pLastSpawnedGuard = SummonGuard();
+                        { pLastSpawnedGuard = SummonGuard(); }
 
                         if (!pLastSpawnedGuard)
-                            return;
+                        { return; }
 
                         pLastSpawnedGuard->CastSpell(pWho, SPELL_GUARDS_MARK, true);
                     }
@@ -216,19 +225,19 @@ struct MANGOS_DLL_DECL npc_air_force_botsAI : public ScriptedAI
                 case SPAWNTYPE_TRIPWIRE_ROOFTOP:
                 {
                     if (!pWho->IsWithinDistInMap(m_creature, RANGE_TRIPWIRE))
-                        return;
+                    { return; }
 
                     if (!pLastSpawnedGuard)
-                        pLastSpawnedGuard = SummonGuard();
+                    { pLastSpawnedGuard = SummonGuard(); }
 
                     if (!pLastSpawnedGuard)
-                        return;
+                    { return; }
 
                     // ROOFTOP only triggers if the player is on the ground
                     if (!pPlayerTarget->IsFlying())
                     {
                         if (!pLastSpawnedGuard->getVictim())
-                            pLastSpawnedGuard->AI()->AttackStart(pWho);
+                        { pLastSpawnedGuard->AI()->AttackStart(pWho); }
                     }
                     break;
                 }
@@ -311,13 +320,13 @@ struct MANGOS_DLL_DECL npc_chicken_cluckAI : public ScriptedAI
         if (m_creature->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER))
         {
             if (m_uiResetFlagTimer < uiDiff)
-                EnterEvadeMode();
+            { EnterEvadeMode(); }
             else
-                m_uiResetFlagTimer -= uiDiff;
+            { m_uiResetFlagTimer -= uiDiff; }
         }
 
         if (m_creature->SelectHostileTarget() && m_creature->getVictim())
-            DoMeleeAttackIfReady();
+        { DoMeleeAttackIfReady(); }
     }
 };
 
@@ -331,7 +340,7 @@ bool QuestAccept_npc_chicken_cluck(Player* /*pPlayer*/, Creature* pCreature, con
     if (pQuest->GetQuestId() == QUEST_CLUCK)
     {
         if (npc_chicken_cluckAI* pChickenAI = dynamic_cast<npc_chicken_cluckAI*>(pCreature->AI()))
-            pChickenAI->Reset();
+        { pChickenAI->Reset(); }
     }
 
     return true;
@@ -342,7 +351,7 @@ bool QuestRewarded_npc_chicken_cluck(Player* /*pPlayer*/, Creature* pCreature, c
     if (pQuest->GetQuestId() == QUEST_CLUCK)
     {
         if (npc_chicken_cluckAI* pChickenAI = dynamic_cast<npc_chicken_cluckAI*>(pCreature->AI()))
-            pChickenAI->Reset();
+        { pChickenAI->Reset(); }
     }
 
     return true;
@@ -368,7 +377,7 @@ struct MANGOS_DLL_DECL npc_dancing_flamesAI : public ScriptedAI
         m_creature->SetFacingToObject(pPlayer);
 
         if (pPlayer->HasAura(SPELL_FIERY_SEDUCTION))
-            pPlayer->RemoveAurasDueToSpell(SPELL_FIERY_SEDUCTION);
+        { pPlayer->RemoveAurasDueToSpell(SPELL_FIERY_SEDUCTION); }
 
         if (pPlayer->IsMounted())
         {
@@ -555,7 +564,7 @@ struct MANGOS_DLL_DECL npc_injured_patientAI : public ScriptedAI
                 if (Creature* pDoctor = m_creature->GetMap()->GetCreature(m_doctorGuid))
                 {
                     if (npc_doctorAI* pDocAI = dynamic_cast<npc_doctorAI*>(pDoctor->AI()))
-                        pDocAI->PatientSaved(m_creature, pPlayer, m_pCoord);
+                    { pDocAI->PatientSaved(m_creature, pPlayer, m_pCoord); }
                 }
             }
             // make not selectable
@@ -609,7 +618,7 @@ struct MANGOS_DLL_DECL npc_injured_patientAI : public ScriptedAI
             if (Creature* pDoctor = m_creature->GetMap()->GetCreature(m_doctorGuid))
             {
                 if (npc_doctorAI* pDocAI = dynamic_cast<npc_doctorAI*>(pDoctor->AI()))
-                    pDocAI->PatientDied(m_pCoord);
+                { pDocAI->PatientDied(m_pCoord); }
             }
         }
     }
@@ -637,11 +646,11 @@ void npc_doctorAI::BeginEvent(Player* pPlayer)
     {
         case DOCTOR_ALLIANCE:
             for (uint8 i = 0; i < ALLIANCE_COORDS; ++i)
-                m_vPatientSummonCoordinates.push_back(&AllianceCoords[i]);
+            { m_vPatientSummonCoordinates.push_back(&AllianceCoords[i]); }
             break;
         case DOCTOR_HORDE:
             for (uint8 i = 0; i < HORDE_COORDS; ++i)
-                m_vPatientSummonCoordinates.push_back(&HordeCoords[i]);
+            { m_vPatientSummonCoordinates.push_back(&HordeCoords[i]); }
             break;
     }
 
@@ -660,9 +669,9 @@ void npc_doctorAI::PatientDied(Location* pPoint)
         if (m_uiPatientDiedCount > 5 && m_bIsEventInProgress)
         {
             if (pPlayer->GetQuestStatus(QUEST_TRIAGE_A) == QUEST_STATUS_INCOMPLETE)
-                pPlayer->FailQuest(QUEST_TRIAGE_A);
+            { pPlayer->FailQuest(QUEST_TRIAGE_A); }
             else if (pPlayer->GetQuestStatus(QUEST_TRIAGE_H) == QUEST_STATUS_INCOMPLETE)
-                pPlayer->FailQuest(QUEST_TRIAGE_H);
+            { pPlayer->FailQuest(QUEST_TRIAGE_H); }
 
             Reset();
             return;
@@ -672,7 +681,7 @@ void npc_doctorAI::PatientDied(Location* pPoint)
     }
     else
         // If no player or player abandon quest in progress
-        Reset();
+    { Reset(); }
 }
 
 void npc_doctorAI::PatientSaved(Creature* /*soldier*/, Player* pPlayer, Location* pPoint)
@@ -688,13 +697,13 @@ void npc_doctorAI::PatientSaved(Creature* /*soldier*/, Player* pPlayer, Location
                 for (GuidList::const_iterator itr = m_lPatientGuids.begin(); itr != m_lPatientGuids.end(); ++itr)
                 {
                     if (Creature* Patient = m_creature->GetMap()->GetCreature(*itr))
-                        Patient->SetDeathState(JUST_DIED);
+                    { Patient->SetDeathState(JUST_DIED); }
                 }
 
                 if (pPlayer->GetQuestStatus(QUEST_TRIAGE_A) == QUEST_STATUS_INCOMPLETE)
-                    pPlayer->GroupEventHappens(QUEST_TRIAGE_A, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_TRIAGE_A, m_creature); }
                 else if (pPlayer->GetQuestStatus(QUEST_TRIAGE_H) == QUEST_STATUS_INCOMPLETE)
-                    pPlayer->GroupEventHappens(QUEST_TRIAGE_H, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_TRIAGE_H, m_creature); }
 
                 Reset();
                 return;
@@ -747,7 +756,7 @@ void npc_doctorAI::UpdateAI(const uint32 uiDiff)
             ++m_uiSummonPatientCount;
         }
         else
-            m_uiSummonPatientTimer -= uiDiff;
+        { m_uiSummonPatientTimer -= uiDiff; }
     }
 }
 
@@ -756,7 +765,7 @@ bool QuestAccept_npc_doctor(Player* pPlayer, Creature* pCreature, const Quest* p
     if ((pQuest->GetQuestId() == QUEST_TRIAGE_A) || (pQuest->GetQuestId() == QUEST_TRIAGE_H))
     {
         if (npc_doctorAI* pDocAI = dynamic_cast<npc_doctorAI*>(pCreature->AI()))
-            pDocAI->BeginEvent(pPlayer);
+        { pDocAI->BeginEvent(pPlayer); }
     }
 
     return true;
@@ -832,11 +841,11 @@ struct MANGOS_DLL_DECL npc_garments_of_questsAI : public npc_escortAI
         {
             // not while in combat
             if (m_creature->IsInCombat())
-                return;
+            { return; }
 
             // nothing to be done now
             if (m_bIsHealed && m_bCanRun)
-                return;
+            { return; }
 
             if (pCaster->GetTypeId() == TYPEID_PLAYER)
             {
@@ -931,7 +940,7 @@ struct MANGOS_DLL_DECL npc_garments_of_questsAI : public npc_escortAI
 
                 // give quest credit, not expect any special quest objectives
                 if (m_bCanRun)
-                    ((Player*)pCaster)->TalkedToCreature(m_creature->GetEntry(), m_creature->GetObjectGuid());
+                { ((Player*)pCaster)->TalkedToCreature(m_creature->GetEntry(), m_creature->GetObjectGuid()); }
             }
         }
     }
@@ -958,16 +967,16 @@ struct MANGOS_DLL_DECL npc_garments_of_questsAI : public npc_escortAI
                     Start(true);
                 }
                 else
-                    EnterEvadeMode();                       // something went wrong
+                { EnterEvadeMode(); }                       // something went wrong
 
                 m_uiRunAwayTimer = 30000;
             }
             else
-                m_uiRunAwayTimer -= uiDiff;
+            { m_uiRunAwayTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DoMeleeAttackIfReady();
     }
@@ -996,7 +1005,7 @@ struct MANGOS_DLL_DECL npc_guardianAI : public ScriptedAI
     void UpdateAI(const uint32 /*diff*/) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_creature->isAttackReady())
         {
@@ -1035,13 +1044,13 @@ bool GossipHello_npc_innkeeper(Player* pPlayer, Creature* pCreature)
     pPlayer->PrepareGossipMenu(pCreature, pPlayer->GetDefaultGossipMenuForSource(pCreature));
 
     if (IsHolidayActive(HOLIDAY_HALLOWS_END) && !pPlayer->HasAura(SPELL_TRICK_OR_TREATED, EFFECT_INDEX_0))
-        pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_TRICK_OR_TREAT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+    { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_TRICK_OR_TREAT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2); }
 
     // Should only apply to innkeeper close to start areas.
     if (AreaTableEntry const* pAreaEntry = GetAreaEntryByAreaID(pCreature->GetAreaId()))
     {
         if (pAreaEntry->flags & AREA_FLAG_LOWLEVEL)
-            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_WHAT_TO_DO, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+        { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_WHAT_TO_DO, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
     }
 
     pPlayer->TalkedToCreature(pCreature->GetEntry(), pCreature->GetObjectGuid());
@@ -1110,7 +1119,7 @@ struct MANGOS_DLL_DECL npc_redemption_targetAI : public ScriptedAI
     {
         // Wait until he resets again
         if (m_uiEvadeTimer)
-            return;
+        { return; }
 
         DoCastSpellIfCan(m_creature, SPELL_REVIVE_SELF);
         m_creature->SetDeathState(JUST_ALIVED);
@@ -1130,7 +1139,7 @@ struct MANGOS_DLL_DECL npc_redemption_targetAI : public ScriptedAI
 
                     // Quests 9600 and 9685 requires kill credit
                     if (m_creature->GetEntry() == NPC_FURBOLG_SHAMAN || m_creature->GetEntry() == NPC_BLOOD_KNIGHT)
-                        pPlayer->KilledMonsterCredit(m_creature->GetEntry(), m_creature->GetObjectGuid());
+                    { pPlayer->KilledMonsterCredit(m_creature->GetEntry(), m_creature->GetObjectGuid()); }
                 }
 
                 m_creature->RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
@@ -1139,7 +1148,7 @@ struct MANGOS_DLL_DECL npc_redemption_targetAI : public ScriptedAI
                 m_uiEvadeTimer = 2 * MINUTE * IN_MILLISECONDS;
             }
             else
-                m_uiHealTimer -= uiDiff;
+            { m_uiHealTimer -= uiDiff; }
         }
 
         if (m_uiEvadeTimer)
@@ -1150,7 +1159,7 @@ struct MANGOS_DLL_DECL npc_redemption_targetAI : public ScriptedAI
                 m_uiEvadeTimer = 0;
             }
             else
-                m_uiEvadeTimer -= uiDiff;
+            { m_uiEvadeTimer -= uiDiff; }
         }
     }
 };
@@ -1166,7 +1175,7 @@ bool EffectDummyCreature_npc_redemption_target(Unit* pCaster, uint32 uiSpellId, 
     if ((uiSpellId == SPELL_SYMBOL_OF_LIFE || uiSpellId == SPELL_SHIMMERING_VESSEL) && uiEffIndex == EFFECT_INDEX_0)
     {
         if (npc_redemption_targetAI* pTargetAI = dynamic_cast<npc_redemption_targetAI*>(pCreatureTarget->AI()))
-            pTargetAI->DoReviveSelf(pCaster->GetObjectGuid());
+        { pTargetAI->DoReviveSelf(pCaster->GetObjectGuid()); }
 
         // always return true when we are handling this spell and effect
         return true;

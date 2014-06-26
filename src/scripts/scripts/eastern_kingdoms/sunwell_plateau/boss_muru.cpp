@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -98,7 +107,7 @@ struct MANGOS_DLL_DECL boss_muruAI : public Scripted_NoMovementAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_MURU, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_MURU, IN_PROGRESS); }
 
         DoCastSpellIfCan(m_creature, SPELL_NEGATIVE_ENERGY, CAST_TRIGGERED);
         DoCastSpellIfCan(m_creature, SPELL_OPEN_PORTAL_PERIODIC, CAST_TRIGGERED);
@@ -107,7 +116,7 @@ struct MANGOS_DLL_DECL boss_muruAI : public Scripted_NoMovementAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_MURU, FAIL);
+        { m_pInstance->SetData(TYPE_MURU, FAIL); }
     }
 
     void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
@@ -175,11 +184,11 @@ struct MANGOS_DLL_DECL boss_muruAI : public Scripted_NoMovementAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Return if already in transition
         if (m_bIsTransition)
-            return;
+        { return; }
 
         if (m_uiDarknessTimer < uiDiff)
         {
@@ -190,7 +199,7 @@ struct MANGOS_DLL_DECL boss_muruAI : public Scripted_NoMovementAI
             }
         }
         else
-            m_uiDarknessTimer -= uiDiff;
+        { m_uiDarknessTimer -= uiDiff; }
 
         if (m_uiDarkFiendsTimer)
         {
@@ -200,7 +209,7 @@ struct MANGOS_DLL_DECL boss_muruAI : public Scripted_NoMovementAI
                 m_uiDarkFiendsTimer = 0;
             }
             else
-                m_uiDarkFiendsTimer -= uiDiff;
+            { m_uiDarkFiendsTimer -= uiDiff; }
         }
 
         if (m_uiSummonHumanoidsTimer < uiDiff)
@@ -209,7 +218,7 @@ struct MANGOS_DLL_DECL boss_muruAI : public Scripted_NoMovementAI
             m_uiSummonHumanoidsTimer = 1 * MINUTE * IN_MILLISECONDS;
         }
         else
-            m_uiSummonHumanoidsTimer -= uiDiff;
+        { m_uiSummonHumanoidsTimer -= uiDiff; }
     }
 };
 
@@ -246,7 +255,7 @@ struct MANGOS_DLL_DECL boss_entropiusAI : public ScriptedAI
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_MURU, DONE);
+        { m_pInstance->SetData(TYPE_MURU, DONE); }
 
         // Despawn summoned creatures
         DespawnSummonedCreatures();
@@ -264,7 +273,7 @@ struct MANGOS_DLL_DECL boss_entropiusAI : public ScriptedAI
         for (GuidList::const_iterator itr = m_lSummonedCreaturesList.begin(); itr != m_lSummonedCreaturesList.end(); ++itr)
         {
             if (Creature* pTemp = m_creature->GetMap()->GetCreature(*itr))
-                pTemp->ForcedDespawn();
+            { pTemp->ForcedDespawn(); }
         }
     }
 
@@ -276,7 +285,7 @@ struct MANGOS_DLL_DECL boss_entropiusAI : public ScriptedAI
 
             // respawn muru
             if (Creature* pMuru = m_pInstance->GetSingleCreatureFromStorage(NPC_MURU))
-                pMuru->Respawn();
+            { pMuru->Respawn(); }
         }
 
         // despawn boss and summons for reset
@@ -287,29 +296,29 @@ struct MANGOS_DLL_DECL boss_entropiusAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiBlackHoleTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SUMMON_BLACK_HOLE) == CAST_OK)
-                    m_uiBlackHoleTimer = 15000;
+                { m_uiBlackHoleTimer = 15000; }
             }
         }
         else
-            m_uiBlackHoleTimer -= uiDiff;
+        { m_uiBlackHoleTimer -= uiDiff; }
 
         if (m_uiDarknessTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SUMMON_DARKNESS) == CAST_OK)
-                    m_uiDarknessTimer = urand(15000, 20000);
+                { m_uiDarknessTimer = urand(15000, 20000); }
             }
         }
         else
-            m_uiDarknessTimer -= uiDiff;
+        { m_uiDarknessTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -344,7 +353,7 @@ struct MANGOS_DLL_DECL npc_portal_targetAI : public Scripted_NoMovementAI
     {
         // Cast a visual ball on the summoner
         if (pSummoned->GetEntry() == NPC_VOID_SENTINEL_SUMMONER)
-            DoCastSpellIfCan(pSummoned, SPELL_SENTINEL_SUMMONER_VISUAL, CAST_TRIGGERED);
+        { DoCastSpellIfCan(pSummoned, SPELL_SENTINEL_SUMMONER_VISUAL, CAST_TRIGGERED); }
     }
 
     void SpellHit(Unit* /*pCaster*/, const SpellEntry* pSpell) override
@@ -372,10 +381,10 @@ struct MANGOS_DLL_DECL npc_portal_targetAI : public Scripted_NoMovementAI
             if (m_uiSentinelTimer <= uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_SENTINEL_SUMMONER) == CAST_OK)
-                    m_uiSentinelTimer = 0;
+                { m_uiSentinelTimer = 0; }
             }
             else
-                m_uiSentinelTimer -= uiDiff;
+            { m_uiSentinelTimer -= uiDiff; }
         }
 
         if (m_uiTransformTimer)
@@ -387,7 +396,7 @@ struct MANGOS_DLL_DECL npc_portal_targetAI : public Scripted_NoMovementAI
                 DoCastSpellIfCan(m_creature, (m_uiTransformCount % 2) ? SPELL_TRANSFORM_VISUAL_1 : SPELL_TRANSFORM_VISUAL_2, CAST_TRIGGERED);
 
                 if (m_uiTransformCount < MAX_TRANSFORM_CASTS)
-                    m_uiTransformTimer = 1000;
+                { m_uiTransformTimer = 1000; }
                 else
                 {
                     m_uiTransformTimer = 0;
@@ -398,11 +407,11 @@ struct MANGOS_DLL_DECL npc_portal_targetAI : public Scripted_NoMovementAI
                 if (m_uiTransformCount == MAX_TRANSFORM_CASTS / 2)
                 {
                     if (Creature* pMuru = m_pInstance->GetSingleCreatureFromStorage(NPC_MURU))
-                        pMuru->CastSpell(pMuru, SPELL_SUMMON_ENTROPIUS, false);
+                    { pMuru->CastSpell(pMuru, SPELL_SUMMON_ENTROPIUS, false); }
                 }
             }
             else
-                m_uiTransformTimer -= uiDiff;
+            { m_uiTransformTimer -= uiDiff; }
         }
     }
 };
@@ -431,7 +440,7 @@ struct MANGOS_DLL_DECL npc_void_sentinel_summonerAI : public Scripted_NoMovement
             if (Creature* pMuru = m_pInstance->GetSingleCreatureFromStorage(NPC_MURU))
             {
                 if (Unit* pTarget = pMuru->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    pSummoned->AI()->AttackStart(pTarget);
+                { pSummoned->AI()->AttackStart(pTarget); }
             }
         }
     }

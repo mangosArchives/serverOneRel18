@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -62,7 +71,7 @@ struct MANGOS_DLL_DECL npc_kyle_the_frenziedAI : public ScriptedAI
         m_uiEventPhase = 0;
 
         if (m_creature->GetEntry() == NPC_KYLE_FRIENDLY)
-            m_creature->UpdateEntry(NPC_KYLE_FRENZIED);
+        { m_creature->UpdateEntry(NPC_KYLE_FRENZIED); }
     }
 
     void SpellHit(Unit* pCaster, SpellEntry const* pSpell) override
@@ -70,7 +79,7 @@ struct MANGOS_DLL_DECL npc_kyle_the_frenziedAI : public ScriptedAI
         if (!m_creature->getVictim() && !m_bEvent && pSpell->Id == SPELL_LUNCH)
         {
             if (pCaster->GetTypeId() == TYPEID_PLAYER)
-                m_playerGuid = pCaster->GetObjectGuid();
+            { m_playerGuid = pCaster->GetObjectGuid(); }
 
             if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
             {
@@ -88,10 +97,10 @@ struct MANGOS_DLL_DECL npc_kyle_the_frenziedAI : public ScriptedAI
     void MovementInform(uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE || !m_bEvent)
-            return;
+        { return; }
 
         if (uiPointId == POINT_ID)
-            m_bIsMovingToLunch = false;
+        { m_bIsMovingToLunch = false; }
     }
 
     void UpdateAI(const uint32 diff) override
@@ -99,7 +108,7 @@ struct MANGOS_DLL_DECL npc_kyle_the_frenziedAI : public ScriptedAI
         if (m_bEvent)
         {
             if (m_bIsMovingToLunch)
-                return;
+            { return; }
 
             if (m_uiEventTimer < diff)
             {
@@ -140,7 +149,7 @@ struct MANGOS_DLL_DECL npc_kyle_the_frenziedAI : public ScriptedAI
                         break;
                     case 3:
                         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
-                            pPlayer->TalkedToCreature(m_creature->GetEntry(), m_creature->GetObjectGuid());
+                        { pPlayer->TalkedToCreature(m_creature->GetEntry(), m_creature->GetObjectGuid()); }
 
                         m_creature->UpdateEntry(NPC_KYLE_FRIENDLY);
                         break;
@@ -157,7 +166,7 @@ struct MANGOS_DLL_DECL npc_kyle_the_frenziedAI : public ScriptedAI
                 }
             }
             else
-                m_uiEventTimer -= diff;
+            { m_uiEventTimer -= diff; }
         }
     }
 };

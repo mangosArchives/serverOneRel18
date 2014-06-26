@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -42,12 +51,12 @@ enum
 bool ItemUse_item_arcane_charges(Player* pPlayer, Item* pItem, const SpellCastTargets& /*pTargets*/)
 {
     if (pPlayer->IsTaxiFlying())
-        return false;
+    { return false; }
 
     pPlayer->SendEquipError(EQUIP_ERR_NONE, pItem, NULL);
 
     if (const SpellEntry* pSpellInfo = GetSpellStore()->LookupEntry(SPELL_ARCANE_CHARGES))
-        Spell::SendCastResult(pPlayer, pSpellInfo, 1, SPELL_FAILED_ERROR);
+    { Spell::SendCastResult(pPlayer, pSpellInfo, 1, SPELL_FAILED_ERROR); }
 
     return true;
 }
@@ -62,11 +71,11 @@ bool ItemUse_item_flying_machine(Player* pPlayer, Item* pItem, const SpellCastTa
 
     if (itemId == 34060)
         if (pPlayer->GetBaseSkillValue(SKILL_RIDING) >= 225)
-            return false;
+        { return false; }
 
     if (itemId == 34061)
         if (pPlayer->GetBaseSkillValue(SKILL_RIDING) == 300)
-            return false;
+        { return false; }
 
     debug_log("SD2: Player attempt to use item %u, but did not meet riding requirement", itemId);
     pPlayer->SendEquipError(EQUIP_ERR_CANT_EQUIP_SKILL, pItem, NULL);
@@ -90,7 +99,7 @@ bool ItemUse_item_gor_dreks_ointment(Player* pPlayer, Item* pItem, const SpellCa
         pPlayer->SendEquipError(EQUIP_ERR_NONE, pItem, NULL);
 
         if (const SpellEntry* pSpellInfo = GetSpellStore()->LookupEntry(SPELL_GORDREKS_OINTMENT))
-            Spell::SendCastResult(pPlayer, pSpellInfo, 1, SPELL_FAILED_TARGET_AURASTATE);
+        { Spell::SendCastResult(pPlayer, pSpellInfo, 1, SPELL_FAILED_TARGET_AURASTATE); }
 
         return true;
     }

@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -119,7 +128,7 @@ struct MANGOS_DLL_DECL boss_dorotheeAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -133,7 +142,7 @@ struct MANGOS_DLL_DECL boss_dorotheeAI : public ScriptedAI
     {
         // Allow a short delay before attacking
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::MoveInLineOfSight(pWho);
     }
@@ -141,7 +150,7 @@ struct MANGOS_DLL_DECL boss_dorotheeAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (m_creature->getVictim())
-            pSummoned->AI()->AttackStart(m_creature->getVictim());
+        { pSummoned->AI()->AttackStart(m_creature->getVictim()); }
     }
 
     void SummonedCreatureJustDied(Creature* pSummoned) override
@@ -163,7 +172,7 @@ struct MANGOS_DLL_DECL boss_dorotheeAI : public ScriptedAI
                 m_uiIntroTimer = 0;
             }
             else
-                m_uiIntroTimer -= uiDiff;
+            { m_uiIntroTimer -= uiDiff; }
         }
 
         if (m_uiAggroTimer)
@@ -175,30 +184,30 @@ struct MANGOS_DLL_DECL boss_dorotheeAI : public ScriptedAI
                 m_uiAggroTimer = 0;
             }
             else
-                m_uiAggroTimer -= uiDiff;
+            { m_uiAggroTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiWaterBoltTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_WATERBOLT) == CAST_OK)
-                    m_uiWaterBoltTimer = m_bTitoDied ? 1500 : 5000;
+                { m_uiWaterBoltTimer = m_bTitoDied ? 1500 : 5000; }
             }
         }
         else
-            m_uiWaterBoltTimer -= uiDiff;
+        { m_uiWaterBoltTimer -= uiDiff; }
 
         if (m_uiFearTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SCREAM) == CAST_OK)
-                m_uiFearTimer = 30000;
+            { m_uiFearTimer = 30000; }
         }
         else
-            m_uiFearTimer -= uiDiff;
+        { m_uiFearTimer -= uiDiff; }
 
         if (m_uiSummonTitoTimer)
         {
@@ -211,7 +220,7 @@ struct MANGOS_DLL_DECL boss_dorotheeAI : public ScriptedAI
                 }
             }
             else
-                m_uiSummonTitoTimer -= uiDiff;
+            { m_uiSummonTitoTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -242,7 +251,7 @@ struct MANGOS_DLL_DECL boss_strawmanAI : public ScriptedAI
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::MoveInLineOfSight(pWho);
     }
@@ -250,7 +259,7 @@ struct MANGOS_DLL_DECL boss_strawmanAI : public ScriptedAI
     void AttackStart(Unit* pWho) override
     {
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::AttackStart(pWho);
     }
@@ -264,7 +273,7 @@ struct MANGOS_DLL_DECL boss_strawmanAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -290,30 +299,30 @@ struct MANGOS_DLL_DECL boss_strawmanAI : public ScriptedAI
                 m_uiAggroTimer = 0;
             }
             else
-                m_uiAggroTimer -= uiDiff;
+            { m_uiAggroTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiBrainBashTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_BRAIN_BASH) == CAST_OK)
-                m_uiBrainBashTimer = 15000;
+            { m_uiBrainBashTimer = 15000; }
         }
         else
-            m_uiBrainBashTimer -= uiDiff;
+        { m_uiBrainBashTimer -= uiDiff; }
 
         if (m_uiBrainWipeTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_BRAIN_WIPE) == CAST_OK)
-                    m_uiBrainWipeTimer = 20000;
+                { m_uiBrainWipeTimer = 20000; }
             }
         }
         else
-            m_uiBrainWipeTimer -= uiDiff;
+        { m_uiBrainWipeTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -348,7 +357,7 @@ struct MANGOS_DLL_DECL boss_tinheadAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -356,7 +365,7 @@ struct MANGOS_DLL_DECL boss_tinheadAI : public ScriptedAI
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::MoveInLineOfSight(pWho);
     }
@@ -364,7 +373,7 @@ struct MANGOS_DLL_DECL boss_tinheadAI : public ScriptedAI
     void AttackStart(Unit* pWho) override
     {
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::AttackStart(pWho);
     }
@@ -390,19 +399,19 @@ struct MANGOS_DLL_DECL boss_tinheadAI : public ScriptedAI
                 m_uiAggroTimer = 0;
             }
             else
-                m_uiAggroTimer -= uiDiff;
+            { m_uiAggroTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiCleaveTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CLEAVE) == CAST_OK)
-                m_uiCleaveTimer = 5000;
+            { m_uiCleaveTimer = 5000; }
         }
         else
-            m_uiCleaveTimer -= uiDiff;
+        { m_uiCleaveTimer -= uiDiff; }
 
         if (m_uiRustTimer < uiDiff)
         {
@@ -413,7 +422,7 @@ struct MANGOS_DLL_DECL boss_tinheadAI : public ScriptedAI
             }
         }
         else
-            m_uiRustTimer -= uiDiff;
+        { m_uiRustTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -445,7 +454,7 @@ struct MANGOS_DLL_DECL boss_roarAI : public ScriptedAI
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::MoveInLineOfSight(pWho);
     }
@@ -453,7 +462,7 @@ struct MANGOS_DLL_DECL boss_roarAI : public ScriptedAI
     void AttackStart(Unit* pWho) override
     {
         if (m_creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE))
-            return;
+        { return; }
 
         ScriptedAI::AttackStart(pWho);
     }
@@ -466,7 +475,7 @@ struct MANGOS_DLL_DECL boss_roarAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -492,35 +501,35 @@ struct MANGOS_DLL_DECL boss_roarAI : public ScriptedAI
                 m_uiAggroTimer = 0;
             }
             else
-                m_uiAggroTimer -= uiDiff;
+            { m_uiAggroTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiMangleTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MANGLE) == CAST_OK)
-                m_uiMangleTimer = urand(5000, 8000);
+            { m_uiMangleTimer = urand(5000, 8000); }
         }
         else
-            m_uiMangleTimer -= uiDiff;
+        { m_uiMangleTimer -= uiDiff; }
 
         if (m_uiShredTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_SHRED) == CAST_OK)
-                m_uiShredTimer = urand(10000, 15000);
+            { m_uiShredTimer = urand(10000, 15000); }
         }
         else
-            m_uiShredTimer -= uiDiff;
+        { m_uiShredTimer -= uiDiff; }
 
         if (m_uiScreamTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FRIGHTENED_SCREAM) == CAST_OK)
-                m_uiScreamTimer = urand(20000, 30000);
+            { m_uiScreamTimer = urand(20000, 30000); }
         }
         else
-            m_uiScreamTimer -= uiDiff;
+        { m_uiScreamTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -548,7 +557,7 @@ struct MANGOS_DLL_DECL boss_croneAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -566,7 +575,7 @@ struct MANGOS_DLL_DECL boss_croneAI : public ScriptedAI
         DoScriptText(SAY_CRONE_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, DONE);
+        { m_pInstance->SetData(TYPE_OPERA, DONE); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -579,18 +588,18 @@ struct MANGOS_DLL_DECL boss_croneAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiChainLightningTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_CHAIN_LIGHTNING) == CAST_OK)
-                    m_uiChainLightningTimer = 15000;
+                { m_uiChainLightningTimer = 15000; }
             }
         }
         else
-            m_uiChainLightningTimer -= uiDiff;
+        { m_uiChainLightningTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -658,7 +667,7 @@ bool GossipSelect_npc_grandmother(Player* pPlayer, Creature* pCreature, uint32 /
     if (uiAction == GOSSIP_ACTION_INFO_DEF)
     {
         if (Creature* pBigBadWolf = pCreature->SummonCreature(NPC_BIG_BAD_WOLF, 0, 0, 0, 0, TEMPSUMMON_DEAD_DESPAWN, 0))
-            pBigBadWolf->AI()->AttackStart(pPlayer);
+        { pBigBadWolf->AI()->AttackStart(pPlayer); }
 
         pCreature->ForcedDespawn();
     }
@@ -695,7 +704,7 @@ struct MANGOS_DLL_DECL boss_bigbadwolfAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -705,13 +714,13 @@ struct MANGOS_DLL_DECL boss_bigbadwolfAI : public ScriptedAI
         DoPlaySoundToSet(m_creature, SOUND_WOLF_DEATH);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, DONE);
+        { m_pInstance->SetData(TYPE_OPERA, DONE); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiRedRidingHoodTimer < uiDiff)
         {
@@ -722,23 +731,23 @@ struct MANGOS_DLL_DECL boss_bigbadwolfAI : public ScriptedAI
             }
         }
         else
-            m_uiRedRidingHoodTimer -= uiDiff;
+        { m_uiRedRidingHoodTimer -= uiDiff; }
 
         if (m_uiFearTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_TERRIFYING_HOWL) == CAST_OK)
-                m_uiFearTimer = 24000;
+            { m_uiFearTimer = 24000; }
         }
         else
-            m_uiFearTimer -= uiDiff;
+        { m_uiFearTimer -= uiDiff; }
 
         if (m_uiSwipeTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_WIDE_SWIPE) == CAST_OK)
-                m_uiSwipeTimer = urand(25000, 30000);
+            { m_uiSwipeTimer = urand(25000, 30000); }
         }
         else
-            m_uiSwipeTimer -= uiDiff;
+        { m_uiSwipeTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -839,7 +848,7 @@ struct MANGOS_DLL_DECL boss_julianneAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -847,12 +856,12 @@ struct MANGOS_DLL_DECL boss_julianneAI : public ScriptedAI
     void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
     {
         if (uiDamage < m_creature->GetHealth())
-            return;
+        { return; }
 
         uiDamage = 0;
 
         if (m_bIsFakingDeath)
-            return;
+        { return; }
 
         if (m_Phase == PHASE_JULIANNE)
         {
@@ -878,13 +887,13 @@ struct MANGOS_DLL_DECL boss_julianneAI : public ScriptedAI
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, DONE);
+        { m_pInstance->SetData(TYPE_OPERA, DONE); }
     }
 
     void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_PLAYER)
-            return;
+        { return; }
 
         DoScriptText(SAY_JULIANNE_SLAY, m_creature);
     }
@@ -892,7 +901,7 @@ struct MANGOS_DLL_DECL boss_julianneAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (m_creature->getVictim())
-            pSummoned->AI()->AttackStart(m_creature->getVictim());
+        { pSummoned->AI()->AttackStart(m_creature->getVictim()); }
     }
 
     // Wrapper to set fake death
@@ -948,7 +957,7 @@ struct MANGOS_DLL_DECL boss_julianneAI : public ScriptedAI
                 m_uiSummonRomuloTimer = 0;
             }
             else
-                m_uiSummonRomuloTimer -= uiDiff;
+            { m_uiSummonRomuloTimer -= uiDiff; }
         }
 
         if (m_uiResurrectSelfTimer)
@@ -975,56 +984,56 @@ struct MANGOS_DLL_DECL boss_julianneAI : public ScriptedAI
                 m_uiResurrectSelfTimer = 0;
             }
             else
-                m_uiResurrectSelfTimer -= uiDiff;
+            { m_uiResurrectSelfTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // don't use spells during transition
         if (m_bIsFakingDeath)
-            return;
+        { return; }
 
         if (m_uiBlindingPassionTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_BLINDING_PASSION) == CAST_OK)
-                    m_uiBlindingPassionTimer = urand(30000, 45000);
+                { m_uiBlindingPassionTimer = urand(30000, 45000); }
             }
         }
         else
-            m_uiBlindingPassionTimer -= uiDiff;
+        { m_uiBlindingPassionTimer -= uiDiff; }
 
         if (m_uiDevotionTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_DEVOTION) == CAST_OK)
-                m_uiDevotionTimer = urand(15000, 45000);
+            { m_uiDevotionTimer = urand(15000, 45000); }
         }
         else
-            m_uiDevotionTimer -= uiDiff;
+        { m_uiDevotionTimer -= uiDiff; }
 
         if (m_uiPowerfulAttractionTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_POWERFUL_ATTRACTION) == CAST_OK)
-                    m_uiPowerfulAttractionTimer = urand(5000, 30000);
+                { m_uiPowerfulAttractionTimer = urand(5000, 30000); }
             }
         }
         else
-            m_uiPowerfulAttractionTimer -= uiDiff;
+        { m_uiPowerfulAttractionTimer -= uiDiff; }
 
         if (m_uiEternalAffectionTimer < uiDiff)
         {
             if (Unit* pTarget = DoSelectLowestHpFriendly(30.0f))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_ETERNAL_AFFECTION) == CAST_OK)
-                    m_uiEternalAffectionTimer = urand(45000, 60000);
+                { m_uiEternalAffectionTimer = urand(45000, 60000); }
             }
         }
         else
-            m_uiEternalAffectionTimer -= uiDiff;
+        { m_uiEternalAffectionTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -1037,7 +1046,7 @@ bool EffectDummyCreature_spell_drink_poison(Unit* /*pCaster*/, uint32 uiSpellId,
     {
         // Set fake death on poison
         if (boss_julianneAI* pJulianneAI = dynamic_cast<boss_julianneAI*>(pCreatureTarget->AI()))
-            pJulianneAI->DoSetFakeDeath();
+        { pJulianneAI->DoSetFakeDeath(); }
 
         DoScriptText(SAY_JULIANNE_DEATH01, pCreatureTarget);
 
@@ -1086,7 +1095,7 @@ struct MANGOS_DLL_DECL boss_romuloAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, FAIL);
+        { m_pInstance->SetData(TYPE_OPERA, FAIL); }
 
         m_creature->ForcedDespawn();
     }
@@ -1094,7 +1103,7 @@ struct MANGOS_DLL_DECL boss_romuloAI : public ScriptedAI
     void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
     {
         if (uiDamage < m_creature->GetHealth())
-            return;
+        { return; }
 
         uiDamage = 0;
 
@@ -1123,13 +1132,13 @@ struct MANGOS_DLL_DECL boss_romuloAI : public ScriptedAI
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_OPERA, DONE);
+        { m_pInstance->SetData(TYPE_OPERA, DONE); }
     }
 
     void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_PLAYER)
-            return;
+        { return; }
 
         DoScriptText(SAY_ROMULO_SLAY, m_creature);
     }
@@ -1138,7 +1147,7 @@ struct MANGOS_DLL_DECL boss_romuloAI : public ScriptedAI
     {
         // remove fake death on res
         if (pSpell->Id == SPELL_UNDYING_LOVE && pCaster->GetEntry() == NPC_JULIANNE)
-            DoRemoveFakeDeath();
+        { DoRemoveFakeDeath(); }
     }
 
     // Wrapper to set fake death
@@ -1184,13 +1193,13 @@ struct MANGOS_DLL_DECL boss_romuloAI : public ScriptedAI
                     if (Creature* pJulianne = m_pInstance->GetSingleCreatureFromStorage(NPC_JULIANNE))
                     {
                         if (boss_julianneAI* pJulianneAI = dynamic_cast<boss_julianneAI*>(pJulianne->AI()))
-                            pJulianneAI->DoHandleRomuloResurrect();
+                        { pJulianneAI->DoHandleRomuloResurrect(); }
                     }
                 }
                 m_uiResurrectTimer = 0;
             }
             else
-                m_uiResurrectTimer -= uiDiff;
+            { m_uiResurrectTimer -= uiDiff; }
         }
 
         if (m_uiResurrectSelfTimer)
@@ -1218,50 +1227,50 @@ struct MANGOS_DLL_DECL boss_romuloAI : public ScriptedAI
                 m_uiResurrectSelfTimer = 0;
             }
             else
-                m_uiResurrectSelfTimer -= uiDiff;
+            { m_uiResurrectSelfTimer -= uiDiff; }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // don't use spells on fake death
         if (m_bIsFakingDeath)
-            return;
+        { return; }
 
         if (m_uiBackwardLungeTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_BACKWARD_LUNGE) == CAST_OK)
-                m_uiBackwardLungeTimer = urand(15000, 30000);
+            { m_uiBackwardLungeTimer = urand(15000, 30000); }
         }
         else
-            m_uiBackwardLungeTimer -= uiDiff;
+        { m_uiBackwardLungeTimer -= uiDiff; }
 
         if (m_uiDaringTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_DARING) == CAST_OK)
-                m_uiDaringTimer = urand(20000, 40000);
+            { m_uiDaringTimer = urand(20000, 40000); }
         }
         else
-            m_uiDaringTimer -= uiDiff;
+        { m_uiDaringTimer -= uiDiff; }
 
         if (m_uiDeadlySwatheTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_DEADLY_SWATHE) == CAST_OK)
-                    m_uiDeadlySwatheTimer = urand(15000, 25000);
+                { m_uiDeadlySwatheTimer = urand(15000, 25000); }
             }
         }
         else
-            m_uiDeadlySwatheTimer -= uiDiff;
+        { m_uiDeadlySwatheTimer -= uiDiff; }
 
         if (m_uiPoisonThrustTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_POISON_THRUST) == CAST_OK)
-                m_uiPoisonThrustTimer = urand(10000, 20000);
+            { m_uiPoisonThrustTimer = urand(10000, 20000); }
         }
         else
-            m_uiPoisonThrustTimer -= uiDiff;
+        { m_uiPoisonThrustTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

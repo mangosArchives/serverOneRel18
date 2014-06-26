@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -79,7 +88,7 @@ struct MANGOS_DLL_DECL boss_faerlinaAI : public ScriptedAI
         }
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FAERLINA, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_FAERLINA, IN_PROGRESS); }
     }
 
     void MoveInLineOfSight(Unit* pWho) override
@@ -103,13 +112,13 @@ struct MANGOS_DLL_DECL boss_faerlinaAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FAERLINA, DONE);
+        { m_pInstance->SetData(TYPE_FAERLINA, DONE); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FAERLINA, FAIL);
+        { m_pInstance->SetData(TYPE_FAERLINA, FAIL); }
     }
 
     // Widow's Embrace prevents frenzy and poison bolt, if it removes frenzy, next frenzy is sceduled in 60s
@@ -140,16 +149,16 @@ struct MANGOS_DLL_DECL boss_faerlinaAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // Poison Bolt Volley
         if (m_uiPoisonBoltVolleyTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_POSIONBOLT_VOLLEY) == CAST_OK)
-                m_uiPoisonBoltVolleyTimer = 11000;
+            { m_uiPoisonBoltVolleyTimer = 11000; }
         }
         else
-            m_uiPoisonBoltVolleyTimer -= uiDiff;
+        { m_uiPoisonBoltVolleyTimer -= uiDiff; }
 
         // Rain Of Fire
         if (m_uiRainOfFireTimer < uiDiff)
@@ -157,11 +166,11 @@ struct MANGOS_DLL_DECL boss_faerlinaAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_RAIN_OF_FIRE) == CAST_OK)
-                    m_uiRainOfFireTimer = 16000;
+                { m_uiRainOfFireTimer = 16000; }
             }
         }
         else
-            m_uiRainOfFireTimer -= uiDiff;
+        { m_uiRainOfFireTimer -= uiDiff; }
 
         // Enrage Timer
         if (m_uiEnrageTimer < uiDiff)
@@ -173,7 +182,7 @@ struct MANGOS_DLL_DECL boss_faerlinaAI : public ScriptedAI
             }
         }
         else
-            m_uiEnrageTimer -= uiDiff;
+        { m_uiEnrageTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

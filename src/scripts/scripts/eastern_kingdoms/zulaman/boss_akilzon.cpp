@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -83,7 +92,7 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_AKILZON, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_AKILZON, IN_PROGRESS); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -96,7 +105,7 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (!m_pInstance)
-            return;
+        { return; }
 
         m_pInstance->SetData(TYPE_AKILZON, DONE);
     }
@@ -104,7 +113,7 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_AKILZON, FAIL);
+        { m_pInstance->SetData(TYPE_AKILZON, FAIL); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -129,26 +138,26 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiCallLightTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CALL_LIGHTNING) == CAST_OK)
-                m_uiCallLightTimer = urand(15000, 25000);
+            { m_uiCallLightTimer = urand(15000, 25000); }
         }
         else
-            m_uiCallLightTimer -= uiDiff;
+        { m_uiCallLightTimer -= uiDiff; }
 
         if (m_uiStaticDisruptTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_STATIC_DISRUPTION) == CAST_OK)
-                    m_uiStaticDisruptTimer = urand(7000, 14000);
+                { m_uiStaticDisruptTimer = urand(7000, 14000); }
             }
         }
         else
-            m_uiStaticDisruptTimer -= uiDiff;
+        { m_uiStaticDisruptTimer -= uiDiff; }
 
         if (m_uiStormTimer < uiDiff)
         {
@@ -162,18 +171,18 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
             }
         }
         else
-            m_uiStormTimer -= uiDiff;
+        { m_uiStormTimer -= uiDiff; }
 
         if (m_uiGustOfWindTimer < uiDiff)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_GUST_OF_WIND) == CAST_OK)
-                    m_uiGustOfWindTimer = urand(20000, 30000);
+                { m_uiGustOfWindTimer = urand(20000, 30000); }
             }
         }
         else
-            m_uiGustOfWindTimer -= uiDiff;
+        { m_uiGustOfWindTimer -= uiDiff; }
 
         if (m_uiSummonEagleTimer < uiDiff)
         {
@@ -182,7 +191,7 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
             m_uiSummonEagleTimer = 60000;
         }
         else
-            m_uiSummonEagleTimer -= uiDiff;
+        { m_uiSummonEagleTimer -= uiDiff; }
 
         if (m_uiBerserkTimer)
         {
@@ -195,7 +204,7 @@ struct MANGOS_DLL_DECL boss_akilzonAI : public ScriptedAI
                 }
             }
             else
-                m_uiBerserkTimer -= uiDiff;
+            { m_uiBerserkTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();
@@ -231,7 +240,7 @@ struct MANGOS_DLL_DECL mob_soaring_eagleAI : public ScriptedAI
     void AttackStart(Unit* pWho) override
     {
         if (!pWho)
-            return;
+        { return; }
 
         if (m_creature->Attack(pWho, false))
         {
@@ -244,7 +253,7 @@ struct MANGOS_DLL_DECL mob_soaring_eagleAI : public ScriptedAI
     void MovementInform(uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE || !uiPointId)
-            return;
+        { return; }
 
         m_uiEagleSwoopTimer = urand(2000, 6000);
     }
@@ -252,7 +261,7 @@ struct MANGOS_DLL_DECL mob_soaring_eagleAI : public ScriptedAI
     void DoMoveToRandom()
     {
         if (!m_pInstance)
-            return;
+        { return; }
 
         if (Creature* pAzkil = m_pInstance->GetSingleCreatureFromStorage(NPC_AKILZON))
         {
@@ -267,7 +276,7 @@ struct MANGOS_DLL_DECL mob_soaring_eagleAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (m_uiReturnTimer)
         {
@@ -277,7 +286,7 @@ struct MANGOS_DLL_DECL mob_soaring_eagleAI : public ScriptedAI
                 m_uiReturnTimer = 0;
             }
             else
-                m_uiReturnTimer -= uiDiff;
+            { m_uiReturnTimer -= uiDiff; }
         }
 
         if (m_uiEagleSwoopTimer)
@@ -294,7 +303,7 @@ struct MANGOS_DLL_DECL mob_soaring_eagleAI : public ScriptedAI
                 }
             }
             else
-                m_uiEagleSwoopTimer -= uiDiff;
+            { m_uiEagleSwoopTimer -= uiDiff; }
         }
     }
 };

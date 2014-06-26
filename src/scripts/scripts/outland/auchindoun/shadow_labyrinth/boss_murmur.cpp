@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -80,7 +89,7 @@ struct MANGOS_DLL_DECL boss_murmurAI : public Scripted_NoMovementAI
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         // SonicBoom_Timer
         if (m_uiSonicBoomTimer < uiDiff)
@@ -92,16 +101,16 @@ struct MANGOS_DLL_DECL boss_murmurAI : public Scripted_NoMovementAI
             }
         }
         else
-            m_uiSonicBoomTimer -= uiDiff;
+        { m_uiSonicBoomTimer -= uiDiff; }
 
         // MurmursTouch_Timer
         if (m_uiMurmursTouchTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, m_bIsRegularMode ? SPELL_MURMURS_TOUCH : SPELL_MURMURS_TOUCH_H) == CAST_OK)
-                m_uiMurmursTouchTimer = m_bIsRegularMode ? urand(21000, 21000) : urand(29000, 40000);
+            { m_uiMurmursTouchTimer = m_bIsRegularMode ? urand(21000, 21000) : urand(29000, 40000); }
         }
         else
-            m_uiMurmursTouchTimer -= uiDiff;
+        { m_uiMurmursTouchTimer -= uiDiff; }
 
         // Resonance_Timer - cast if no target is in range
         if (!m_creature->CanReachWithMeleeAttack(m_creature->getVictim()))
@@ -109,10 +118,10 @@ struct MANGOS_DLL_DECL boss_murmurAI : public Scripted_NoMovementAI
             if (m_uiResonanceTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_RESONANCE) == CAST_OK)
-                    m_uiResonanceTimer = urand(5000, 12000);
+                { m_uiResonanceTimer = urand(5000, 12000); }
             }
             else
-                m_uiResonanceTimer -= uiDiff;
+            { m_uiResonanceTimer -= uiDiff; }
         }
 
         // MagneticPull_Timer
@@ -121,11 +130,11 @@ struct MANGOS_DLL_DECL boss_murmurAI : public Scripted_NoMovementAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_MAGNETIC_PULL, SELECT_FLAG_PLAYER | SELECT_FLAG_NOT_IN_MELEE_RANGE))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_MAGNETIC_PULL) == CAST_OK)
-                    m_uiMagneticPullTimer = urand(21000, 30000);
+                { m_uiMagneticPullTimer = urand(21000, 30000); }
             }
         }
         else
-            m_uiMagneticPullTimer -= uiDiff;
+        { m_uiMagneticPullTimer -= uiDiff; }
 
         if (!m_bIsRegularMode)
         {
@@ -134,19 +143,19 @@ struct MANGOS_DLL_DECL boss_murmurAI : public Scripted_NoMovementAI
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_SONIC_SHOCK, SELECT_FLAG_IN_MELEE_RANGE))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_SONIC_SHOCK) == CAST_OK)
-                        m_uiSonicShockTimer = urand(3000, 10000);
+                    { m_uiSonicShockTimer = urand(3000, 10000); }
                 }
             }
             else
-                m_uiSonicShockTimer -= uiDiff;
+            { m_uiSonicShockTimer -= uiDiff; }
 
             if (m_uiThunderingStormTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_THUNDERING_STORM) == CAST_OK)
-                    m_uiThunderingStormTimer = urand(5000, 6000);
+                { m_uiThunderingStormTimer = urand(5000, 6000); }
             }
             else
-                m_uiThunderingStormTimer -= uiDiff;
+            { m_uiThunderingStormTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();

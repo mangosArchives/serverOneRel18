@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -233,7 +242,7 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
     void JustDidDialogueStep(int32 iEntry) override
     {
         if (!m_pInstance)
-            return;
+        { return; }
 
         switch (iEntry)
         {
@@ -262,7 +271,7 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
                 break;
             case SPELL_CALL_ENTROPIUS:
                 if (Creature* pVelen = m_pInstance->GetSingleCreatureFromStorage(NPC_VELEN))
-                    pVelen->CastSpell(pVelen, SPELL_CALL_ENTROPIUS, false);
+                { pVelen->CastSpell(pVelen, SPELL_CALL_ENTROPIUS, false); }
                 // Set point id = 1 for movement event
                 if (Creature* pEntropius = m_creature->GetMap()->GetCreature(m_EntropiusGuid))
                 {
@@ -272,7 +281,7 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
                 break;
             case POINT_MOVE_LIADRIN:
                 if (Creature* pLiadrin = m_pInstance->GetSingleCreatureFromStorage(NPC_LIADRIN))
-                    pLiadrin->GetMotionMaster()->MovePoint(0, aOutroLocations[4].m_fX, aOutroLocations[4].m_fY, aOutroLocations[4].m_fZ);
+                { pLiadrin->GetMotionMaster()->MovePoint(0, aOutroLocations[4].m_fX, aOutroLocations[4].m_fY, aOutroLocations[4].m_fZ); }
                 break;
             case SPELL_BLAZE_TO_LIGHT:
                 if (Creature* pEntropius = m_creature->GetMap()->GetCreature(m_EntropiusGuid))
@@ -286,7 +295,7 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
             case POINT_EVENT_EXIT:
                 // Set point id = 1 for the despawn event
                 if (Creature* pVelen = m_pInstance->GetSingleCreatureFromStorage(NPC_VELEN))
-                    pVelen->GetMotionMaster()->MovePoint(1, aOutroLocations[1].m_fX, aOutroLocations[1].m_fY, aOutroLocations[1].m_fZ);
+                { pVelen->GetMotionMaster()->MovePoint(1, aOutroLocations[1].m_fX, aOutroLocations[1].m_fY, aOutroLocations[1].m_fZ); }
                 break;
         }
     }
@@ -317,13 +326,13 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
     {
         // Start outro dialogue when Kil'jaeden is killed
         if (pSummoned->GetEntry() == NPC_KILJAEDEN)
-            StartNextDialogueText(NPC_KALECGOS);
+        { StartNextDialogueText(NPC_KALECGOS); }
     }
 
     void SummonedMovementInform(Creature* pSummoned, uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE)
-            return;
+        { return; }
 
         if (uiPointId == 1)
         {
@@ -331,7 +340,7 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
             {
                 // Interrupt Velen's casting when entropius has reached the ground
                 if (Creature* pVelen = m_pInstance->GetSingleCreatureFromStorage(NPC_VELEN))
-                    pVelen->InterruptNonMeleeSpells(false);
+                { pVelen->InterruptNonMeleeSpells(false); }
             }
             else if (pSummoned->GetEntry() == NPC_VELEN)
             {
@@ -341,10 +350,10 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
 
                 // Note: portal should despawn only after all the soldiers have reached this point and "teleported" outside
                 if (Creature* pPortal = m_creature->GetMap()->GetCreature(m_PortalGuid))
-                    pPortal->ForcedDespawn(5000);
+                { pPortal->ForcedDespawn(5000); }
 
                 if (Creature* pKalec = m_pInstance->GetSingleCreatureFromStorage(NPC_KALECGOS))
-                    pKalec->ForcedDespawn(1000);
+                { pKalec->ForcedDespawn(1000); }
             }
         }
         else if (uiPointId == 2 && pSummoned->GetEntry() == NPC_CORE_ENTROPIUS)
@@ -353,7 +362,7 @@ struct MANGOS_DLL_DECL npc_kiljaeden_controllerAI : public Scripted_NoMovementAI
             DoCastSpellIfCan(m_creature, SPELL_SUNWELL_IGNITION);
 
             if (Creature* pLiadrin = m_pInstance->GetSingleCreatureFromStorage(NPC_LIADRIN))
-                pLiadrin->SetStandState(UNIT_STAND_STATE_KNEEL);
+            { pLiadrin->SetStandState(UNIT_STAND_STATE_KNEEL); }
 
             pSummoned->ForcedDespawn();
         }
@@ -418,7 +427,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_KILJAEDEN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_KILJAEDEN, IN_PROGRESS); }
 
         DoScriptText(SAY_EMERGE, m_creature);
         DoCastSpellIfCan(m_creature, SPELL_BIRTH);
@@ -432,7 +441,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
 
             // Reset the corrupt Sunwell aura
             if (Creature* pKiljaedenController = m_pInstance->GetSingleCreatureFromStorage(NPC_KILJAEDEN_CONTROLLER))
-                pKiljaedenController->CastSpell(pKiljaedenController, SPELL_ANVEENA_DRAIN, true);
+            { pKiljaedenController->CastSpell(pKiljaedenController, SPELL_ANVEENA_DRAIN, true); }
         }
 
         // Despawn on wipe
@@ -442,7 +451,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_PLAYER)
-            return;
+        { return; }
 
         DoScriptText(urand(0, 1) ? SAY_SLAY_1 : SAY_SLAY_2, m_creature);
     }
@@ -450,7 +459,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_KILJAEDEN, DONE);
+        { m_pInstance->SetData(TYPE_KILJAEDEN, DONE); }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -470,7 +479,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
             fAng = m_creature->GetAngle(pSummoned) + M_PI_F / 8;
             // Normalize angle
             if (fAng > 2 * M_PI_F)
-                fAng = fAng - 2 * M_PI_F;
+            { fAng = fAng - 2 * M_PI_F; }
 
             m_creature->GetNearPoint2D(fX, fY, 25.0f, fAng);
 
@@ -497,7 +506,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void SummonedCreatureJustDied(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_SHIELD_ORB)
-            --m_uiShieldOrbCount;
+        { --m_uiShieldOrbCount; }
     }
 
     void GetAIInformation(ChatHandler& reader) override
@@ -508,7 +517,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void JustDidDialogueStep(int32 iEntry) override
     {
         if (!m_pInstance)
-            return;
+        { return; }
 
         switch (iEntry)
         {
@@ -521,7 +530,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
 
                     // In the 2nd and 3rd transition kill all drakes
                     if (iEntry == PHASE_ARMAGEDDON || iEntry == PHASE_SACRIFICE)
-                        DoCastSpellIfCan(m_creature, SPELL_DESTROY_DRAKES, CAST_TRIGGERED);
+                    { DoCastSpellIfCan(m_creature, SPELL_DESTROY_DRAKES, CAST_TRIGGERED); }
 
                     m_uiPhase = PHASE_TRANSITION;
                     // Darkness of Souls needs the timer reseted
@@ -536,7 +545,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
             case EVENT_DRAGON_ORB:
                 // Activate blue orbs
                 if (Creature* pKalec = m_pInstance->GetSingleCreatureFromStorage(NPC_KALECGOS))
-                    DoScriptText(irand(0, 1) ? SAY_KALECGOS_ORB_2 : SAY_KALECGOS_ORB_3, pKalec);
+                { DoScriptText(irand(0, 1) ? SAY_KALECGOS_ORB_2 : SAY_KALECGOS_ORB_3, pKalec); }
                 DoActivateDragonOrb(GO_ORB_BLUE_FLIGHT_2);
                 break;
             case SAY_KALECGOS_ORB_1:
@@ -573,13 +582,13 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void DoActivateDragonOrb(uint32 uiEntry)
     {
         if (!m_pInstance)
-            return;
+        { return; }
 
         // Set the visual around the Orb
         if (GameObject* pGo = m_pInstance->GetSingleGameObjectFromStorage(uiEntry))
         {
             if (Creature* pTarget = GetClosestCreatureWithEntry(pGo, NPC_BLUE_ORB_TARGET, 5.0f))
-                pTarget->CastSpell(pTarget, SPELL_RING_BLUE_FLAME, false);
+            { pTarget->CastSpell(pTarget, SPELL_RING_BLUE_FLAME, false); }
         }
 
         // Make the orb usable
@@ -589,7 +598,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         DialogueUpdate(uiDiff);
 
@@ -607,14 +616,14 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
                 if (m_uiArmageddonTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_ARMAGEDDON) == CAST_OK)
-                        m_uiArmageddonTimer = m_uiPhase == PHASE_SACRIFICE ? 20000 : 30000;
+                    { m_uiArmageddonTimer = m_uiPhase == PHASE_SACRIFICE ? 20000 : 30000; }
                 }
                 else
-                    m_uiArmageddonTimer -= uiDiff;
+                { m_uiArmageddonTimer -= uiDiff; }
 
                 // Go to next phase and start transition dialogue
                 if (m_uiPhase == PHASE_ARMAGEDDON && m_creature->GetHealthPercent() < 25.0f)
-                    StartNextDialogueText(PHASE_SACRIFICE);
+                { StartNextDialogueText(PHASE_SACRIFICE); }
 
                 // no break - use the spells from the phases below;
             case PHASE_DARKNESS:
@@ -623,22 +632,22 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
                 if (m_uiDarknessOfSoulsTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_DARKNESS_OF_SOULS) == CAST_OK)
-                        m_uiDarknessOfSoulsTimer = m_uiPhase == PHASE_SACRIFICE ? 30000 : 45000;
+                    { m_uiDarknessOfSoulsTimer = m_uiPhase == PHASE_SACRIFICE ? 30000 : 45000; }
                 }
                 else
-                    m_uiDarknessOfSoulsTimer -= uiDiff;
+                { m_uiDarknessOfSoulsTimer -= uiDiff; }
 
                 if (m_uiFlameDartTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_FLAME_DART) == CAST_OK)
-                        m_uiFlameDartTimer = urand(25000, 30000);
+                    { m_uiFlameDartTimer = urand(25000, 30000); }
                 }
                 else
-                    m_uiFlameDartTimer -= uiDiff;
+                { m_uiFlameDartTimer -= uiDiff; }
 
                 // Go to next phase and start transition dialogue
                 if (m_uiPhase == PHASE_DARKNESS && m_creature->GetHealthPercent() < 55.0f)
-                    StartNextDialogueText(PHASE_ARMAGEDDON);
+                { StartNextDialogueText(PHASE_ARMAGEDDON); }
 
                 // no break - use the spells from the phase below;
             case PHASE_INFERNO:
@@ -651,7 +660,7 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
                         m_uiKalecSummonTimer = 0;
                     }
                     else
-                        m_uiKalecSummonTimer -= uiDiff;
+                    { m_uiKalecSummonTimer -= uiDiff; }
                 }
 
                 if (m_uiLegionLightingTimer < uiDiff)
@@ -659,27 +668,27 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
                     if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                     {
                         if (DoCastSpellIfCan(pTarget, SPELL_LEGION_LIGHTING) == CAST_OK)
-                            m_uiLegionLightingTimer = urand(10000, 15000);
+                        { m_uiLegionLightingTimer = urand(10000, 15000); }
                     }
                 }
                 else
-                    m_uiLegionLightingTimer -= uiDiff;
+                { m_uiLegionLightingTimer -= uiDiff; }
 
                 if (m_uiFireBloomTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_FIRE_BLOOM) == CAST_OK)
-                        m_uiFireBloomTimer = 20000;
+                    { m_uiFireBloomTimer = 20000; }
                 }
                 else
-                    m_uiFireBloomTimer -= uiDiff;
+                { m_uiFireBloomTimer -= uiDiff; }
 
                 if (m_uiSoulFlyTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_SOUL_FLY) == CAST_OK)
-                        m_uiSoulFlyTimer = urand(3000, 10000);
+                    { m_uiSoulFlyTimer = urand(3000, 10000); }
                 }
                 else
-                    m_uiSoulFlyTimer -= uiDiff;
+                { m_uiSoulFlyTimer -= uiDiff; }
 
                 // Only spawn a Shadow orb when necessary
                 if (m_uiShieldOrbCount < m_uiMaxShieldOrbs)
@@ -696,12 +705,12 @@ struct MANGOS_DLL_DECL boss_kiljaedenAI : public Scripted_NoMovementAI, private 
                         m_uiShieldOrbTimer = 30000;
                     }
                     else
-                        m_uiShieldOrbTimer -= uiDiff;
+                    { m_uiShieldOrbTimer -= uiDiff; }
                 }
 
                 // Go to next phase and start transition dialogue
                 if (m_uiPhase == PHASE_INFERNO && m_creature->GetHealthPercent() < 85.0f)
-                    StartNextDialogueText(PHASE_DARKNESS);
+                { StartNextDialogueText(PHASE_DARKNESS); }
 
                 DoMeleeAttackIfReady();
 
@@ -751,7 +760,7 @@ struct MANGOS_DLL_DECL npc_shield_orbAI : public ScriptedAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE || !uiPointId || !m_pInstance)
-            return;
+        { return; }
 
         if (Creature* pSummoner = m_pInstance->GetSingleCreatureFromStorage(NPC_KILJAEDEN))
         {
@@ -760,7 +769,7 @@ struct MANGOS_DLL_DECL npc_shield_orbAI : public ScriptedAI
             fAng = pSummoner->GetAngle(m_creature) + M_PI_F / 8;
             // Normalize angle
             if (fAng > 2 * M_PI_F)
-                fAng = fAng - 2 * M_PI_F;
+            { fAng = fAng - 2 * M_PI_F; }
 
             pSummoner->GetNearPoint2D(fX, fY, 25.0f, fAng);
 
@@ -799,7 +808,7 @@ struct MANGOS_DLL_DECL npc_power_blue_flightAI : public ScriptedAI
             TemporarySummon* pTemporary = (TemporarySummon*)m_creature;
 
             if (Player* pPlayer = m_creature->GetMap()->GetPlayer(pTemporary->GetSummonerGuid()))
-                pPlayer->RemoveAurasDueToSpell(SPELL_POSSESS_DRAKE_IMMUNE);
+            { pPlayer->RemoveAurasDueToSpell(SPELL_POSSESS_DRAKE_IMMUNE); }
         }
     }
 
@@ -821,14 +830,14 @@ struct MANGOS_DLL_DECL npc_power_blue_flightAI : public ScriptedAI
             // Reset the No Interact flag of the closest orb
             GameObject* pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_1, 10.0f);
             if (!pOrb)
-                pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_2, 10.0f);
+            { pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_2, 10.0f); }
             if (!pOrb)
-                pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_3, 10.0f);
+            { pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_3, 10.0f); }
             if (!pOrb)
-                pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_4, 10.0f);
+            { pOrb = GetClosestGameObjectWithEntry(m_creature, GO_ORB_BLUE_FLIGHT_4, 10.0f); }
 
             if (pOrb)
-                pOrb->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
+            { pOrb->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT); }
 
             m_bHasPossessed = true;
         }

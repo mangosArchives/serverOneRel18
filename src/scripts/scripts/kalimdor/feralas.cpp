@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,14 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Feralas
-SD%Complete: 100
-SDComment: Quest support: 2767.
-SDCategory: Feralas
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Feralas
+ * SD%Complete: 100
+ * SDComment:   Quest support: 2767, 2987.
+ * SDCategory:  Feralas
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -80,7 +91,7 @@ struct MANGOS_DLL_DECL npc_oox22feAI : public npc_escortAI
                 DoScriptText(SAY_OOX_END, m_creature);
                 // Award quest credit
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_RESCUE_OOX22FE, m_creature);
+                { pPlayer->GroupEventHappens(QUEST_RESCUE_OOX22FE, m_creature); }
                 break;
         }
     }
@@ -88,7 +99,7 @@ struct MANGOS_DLL_DECL npc_oox22feAI : public npc_escortAI
     void Reset() override
     {
         if (!HasEscortState(STATE_ESCORT_ESCORTING))
-            m_creature->SetStandState(UNIT_STAND_STATE_DEAD);
+        { m_creature->SetStandState(UNIT_STAND_STATE_DEAD); }
     }
 
     void Aggro(Unit* /*who*/) override
@@ -121,14 +132,33 @@ bool QuestAccept_npc_oox22fe(Player* pPlayer, Creature* pCreature, const Quest* 
         pCreature->SetStandState(UNIT_STAND_STATE_STAND);
 
         if (pPlayer->GetTeam() == ALLIANCE)
-            pCreature->SetFactionTemporary(FACTION_ESCORT_A_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
+        { pCreature->SetFactionTemporary(FACTION_ESCORT_A_PASSIVE, TEMPFACTION_RESTORE_RESPAWN); }
 
         if (pPlayer->GetTeam() == HORDE)
-            pCreature->SetFactionTemporary(FACTION_ESCORT_H_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
+        { pCreature->SetFactionTemporary(FACTION_ESCORT_H_PASSIVE, TEMPFACTION_RESTORE_RESPAWN); }
 
         if (npc_oox22feAI* pEscortAI = dynamic_cast<npc_oox22feAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+        { pEscortAI->Start(false, pPlayer, pQuest); }
     }
+    return true;
+}
+
+/*######
+## go_gordunni_trap
+######*/
+
+bool GOUse_go_gordunni_trap(Player* pPlayer, GameObject* pGo)
+{
+    switch (urand(0, 1))
+    {
+    case 0:
+        pPlayer->CastSpell(pGo->GetPositionX(), pGo->GetPositionY(), pGo->GetPositionZ(), 19394, false);
+        break;
+    case 1:
+        pPlayer->CastSpell(pGo->GetPositionX(), pGo->GetPositionY(), pGo->GetPositionZ(), 11756, false);
+        break;
+    }
+    pGo->SetLootState(GO_JUST_DEACTIVATED);
     return true;
 }
 
@@ -144,5 +174,10 @@ void AddSC_feralas()
     pNewScript->Name = "npc_oox22fe";
     pNewScript->GetAI = &GetAI_npc_oox22fe;
     pNewScript->pQuestAcceptNPC = &QuestAccept_npc_oox22fe;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "go_gordunni_trap";
+    pNewScript->pGOUse = &GOUse_go_gordunni_trap;
     pNewScript->RegisterSelf();
 }

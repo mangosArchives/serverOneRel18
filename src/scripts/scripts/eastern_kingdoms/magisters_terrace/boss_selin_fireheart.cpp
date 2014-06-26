@@ -1,4 +1,10 @@
-/* Copyright (C) 2006 - 2013 ScriptDev2 <http://www.scriptdev2.com/>
+/**
+ * ScriptDev2 is an extension for mangos providing enhanced features for
+ * area triggers, creatures, game objects, instances, items, and spells beyond
+ * the default database scripting in mangos.
+ *
+ * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,6 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /* ScriptData
@@ -89,7 +98,7 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
     {
         // Wait to finish casting
         if (m_creature->IsNonMeleeSpellCasted(false))
-            return false;
+        { return false; }
 
         if (Creature* pCrystal = GetClosestCreatureWithEntry(m_creature, NPC_FEL_CRYSTAL, 60.0f))
         {
@@ -115,13 +124,13 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SELIN, IN_PROGRESS);
+        { m_pInstance->SetData(TYPE_SELIN, IN_PROGRESS); }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SELIN, FAIL);
+        { m_pInstance->SetData(TYPE_SELIN, FAIL); }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -132,7 +141,7 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
     void MovementInform(uint32 uiType, uint32 uiPointId) override
     {
         if (uiType != POINT_MOTION_TYPE || !uiPointId)
-            return;
+        { return; }
 
         Creature* pCrystal = m_creature->GetMap()->GetCreature(m_crystalGuid);
         if (pCrystal && pCrystal->IsAlive())
@@ -157,7 +166,7 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_SELIN, DONE);
+        { m_pInstance->SetData(TYPE_SELIN, DONE); }
     }
 
     // Mark the Mana Rage as complete
@@ -172,7 +181,7 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+        { return; }
 
         if (!m_bDrainingCrystal)
         {
@@ -183,11 +192,11 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
                     if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                     {
                         if (DoCastSpellIfCan(pTarget, m_bIsRegularMode ? SPELL_DRAIN_LIFE : SPELL_DRAIN_LIFE_H) == CAST_OK)
-                            m_uiDrainLifeTimer = 10000;
+                        { m_uiDrainLifeTimer = 10000; }
                     }
                 }
                 else
-                    m_uiDrainLifeTimer -= uiDiff;
+                { m_uiDrainLifeTimer -= uiDiff; }
 
                 // Heroic only
                 if (!m_bIsRegularMode)
@@ -197,29 +206,29 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
                         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_DRAIN_MANA, SELECT_FLAG_POWER_MANA))
                         {
                             if (DoCastSpellIfCan(pTarget, SPELL_DRAIN_MANA) == CAST_OK)
-                                m_uiDrainManaTimer = 10000;
+                            { m_uiDrainManaTimer = 10000; }
                         }
                     }
                     else
-                        m_uiDrainManaTimer -= uiDiff;
+                    { m_uiDrainManaTimer -= uiDiff; }
                 }
 
                 if (m_uiDrainCrystalTimer < uiDiff)
                 {
                     if (DoSelectNearestCrystal())
-                        m_uiDrainCrystalTimer = m_bIsRegularMode ? urand(20000, 25000) : urand(10000, 15000);
+                    { m_uiDrainCrystalTimer = m_bIsRegularMode ? urand(20000, 25000) : urand(10000, 15000); }
                 }
                 else
-                    m_uiDrainCrystalTimer -= uiDiff;
+                { m_uiDrainCrystalTimer -= uiDiff; }
             }
 
             if (m_uiFelExplosionTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_FEL_EXPLOSION) == CAST_OK)
-                    m_uiFelExplosionTimer = 2000;
+                { m_uiFelExplosionTimer = 2000; }
             }
             else
-                m_uiFelExplosionTimer -= uiDiff;
+            { m_uiFelExplosionTimer -= uiDiff; }
 
             DoMeleeAttackIfReady();
         }
@@ -235,12 +244,12 @@ struct MANGOS_DLL_DECL boss_selin_fireheartAI : public ScriptedAI
                     // Kill the drained crystal
                     Creature* pCrystalChosen = m_creature->GetMap()->GetCreature(m_crystalGuid);
                     if (pCrystalChosen && pCrystalChosen->IsAlive())
-                        pCrystalChosen->DealDamage(pCrystalChosen, pCrystalChosen->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+                    { pCrystalChosen->DealDamage(pCrystalChosen, pCrystalChosen->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); }
 
                     m_uiManaRageTimer = 0;
                 }
                 else
-                    m_uiManaRageTimer -= uiDiff;
+                { m_uiManaRageTimer -= uiDiff; }
             }
         }
     }
@@ -271,7 +280,7 @@ struct MANGOS_DLL_DECL mob_fel_crystalAI : public ScriptedAI
     {
         // Cosmetic spell
         if (m_sWretchedGuids.find(pWho->GetObjectGuid()) == m_sWretchedGuids.end() && pWho->IsWithinDist(m_creature, 5.0f) && pWho->IsAlive() &&
-                (pWho->GetEntry() == NPC_SKULER || pWho->GetEntry() == NPC_BRUISER || pWho->GetEntry() == NPC_HUSK))
+            (pWho->GetEntry() == NPC_SKULER || pWho->GetEntry() == NPC_BRUISER || pWho->GetEntry() == NPC_HUSK))
         {
             pWho->CastSpell(m_creature, SPELL_FEL_CRYSTAL_COSMETIC, false);
             m_sWretchedGuids.insert(pWho->GetObjectGuid());
@@ -284,12 +293,12 @@ struct MANGOS_DLL_DECL mob_fel_crystalAI : public ScriptedAI
         {
             Creature* pSelin = pInstance->GetSingleCreatureFromStorage(NPC_SELIN_FIREHEART);
             if (!pSelin || !pSelin->IsAlive())
-                return;
+            { return; }
 
             // Mark Mana rage as completed
             pSelin->InterruptNonMeleeSpells(false);
             if (boss_selin_fireheartAI* pBossAI = dynamic_cast<boss_selin_fireheartAI*>(pSelin->AI()))
-                pBossAI->ManaRageComplete();
+            { pBossAI->ManaRageComplete(); }
         }
     }
 
@@ -300,10 +309,10 @@ struct MANGOS_DLL_DECL mob_fel_crystalAI : public ScriptedAI
             if (m_uiVisualTimer <= uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_FEL_CRYSTAL_VISUAL) == CAST_OK)
-                    m_uiVisualTimer = 0;
+                { m_uiVisualTimer = 0; }
             }
             else
-                m_uiVisualTimer -= uiDiff;
+            { m_uiVisualTimer -= uiDiff; }
         }
     }
 };
