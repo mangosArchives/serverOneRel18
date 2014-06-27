@@ -360,10 +360,6 @@
     <ClCompile Include="scripts\eastern_kingdoms\zulgurub\boss_thekal.cpp" />
     <ClCompile Include="scripts\eastern_kingdoms\zulgurub\boss_venoxis.cpp" />
     <ClCompile Include="scripts\eastern_kingdoms\zulgurub\instance_zulgurub.cpp" />
-    <ClCompile Include="scripts\examples\example_creature.cpp" />
-    <ClCompile Include="scripts\examples\example_escort.cpp" />
-    <ClCompile Include="scripts\examples\example_gossip_codebox.cpp" />
-    <ClCompile Include="scripts\examples\example_misc.cpp" />
     <ClCompile Include="scripts\kalimdor\ashenvale.cpp" />
     <ClCompile Include="scripts\kalimdor\azshara.cpp" />
     <ClCompile Include="scripts\kalimdor\azuremyst_isle.cpp" />
@@ -618,7 +614,7 @@
     </CustomBuild>
     <ClInclude Include="sd2_revision_nr.h" />
     <ClInclude Include="sd2_revision_sql.h" />
-    <ClInclude Include="..\ScriptMgr.h" />
+    <ClInclude Include="ScriptDevMgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
