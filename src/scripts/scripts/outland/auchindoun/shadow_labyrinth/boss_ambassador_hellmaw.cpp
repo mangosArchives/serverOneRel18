@@ -52,20 +52,12 @@ struct MANGOS_DLL_DECL boss_ambassador_hellmawAI : public ScriptedAI
 {
     boss_ambassador_hellmawAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
-        m_pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
+        m_pInstance = (instance_shadow_labyrinth*)pCreature->GetInstanceData();
         m_bIsRegularMode = pCreature->GetMap()->IsRegularDifficulty();
         Reset();
-
-        if (m_pInstance && m_creature->IsAlive())
-        {
-            if (m_pInstance->GetData(TYPE_OVERSEER) != DONE)
-            { DoCastSpellIfCan(m_creature, SPELL_BANISH, CAST_TRIGGERED); }
-            else
-            { m_creature->GetMotionMaster()->MoveWaypoint(); }
-        }
     }
 
-    ScriptedInstance* m_pInstance;
+    instance_shadow_labyrinth* m_pInstance;
     bool m_bIsRegularMode;
 
     uint32 m_uiBanishTimer;
@@ -86,7 +78,7 @@ struct MANGOS_DLL_DECL boss_ambassador_hellmawAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_HELLMAW, FAIL); }
+            m_pInstance->SetData(TYPE_HELLMAW, FAIL);
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -99,7 +91,7 @@ struct MANGOS_DLL_DECL boss_ambassador_hellmawAI : public ScriptedAI
         }
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_HELLMAW, IN_PROGRESS); }
+            m_pInstance->SetData(TYPE_HELLMAW, IN_PROGRESS);
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -112,7 +104,7 @@ struct MANGOS_DLL_DECL boss_ambassador_hellmawAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_HELLMAW, DONE); }
+            m_pInstance->SetData(TYPE_HELLMAW, DONE);
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -137,33 +129,33 @@ struct MANGOS_DLL_DECL boss_ambassador_hellmawAI : public ScriptedAI
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+            return;
 
         if (m_uiCorrosiveAcidTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_CORROSIVE_ACID) == CAST_OK)
-            { m_uiCorrosiveAcidTimer = urand(23000, 35000); }
+                m_uiCorrosiveAcidTimer = urand(23000, 35000);
         }
         else
-        { m_uiCorrosiveAcidTimer -= uiDiff; }
+            m_uiCorrosiveAcidTimer -= uiDiff;
 
         if (m_uiFearTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FEAR) == CAST_OK)
-            { m_uiFearTimer = urand(20000, 38000); }
+                m_uiFearTimer = urand(20000, 38000);
         }
         else
-        { m_uiFearTimer -= uiDiff; }
+            m_uiFearTimer -= uiDiff;
 
         if (!m_bIsRegularMode && !m_bIsEnraged)
         {
             if (m_uiEnrageTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_ENRAGE) == CAST_OK)
-                { m_bIsEnraged = true; }
+                    m_bIsEnraged = true;
             }
             else
-            { m_uiEnrageTimer -= uiDiff; }
+                m_uiEnrageTimer -= uiDiff;
         }
 
         DoMeleeAttackIfReady();

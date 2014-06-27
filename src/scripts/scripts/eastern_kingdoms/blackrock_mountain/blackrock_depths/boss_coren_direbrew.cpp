@@ -1,7 +1,7 @@
 /**
- * ScriptDev2 is an extension for mangos providing enhanced features for
+ * ScriptDev2 is an extension for mangos-one providing enhanced features for
  * area triggers, creatures, game objects, instances, items, and spells beyond
- * the default database scripting in mangos.
+ * the default database scripting in mangos-one.
  *
  * Copyright (C) 2006-2013  ScriptDev2 <http://www.scriptdev2.com/>
  *
