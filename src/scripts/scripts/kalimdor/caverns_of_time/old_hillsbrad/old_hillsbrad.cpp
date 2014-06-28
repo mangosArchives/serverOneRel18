@@ -55,7 +55,7 @@ enum
 
 bool GossipHello_npc_erozion(Player* pPlayer, Creature* pCreature)
 {
-    if (pCreature->isQuestGiver())
+    if (pCreature->IsQuestGiver())
     { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
     ScriptedInstance* pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
@@ -1021,7 +1021,7 @@ CreatureAI* GetAI_npc_thrall_old_hillsbrad(Creature* pCreature)
 
 bool GossipHello_npc_thrall_old_hillsbrad(Player* pPlayer, Creature* pCreature)
 {
-    if (pCreature->isQuestGiver())
+    if (pCreature->IsQuestGiver())
     {
         pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
         pPlayer->SendPreparedQuest(pCreature->GetObjectGuid());

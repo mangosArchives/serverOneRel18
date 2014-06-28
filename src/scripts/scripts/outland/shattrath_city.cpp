@@ -235,7 +235,7 @@ struct MANGOS_DLL_DECL npc_dirty_larryAI : public ScriptedAI
 
 bool GossipHello_npc_dirty_larry(Player* pPlayer, Creature* pCreature)
 {
-    if (pCreature->isQuestGiver())
+    if (pCreature->IsQuestGiver())
     { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
     if (pPlayer->GetQuestStatus(QUEST_WHAT_BOOK) == QUEST_STATUS_INCOMPLETE)
@@ -621,7 +621,7 @@ bool GossipHello_npc_salsalabim(Player* pPlayer, Creature* pCreature)
     }
     else
     {
-        if (pCreature->isQuestGiver())
+        if (pCreature->IsQuestGiver())
         { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
         pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());

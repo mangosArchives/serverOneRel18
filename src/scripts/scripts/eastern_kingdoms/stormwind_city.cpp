@@ -171,7 +171,7 @@ CreatureAI* GetAI_npc_dashel_stonefist(Creature* pCreature)
 
 bool GossipHello_npc_lady_katrana_prestor(Player* pPlayer, Creature* pCreature)
 {
-    if (pCreature->isQuestGiver())
+    if (pCreature->IsQuestGiver())
     { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
     if (pPlayer->GetQuestStatus(4185) == QUEST_STATUS_INCOMPLETE)
@@ -1000,7 +1000,7 @@ bool GossipHello_npc_reginald_windsor(Player* pPlayer, Creature* pCreature)
     }
     else
     {
-        if (pCreature->isQuestGiver())
+        if (pCreature->IsQuestGiver())
         { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
 
         pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, pCreature->GetObjectGuid());

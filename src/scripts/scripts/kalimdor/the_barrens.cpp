@@ -1049,7 +1049,7 @@ CreatureAI* GetAI_npc_regthar_deathgate(Creature* pCreature)
 
 bool GossipHello_npc_regthar_deathgate(Player* pPlayer, Creature* pCreature)
 {
-    if (pCreature->isQuestGiver())
+    if (pCreature->IsQuestGiver())
         pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); 
 
     if (pPlayer->GetQuestStatus(QUEST_COUNTERATTACK) == QUEST_STATUS_INCOMPLETE)

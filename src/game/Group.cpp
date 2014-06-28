@@ -945,7 +945,7 @@ void Group::SendUpdate()
             { continue; }
         // guess size
         WorldPacket data(SMSG_GROUP_LIST, (1 + 1 + 1 + 1 + 8 + 4 + GetMembersCount() * 20));
-        data << uint8(m_groupType);                         // group type
+        data << (uint8)m_groupType;                         // group type
         data << uint8(isBGGroup() ? 1 : 0);                 // 2.0.x, isBattleGroundGroup?
         data << uint8(citr->group);                         // groupid
         data << uint8(citr->assistant ? 0x01 : 0);          // 0x2 main assist, 0x4 main tank

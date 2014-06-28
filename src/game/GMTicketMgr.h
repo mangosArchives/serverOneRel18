@@ -88,6 +88,13 @@ class GMTicket
         explicit GMTicket() : m_lastUpdate(0)
         {}
 
+        /** 
+         * Initializes this \ref GMTicket, much like the constructor would.
+         * @param guid guid for the \ref Player that created the ticket
+         * @param text the question text
+         * @param responsetext the response to the question if any
+         * @param update the last time the ticket was updated by either \ref Player or GM
+         */
         void Init(ObjectGuid guid, const std::string& text, const std::string& responsetext, time_t update)
         {
             m_guid = guid;

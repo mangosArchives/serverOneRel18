@@ -89,6 +89,7 @@ namespace Movement
              * @param destination
              * @param generatePath
              * @param forceDestination
+             * @param maxPathRange 
              */
             void MoveTo(const Vector3& destination, bool generatePath = false, bool forceDestination = false);
             /**
@@ -99,6 +100,7 @@ namespace Movement
              * @param z
              * @param generatePath
              * @param forceDestination
+             * @param maxPathRange
              */
             void MoveTo(float x, float y, float z, bool generatePath = false, bool forceDestination = false);
 
