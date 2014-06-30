@@ -58,7 +58,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\win32_debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\ScriptDev2__$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
@@ -587,8 +586,8 @@
     <ClInclude Include="include\sc_gossip.h" />
     <ClInclude Include="include\sc_grid_searchers.h" />
     <ClInclude Include="include\sc_instance.h" />
-    <ClInclude Include="..\system\ScriptLoader.h" />
-    <ClInclude Include="..\system\system.h" />
+    <ClInclude Include="system\ScriptLoader.h" />
+    <ClInclude Include="system\system.h" />
     <ClInclude Include="..\config.h" />
     <CustomBuild Include="revision.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Extracting revision</Message>
