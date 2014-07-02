@@ -37,8 +37,6 @@ if(PCHSupport_FOUND AND WIN32) # TODO: why only enable it on windows by default?
 else()
   option(PCH                "Use precompiled headers"               OFF)
 endif()
-option(BUILD_SCRIPTS        "Build scripts"                         ON)
-
 # TODO: options that should be checked/created:
 option(SOAP                 "With SOAP"                             OFF)
 #option(CLI                  "With CLI"                              ON)
@@ -55,7 +53,6 @@ message(
     PCH                     Use precompiled headers
     DEBUG                   Debug mode
     ACE_USE_EXTERNAL        Use external ACE
-    BUILD_SCRIPTS           Build server scripts content.
   To set an option simply type -D<OPTION>=<VALUE> after 'cmake <srcs>'.
   Also, you can specify the generator with -G. see 'cmake --help' for more details
   For example: cmake .. -DDEBUG=1 -DCMAKE_INSTALL_PREFIX=/opt/mangos"
@@ -92,6 +89,9 @@ if(WIN32)
     set(DEP_ARCH x64)
   endif()
 endif()
+
+# Used by map-extractor for now
+find_package(BZip2 REQUIRED)
 
 # find Git: used to get the revision number
 find_package(Git)
