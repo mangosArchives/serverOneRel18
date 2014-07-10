@@ -6158,7 +6158,7 @@ bool Spell::DoSummonPossessed(SpellEffectIndex eff_idx, uint32 forceFaction)
 
     // Notify Summoner
     if (m_originalCaster && m_originalCaster != m_caster && m_originalCaster->GetTypeId() == TYPEID_UNIT && ((Creature*)m_originalCaster)->AI())
-        ((Creature*)m_originalCaster)->AI()->JustSummoned(spawnCreature);
+        { ((Creature*)m_originalCaster)->AI()->JustSummoned(spawnCreature); }
 
     return true;
 }
@@ -6742,7 +6742,7 @@ void Spell::EffectDestroyAllTotems(SpellEffectIndex /*eff_idx*/)
                     mana += manacost * damage / 100;
                 }
             }
-            totem->UnSummon();
+            { totem->UnSummon(); }
         }
     }
 

@@ -123,23 +123,27 @@ class RealmList
          * @param updateInterval
          */
         void Initialize(uint32 updateInterval);
-
-        /**
-         * @brief
-         *
+        /** 
+         * Initializes a map holding a link from build number to a version.
+         * \see RealmVersion
          */
         void UpdateIfNeed();
-
-        /**
-         * @brief
-         *
-         * @return RealmMap::const_iterator
+        
+        /** 
+         * Get's the iterators for all realms supporting the given version as a pair,
+         * the first member is a iterator to the begin() and the second is an iterator
+         * to the end().
+         * @param build the build number to fetch the iterators for
+         * @return iterators to the begin() and end() part of the realms supporting
+         * the given build, if there is no matching build iterators are given to end()
+         * and end() of a list.
          */
         RealmMap::const_iterator begin() const { return m_realms.begin(); }
-        /**
-         * @brief
-         *
-         * @return RealmMap::const_iterator
+
+        /** 
+         * Returns how many realms we have available for the current build
+         * @param build the build we want to know number of available realms for
+         * @return the number of available realms
          */
         RealmMap::const_iterator end() const { return m_realms.end(); }
         /**
@@ -171,7 +175,7 @@ class RealmList
          */
         void UpdateRealm(uint32 ID, const std::string& name, const std::string& address, uint32 port, uint8 icon, RealmFlags realmflags, uint8 timezone, AccountTypes allowedSecurityLevel, float popu, const std::string& builds);
     private:
-        RealmMap m_realms;                                  /**< Internal map of realms */
+        RealmMap m_realms;                                    ///< Internal map of realms
         uint32   m_UpdateInterval; /**< TODO */
         time_t   m_NextUpdateTime; /**< TODO */
 };

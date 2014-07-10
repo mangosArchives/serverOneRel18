@@ -2929,8 +2929,8 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void SendHeartBeat();
 
         /**
-         * Checks if this \ref Unit has the movement flag \ref MovementFlags::MOVEFLAG_LEVITATE
-         * @return true if the \ref Unit is levitating, ie: it has the flag MOVEFLAG_LEVITATE, false
+         * Checks if this \ref Unit has the movement flag \ref MovementFlags::MOVEFLAG_LEVITATING
+         * @return true if the \ref Unit is levitating, ie: it has the flag MOVEFLAG_LEVITATING, false
          * otherwise
          * \see MovementInfo::HasMovementFlag
          */
@@ -2943,9 +2943,9 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
          */
         bool IsWalking() const { return m_movementInfo.HasMovementFlag(MOVEFLAG_WALK_MODE); }
         /**
-         * Check if this \ref Unit has the movement flag \ref MovementFlags::MOVEFLAG_IMMOBILIZED
+         * Check if this \ref Unit has the movement flag \ref MovementFlags::MOVEFLAG_ROOT
          * @return true if the \ref Unit is rooted to the ground (can't move), ie: has the flag
-         * MOVEFLAG_IMMOBILIZED, false otherwise
+         * MOVEFLAG_ROOT, false otherwise
          * \see MovementInfo::HasMovementFlag
          */
         bool IsRooted() const { return m_movementInfo.HasMovementFlag(MOVEFLAG_IMMOBILIZED); }

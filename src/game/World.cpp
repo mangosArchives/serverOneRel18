@@ -894,14 +894,14 @@ void World::SetInitialWorldSettings()
 
     ///- Check the existence of the map files for all races start areas.
     if (!MapManager::ExistMapAndVMap(0, -6240.32f, 331.033f) ||                     // Dwarf/ Gnome
-            !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f) ||                // Human
-            !MapManager::ExistMapAndVMap(1, -618.518f, -4251.67f) ||                // Orc
-            !MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f) ||                  // Scourge
-            !MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f) ||                  // NightElf
-            !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f) ||                 // Tauren
-            (m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_TBC &&
-              (!MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) ||            // BloodElf
-              !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))))            // Draenei
+        !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f) ||                // Human
+        !MapManager::ExistMapAndVMap(1, -618.518f, -4251.67f) ||                // Orc
+        !MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f) ||                  // Scourge
+        !MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f) ||                  // NightElf
+        !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f) ||                 // Tauren
+        (m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_TBC &&
+          (!MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) ||            // BloodElf
+          !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))))            // Draenei
     {
         sLog.outError("Correct *.map files not found in path '%smaps' or *.vmtree/*.vmtile files in '%svmaps'. Please place *.map and vmap files in appropriate directories or correct the DataDir value in the mangosd.conf file.", m_dataPath.c_str(), m_dataPath.c_str());
         Log::WaitBeforeContinueIfNeed();
@@ -963,7 +963,7 @@ void World::SetInitialWorldSettings()
     sObjectMgr.PackGroupIds();                              // must be after CleanupInstances
 
     ///- Init highest guids before any guid using table loading to prevent using not initialized guids in some code.
-    sObjectMgr.SetHighestGuids();                           // must be after PackInstances() and PackGroupIds()
+    sObjectMgr.SetHighestGuids();                           // must be after packing instances
     sLog.outString();
 
     sLog.outString("Loading Page Texts...");
@@ -991,7 +991,7 @@ void World::SetInitialWorldSettings()
     sSpellMgr.LoadSpellProcEvents();
 
     sLog.outString("Loading Spell Bonus Data...");
-    sSpellMgr.LoadSpellBonuses();                           // must be after LoadSpellChains
+    sSpellMgr.LoadSpellBonuses();
 
     sLog.outString("Loading Spell Proc Item Enchant...");
     sSpellMgr.LoadSpellProcItemEnchant();                   // must be after LoadSpellChains
@@ -1395,7 +1395,7 @@ void World::DetectDBCLang()
     }
 
     if (default_locale != m_lang_confid && m_lang_confid < MAX_LOCALE &&
-            (m_availableDbcLocaleMask & (1 << m_lang_confid)))
+        (m_availableDbcLocaleMask & (1 << m_lang_confid)))
     {
         default_locale = m_lang_confid;
     }

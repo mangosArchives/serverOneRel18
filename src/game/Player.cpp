@@ -402,7 +402,7 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
 
     m_ExtraFlags = 0;
     if (GetSession()->GetSecurity() >= SEC_GAMEMASTER)
-        SetAcceptTicket(true);
+        { SetAcceptTicket(true); }
 
     // players always accept
     if (GetSession()->GetSecurity() == SEC_PLAYER)
@@ -6172,7 +6172,7 @@ bool Player::RewardHonor(Unit* uVictim, uint32 groupsize, float honor)
             Player* pVictim = (Player*)uVictim;
 
             if (GetTeam() == pVictim->GetTeam() && !sWorld.IsFFAPvPRealm())
-                return false;
+            { return false; }
 
             float f = 1;                                    // need for total kills (?? need more info)
             uint32 k_grey = 0;
@@ -6560,17 +6560,19 @@ void Player::DuelComplete(DuelCompleteType type)
 {
     // duel not requested
     if (!duel)
-        return;
+        { return; }
 
     WorldPacket data(SMSG_DUEL_COMPLETE, (1));
     data << (uint8)((type != DUEL_INTERRUPTED) ? 1 : 0);
     GetSession()->SendPacket(&data);
-    duel->opponent->GetSession()->SendPacket(&data);
+
+    if (duel->opponent->GetSession())
+        duel->opponent->GetSession()->SendPacket(&data);
 
     if (type != DUEL_INTERRUPTED)
     {
-        data.Initialize(SMSG_DUEL_WINNER, (1 + 20));        // we guess size
-        data << (uint8)((type == DUEL_WON) ? 0 : 1);        // 0 = just won; 1 = fled
+        data.Initialize(SMSG_DUEL_WINNER, (1 + 20));          // we guess size
+        data << uint8(type == DUEL_WON ? 0 : 1);              // 0 = just won; 1 = fled
         data << duel->opponent->GetName();
         data << GetName();
         SendMessageToSet(&data, true);

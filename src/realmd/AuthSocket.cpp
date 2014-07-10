@@ -908,11 +908,11 @@ void AuthSocket::LoadRealmlist(ByteBuffer& pkt, uint32 acctid)
         {
             pkt << uint32(0);                               // unused value
             pkt << uint8(sRealmList.size());
-
+            
             for (RealmList::RealmMap::const_iterator  i = sRealmList.begin(); i != sRealmList.end(); ++i)
             {
                 uint8 AmountOfCharacters;
-
+                
                 // No SQL injection. id of realm is controlled by the database.
                 QueryResult* result = LoginDatabase.PQuery("SELECT numchars FROM realmcharacters WHERE realmid = '%d' AND acctid='%u'", i->second.m_ID, acctid);
                 if (result)
@@ -922,14 +922,14 @@ void AuthSocket::LoadRealmlist(ByteBuffer& pkt, uint32 acctid)
                     delete result;
                 }
                 else
-                    { AmountOfCharacters = 0; }
-
+                    AmountOfCharacters = 0;
+                
                 bool ok_build = std::find(i->second.realmbuilds.begin(), i->second.realmbuilds.end(), _build) != i->second.realmbuilds.end();
-
+                
                 RealmBuildInfo const* buildInfo = ok_build ? FindBuildInfo(_build) : NULL;
                 if (!buildInfo)
                     { buildInfo = &i->second.realmBuildInfo; }
-
+                
                 RealmFlags realmflags = i->second.realmflags;
 
                 // 1.x clients not support explicitly REALM_FLAG_SPECIFYBUILD, so manually form similar name as show in more recent clients
@@ -969,7 +969,7 @@ void AuthSocket::LoadRealmlist(ByteBuffer& pkt, uint32 acctid)
         {
             pkt << uint32(0);                               // unused value
             pkt << uint16(sRealmList.size());
-
+            
             for (RealmList::RealmMap::const_iterator  i = sRealmList.begin(); i != sRealmList.end(); ++i)
             {
                 uint8 AmountOfCharacters;

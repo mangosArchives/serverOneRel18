@@ -470,7 +470,7 @@ Unit* SingleEnemyTargetAura::GetTriggerTarget() const
 Aura* CreateAura(SpellEntry const* spellproto, SpellEffectIndex eff, int32* currentBasePoints, SpellAuraHolder* holder, Unit* target, Unit* caster, Item* castItem)
 {
     if (IsAreaAuraEffect(spellproto->Effect[eff]))
-        return new AreaAura(spellproto, eff, currentBasePoints, holder, target, caster, castItem);
+        { return new AreaAura(spellproto, eff, currentBasePoints, holder, target, caster, castItem); }
 
     uint32 triggeredSpellId = spellproto->EffectTriggerSpell[eff];
 
@@ -742,7 +742,8 @@ void Aura::ApplyModifier(bool apply, bool Real)
     GetHolder()->SetInUse(true);
     SetInUse(true);
     if (aura < TOTAL_AURAS)
-        (*this.*AuraHandler [aura])(apply, Real);
+        { (*this.*AuraHandler [aura])(apply, Real); }
+
     SetInUse(false);
     GetHolder()->SetInUse(false);
 }
@@ -750,7 +751,7 @@ void Aura::ApplyModifier(bool apply, bool Real)
 bool Aura::isAffectedOnSpell(SpellEntry const* spell) const
 {
     if (m_spellmod)
-        return m_spellmod->isAffectedOnSpell(spell);
+        { return m_spellmod->isAffectedOnSpell(spell); }
 
     // Check family name
     if (spell->SpellFamilyName != GetSpellProto()->SpellFamilyName)
@@ -1637,7 +1638,6 @@ void Aura::TriggerSpell()
                 }
                 break;
             }
-
 //            case SPELLFAMILY_HUNTER:
 //            {
 //                switch(auraId)
@@ -3079,7 +3079,7 @@ void Aura::HandleAuraTransform(bool apply, bool Real)
 
         // update active transform spell only not set or not overwriting negative by positive case
         if (!target->GetTransform() || !IsPositiveSpell(GetId()) || IsPositiveSpell(target->GetTransform()))
-            target->SetTransform(GetId());
+            { target->SetTransform(GetId()); }
 
         // polymorph case
         if (Real && target->GetTypeId() == TYPEID_PLAYER && target->IsPolymorphed())
@@ -4411,7 +4411,7 @@ void Aura::HandlePeriodicTriggerSpell(bool apply, bool /*Real*/)
             case 29213:                                     // Curse of the Plaguebringer
                 if (m_removeMode != AURA_REMOVE_BY_DISPEL)
                     // Cast Wrath of the Plaguebringer if not dispelled
-                    target->CastSpell(target, 29214, true, 0, this);
+                    { target->CastSpell(target, 29214, true, 0, this); }
                 return;
             case 42783:                                     // Wrath of the Astrom...
                 if (m_removeMode == AURA_REMOVE_BY_EXPIRE && GetEffIndex() + 1 < MAX_EFFECT_INDEX)
@@ -4566,8 +4566,8 @@ void Aura::HandlePeriodicDamage(bool apply, bool Real)
                         }
                     }
 
-                    if (cp > 4) cp = 4;
-                    m_modifier.m_amount += int32(caster->GetTotalAttackPowerValue(BASE_ATTACK) * cp / 100);
+                        if (cp > 4) { cp = 4; }
+                        m_modifier.m_amount += int32(caster->GetTotalAttackPowerValue(BASE_ATTACK) * cp / 100);
                 }
                 break;
             }
@@ -4993,10 +4993,10 @@ void Aura::HandleAuraModIncreaseHealth(bool apply, bool Real)
 
     switch (GetId())
     {
-        // Special case with temporary increase max/current health
+            // Special case with temporary increase max/current health
             // Cases where we need to manually calculate the amount for the spell (by percentage)
             // recalculate to full amount at apply for proper remove
-        // Backport notive TBC: no cases yet
+            // Backport notive TBC: no cases yet
             // no break here
 
             // Cases where m_amount already has the correct value (spells cast with CastCustomSpell or absolute values)
@@ -6197,7 +6197,7 @@ void Aura::PeriodicTick()
 
             target->ModifyPower(power, -drain_amount);
 
-            float gain_multiplier = 0.0f;
+            float gain_multiplier = 0;
 
             if (pCaster->GetMaxPower(power) > 0)
             {
@@ -6998,7 +6998,7 @@ void SpellAuraHolder::_RemoveSpellAuraHolder()
 
     if (caster && IsPersistent())
         if (DynamicObject* dynObj = caster->GetDynObject(GetId()))
-            dynObj->RemoveAffected(m_target);
+            { dynObj->RemoveAffected(m_target); }
 
     // remove at-store spell cast items (for all remove modes?)
     if (m_target->GetTypeId() == TYPEID_PLAYER && m_removeMode != AURA_REMOVE_BY_DEFAULT && m_removeMode != AURA_REMOVE_BY_DELETE)

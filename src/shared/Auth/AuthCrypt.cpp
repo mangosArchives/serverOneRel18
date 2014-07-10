@@ -80,6 +80,7 @@ void AuthCrypt::Init(BigNumber* K)
     _initialized = true;
 }
 
+
 AuthCrypt::~AuthCrypt()
 {
 }

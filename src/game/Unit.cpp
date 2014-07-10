@@ -95,7 +95,6 @@ void MovementInfo::Read(ByteBuffer& data)
         data >> t_pos.o;
         data >> t_time;
     }
-
     if (HasMovementFlag(MovementFlags(MOVEFLAG_SWIMMING | MOVEFLAG_FLYING2)))
     {
         data >> s_pitch;
@@ -113,8 +112,9 @@ void MovementInfo::Read(ByteBuffer& data)
 
     if (HasMovementFlag(MOVEFLAG_SPLINE_ELEVATION))
     {
-        data >> u_unk1;
+        data >> u_unk1;                                     // unknown
     }
+
 }
 
 void MovementInfo::Write(ByteBuffer& data) const
@@ -136,7 +136,6 @@ void MovementInfo::Write(ByteBuffer& data) const
         data << t_pos.o;
         data << t_time;
     }
-
     if (HasMovementFlag(MovementFlags(MOVEFLAG_SWIMMING | MOVEFLAG_FLYING2)))
     {
         data << s_pitch;
@@ -154,8 +153,9 @@ void MovementInfo::Write(ByteBuffer& data) const
 
     if (HasMovementFlag(MOVEFLAG_SPLINE_ELEVATION))
     {
-        data << u_unk1;
+        data << u_unk1;                                     // unknown
     }
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -605,6 +605,7 @@ uint32 Unit::DealDamage(Unit* pVictim, uint32 damage, CleanDamage const* cleanDa
 
     uint32 health = pVictim->GetHealth();
     DEBUG_FILTER_LOG(LOG_FILTER_DAMAGE, "deal dmg:%d to health:%d ", damage, health);
+
 
     // Rage from Damage made (only from direct weapon damage)
     if (cleanDamage && damagetype == DIRECT_DAMAGE && this != pVictim && GetTypeId() == TYPEID_PLAYER && (getPowerType() == POWER_RAGE))
@@ -3358,8 +3359,7 @@ void Unit::SetCurrentCastedSpell(Spell* pSpell)
     m_currentSpells[CSpellType] = pSpell;
     pSpell->SetReferencedFromCurrent(true);
 
-	pSpell->m_selfContainer = &(m_currentSpells[pSpell->GetCurrentContainer()]);
-
+    pSpell->m_selfContainer = &(m_currentSpells[pSpell->GetCurrentContainer()]);
 }
 
 void Unit::InterruptSpell(CurrentSpellTypes spellType, bool withDelayed)
@@ -4513,7 +4513,7 @@ void Unit::RemoveAllAurasOnDeath()
 void Unit::RemoveAllAurasOnEvade()
 {
     // used when evading to remove all auras except some special auras
-    // Fly should not be removed on evade - neither should linked auras
+    // Linked and flying auras should not be removed on evade
     for (SpellAuraHolderMap::iterator iter = m_spellAuraHolders.begin(); iter != m_spellAuraHolders.end();)
     {
         SpellEntry const* proto = iter->second->GetSpellProto();
@@ -4879,11 +4879,11 @@ void Unit::ProcDamageAndSpell(Unit* pVictim, uint32 procAttacker, uint32 procVic
 {
     // Not much to do if no flags are set.
     if (procAttacker)
-        ProcDamageAndSpellFor(false, pVictim, procAttacker, procExtra, attType, procSpell, amount);
+        { ProcDamageAndSpellFor(false, pVictim, procAttacker, procExtra, attType, procSpell, amount); }
     // Now go on with a victim's events'n'auras
     // Not much to do if no flags are set or there is no victim
     if (pVictim && pVictim->IsAlive() && procVictim)
-        pVictim->ProcDamageAndSpellFor(true, this, procVictim, procExtra, attType, procSpell, amount);
+        { pVictim->ProcDamageAndSpellFor(true, this, procVictim, procExtra, attType, procSpell, amount); }
 }
 
 void Unit::SendSpellMiss(Unit* target, uint32 spellID, SpellMissInfo missInfo)
@@ -4908,9 +4908,9 @@ void Unit::SendAttackStateUpdate(CalcDamageInfo* damageInfo)
     data << (uint32)damageInfo->HitInfo;
     data << GetPackGUID();
     data << damageInfo->target->GetPackGUID();
-    data << uint32(damageInfo->damage);                     // Full damage
+    data << (uint32)(damageInfo->damage);                   // Full damage
 
-    data << uint8(1);                                       // Sub damage count
+    data << (uint8)1;                                       // Sub damage count
     //===  Sub damage description
     data << uint32(damageInfo->damageSchoolMask);           // School of sub damage
     data << float(damageInfo->damage);                      // sub damage
@@ -6364,11 +6364,13 @@ uint32 Unit::SpellHealingBonusTaken(Unit* /*pCaster*/, SpellEntry const* spellPr
     // Healing Wave cast
     if (spellProto->SpellFamilyName == SPELLFAMILY_SHAMAN && (spellProto->SpellFamilyFlags & UI64LIT(0x0000000000000040)))
     {
-        AuraList const& auraDummy = GetAurasByType(SPELL_AURA_DUMMY);
-        for (AuraList::const_iterator i = auraDummy.begin(); i != auraDummy.end(); ++i)
-            if ((*i)->GetId() == 29203)
-                TakenTotalMod *= ((*i)->GetModifier()->m_amount + 100.0f) / 100.0f;
+        // Search for Healing Way on Victim
+        Unit::AuraList const& auraDummy = GetAurasByType(SPELL_AURA_DUMMY);
+        for (Unit::AuraList::const_iterator itr = auraDummy.begin(); itr != auraDummy.end(); ++itr)
+            if ((*itr)->GetId() == 29203)
+                { TakenTotalMod *= ((*itr)->GetModifier()->m_amount + 100.0f) / 100.0f; }
     }
+
 
     // use float as more appropriate for negative values and percent applying
     float heal = (healamount + TakenTotal * int32(stack)) * TakenTotalMod;
@@ -6845,7 +6847,7 @@ void Unit::Mount(uint32 mount, uint32 spellId)
             else if (Pet* pet = GetPet())
             {
                 if (pet->IsPermanentPetFor((Player*)this) && !((Player*)this)->InArena() &&
-                        sWorld.getConfig(CONFIG_BOOL_PET_UNSUMMON_AT_MOUNT))
+                    sWorld.getConfig(CONFIG_BOOL_PET_UNSUMMON_AT_MOUNT))
                 {
                     ((Player*)this)->UnsummonPetTemporaryIfAny();
                 }
@@ -7249,7 +7251,7 @@ bool Unit::IsVisibleForOrDetect(Unit const* u, WorldObject const* viewPoint, boo
         // This allows to check talent tree and will add addition stealth dependent on used points)
         int32 stealthMod = GetTotalAuraModifier(SPELL_AURA_MOD_STEALTH_LEVEL);
         if (stealthMod < 0)
-            stealthMod = 0;
+        { stealthMod = 0; }
 
         //-Stealth Mod(positive like Master of Deception) and Stealth Detection(negative like paranoia)
         // based on wowwiki every 5 mod we have 1 more level diff in calculation
@@ -7258,7 +7260,7 @@ bool Unit::IsVisibleForOrDetect(Unit const* u, WorldObject const* viewPoint, boo
 
         // recheck new distance
         if (visibleDistance <= 0 || !IsWithinDist(viewPoint, visibleDistance))
-            return false;
+        { return false; }
     }
 
     // Now check is target visible with LoS
@@ -9192,7 +9194,7 @@ void Unit::SetFeignDeath(bool apply, ObjectGuid casterGuid, uint32 /*spellID*/)
 
         // prevent interrupt message
         if (casterGuid == GetObjectGuid())
-            FinishSpell(CURRENT_GENERIC_SPELL, false);
+            { FinishSpell(CURRENT_GENERIC_SPELL, false); }
         InterruptNonMeleeSpells(true);
         GetHostileRefManager().deleteReferences();
     }
