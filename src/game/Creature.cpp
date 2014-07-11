@@ -55,6 +55,7 @@
 #include "CellImpl.h"
 #include "movement/MoveSplineInit.h"
 #include "CreatureLinkingMgr.h"
+#include "LuaEngine.h"
 
 // apply implementation of the singletons
 #include "Policies/Singleton.h"
@@ -158,12 +159,15 @@ Creature::Creature(CreatureSubtype subtype) : Unit(),
 
     m_CreatureSpellCooldowns.clear();
     m_CreatureCategoryCooldowns.clear();
+    DisableReputationGain = false;
 
     SetWalk(true, true);
 }
 
 Creature::~Creature()
 {
+    Eluna::RemoveRef(this);
+
     CleanupsBeforeDelete();
 
     m_vendorItemCounts.clear();
@@ -174,6 +178,9 @@ Creature::~Creature()
 
 void Creature::AddToWorld()
 {
+    if (!IsInWorld())
+        sEluna->OnAddToWorld(this);
+
     ///- Register the creature for guid lookup
     if (!IsInWorld() && GetObjectGuid().GetHigh() == HIGHGUID_UNIT)
         { GetMap()->GetObjectsStore().insert<Creature>(GetObjectGuid(), (Creature*)this); }
@@ -183,6 +190,9 @@ void Creature::AddToWorld()
 
 void Creature::RemoveFromWorld()
 {
+    if (!IsInWorld())
+        sEluna->OnRemoveFromWorld(this);
+
     ///- Remove the creature from the accessor
     if (IsInWorld() && GetObjectGuid().GetHigh() == HIGHGUID_UNIT)
         { GetMap()->GetObjectsStore().erase<Creature>(GetObjectGuid(), (Creature*)NULL); }
@@ -1051,6 +1061,19 @@ void Creature::SaveToDB()
     }
 
     SaveToDB(GetMapId(), data->spawnMask);
+}
+
+// return true if this creature is tapped by the player or by a member of his group.
+bool Creature::IsTappedBy(Player const* player) const
+{
+    if (player == GetOriginalLootRecipient())
+        return true;
+
+    Group const* playerGroup = player->GetGroup();
+    if (!playerGroup || playerGroup != GetGroupLootRecipient()) // if we dont have a group we arent the recipient
+        return false;                                           // if creature doesnt have group bound it means it was solo killed by someone else
+
+    return true;
 }
 
 void Creature::SaveToDB(uint32 mapid, uint8 spawnMask)
@@ -2168,6 +2191,13 @@ bool Creature::HasCategoryCooldown(uint32 spell_id) const
     return (itr != m_CreatureCategoryCooldowns.end() && time_t(itr->second + (spellInfo->CategoryRecoveryTime / IN_MILLISECONDS)) > time(NULL));
 }
 
+uint32 Creature::GetCreatureSpellCooldownDelay(uint32 spellId) const
+{
+    CreatureSpellCooldowns::const_iterator itr = m_CreatureSpellCooldowns.find(spellId);
+    time_t t = time(NULL);
+    return uint32(itr != m_CreatureSpellCooldowns.end() && itr->second > t ? itr->second - t : 0);
+}
+
 bool Creature::HasSpellCooldown(uint32 spell_id) const
 {
     CreatureSpellCooldowns::const_iterator itr = m_CreatureSpellCooldowns.find(spell_id);
@@ -2228,51 +2258,37 @@ void Creature::ResetRespawnCoord()
 
 void Creature::AllLootRemovedFromCorpse()
 {
-    if (lootForBody && !HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE))
+    if (loot.loot_type != LOOT_SKINNING && !IsPet() && GetCreatureInfo()->LootId && GetLootRecipient())
     {
-        uint32 corpseLootedDelay;
-
-        if (!lootForSkin)                                   // corpse was not skinned -> apply corpseLootedDelay
+        if (LootTemplates_Skinning.HaveLootFor(GetCreatureInfo()->LootId))
         {
-            // use a static spawntimesecs/3 modifier (guessed/made up value) unless config are more than 0.0
-            // spawntimesecs=3min:  corpse decay after 1min
-            // spawntimesecs=4hour: corpse decay after 1hour 20min
-            if (sWorld.getConfig(CONFIG_FLOAT_RATE_CORPSE_DECAY_LOOTED) > 0.0f)
-                { corpseLootedDelay = (uint32)((m_corpseDelay * IN_MILLISECONDS) * sWorld.getConfig(CONFIG_FLOAT_RATE_CORPSE_DECAY_LOOTED)); }
-            else
-                { corpseLootedDelay = (m_respawnDelay * IN_MILLISECONDS) / 3; }
-        }
-        else                                                // corpse was skinned, corpse will despawn next update
-            { corpseLootedDelay = 0; }
-
-        // if m_respawnTime is not expired already
-        if (m_respawnTime >= time(NULL))
-        {
-            // if spawntimesecs is larger than default corpse delay always use corpseLootedDelay
-            if (m_respawnDelay > m_corpseDelay)
+            // Check for Skinning Loot, and set flag is loot exists
+            if (!lootForSkin)
             {
-                m_corpseDecayTimer = corpseLootedDelay;
+                HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
             }
-            else
-            {
-                // if m_respawnDelay is relatively short and corpseDecayTimer is larger than corpseLootedDelay
-                if (m_corpseDecayTimer > corpseLootedDelay)
-                    { m_corpseDecayTimer = corpseLootedDelay; }
-            }
-        }
-        else
-        {
-            m_corpseDecayTimer = 0;
-
-            // TODO: reaching here, means mob will respawn at next tick.
-            // This might be a place to set some aggro delay so creature has
-            // ~5 seconds before it can react to hostile surroundings.
-
-            // It's worth noting that it will not be fully correct either way.
-            // At this point another "instance" of the creature are presumably expected to
-            // be spawned already, while this corpse will not appear in respawned form.
         }
     }
+
+    time_t now = time(NULL);
+    if (m_corpseDecayTimer <= now)
+    {
+        return;
+    }
+
+    float decayRate = sWorld.getConfig(CONFIG_FLOAT_RATE_CORPSE_DECAY_LOOTED);
+
+    // corpse skinnable, but without skinning flag, and then skinned, corpse will despawn next update
+    if (loot.loot_type == LOOT_SKINNING)
+    {
+        m_corpseDecayTimer = time(NULL);
+    }
+    else
+    {
+        m_corpseDecayTimer = now + m_corpseDelay * decayRate;
+    }
+
+    m_respawnTime = m_corpseDecayTimer + m_respawnDelay;
 }
 
 uint32 Creature::GetLevelForTarget(Unit const* target) const

@@ -207,6 +207,17 @@ ArenaTeam* ObjectMgr::GetArenaTeamByCaptain(ObjectGuid guid) const
     return NULL;
 }
 
+void ObjectMgr::AddLocaleString(std::string const& s, LocaleConstant locale, StringVector& data)
+{
+    if (!s.empty())
+    {
+        if (data.size() <= size_t(locale))
+            data.resize(locale + 1);
+
+        data[locale] = s;
+    }
+}
+
 void ObjectMgr::LoadCreatureLocales()
 {
     mCreatureLocaleMap.clear();                             // need for reload case
@@ -620,7 +631,7 @@ void ObjectMgr::LoadCreatureTemplates()
             {
                 if (!GetCreatureClassLvlStats(level, cInfo->UnitClass, cInfo->Expansion))
                 {
-                    sLog.outErrorDb("Creature (Entry: %u), level(%u) has no data in `creature_template_classlevelstats`", cInfo->Entry, level);
+                    sLog.outErrorDb("Creature (Entry: %u), Class(%u), level(%u) has no data in `creature_template_classlevelstats`", cInfo->Entry, cInfo->UnitClass, level);
                     const_cast<CreatureInfo*>(cInfo)->Expansion = -1;
                     break;
                 }
@@ -6659,7 +6670,7 @@ void ObjectMgr::LoadWeatherZoneChances()
 {
     uint32 count = 0;
 
-    //                                                0     1                   2                   3                    4                   5                   6                    7                 8                 9                  10                  11                  12
+    //                                                0     1                   2                   3                    4                   5                   6                    7                 8                 9                  10                  11                  12                  13
     QueryResult* result = WorldDatabase.Query("SELECT zone, spring_rain_chance, spring_snow_chance, spring_storm_chance, summer_rain_chance, summer_snow_chance, summer_storm_chance, fall_rain_chance, fall_snow_chance, fall_storm_chance, winter_rain_chance, winter_snow_chance, winter_storm_chance FROM game_weather");
 
     if (!result)
