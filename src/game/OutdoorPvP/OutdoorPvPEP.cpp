@@ -183,8 +183,7 @@ void OutdoorPvPEP::HandleObjectiveComplete(uint32 eventId, std::list<Player*> pl
         {
             (*itr)->KilledMonsterCredit(credit);
 			(*itr)->RewardHonor(NULL, 1, HONOR_REWARD_PLAGUELANDS);
-			//(*itr)->AddHonorCP(HONOR_REWARD_PLAGUELANDS, HONORABLE, 0, 0);
-		}
+        }
     }
 }
 
