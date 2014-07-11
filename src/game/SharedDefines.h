@@ -28,6 +28,9 @@
 #include "Platform/Define.h"
 #include <cassert>
 
+#define MANGOS
+#define TBC
+
 enum Gender
 {
     GENDER_MALE                        = 0,
@@ -159,6 +162,8 @@ enum Powers
     POWER_FOCUS                         = 2,         ///< Used by hunters after Cataclysm (4.x)
     POWER_ENERGY                        = 3,         ///< Used by rouges to do their spells
     POWER_HAPPINESS                     = 4,         ///< Hunters pet's happiness affect their damage
+    MAX_POWERS                          = 5,
+    POWER_ALL                           = 127,          // default for class? - need check for TBC
     POWER_HEALTH                        = 0xFFFFFFFE ///< Health, everyone has this (-2 as signed value)
 };
 
@@ -571,6 +576,13 @@ enum Language
 };
 
 #define LANGUAGES_COUNT   19
+
+enum TeamId
+{
+    TEAM_ALLIANCE = 0,
+    TEAM_HORDE,
+    TEAM_NEUTRAL
+};
 
 // In fact !=0 values is alliance/horde root faction ids
 enum Team

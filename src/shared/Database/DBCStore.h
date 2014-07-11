@@ -53,18 +53,12 @@ class DBCStorage
         ~DBCStorage() { Clear(); }
 
         /**
-         * @brief
-         *
-         * @param id
-         * @return const T
-         */
-        T const* LookupEntry(uint32 id) const { return (id >= nCount) ? NULL : indexTable[id]; }
-        /**
-         * @brief
-         *
-         * @return uint32
-         */
-        uint32  GetNumRows() const { return nCount; }
+        * @brief
+        *
+        * @return uint32
+        */
+        //uint32  GetNumRows() const { return nCount; }
+        uint32  GetNumRows() const { return loaded ? data.size() : nCount; }
         /**
          * @brief
          *
@@ -78,6 +72,23 @@ class DBCStorage
          */
         uint32 GetFieldCount() const { return fieldCount; }
 
+        /**
+        * @brief
+        *
+        * @param id
+        * @return const T
+        */
+        //T const* LookupEntry(uint32 id) const { return (id >= nCount) ? NULL : indexTable[id]; }
+        T const* LookupEntry(uint32 id) const
+        {
+            if (loaded)
+            {
+                typename std::map<uint32, T const*>::const_iterator it = data.find(id);
+                if (it != data.end())
+                    return it->second;
+            }
+            return (id >= nCount) ? NULL : indexTable[id];
+        }
         /**
          * @brief
          *
@@ -101,6 +112,22 @@ class DBCStorage
 
             // error in dbc file at loading if NULL
             return indexTable != NULL;
+        }
+
+        void SetEntry(uint32 id, T* t) // Cryptic they say..
+        {
+            if (!loaded)
+            {
+                for (uint32 i = 0; i < nCount; ++i)
+                {
+                    T const* node = LookupEntry(i);
+                    if (!node)
+                        continue;
+                    data[i] = node;
+                }
+                loaded = true;
+            }
+            data[id] = t;
         }
 
         /**
@@ -132,6 +159,12 @@ class DBCStorage
          */
         void Clear()
         {
+            if (loaded)
+            {
+                data.clear();
+                loaded = false;
+            }
+
             if (!indexTable)
                 { return; }
 
@@ -168,6 +201,8 @@ class DBCStorage
         char const* fmt; /**< TODO */
         T** indexTable; /**< TODO */
         T* m_dataTable; /**< TODO */
+        std::map<uint32, T const*> data;
+        bool loaded;
         StringPoolList m_stringPoolList; /**< TODO */
 };
 
