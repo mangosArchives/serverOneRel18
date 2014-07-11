@@ -57,6 +57,7 @@ echo **   MySQL DLL's    **
 echo **********************
 copy ..\%3\libmysql.dll %2
 
+echo .
 echo **********************
 echo * Eluna base Scripts *
 echo **********************

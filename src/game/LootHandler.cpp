@@ -448,7 +448,7 @@ void WorldSession::DoLootRelease(ObjectGuid lguid)
                     player->DestroyItemCount(pItem, count, true);
                     break;
                 }
-                // temporary loot, auto loot move
+                    // temporary loot, auto loot move
                 case LOOT_DISENCHANTING:
                 {
                     if (!pItem->loot.isLooted())

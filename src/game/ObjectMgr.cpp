@@ -5829,7 +5829,7 @@ void ObjectMgr::LoadGameObjectLocales()
                 if (idx >= 0)
                 {
                     if ((int32)data.Name.size() <= idx)
-                        data.Name.resize(idx + 1);
+                        { data.Name.resize(idx + 1); }
 
                     data.Name[idx] = str;
                 }

@@ -47,10 +47,10 @@ class WorldSession;
 
 struct GameEventCreatureData;
 
-enum CreatureExtraFlags
+enum CreatureFlagsExtra
 {
     CREATURE_EXTRA_FLAG_INSTANCE_BIND   = 0x00000001,       // creature kill bind instance with killer and killer's group
-    CREATURE_EXTRA_FLAG_CIVILIAN        = 0x00000002,       // not aggro (ignore faction/reputation hostility)
+    CREATURE_EXTRA_FLAG_NO_AGGRO        = 0x00000002,       // not aggro (ignore faction/reputation hostility)
     CREATURE_EXTRA_FLAG_NO_PARRY        = 0x00000004,       // creature can't parry
     CREATURE_EXTRA_FLAG_NO_PARRY_HASTEN = 0x00000008,       // creature can't counter-attack at parry
     CREATURE_EXTRA_FLAG_NO_BLOCK        = 0x00000010,       // creature can't block
@@ -528,7 +528,7 @@ class MANGOS_DLL_SPEC Creature : public Unit
         void SetCorpseDelay(uint32 delay) { m_corpseDelay = delay; }
         uint32 GetCorpseDelay() const { return m_corpseDelay; }
         bool IsRacialLeader() const { return GetCreatureInfo()->RacialLeader; }
-        bool IsCivilian() const { return GetCreatureInfo()->ExtraFlags & CREATURE_EXTRA_FLAG_CIVILIAN; }
+        bool IsCivilian() const { return GetCreatureInfo()->ExtraFlags & CREATURE_EXTRA_FLAG_NO_AGGRO; }
         bool IsGuard() const { return GetCreatureInfo()->ExtraFlags & CREATURE_EXTRA_FLAG_GUARD; }
 
         bool CanWalk() const { return GetCreatureInfo()->InhabitType & INHABIT_GROUND; }

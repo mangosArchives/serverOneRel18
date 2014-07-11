@@ -107,26 +107,27 @@ class GMTicket
          * Gets the \ref Player s \ref ObjectGuid which asked the question and created the ticket
          * @return the \ref ObjectGuid for the \ref Player that asked the question
          */
-        ObjectGuid const& GetPlayerGuid() const
-        {
-            return m_guid;
-        }
+        ObjectGuid const& GetPlayerGuid() const { return m_guid; }
+        /** 
+         * Get the tickets question
+         * @return the question this ticket had
+         */
+        const char* GetText() const { return m_text.c_str(); }
+        /** 
+         * Get the response given to this ticket, if any
+         * @return the response that was made to this tickets question
+         */
+        const char* GetResponse() const { return m_responseText.c_str(); }
+        /** 
+         * Tells us when the last update was done as a UNIX timestamp.
+         * @return Time since last update in seconds since UNIX epoch
+         */
+        uint64 GetLastUpdate() const { return m_lastUpdate; }
 
-        const char* GetText() const
-        {
-            return m_text.c_str();
-        }
-
-        const char* GetResponse() const
-        {
-            return m_responseText.c_str();
-        }
-
-        uint64 GetLastUpdate() const
-        {
-            return m_lastUpdate;
-        }
-
+        /** 
+         * Changes the tickets question text.
+         * @param text the text to change the question to
+         */
         void SetText(const char* text)
         {
             m_text = text ? text : "";
@@ -147,6 +148,12 @@ class GMTicket
             CharacterDatabase.PExecute("UPDATE character_ticket SET response_text = '%s' WHERE guid = '%u'", escapedString.c_str(), m_guid.GetCounter());
         }
 
+        /** 
+         * Has this ticket gotten a response?
+         * @return true if there's some kind of response to this ticket, false otherwise
+         * \deprecated
+         * \todo Change to resolved/not resolved instead, via the check in db
+         */
         bool HasResponse() { return !m_responseText.empty(); }
 
         void DeleteFromDB() const
