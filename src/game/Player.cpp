@@ -2427,6 +2427,9 @@ void Player::GiveLevel(uint32 level)
     if (Pet* pet = GetPet())
         { pet->SynchronizeLevelWithOwner(); }
 
+    // Used by Eluna
+    sEluna->OnLevelChanged(this, oldLevel);
+
     if (MailLevelReward const* mailReward = sObjectMgr.GetMailLevelReward(level, getRaceMask()))
         MailDraft(mailReward->mailTemplateId).SendMailTo(this, MailSender(MAIL_CREATURE, mailReward->senderEntry));
 }
@@ -2617,9 +2620,6 @@ void Player::InitStatsForLevel(bool reapplyMods)
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
         { pet->SynchronizeLevelWithOwner(); }
-
-    // Used by Eluna
-    sEluna->OnLevelChanged(this, oldLevel);
 }
 
 void Player::SetFreeTalentPoints(uint32 points)
