@@ -3,8 +3,17 @@ MaNGOS One Changelog
 This change log references the relevant changes (bug and security fixes) done
 in recent versions.
 
-0.19 (2014-07-xx)
+0.19 (2014-07-xx) - The Genius of Tom Rus
 --------------------------------
+Major changes for this build which require your attention when upgrading include:
+
+Many Thanks to all the groups and individuals who contributed to this release.
+
+* In the win folder there is a new solution "BuildEverything" which does just that.
+  It builds the Core, Extraction Tools and Scripts library.
+* From this release Eluna scripting has been added. Many thanks to the Eluna Team
+
+* Added VS2013 support
 Major changes for this build which require your attention when upgrading include
 awesome things such as these:
 
@@ -30,7 +39,7 @@ awesome things such as these:
   and examples.
 * Player movement has been rewritten, and now factors in possible issues such as
   lag when sending out character movement. This also means, looting when moving
-  is no longer possible, and will be cancelled.
+  is no longer possible, and will be canceled.
 * Looting in groups has been corrected, and you should now be able to use round
   robin, master looter, free for all and need before greed looting.
 * EventAI is now more verbose, and will validate targets for commands upon server

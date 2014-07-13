@@ -80,7 +80,9 @@ struct MANGOS_DLL_DECL npc_kayaAI : public npc_escortAI
                 DoScriptText(SAY_END, m_creature);
 
                 if (Player* pPlayer = GetPlayerForEscort())
-                { pPlayer->GroupEventHappens(QUEST_PROTECT_KAYA, m_creature); }
+                {
+                    pPlayer->GroupEventHappens(QUEST_PROTECT_KAYA, m_creature);
+                }
                 break;
         }
     }
@@ -101,7 +103,9 @@ bool QuestAccept_npc_kaya(Player* pPlayer, Creature* pCreature, Quest const* pQu
         DoScriptText(SAY_START, pCreature);
 
         if (npc_kayaAI* pEscortAI = dynamic_cast<npc_kayaAI*>(pCreature->AI()))
-        { pEscortAI->Start(false, pPlayer, pQuest); }
+        {
+            pEscortAI->Start(false, pPlayer, pQuest);
+        }
     }
     return true;
 }

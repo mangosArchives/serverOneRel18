@@ -131,7 +131,9 @@ enum
 bool AreaTrigger_at_ravenholdt(Player* pPlayer, AreaTriggerEntry const* /*pAt*/)
 {
     if (pPlayer->GetQuestStatus(QUEST_MANOR_RAVENHOLDT) == QUEST_STATUS_INCOMPLETE)
-    { pPlayer->KilledMonsterCredit(NPC_RAVENHOLDT); }
+    {
+        pPlayer->KilledMonsterCredit(NPC_RAVENHOLDT);
+    }
 
     return false;
 }
@@ -151,7 +153,9 @@ bool AreaTrigger_at_scent_larkorwi(Player* pPlayer, AreaTriggerEntry const* pAt)
     if (pPlayer->IsAlive() && !pPlayer->isGameMaster() && pPlayer->GetQuestStatus(QUEST_SCENT_OF_LARKORWI) == QUEST_STATUS_INCOMPLETE)
     {
         if (!GetClosestCreatureWithEntry(pPlayer, NPC_LARKORWI_MATE, 25.0f, false, false))
-        { pPlayer->SummonCreature(NPC_LARKORWI_MATE, pAt->x, pAt->y, pAt->z, 3.3f, TEMPSUMMON_TIMED_OOC_DESPAWN, 2 * MINUTE * IN_MILLISECONDS); }
+        {
+            pPlayer->SummonCreature(NPC_LARKORWI_MATE, pAt->x, pAt->y, pAt->z, 3.3f, TEMPSUMMON_TIMED_OOC_DESPAWN, 2 * MINUTE * IN_MILLISECONDS);
+        }
     }
 
     return false;
@@ -169,15 +173,21 @@ bool AreaTrigger_at_murkdeep(Player* pPlayer, AreaTriggerEntry const* /*pAt*/)
     {
         ScriptedMap* pScriptedMap = (ScriptedMap*)pPlayer->GetInstanceData();
         if (!pScriptedMap)
-        { return false; }
+        {
+            return false;
+        }
 
         // If Murkdeep is already spawned, skip the rest
         if (pScriptedMap->GetSingleCreatureFromStorage(NPC_MURKDEEP, true))
-        { return true; }
+        {
+            return true;
+        }
 
         // Check if there are already coastrunners (dead or alive) around the area
         if (GetClosestCreatureWithEntry(pPlayer, NPC_GREYMIST_COASTRUNNNER, 60.0f, false, false))
-        { return true; }
+        {
+            return true;
+        }
 
         float fX, fY, fZ;
         for (uint8 i = 0; i < 3; ++i)

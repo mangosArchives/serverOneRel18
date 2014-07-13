@@ -23,18 +23,22 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Felwood
-SD%Complete: 95
-SDComment: Quest support: 4506, 7603, 7603 (Summon Pollo Grande)
-SDCategory: Felwood
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Felwood
+ * SD%Complete: 95
+ * SDComment:   Quest support: 4506, 7603, 7603 (Summon Pollo Grande).
+ * SDCategory:  Felwood
+ * EndScriptData
+ */
 
-/* ContentData
-npc_kitten
-npc_niby_the_almighty
-npc_kroshius
-EndContentData */
+/**
+ * ContentData
+ * npc_kitten
+ * npc_niby_the_almighty
+ * npc_kroshius
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "follower_ai.h"
@@ -87,7 +91,9 @@ struct MANGOS_DLL_DECL npc_kittenAI : public FollowerAI
         if (!m_creature->getVictim() && !m_creature->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP) && HasFollowState(STATE_FOLLOW_INPROGRESS) && pWho->GetEntry() == NPC_WINNA)
         {
             if (m_creature->IsWithinDistInMap(pWho, INTERACTION_DISTANCE))
-            { m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP); }
+            {
+                m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            }
         }
     }
 
@@ -103,7 +109,9 @@ struct MANGOS_DLL_DECL npc_kittenAI : public FollowerAI
                     SetFollowPaused(false);
                 }
                 else
-                { m_uiMoonwellCooldown -= uiDiff; }
+                {
+                    m_uiMoonwellCooldown -= uiDiff;
+                }
             }
 
             return;
@@ -133,7 +141,9 @@ bool EffectDummyCreature_npc_kitten(Unit* /*pCaster*/, uint32 uiSpellId, SpellEf
         }
 
         if (Unit* pOwner = pCreatureTarget->GetOwner())
-        { DoScriptText(EMOTE_SAB_FOLLOW, pCreatureTarget, pOwner); }
+        {
+            DoScriptText(EMOTE_SAB_FOLLOW, pCreatureTarget, pOwner);
+        }
 
         // always return true when we are handling this spell and effect
         return true;
@@ -146,7 +156,9 @@ bool GossipHello_npc_corrupt_saber(Player* pPlayer, Creature* pCreature)
     if (pPlayer->GetQuestStatus(QUEST_CORRUPT_SABER) == QUEST_STATUS_INCOMPLETE)
     {
         if (GetClosestCreatureWithEntry(pCreature, NPC_WINNA, INTERACTION_DISTANCE))
-        { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_RELEASE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
+        {
+            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_RELEASE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+        }
     }
 
     pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
@@ -160,7 +172,9 @@ bool GossipSelect_npc_corrupt_saber(Player* pPlayer, Creature* pCreature, uint32
         pPlayer->CLOSE_GOSSIP_MENU();
 
         if (npc_kittenAI* pKittenAI = dynamic_cast<npc_kittenAI*>(pCreature->AI()))
-        { pKittenAI->SetFollowComplete(); }
+        {
+            pKittenAI->SetFollowComplete();
+        }
 
         pPlayer->AreaExploredOrEventHappens(QUEST_CORRUPT_SABER);
     }
@@ -261,7 +275,9 @@ struct MANGOS_DLL_DECL npc_niby_the_almightyAI : public ScriptedAI
                 ++m_uiSpeech;
             }
             else
-            { m_uiSummonTimer -= uiDiff; }
+            {
+                m_uiSummonTimer -= uiDiff;
+            }
         }
     }
 };
@@ -316,13 +332,17 @@ struct MANGOS_DLL_DECL npc_kroshiusAI : public ScriptedAI
         m_playerGuid.Clear();
 
         if (!m_uiPhase)
-        { m_creature->SetStandState(UNIT_STAND_STATE_DEAD); }
+        {
+            m_creature->SetStandState(UNIT_STAND_STATE_DEAD);
+        }
     }
 
     void DoRevive(Player* pSource)
     {
         if (m_uiPhase)
-        { return; }
+        {
+            return;
+        }
 
         m_uiPhase = 1;
         m_uiPhaseTimer = 2500;
@@ -339,7 +359,9 @@ struct MANGOS_DLL_DECL npc_kroshiusAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_uiPhase)
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiPhase < 4)
         {
@@ -360,19 +382,25 @@ struct MANGOS_DLL_DECL npc_kroshiusAI : public ScriptedAI
                         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
                         {
                             if (m_creature->IsWithinDistInMap(pPlayer, 30.0f))
-                            { AttackStart(pPlayer); }
+                            {
+                                AttackStart(pPlayer);
+                            }
                         }
                         break;
                 }
                 ++m_uiPhase;
             }
             else
-            { m_uiPhaseTimer -= uiDiff; }
+            {
+                m_uiPhaseTimer -= uiDiff;
+            }
         }
         else
         {
             if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            { return; }
+            {
+                return;
+            }
 
             if (m_uiKnockBackTimer < uiDiff)
             {
@@ -380,7 +408,7 @@ struct MANGOS_DLL_DECL npc_kroshiusAI : public ScriptedAI
                 m_uiKnockBackTimer = urand(9000, 12000);
             }
             else
-            { m_uiKnockBackTimer -= uiDiff; }
+                { m_uiKnockBackTimer -= uiDiff; }
 
             DoMeleeAttackIfReady();
         }
@@ -401,7 +429,9 @@ bool ProcessEventId_npc_kroshius(uint32 uiEventId, Object* pSource, Object* /*pT
             if (Creature* pKroshius = GetClosestCreatureWithEntry((Player*)pSource, NPC_KROSHIUS, 20.0f))
             {
                 if (npc_kroshiusAI* pKroshiusAI = dynamic_cast<npc_kroshiusAI*>(pKroshius->AI()))
-                { pKroshiusAI->DoRevive((Player*)pSource); }
+                {
+                    pKroshiusAI->DoRevive((Player*)pSource);
+                }
             }
         }
 

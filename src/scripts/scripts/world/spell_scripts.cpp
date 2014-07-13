@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Spell_Scripts
-SD%Complete: 100
-SDComment: Spell scripts for dummy effects (if script need access/interaction with parts of other AI or instance, add it in related source files)
-SDCategory: Spell
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Spell_Scripts
+ * SD%Complete: 100
+ * SDComment:   Spell scripts for dummy effects (if script need access/interaction with parts of other AI or instance, add it in related source files).
+ * SDCategory:  Spell
+ * EndScriptData
+ */
 
 /* ContentData
 spell 8913
@@ -47,10 +49,11 @@ EndContentData */
 
 #include "precompiled.h"
 
-/* When you make a spell effect:
-- always check spell id and effect index
-- always return true when the spell is handled by script
-*/
+/**
+ * When you make a spell effect:
+ * - always check spell id and effect index
+ * - always return true when the spell is handled by script
+ */
 
 enum
 {
@@ -485,7 +488,9 @@ bool EffectDummyCreature_spell_dummy_npc(Unit* pCaster, uint32 uiSpellId, SpellE
             if (uiEffIndex == EFFECT_INDEX_0)
             {
                 if (pCaster->GetTypeId() != TYPEID_PLAYER && pCreatureTarget->GetEntry() != NPC_DEEPRUN_RAT)
-                { return true; }
+                {
+                    return true;
+                }
 
                 pCreatureTarget->UpdateEntry(NPC_ENTHRALLED_DEEPRUN_RAT);
                 pCreatureTarget->CastSpell(pCreatureTarget, SPELL_MELODIOUS_RAPTURE_VISUAL, false);

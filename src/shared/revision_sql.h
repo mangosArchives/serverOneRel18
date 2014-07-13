@@ -22,9 +22,9 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-#ifndef __REVISION_SQL_H__
-#define __REVISION_SQL_H__
+#ifndef MANGOS_H_REVISION_SQL
+#define MANGOS_H_REVISION_SQL
 #define REVISION_DB_CHARACTERS "required_s1350_11716_09_characters_mail"
 #define REVISION_DB_MANGOS "required_19001_scripted_event"
 #define REVISION_DB_REALMD "required_z2426_01_realmd_relations"
-#endif // __REVISION_SQL_H__
+#endif // MANGOS_H_REVISION_SQL

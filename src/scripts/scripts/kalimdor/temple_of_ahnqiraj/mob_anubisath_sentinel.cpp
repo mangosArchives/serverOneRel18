@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: mob_anubisath_sentinel
-SD%Complete: 75
-SDComment: Abilities selection needs further improvements. Shadow storm is not properly implemented in core it should only target ppl outside of melee range.
-SDCategory: Temple of Ahn'Qiraj
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      mob_anubisath_sentinel
+ * SD%Complete: 75
+ * SDComment:   Abilities selection needs further improvements. Shadow storm is not properly implemented in core it should only target ppl outside of melee range.
+ * SDCategory:  Temple of Ahn'Qiraj
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -73,9 +75,13 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
     void GetAIInformation(ChatHandler& reader) override
     {
         if (m_lAssistList.empty())
-        { reader.PSendSysMessage("Anubisath Sentinel - group not assigned, will be assigned OnAggro"); }
+        {
+            reader.PSendSysMessage("Anubisath Sentinel - group not assigned, will be assigned OnAggro");
+        }
         if (m_lAssistList.size() == MAX_BUDDY)
-        { reader.PSendSysMessage("Anubisath Sentinel - proper group found"); }
+        {
+            reader.PSendSysMessage("Anubisath Sentinel - proper group found");
+        }
         else
             { reader.PSendSysMessage("Anubisath Sentinel - not correct number of mobs for group found. Number found %lu, should be %u", m_lAssistList.size(), MAX_BUDDY); }
     }
@@ -85,12 +91,16 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
         for (GuidList::const_iterator itr = m_lAssistList.begin(); itr != m_lAssistList.end(); ++itr)
         {
             if (*itr == m_creature->GetObjectGuid())
-            { continue; }
+            {
+                continue;
+            }
 
             if (Creature* pBuddy = m_creature->GetMap()->GetCreature(*itr))
             {
                 if (pBuddy->IsDead())
-                { pBuddy->Respawn(); }
+                {
+                    pBuddy->Respawn();
+                }
             }
         }
     }
@@ -111,15 +121,33 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
     {
         switch (urand(0, 8))
         {
-            case 0: m_uiMyAbility = SPELL_MENDING; break;
-            case 1: m_uiMyAbility = SPELL_PERIODIC_KNOCK_AWAY; break;
-            case 2: m_uiMyAbility = SPELL_PERIODIC_MANA_BURN; break;
-            case 3: m_uiMyAbility = SPELL_FIRE_ARCANE_REFLECT; break;
-            case 4: m_uiMyAbility = SPELL_SHADOW_FROST_REFLECT; break;
-            case 5: m_uiMyAbility = SPELL_THORNS; break;
-            case 6: m_uiMyAbility = SPELL_PERIODIC_THUNDERCLAP; break;
-            case 7: m_uiMyAbility = SPELL_MORTAL_STRIKE; break;
-            case 8: m_uiMyAbility = SPELL_PERIODIC_SHADOW_STORM; break;
+            case 0:
+                m_uiMyAbility = SPELL_MENDING;
+                break;
+            case 1:
+                m_uiMyAbility = SPELL_PERIODIC_KNOCK_AWAY;
+                break;
+            case 2:
+                m_uiMyAbility = SPELL_PERIODIC_MANA_BURN;
+                break;
+            case 3:
+                m_uiMyAbility = SPELL_FIRE_ARCANE_REFLECT;
+                break;
+            case 4:
+                m_uiMyAbility = SPELL_SHADOW_FROST_REFLECT;
+                break;
+            case 5:
+                m_uiMyAbility = SPELL_THORNS;
+                break;
+            case 6:
+                m_uiMyAbility = SPELL_PERIODIC_THUNDERCLAP;
+                break;
+            case 7:
+                m_uiMyAbility = SPELL_MORTAL_STRIKE;
+                break;
+            case 8:
+                m_uiMyAbility = SPELL_PERIODIC_SHADOW_STORM;
+                break;
         }
 
         DoCastSpellIfCan(m_creature, m_uiMyAbility, CAST_TRIGGERED);
@@ -132,10 +160,14 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
             if (Creature* pBuddy = m_creature->GetMap()->GetCreature(*itr))
             {
                 if (*itr == m_creature->GetObjectGuid())
-                { continue; }
+                {
+                    continue;
+                }
 
                 if (!pBuddy->IsAlive())
-                { continue; }
+                {
+                    continue;
+                }
 
                 pBuddy->SetHealth(pBuddy->GetMaxHealth());
                 DoCastSpellIfCan(pBuddy, m_uiMyAbility, CAST_TRIGGERED);
@@ -150,12 +182,16 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
             for (GuidList::const_iterator itr = m_lAssistList.begin(); itr != m_lAssistList.end(); ++itr)
             {
                 if (*itr == m_creature->GetObjectGuid())
-                { continue; }
+                {
+                    continue;
+                }
 
                 if (Creature* pBuddy = m_creature->GetMap()->GetCreature(*itr))
                 {
                     if (pBuddy->IsAlive())
-                    { pBuddy->AI()->AttackStart(pTarget); }
+                    {
+                        pBuddy->AI()->AttackStart(pTarget);
+                    }
                 }
             }
 
@@ -170,19 +206,25 @@ struct MANGOS_DLL_DECL npc_anubisath_sentinelAI : public ScriptedAI
             m_lAssistList.push_back((*iter)->GetObjectGuid());
 
             if ((*iter)->GetObjectGuid() == m_creature->GetObjectGuid())
-            { continue; }
+            {
+                continue;
+            }
 
             (*iter)->AI()->AttackStart(pTarget);
         }
 
         if (m_lAssistList.size() != MAX_BUDDY)
-        { script_error_log("npc_anubisath_sentinel for %s found too few/too many buddies, expected %u.", m_creature->GetGuidStr().c_str(), MAX_BUDDY); }
+        {
+            script_error_log("npc_anubisath_sentinel for %s found too few/too many buddies, expected %u.", m_creature->GetGuidStr().c_str(), MAX_BUDDY);
+        }
     }
 
     void UpdateAI(const uint32 /*uiDiff*/) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (!m_bEnraged && m_creature->GetHealthPercent() < 30.0f)
         {

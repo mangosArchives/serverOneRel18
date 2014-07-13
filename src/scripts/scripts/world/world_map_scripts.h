@@ -50,7 +50,7 @@ enum
 
 enum SpawnIndexes
 {
-    POS_IDX_EMISSARY_SPAWN      = 0,
+    POS_IDX_EMISSARY_SPAWN      = 0,                        // Not used in Classic, but keep here for code change simplification
     POS_IDX_MURKDEEP_SPAWN      = 1,
     POS_IDX_MURKDEEP_MOVE       = 2,
     POS_IDX_MAX                 = 3
@@ -58,9 +58,9 @@ enum SpawnIndexes
 
 static const float aSpawnLocations[POS_IDX_MAX][4] =
 {
-    {12583.019f, -6916.194f,  4.601f, 6.18f},           // Emissary of Hate, guesswork
-    {4981.031f,    597.955f, -1.361f, 4.82f},           // Murkdeep spawn, guesswork
-    {4988.970f,    547.002f,  5.379f, 0.0f},            // Murkdeep move, guesswork
+    {12583.019f, -6916.194f,  4.601f, 6.18f},               // Emissary of Hate, guesswork
+    {4981.031f,    597.955f, -1.361f, 4.82f},               // Murkdeep spawn, guesswork
+    {4988.970f,    547.002f,  5.379f, 0.0f},                // Murkdeep move, guesswork
 };
 
 #endif

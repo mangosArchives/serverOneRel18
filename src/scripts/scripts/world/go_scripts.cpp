@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: GO_Scripts
-SD%Complete: 100
-SDComment: Quest support: 5097, 5098, Barov_journal->Teaches spell 26089
-SDCategory: Game Objects
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      GO_Scripts
+ * SD%Complete: 100
+ * SDComment:   Quest support: 5097, 5098, Barov_journal->Teaches spell 26089
+ * SDCategory:  Game Objects
+ * EndScriptData
+ */
 
 /* ContentData
 go_barov_journal
@@ -183,13 +185,23 @@ bool GOUse_go_andorhal_tower(Player* pPlayer, GameObject* pGo)
         uint32 uiKillCredit = 0;
         switch (pGo->GetEntry())
         {
-            case GO_ANDORHAL_TOWER_1:   uiKillCredit = NPC_ANDORHAL_TOWER_1;   break;
-            case GO_ANDORHAL_TOWER_2:   uiKillCredit = NPC_ANDORHAL_TOWER_2;   break;
-            case GO_ANDORHAL_TOWER_3:   uiKillCredit = NPC_ANDORHAL_TOWER_3;   break;
-            case GO_ANDORHAL_TOWER_4:   uiKillCredit = NPC_ANDORHAL_TOWER_4;   break;
+            case GO_ANDORHAL_TOWER_1:
+                uiKillCredit = NPC_ANDORHAL_TOWER_1;
+                break;
+            case GO_ANDORHAL_TOWER_2:
+                uiKillCredit = NPC_ANDORHAL_TOWER_2;
+                break;
+            case GO_ANDORHAL_TOWER_3:
+                uiKillCredit = NPC_ANDORHAL_TOWER_3;
+                break;
+            case GO_ANDORHAL_TOWER_4:
+                uiKillCredit = NPC_ANDORHAL_TOWER_4;
+                break;
         }
         if (uiKillCredit)
-        { pPlayer->KilledMonsterCredit(uiKillCredit); }
+        {
+            pPlayer->KilledMonsterCredit(uiKillCredit);
+        }
     }
     return true;
 }

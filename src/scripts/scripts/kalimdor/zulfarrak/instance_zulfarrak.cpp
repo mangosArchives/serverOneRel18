@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: instance_zulfarrak
-SD%Complete: 80%
-SDComment:
-SDCategory: Zul'Farrak
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      instance_zulfarrak
+ * SD%Complete: 80
+ * SDComment:   None
+ * SDCategory:  Zul'Farrak
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "zulfarrak.h"
@@ -65,11 +67,15 @@ void instance_zulfarrak::OnCreatureCreate(Creature* pCreature)
 void instance_zulfarrak::OnObjectCreate(GameObject* pGo)
 {
     if (pGo->GetEntry() == GO_SHALLOW_GRAVE)
-    { m_lShallowGravesGuidList.push_back(pGo->GetObjectGuid()); }
+    {
+        m_lShallowGravesGuidList.push_back(pGo->GetObjectGuid());
+    }
     else if (pGo->GetEntry() == GO_END_DOOR)
     {
         if (GetData(TYPE_PYRAMID_EVENT) == DONE)
-        { pGo->SetGoState(GO_STATE_ACTIVE); }
+        {
+            pGo->SetGoState(GO_STATE_ACTIVE);
+        }
     }
 }
 
@@ -88,19 +94,27 @@ void instance_zulfarrak::SetData(uint32 uiType, uint32 uiData)
         case TYPE_NEKRUM:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE && GetData(TYPE_SEZZZIZ) == DONE)
-            { SetData(TYPE_PYRAMID_EVENT, DONE); }
+            {
+                SetData(TYPE_PYRAMID_EVENT, DONE);
+            }
             break;
         case TYPE_SEZZZIZ:
             m_auiEncounter[uiType] = uiData;
             if (uiData == DONE && GetData(TYPE_NEKRUM) == DONE)
-            { SetData(TYPE_PYRAMID_EVENT, DONE); }
+            {
+                SetData(TYPE_PYRAMID_EVENT, DONE);
+            }
             break;
         case TYPE_PYRAMID_EVENT:
             m_auiEncounter[uiType] = uiData;
             if (uiData == IN_PROGRESS)
-            { m_uiPyramidEventTimer = 20000; }
+            {
+                m_uiPyramidEventTimer = 20000;
+            }
             else if (uiData == DONE)
-            { m_uiPyramidEventTimer = 0; }
+            {
+                m_uiPyramidEventTimer = 0;
+            }
             break;
         default:
             return;
@@ -140,7 +154,9 @@ void instance_zulfarrak::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-        { m_auiEncounter[i] = NOT_STARTED; }
+        {
+            m_auiEncounter[i] = NOT_STARTED;
+        }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -149,7 +165,9 @@ void instance_zulfarrak::Load(const char* chrIn)
 uint32 instance_zulfarrak::GetData(uint32 uiType) const
 {
     if (uiType < MAX_ENCOUNTER)
-    { return m_auiEncounter[uiType]; }
+    {
+        return m_auiEncounter[uiType];
+    }
 
     return 0;
 }
@@ -158,14 +176,30 @@ void instance_zulfarrak::OnCreatureEnterCombat(Creature* pCreature)
 {
     switch (pCreature->GetEntry())
     {
-        case NPC_VELRATHA: SetData(TYPE_VELRATHA, IN_PROGRESS); break;
-        case NPC_GAHZRILLA: SetData(TYPE_GAHZRILLA, IN_PROGRESS); break;
-        case NPC_ANTUSUL: SetData(TYPE_ANTUSUL, IN_PROGRESS); break;
-        case NPC_THEKA: SetData(TYPE_THEKA, IN_PROGRESS); break;
-        case NPC_ZUMRAH: SetData(TYPE_ZUMRAH, IN_PROGRESS); break;
-        case NPC_NEKRUM: SetData(TYPE_NEKRUM, IN_PROGRESS); break;
-        case NPC_SEZZZIZ: SetData(TYPE_SEZZZIZ, IN_PROGRESS); break;
-        case NPC_CHIEF_SANDSCALP: SetData(TYPE_CHIEF_SANDSCALP, IN_PROGRESS); break;
+        case NPC_VELRATHA:
+            SetData(TYPE_VELRATHA, IN_PROGRESS);
+            break;
+        case NPC_GAHZRILLA:
+            SetData(TYPE_GAHZRILLA, IN_PROGRESS);
+            break;
+        case NPC_ANTUSUL:
+            SetData(TYPE_ANTUSUL, IN_PROGRESS);
+            break;
+        case NPC_THEKA:
+            SetData(TYPE_THEKA, IN_PROGRESS);
+            break;
+        case NPC_ZUMRAH:
+            SetData(TYPE_ZUMRAH, IN_PROGRESS);
+            break;
+        case NPC_NEKRUM:
+            SetData(TYPE_NEKRUM, IN_PROGRESS);
+            break;
+        case NPC_SEZZZIZ:
+            SetData(TYPE_SEZZZIZ, IN_PROGRESS);
+            break;
+        case NPC_CHIEF_SANDSCALP:
+            SetData(TYPE_CHIEF_SANDSCALP, IN_PROGRESS);
+            break;
     }
 }
 
@@ -173,14 +207,30 @@ void instance_zulfarrak::OnCreatureEvade(Creature* pCreature)
 {
     switch (pCreature->GetEntry())
     {
-        case NPC_VELRATHA: SetData(TYPE_VELRATHA, FAIL); break;
-        case NPC_GAHZRILLA: SetData(TYPE_GAHZRILLA, FAIL); break;
-        case NPC_ANTUSUL: SetData(TYPE_ANTUSUL, FAIL); break;
-        case NPC_THEKA: SetData(TYPE_THEKA, FAIL); break;
-        case NPC_ZUMRAH: SetData(TYPE_ZUMRAH, FAIL); break;
-        case NPC_NEKRUM: SetData(TYPE_NEKRUM, FAIL); break;
-        case NPC_SEZZZIZ: SetData(TYPE_SEZZZIZ, FAIL); break;
-        case NPC_CHIEF_SANDSCALP: SetData(TYPE_CHIEF_SANDSCALP, FAIL); break;
+        case NPC_VELRATHA:
+            SetData(TYPE_VELRATHA, FAIL);
+            break;
+        case NPC_GAHZRILLA:
+            SetData(TYPE_GAHZRILLA, FAIL);
+            break;
+        case NPC_ANTUSUL:
+            SetData(TYPE_ANTUSUL, FAIL);
+            break;
+        case NPC_THEKA:
+            SetData(TYPE_THEKA, FAIL);
+            break;
+        case NPC_ZUMRAH:
+            SetData(TYPE_ZUMRAH, FAIL);
+            break;
+        case NPC_NEKRUM:
+            SetData(TYPE_NEKRUM, FAIL);
+            break;
+        case NPC_SEZZZIZ:
+            SetData(TYPE_SEZZZIZ, FAIL);
+            break;
+        case NPC_CHIEF_SANDSCALP:
+            SetData(TYPE_CHIEF_SANDSCALP, FAIL);
+            break;
     }
 }
 
@@ -188,14 +238,30 @@ void instance_zulfarrak::OnCreatureDeath(Creature* pCreature)
 {
     switch (pCreature->GetEntry())
     {
-        case NPC_VELRATHA: SetData(TYPE_VELRATHA, DONE); break;
-        case NPC_GAHZRILLA: SetData(TYPE_GAHZRILLA, DONE); break;
-        case NPC_ANTUSUL: SetData(TYPE_ANTUSUL, DONE); break;
-        case NPC_THEKA: SetData(TYPE_THEKA, DONE); break;
-        case NPC_ZUMRAH: SetData(TYPE_ZUMRAH, DONE); break;
-        case NPC_NEKRUM: SetData(TYPE_NEKRUM, DONE); break;
-        case NPC_SEZZZIZ: SetData(TYPE_SEZZZIZ, DONE); break;
-        case NPC_CHIEF_SANDSCALP: SetData(TYPE_CHIEF_SANDSCALP, DONE); break;
+        case NPC_VELRATHA:
+            SetData(TYPE_VELRATHA, DONE);
+            break;
+        case NPC_GAHZRILLA:
+            SetData(TYPE_GAHZRILLA, DONE);
+            break;
+        case NPC_ANTUSUL:
+            SetData(TYPE_ANTUSUL, DONE);
+            break;
+        case NPC_THEKA:
+            SetData(TYPE_THEKA, DONE);
+            break;
+        case NPC_ZUMRAH:
+            SetData(TYPE_ZUMRAH, DONE);
+            break;
+        case NPC_NEKRUM:
+            SetData(TYPE_NEKRUM, DONE);
+            break;
+        case NPC_SEZZZIZ:
+            SetData(TYPE_SEZZZIZ, DONE);
+            break;
+        case NPC_CHIEF_SANDSCALP:
+            SetData(TYPE_CHIEF_SANDSCALP, DONE);
+            break;
     }
 }
 
@@ -246,7 +312,9 @@ void instance_zulfarrak::Update(uint32 uiDiff)
             m_uiPyramidEventTimer = urand(0, 2) ? urand(3000, 10000) : 1000;
         }
         else
-        { m_uiPyramidEventTimer -= uiDiff; }
+        {
+            m_uiPyramidEventTimer -= uiDiff;
+        }
     }
 }
 

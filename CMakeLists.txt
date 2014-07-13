@@ -38,7 +38,6 @@ else()
   option(PCH                "Use precompiled headers"               OFF)
 endif()
 # TODO: options that should be checked/created:
-option(SOAP                 "With SOAP"                             OFF)
 #option(CLI                  "With CLI"                              ON)
 #option(RA                   "With Remote Access"                    OFF)
 #option(SQL                  "Copy SQL files"                        OFF)
@@ -376,6 +375,7 @@ set(DEFINITIONS
   HAVE_CONFIG_H
   VERSION="${MANGOS_VERSION}"
   SYSCONFDIR="${CONF_DIR}/"
+  MANGOS
 )
 
 if(POSTGRESQL)

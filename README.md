@@ -1,25 +1,67 @@
-MaNGOS One [![Build Status](https://travis-ci.org/mangosone/server.png)](https://travis-ci.org/mangosone/server)
-===========
-*MaNGOS One* is a full featured server for [World of Warcraft][2], in its vanilla
-version supporting clients from the [patch 2.4.3][50] branch, specifically patch
-2.4.3.
+[![](https://www.getmangos.eu/images/primus/blue/misc/logo.png)](http://www.getmangos.eu)&nbsp;
+[![](/icons/FORUM.gif)](https://www.getmangos.eu/forum.php)
+[![](/icons/WIKI.gif)](http://github.com/mangoswiki/wiki/wiki)
+[![](/icons/TOOLS.gif)](http://github.com/mangostools)
+[![Build status](https://travis-ci.org/mangosone/server.png)][16]
+
+MangosOne 
+===
+### A World of Warcraft server for the WOW Expansion The Burning Crusade
+----
+*MangosOne* is open source project, built in [C++][7], it's fast, runs on multiple,
+platforms, can store game data in [MySQL][40] and [PostgreSQL][42]. It also has
+optional support for SOAP, and aims to be 100% compatible with [World of Warcraft][2] in its
+TBC version, namely [patch 2.4.3][4].
+
+If you liked the second incarnation of [World of Warcraft][2] and still want to play
+[The Burning Crusade][4], you should try *MangosOne*. We provide an authentication
+server where you can manage your users, and a world server which serves game
+content just like the original did back then.
+
+On top of that each update is built by [Travis CI][16] as you can see by the
+image next to the chapter's heading! We do love green builds, and working things.
+To complement this, we push builds through [Coverity][17] to find and fix any
+possible security issues.
 
 World of Warcraft, and all World of Warcraft or Warcraft art, images, and lore are
-copyrighted by [Blizzard Entertainment, Inc.][1].
-
-
-Build status
-------------
-Each update to the *MaNGOS One* sources is run through build tests using the
-Travis CI build service. The current build status can be viewed on the *MaNGOS One*
-[build status page][114], and for your convenience the build status also is shown
-at the top of this README when viewing the repository on [github][111]. If it's
-green, a successful build has been performed under Linux.
-
+copyrighted by [Blizzard Entertainment, Inc.][1]
 
 Requirements
 ------------
-*mangos-zero* server stands on the shoulders of well-known Open Source
+*MangosOne* server supports a wide range of operating systems, and various
+compiler platforms. In order to do that, we use various free cross-platform
+libraries and use [CMake][19] to provide a cross-platform build system which
+adapts to your chosen operating system and compiler.
+
+Operating systems
+-----------------
+Currently we support running *MangosOne* on these operating systems:
+
+* **Windows**, 32 bit and 64 bit. [Windows][20] 7 or newer is recommended.
+* **Linux**, 32 bit and 64 bit. [Debian 7][21] and [Ubuntu 12.04 LTS][22] are
+  recommended. Other distributions with similar package versions will work, too.
+* **BSD**, 32 bit and 64 bit. [FreeBSD][23], [NetBSD][24], [OpenBSD][25] and
+  [DragonFly][26] are recommended.
+
+Of course, newer versions should work, too. In case of Windows, matching
+server version will work, too.
+
+Compilers
+---------
+Building *MangosOne* is currently possible with these compilers:
+
+* **Microsoft Visual Studio (Express[^1])**, 32 bit and 64 bit. Both
+  [Visual Studio][30] and the Express editions of [Visual Studio][31]
+  are supported.
+* **Microsoft Windows SDK**, 32 bit and 64 bit. The [Windows 7 SDK][32] is
+  recommended, as older versions lack compiler features required to build
+  the server.
+* **Clang**, 32 bit and 64 bit. The [Clang compiler][33] can be used on any
+  supported operating system.[^2]
+
+Dependencies
+------------
+*MangosOne* server stands on the shoulders of well-known Open Source
 libraries, and a few awesome, but less known libraries to prevent us from
 inventing the wheel again.
 
@@ -44,77 +86,66 @@ their systems package management instead of source packages.*
   algorithms used in MPQ archives.
 * **OpenSSL**: [OpenSSL][48] ([OpenSSL for Windows][55]) provides encryption
   algorithms used when authenticating clients.
-* **Lua**: [Lua 5.1][56] ([Lua 5.1 for Windows][57]) provides a convenient, fast
+* **Lua**: [Lua 5.2][56] ([Lua 5.2 for Windows][57]) provides a convenient, fast
   scripting environment, which allows us to make live changes to scripted
   content.
 
-*Recast*, *G3D* and *libmpq* are included in the *mangos-zero* distribution as
+*Recast*, *G3D* and *libmpq* are included in the *MangosOne* distribution as
 we rely on specific versions.
 
 Optional dependencies
 ---------------------
 
 * **Doxygen**: if you want to export HTML or PDF formatted documentation for the
-  *mangos-zero* API, you should install [Doxygen][49].
-* **Lua**: if you want to test drive how *mangos-zero* feels with [Lua][50] as
-  scripting language instead of the scripting library, you will need Lua **5.1.x**
+  *MangosOne* API, you should install [Doxygen][49].
+* **Lua**: if you want to test drive how *MangosZero* feels with [Lua][50] as
+  scripting language instead of the scripting library, you will need Lua **5.2.3**
   installed.
 
 Discuss
 -------
-If you need help with building and installing *mangos-zero* there is thousands
-of users out there already running *mangos-zero* and many you can find on
+If you need help with building and installing *MangosOne* there is thousands
+of users out there already running *MangosOne* and many you can find on our
+project website and discussion forum
 
-
-Compilation Guides
-------------------
-Please see our compilation and installation guides at our [Wiki][20]
+* [getmangos.eu][10]
 
 License
 -------
-*MaNGOS One* is open source, and licensed under the terms of the GNU GPL version 2.
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
 
-  Copyright (C) 2005-2014  MaNGOS <http://getmangos.eu>
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
+Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+The full license is included in the file `License.md`.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+In addition, as a special exception, permission is granted to link the code of
+*MangosOne* with the OpenSSL project's [OpenSSL library][48] (or with modified
+versions of it that use the same license as the OpenSSL library), and distribute
+the linked executables. You must obey the GNU General Public License in all
+respects for all of the code used other than [OpenSSL][48].
 
-  You can find the full license text in the file COPYING delivered with this
-  package.
 
-### Exceptions to GPL
-
-  Some third-party libraries MaNGOS uses have other licenses, that must be
-  uphold.  These libraries are located within the dep/ directory
-
-  In addition, as a special exception, MaNGOS gives permission to link the code
-  of its release of MaNGOS with the OpenSSL project's "OpenSSL" library
-  (or with modified versions of it that use the same license as the "OpenSSL"
-  library), and distribute the linked executables. You must obey the GNU
-  General Public License in all respects for all of the code used other than
-  "OpenSSL".
+[^1]: Visual Studio Express versions prior to the 2012 release can only
+      build 32 bit applications, unless you install the Windows SDK.
+[^2]: Clang support for Windows is experimental. Failure to compile MangosZero
+      may also relate to the experimental state of the port.
 
 [1]: http://blizzard.com/ "Blizzard Entertainment Inc. · we love you!"
 [2]: http://blizzard.com/games/wow/ "World of Warcraft · Classic / Vanilla"
 [3]: http://wowpedia.org/Beta#World_of_Warcraft "World of Warcraft - Classic Beta"
-[4]: http://www.wowpedia.org/Patch_1.12.0 "Vanilla WoW · Patch 1.12.0 release notes"
-[5]: http://www.wowpedia.org/Patch_1.12.1 "Vanilla WoW · Patch 1.12.1 release notes"
-[6]: http://www.wowpedia.org/Patch_1.12.2 "Vanilla WoW · Patch 1.12.2 release notes"
+[4]: http://www.wowpedia.org/Patch_2.4.3 "WoW The Burning Crusade · Patch 2.4.3 release notes"
 [7]: http://www.cppreference.com/ "C / C++ reference"
 
 [10]: http://getmangos.eu/ "mangos · project site"
-[11]: http://community.getmangos.co.uk/ "mangos · discussion forums"
 [12]: http://github.com/mangoszero "mangos-zero · github organization"
 [13]: http://github.com/mangoszero/server "mangos zero · server repository"
 [14]: http://github.com/mangoszero/scripts "mangos zero · script extensions repository"
@@ -156,3 +187,4 @@ License
 [55]: http://slproweb.com/products/Win32OpenSSL.html "OpenSSL for Windows"
 [56]: http://www.lua.org/ "Lua"
 [57]: https://code.google.com/p/luaforwindows/ "Lua for Windows"
+

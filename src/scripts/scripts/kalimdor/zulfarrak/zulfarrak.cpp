@@ -23,18 +23,22 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Zulfarrak
-SD%Complete: 100
-SDComment:
-SDCategory: Zul'Farrak
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Zulfarrak
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Zul'Farrak
+ * EndScriptData
+ */
 
-/* ContentData
-event_go_zulfarrak_gong
-event_spell_unlocking
-at_zulfarrak
-EndContentData */
+/**
+ * ContentData
+ * event_go_zulfarrak_gong
+ * event_spell_unlocking
+ * at_zulfarrak
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "zulfarrak.h"
@@ -55,7 +59,9 @@ bool ProcessEventId_event_go_zulfarrak_gong(uint32 /*uiEventId*/, Object* pSourc
                 return false;                               // Summon Gahz'rilla by Database Script
             }
             else
-            { return true; }                                // Prevent DB script summoning Gahz'rilla
+            {
+                return true;    // Prevent DB script summoning Gahz'rilla
+            }
         }
     }
     return false;
@@ -77,7 +83,9 @@ bool ProcessEventId_event_spell_unlocking(uint32 /*uiEventId*/, Object* pSource,
                 return false;                               // Summon pyramid trolls by Database Script
             }
             else
-            { return true; }
+            {
+                return true;
+            }
         }
     }
     return false;
@@ -92,19 +100,25 @@ bool AreaTrigger_at_zulfarrak(Player* pPlayer, AreaTriggerEntry const* pAt)
     if (pAt->id == AREATRIGGER_ANTUSUL)
     {
         if (pPlayer->isGameMaster() || pPlayer->IsDead())
-        { return false; }
+        {
+            return false;
+        }
 
         instance_zulfarrak* pInstance = (instance_zulfarrak*)pPlayer->GetInstanceData();
 
         if (!pInstance)
-        { return false; }
+        {
+            return false;
+        }
 
         if (pInstance->GetData(TYPE_ANTUSUL) == NOT_STARTED || pInstance->GetData(TYPE_ANTUSUL) == FAIL)
         {
             if (Creature* pAntuSul = pInstance->GetSingleCreatureFromStorage(NPC_ANTUSUL))
             {
                 if (pAntuSul->IsAlive())
-                { pAntuSul->AI()->AttackStart(pPlayer); }
+                {
+                    pAntuSul->AI()->AttackStart(pPlayer);
+                }
             }
         }
     }

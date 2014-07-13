@@ -23,16 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Teldrassil
-SD%Complete: 100
-SDComment: Quest support: 938
-SDCategory: Teldrassil
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Teldrassil
+ * SD%Complete: 100
+ * SDComment:   Quest support: 938
+ * SDCategory:  Teldrassil
+ * EndScriptData
+ */
 
-/* ContentData
-npc_mist
-EndContentData */
+/**
+ * ContentData
+ * npc_mist
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "follower_ai.h"
@@ -77,7 +81,9 @@ struct MANGOS_DLL_DECL npc_mistAI : public FollowerAI
         if (Player* pPlayer = GetLeaderForFollower())
         {
             if (pPlayer->GetQuestStatus(QUEST_MIST) == QUEST_STATUS_INCOMPLETE)
-            { pPlayer->GroupEventHappens(QUEST_MIST, m_creature); }
+            {
+                pPlayer->GroupEventHappens(QUEST_MIST, m_creature);
+            }
         }
 
         // The follow is over (and for later development, run off to the woods before really end)
@@ -104,7 +110,9 @@ bool QuestAccept_npc_mist(Player* pPlayer, Creature* pCreature, const Quest* pQu
     if (pQuest->GetQuestId() == QUEST_MIST)
     {
         if (npc_mistAI* pMistAI = dynamic_cast<npc_mistAI*>(pCreature->AI()))
-        { pMistAI->StartFollow(pPlayer, FACTION_DARNASSUS, pQuest); }
+        {
+            pMistAI->StartFollow(pPlayer, FACTION_DARNASSUS, pQuest);
+        }
     }
 
     return true;

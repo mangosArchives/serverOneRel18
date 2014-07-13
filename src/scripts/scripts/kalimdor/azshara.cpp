@@ -307,7 +307,9 @@ struct MANGOS_DLL_DECL mobs_spitelashesAI : public ScriptedAI
         for (uint8 i = 0; i < countof(m_aSpitelashAbility); ++i)
         {
             if (m_aSpitelashAbility[i].m_uiCreatureEntry == m_creature->GetEntry())
-            { m_mSpellTimers[i] = m_aSpitelashAbility[i].m_uiInitialTimer; }
+            {
+                m_mSpellTimers[i] = m_aSpitelashAbility[i].m_uiInitialTimer;
+            }
         }
 
         Reset();
@@ -322,19 +324,25 @@ struct MANGOS_DLL_DECL mobs_spitelashesAI : public ScriptedAI
         m_uiMorphTimer = 0;
 
         for (UNORDERED_MAP<uint8, uint32>::iterator itr = m_mSpellTimers.begin(); itr != m_mSpellTimers.end(); ++itr)
-        { itr->second = m_aSpitelashAbility[itr->first].m_uiInitialTimer; }
+        {
+            itr->second = m_aSpitelashAbility[itr->first].m_uiInitialTimer;
+        }
     }
 
     void SpellHit(Unit* pCaster, const SpellEntry* pSpell) override
     {
         // If already hit by the polymorph return
         if (m_uiMorphTimer)
-        { return; }
+        {
+            return;
+        }
 
         // Creature get polymorphed into a sheep and after 5 secs despawns
         if (pCaster->GetTypeId() == TYPEID_PLAYER && ((Player*)pCaster)->GetQuestStatus(QUEST_FRAGMENTED_MAGIC) == QUEST_STATUS_INCOMPLETE &&
-            (pSpell->Id == 118 || pSpell->Id == 12824 || pSpell->Id == 12825 || pSpell->Id == 12826))
-        { m_uiMorphTimer = 5000; }
+        (pSpell->Id == 118 || pSpell->Id == 12824 || pSpell->Id == 12825 || pSpell->Id == 12826))
+        {
+            m_uiMorphTimer = 5000;
+        }
     }
 
     bool CanUseSpecialAbility(uint32 uiIndex)
@@ -360,7 +368,9 @@ struct MANGOS_DLL_DECL mobs_spitelashesAI : public ScriptedAI
         if (pTarget)
         {
             if (DoCastSpellIfCan(pTarget, m_aSpitelashAbility[uiIndex].m_uiSpellId) == CAST_OK)
-            { return true; }
+            {
+                return true;
+            }
         }
 
         return false;
@@ -369,7 +379,9 @@ struct MANGOS_DLL_DECL mobs_spitelashesAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiMorphTimer)
         {
@@ -382,7 +394,9 @@ struct MANGOS_DLL_DECL mobs_spitelashesAI : public ScriptedAI
                 }
             }
             else
-            { m_uiMorphTimer -= uiDiff; }
+            {
+                m_uiMorphTimer -= uiDiff;
+            }
         }
 
         for (UNORDERED_MAP<uint8, uint32>::iterator itr = m_mSpellTimers.begin(); itr != m_mSpellTimers.end(); ++itr)
@@ -396,7 +410,9 @@ struct MANGOS_DLL_DECL mobs_spitelashesAI : public ScriptedAI
                 }
             }
             else
-            { itr->second -= uiDiff; }
+            {
+                itr->second -= uiDiff;
+            }
         }
 
         DoMeleeAttackIfReady();
@@ -415,13 +431,19 @@ CreatureAI* GetAI_mobs_spitelashes(Creature* pCreature)
 bool GossipHello_npc_loramus_thalipedes(Player* pPlayer, Creature* pCreature)
 {
     if (pCreature->IsQuestGiver())
-    { pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid()); }
+    {
+        pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
+    }
 
     if (pPlayer->GetQuestStatus(2744) == QUEST_STATUS_INCOMPLETE)
-    { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Can you help me?", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1); }
+    {
+        pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Can you help me?", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    }
 
     if (pPlayer->GetQuestStatus(3141) == QUEST_STATUS_INCOMPLETE)
-    { pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Tell me your story", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2); }
+    {
+        pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Tell me your story", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+    }
 
     pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
 

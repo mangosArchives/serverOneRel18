@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Generic_Creature
-SD%Complete: 80
-SDComment: Should be replaced with core based AI
-SDCategory: Creatures
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Generic_Creature
+ * SD%Complete: 80
+ * SDComment:   Should be replaced with core based AI
+ * SDCategory:  Creatures
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -61,7 +63,9 @@ struct MANGOS_DLL_DECL generic_creatureAI : public ScriptedAI
     {
         // Always decrease our global cooldown first
         if (GlobalCooldown > diff)
-        { GlobalCooldown -= diff; }
+        {
+            GlobalCooldown -= diff;
+        }
         else { GlobalCooldown = 0; }
 
         // Buff timer (only buff when we are alive and not in combat
@@ -90,11 +94,15 @@ struct MANGOS_DLL_DECL generic_creatureAI : public ScriptedAI
 
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Return if we already cast a spell
         if (m_creature->IsNonMeleeSpellCasted(false))
-        { return; }
+        {
+            return;
+        }
 
         // If we are within range melee the target
         if (m_creature->CanReachWithMeleeAttack(m_creature->getVictim()))
@@ -107,7 +115,9 @@ struct MANGOS_DLL_DECL generic_creatureAI : public ScriptedAI
 
                 // Select a healing spell if less than 30% hp
                 if (m_creature->GetHealthPercent() < 30.0f)
-                { info = SelectSpell(m_creature, -1, -1, SELECT_TARGET_ANY_FRIEND, 0, 0, 0, 0, SELECT_EFFECT_HEALING); }
+                {
+                    info = SelectSpell(m_creature, -1, -1, SELECT_TARGET_ANY_FRIEND, 0, 0, 0, 0, SELECT_EFFECT_HEALING);
+                }
 
                 // No healing spell available, select a hostile spell
                 if (info) { Healing = true; }
@@ -135,7 +145,9 @@ struct MANGOS_DLL_DECL generic_creatureAI : public ScriptedAI
 
             // Select a healing spell if less than 30% hp ONLY 33% of the time
             if (m_creature->GetHealthPercent() < 30.0f && !urand(0, 2))
-            { info = SelectSpell(m_creature, -1, -1, SELECT_TARGET_ANY_FRIEND, 0, 0, 0, 0, SELECT_EFFECT_HEALING); }
+            {
+                info = SelectSpell(m_creature, -1, -1, SELECT_TARGET_ANY_FRIEND, 0, 0, 0, 0, SELECT_EFFECT_HEALING);
+            }
 
             // No healing spell available, See if we can cast a ranged spell (Range must be greater than ATTACK_DISTANCE)
             if (info) { Healing = true; }

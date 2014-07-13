@@ -42,6 +42,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Detour", "..\dep\recastnavi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACE_Wrappers", "VC120\ACE_vc12.vcxproj", "{038B565D-CAA9-4CC5-8B4A-13B4287ABE14}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lualib", "VC120\lualib.vcxproj", "{EE2D5A7D-2E9B-43F0-A016-66C46D01AC6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_NoPCH|Win32 = Debug_NoPCH|Win32
