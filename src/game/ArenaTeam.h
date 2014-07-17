@@ -22,8 +22,8 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-#ifndef MANGOSSERVER_ARENATEAM_H
-#define MANGOSSERVER_ARENATEAM_H
+#ifndef MANGOS_H_ARENATEAM
+#define MANGOS_H_ARENATEAM
 
 #include "Common.h"
 #include "ObjectGuid.h"
