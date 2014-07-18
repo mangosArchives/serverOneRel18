@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Ayamiss
-SD%Complete: 80
-SDComment: Timers and summon coords need adjustments
-SDCategory: Ruins of Ahn'Qiraj
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Ayamiss
+ * SD%Complete: 80
+ * SDComment:   Timers and summon coords need adjustments
+ * SDCategory:  Ruins of Ahn'Qiraj
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "ruins_of_ahnqiraj.h"
@@ -113,7 +115,9 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
     {
         // store the swarmers for a future attack
         if (pSummoned->GetEntry() == NPC_SWARMER)
-        { m_lSwarmersGuidList.push_back(pSummoned->GetObjectGuid()); }
+        {
+            m_lSwarmersGuidList.push_back(pSummoned->GetObjectGuid());
+        }
         // move the larva to paralyze target position
         else if (pSummoned->GetEntry() == NPC_LARVA)
         {
@@ -123,24 +127,32 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
         else if (pSummoned->GetEntry() == NPC_HORNET)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-            { pSummoned->AI()->AttackStart(pTarget); }
+            {
+                pSummoned->AI()->AttackStart(pTarget);
+            }
         }
     }
 
     void SummonedMovementInform(Creature* pSummoned, uint32 /*uiMotionType*/, uint32 uiPointId) override
     {
         if (uiPointId != 1 || pSummoned->GetEntry() != NPC_LARVA)
-        { return; }
+        {
+            return;
+        }
 
         // Cast feed on target
         if (Unit* pTarget = m_creature->GetMap()->GetUnit(m_paralyzeTarget))
-        { pSummoned->CastSpell(pTarget, SPELL_FEED, true, NULL, NULL, m_creature->GetObjectGuid()); }
+        {
+            pSummoned->CastSpell(pTarget, SPELL_FEED, true, NULL, NULL, m_creature->GetObjectGuid());
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (!m_bHasFrenzy && m_creature->GetHealthPercent() < 20.0f)
         {
@@ -155,17 +167,21 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
         if (m_uiStingerSprayTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_STINGER_SPRAY) == CAST_OK)
-            { m_uiStingerSprayTimer = urand(15000, 20000); }
+            {
+                m_uiStingerSprayTimer = urand(15000, 20000);
+            }
         }
         else
-        { m_uiStingerSprayTimer -= uiDiff; }
+            { m_uiStingerSprayTimer -= uiDiff; }
 
         // Paralyze
         if (m_uiParalyzeTimer < uiDiff)
         {
             Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1, SPELL_PARALYZE, SELECT_FLAG_PLAYER);
             if (!pTarget)
-            { pTarget = m_creature->getVictim(); }
+            {
+                pTarget = m_creature->getVictim();
+            }
 
             if (DoCastSpellIfCan(pTarget, SPELL_PARALYZE) == CAST_OK)
             {
@@ -178,7 +194,7 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
             }
         }
         else
-        { m_uiParalyzeTimer -= uiDiff; }
+            { m_uiParalyzeTimer -= uiDiff; }
 
         // Summon Swarmer
         if (m_uiSummonSwarmerTimer < uiDiff)
@@ -195,7 +211,7 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
             m_uiSummonSwarmerTimer = 5000;
         }
         else
-        { m_uiSummonSwarmerTimer -= uiDiff; }
+            { m_uiSummonSwarmerTimer -= uiDiff; }
 
         // All the swarmers attack at a certain period of time
         if (m_uiSwarmerAttackTimer < uiDiff)
@@ -205,14 +221,16 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
                 if (Creature* pTemp = m_creature->GetMap()->GetCreature(*itr))
                 {
                     if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                    { pTemp->AI()->AttackStart(pTarget); }
+                    {
+                        pTemp->AI()->AttackStart(pTarget);
+                    }
                 }
             }
             m_lSwarmersGuidList.clear();
             m_uiSwarmerAttackTimer = 60000;
         }
         else
-        { m_uiSwarmerAttackTimer -= uiDiff; }
+            { m_uiSwarmerAttackTimer -= uiDiff; }
 
         if (m_uiPhase == PHASE_AIR)
         {
@@ -225,35 +243,45 @@ struct MANGOS_DLL_DECL boss_ayamissAI : public ScriptedAI
                 DoResetThreat();
 
                 if (m_creature->getVictim())
-                { m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim()); }
+                {
+                    m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim());
+                }
             }
 
             // Poison Stinger
             if (m_uiPoisonStingerTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_POISON_STINGER) == CAST_OK)
-                { m_uiPoisonStingerTimer = urand(2000, 3000); }
+                {
+                    m_uiPoisonStingerTimer = urand(2000, 3000);
+                }
             }
             else
-            { m_uiPoisonStingerTimer -= uiDiff; }
+            {
+                m_uiPoisonStingerTimer -= uiDiff;
+            }
         }
         else
         {
             if (m_uiLashTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_LASH) == CAST_OK)
-                { m_uiLashTimer = urand(8000, 15000); }
+                {
+                    m_uiLashTimer = urand(8000, 15000);
+                }
             }
             else
-            { m_uiLashTimer -= uiDiff; }
+                { m_uiLashTimer -= uiDiff; }
 
             if (m_uiTrashTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_TRASH) == CAST_OK)
-                { m_uiTrashTimer = urand(5000, 7000); }
+                {
+                    m_uiTrashTimer = urand(5000, 7000);
+                }
             }
             else
-            { m_uiTrashTimer -= uiDiff; }
+                { m_uiTrashTimer -= uiDiff; }
 
             DoMeleeAttackIfReady();
         }
@@ -283,7 +311,9 @@ struct MANGOS_DLL_DECL npc_hive_zara_larvaAI : public ScriptedAI
         if (m_pInstance)
         {
             if (m_pInstance->GetData(TYPE_AYAMISS) == IN_PROGRESS)
-            { return; }
+            {
+                return;
+            }
         }
 
         ScriptedAI::AttackStart(pWho);
@@ -295,7 +325,9 @@ struct MANGOS_DLL_DECL npc_hive_zara_larvaAI : public ScriptedAI
         if (m_pInstance)
         {
             if (m_pInstance->GetData(TYPE_AYAMISS) == IN_PROGRESS)
-            { return; }
+            {
+                return;
+            }
         }
 
         ScriptedAI::MoveInLineOfSight(pWho);
@@ -306,11 +338,15 @@ struct MANGOS_DLL_DECL npc_hive_zara_larvaAI : public ScriptedAI
         if (m_pInstance)
         {
             if (m_pInstance->GetData(TYPE_AYAMISS) == IN_PROGRESS)
-            { return; }
+            {
+                return;
+            }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         DoMeleeAttackIfReady();
     }

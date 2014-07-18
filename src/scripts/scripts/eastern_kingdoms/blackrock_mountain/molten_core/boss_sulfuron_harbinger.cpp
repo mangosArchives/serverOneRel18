@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Sulfuron_Harbringer
-SD%Complete: 80
-SDComment: Spells Dark strike and Flamespear need confirmation
-SDCategory: Molten Core
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Sulfuron_Harbringer
+ * SD%Complete: 80
+ * SDComment:   Spells Dark strike and Flamespear need confirmation
+ * SDCategory:  Molten Core
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "molten_core.h"
@@ -75,34 +77,44 @@ struct MANGOS_DLL_DECL boss_sulfuronAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_SULFURON, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_SULFURON, IN_PROGRESS);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_SULFURON, DONE); }
+        {
+            m_pInstance->SetData(TYPE_SULFURON, DONE);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_SULFURON, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_SULFURON, FAIL);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Demoralizing Shout Timer
         if (m_uiDemoralizingShoutTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_DEMORALIZING_SHOUT) == CAST_OK)
-            { m_uiDemoralizingShoutTimer = urand(15000, 20000); }
+            {
+                m_uiDemoralizingShoutTimer = urand(15000, 20000);
+            }
         }
         else
-        { m_uiDemoralizingShoutTimer -= uiDiff; }
+            { m_uiDemoralizingShoutTimer -= uiDiff; }
 
         // Inspire Timer
         if (m_uiInspireTimer < uiDiff)
@@ -117,22 +129,28 @@ struct MANGOS_DLL_DECL boss_sulfuronAI : public ScriptedAI
             }
 
             if (!pTarget)
-            { pTarget = m_creature; }
+            {
+                pTarget = m_creature;
+            }
 
             if (DoCastSpellIfCan(pTarget, SPELL_INSPIRE) == CAST_OK)
-            { m_uiInspireTimer = 10000; }
+            {
+                m_uiInspireTimer = 10000;
+            }
         }
         else
-        { m_uiInspireTimer -= uiDiff; }
+            { m_uiInspireTimer -= uiDiff; }
 
         // Hand of Ragnaros Timer
         if (m_uiKnockdownTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_HAND_OF_RAGNAROS) == CAST_OK)
-            { m_uiKnockdownTimer = urand(12000, 15000); }
+            {
+                m_uiKnockdownTimer = urand(12000, 15000);
+            }
         }
         else
-        { m_uiKnockdownTimer -= uiDiff; }
+            { m_uiKnockdownTimer -= uiDiff; }
 
         // Flamespear Timer
         if (m_uiFlamespearTimer < uiDiff)
@@ -140,20 +158,24 @@ struct MANGOS_DLL_DECL boss_sulfuronAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_FLAMESPEAR) == CAST_OK)
-                { m_uiFlamespearTimer = urand(12000, 16000); }
+                {
+                    m_uiFlamespearTimer = urand(12000, 16000);
+                }
             }
         }
         else
-        { m_uiFlamespearTimer -= uiDiff; }
+            { m_uiFlamespearTimer -= uiDiff; }
 
         // Dark Strike Timer
         if (m_uiDarkstrikeTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_DARK_STRIKE) == CAST_OK)
-            { m_uiDarkstrikeTimer = urand(15000, 18000); }
+            {
+                m_uiDarkstrikeTimer = urand(15000, 18000);
+            }
         }
         else
-        { m_uiDarkstrikeTimer -= uiDiff; }
+            { m_uiDarkstrikeTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -183,7 +205,9 @@ struct MANGOS_DLL_DECL mob_flamewaker_priestAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Casting Heal to Sulfuron or other Guards.
         if (m_uiHealTimer < uiDiff)
@@ -191,11 +215,13 @@ struct MANGOS_DLL_DECL mob_flamewaker_priestAI : public ScriptedAI
             if (Unit* pUnit = DoSelectLowestHpFriendly(60.0f, 1))
             {
                 if (DoCastSpellIfCan(pUnit, SPELL_HEAL) == CAST_OK)
-                { m_uiHealTimer = urand(15000, 20000); }
+                {
+                    m_uiHealTimer = urand(15000, 20000);
+                }
             }
         }
         else
-        { m_uiHealTimer -= uiDiff; }
+            { m_uiHealTimer -= uiDiff; }
 
         // ShadowWord Pain Timer
         if (m_uiShadowWordPainTimer < uiDiff)
@@ -203,11 +229,13 @@ struct MANGOS_DLL_DECL mob_flamewaker_priestAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SHADOWWORD_PAIN) == CAST_OK)
-                { m_uiShadowWordPainTimer = urand(18000, 26000); }
+                {
+                    m_uiShadowWordPainTimer = urand(18000, 26000);
+                }
             }
         }
         else
-        { m_uiShadowWordPainTimer -= uiDiff; }
+            { m_uiShadowWordPainTimer -= uiDiff; }
 
         // Immolate Timer
         if (m_uiImmolateTimer < uiDiff)
@@ -215,11 +243,13 @@ struct MANGOS_DLL_DECL mob_flamewaker_priestAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_IMMOLATE) == CAST_OK)
-                { m_uiImmolateTimer = urand(15000, 25000); }
+                {
+                    m_uiImmolateTimer = urand(15000, 25000);
+                }
             }
         }
         else
-        { m_uiImmolateTimer -= uiDiff; }
+            { m_uiImmolateTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

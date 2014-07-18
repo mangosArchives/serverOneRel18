@@ -23,16 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Razorfen_Kraul
-SD%Complete: 100
-SDComment: Quest support: 1144, 1221
-SDCategory: Razorfen Kraul
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Razorfen_Kraul
+ * SD%Complete: 100
+ * SDComment:   Quest support: 1144, 1221.
+ * SDCategory:  Razorfen Kraul
+ * EndScriptData
+ */
 
-/* ContentData
-quest_willix_the_importer
-EndContentData */
+/**
+ * ContentData
+ * quest_willix_the_importer
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -83,10 +87,18 @@ struct MANGOS_DLL_DECL npc_willix_the_importerAI : public npc_escortAI
     {
         switch (urand(0, 6))                                // Not always said
         {
-            case 0: DoScriptText(SAY_WILLIX_AGGRO_1, m_creature, pWho); break;
-            case 1: DoScriptText(SAY_WILLIX_AGGRO_2, m_creature, pWho); break;
-            case 2: DoScriptText(SAY_WILLIX_AGGRO_3, m_creature, pWho); break;
-            case 3: DoScriptText(SAY_WILLIX_AGGRO_4, m_creature, pWho); break;
+            case 0:
+                DoScriptText(SAY_WILLIX_AGGRO_1, m_creature, pWho);
+                break;
+            case 1:
+                DoScriptText(SAY_WILLIX_AGGRO_2, m_creature, pWho);
+                break;
+            case 2:
+                DoScriptText(SAY_WILLIX_AGGRO_3, m_creature, pWho);
+                break;
+            case 3:
+                DoScriptText(SAY_WILLIX_AGGRO_4, m_creature, pWho);
+                break;
         }
     }
 
@@ -131,7 +143,9 @@ struct MANGOS_DLL_DECL npc_willix_the_importerAI : public npc_escortAI
                 m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
                 // Complete event
                 if (Player* pPlayer = GetPlayerForEscort())
-                { pPlayer->GroupEventHappens(QUEST_WILLIX_THE_IMPORTER, m_creature); }
+                {
+                    pPlayer->GroupEventHappens(QUEST_WILLIX_THE_IMPORTER, m_creature);
+                }
                 SetEscortPaused(true);
                 break;
         }
@@ -186,7 +200,9 @@ struct MANGOS_DLL_DECL npc_snufflenose_gopherAI : public ScriptedPetAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE || !uiPointId)
-        { return; }
+        {
+            return;
+        }
 
         if (GameObject* pGo = m_creature->GetMap()->GetGameObject(m_targetTubberGuid))
         {
@@ -206,7 +222,9 @@ struct MANGOS_DLL_DECL npc_snufflenose_gopherAI : public ScriptedPetAI
         GetGameObjectListWithEntryInGrid(lTubbersInRange, m_creature, GO_BLUELEAF_TUBBER, 40.0f);
 
         if (lTubbersInRange.empty())
-        { return; }
+        {
+            return;
+        }
 
         lTubbersInRange.sort(ObjectDistanceOrder(m_creature));
         GameObject* pNearestTubber = NULL;
@@ -214,7 +232,7 @@ struct MANGOS_DLL_DECL npc_snufflenose_gopherAI : public ScriptedPetAI
         // Always need to find new ones
         for (std::list<GameObject*>::const_iterator itr = lTubbersInRange.begin(); itr != lTubbersInRange.end(); ++itr)
         {
-            if (!(*itr)->isSpawned() && (*itr)->HasFlag(GAMEOBJECT_FLAGS, GO_FLAG_INTERACT_COND) && (*itr)->IsWithinLOSInMap(m_creature))
+            if (!(*itr)->isSpawned() && (*itr)->HasFlag(GAMEOBJECT_FLAGS, GO_FLAG_INTERACT_COND) && (*itr)->IsWithinLOSInMap(m_creature) && (*itr)->GetDistanceZ(m_creature) <= 6.0f)
             {
                 pNearestTubber = *itr;
                 break;
@@ -222,7 +240,9 @@ struct MANGOS_DLL_DECL npc_snufflenose_gopherAI : public ScriptedPetAI
         }
 
         if (!pNearestTubber)
-        { return; }
+        {
+            return;
+        }
         m_targetTubberGuid = pNearestTubber->GetObjectGuid();
 
         float fX, fY, fZ;
@@ -234,7 +254,9 @@ struct MANGOS_DLL_DECL npc_snufflenose_gopherAI : public ScriptedPetAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_bIsMovementActive)
-        { ScriptedPetAI::UpdateAI(uiDiff); }
+        {
+            ScriptedPetAI::UpdateAI(uiDiff);
+        }
     }
 };
 
@@ -251,7 +273,9 @@ bool EffectDummyCreature_npc_snufflenose_gopher(Unit* pCaster, uint32 uiSpellId,
         if (pCreatureTarget->GetEntry() == NPC_SNUFFLENOSE_GOPHER)
         {
             if (npc_snufflenose_gopherAI* pGopherAI = dynamic_cast<npc_snufflenose_gopherAI*>(pCreatureTarget->AI()))
-            { pGopherAI->DoFindNewTubber(); }
+            {
+                pGopherAI->DoFindNewTubber();
+            }
         }
 
         // always return true when we are handling this spell and effect

@@ -23,16 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Stranglethorn_Vale
-SD%Complete: 100
-SDComment: Quest support: 592
-SDCategory: Stranglethorn Vale
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Stranglethorn_Vale
+ * SD%Complete: 100
+ * SDComment:   Quest support: 592.
+ * SDCategory:  Stranglethorn Vale
+ * EndScriptData
+ */
 
-/* ContentData
-mob_yenniku
-EndContentData */
+/**
+ * ContentData
+ * mob_yenniku
+ * EndContentData
+ */
 
 #include "precompiled.h"
 
@@ -84,7 +88,7 @@ struct MANGOS_DLL_DECL mob_yennikuAI : public ScriptedAI
             m_creature->SetFactionTemporary(FACTION_ID_HORDE_GENERIC, TEMPFACTION_RESTORE_REACH_HOME);
         }
         else
-        { ScriptedAI::EnterEvadeMode(); }
+            { ScriptedAI::EnterEvadeMode(); }
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -98,11 +102,15 @@ struct MANGOS_DLL_DECL mob_yennikuAI : public ScriptedAI
                 EnterEvadeMode();
             }
             else
-            { m_uiResetTimer -= uiDiff; }
+            {
+                m_uiResetTimer -= uiDiff;
+            }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         DoMeleeAttackIfReady();
     }

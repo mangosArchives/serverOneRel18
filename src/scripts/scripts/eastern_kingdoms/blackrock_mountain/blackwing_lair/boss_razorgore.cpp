@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Razorgore
-SD%Complete: 95
-SDComment: Timers may be improved.
-SDCategory: Blackwing Lair
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Razorgore
+ * SD%Complete: 95
+ * SDComment:   Timers may be improved.
+ * SDCategory:  Blackwing Lair
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "blackwing_lair.h"
@@ -85,7 +87,9 @@ struct MANGOS_DLL_DECL boss_razorgoreAI : public ScriptedAI
         {
             // Don't set instance data unless all eggs are destroyed
             if (m_pInstance->GetData(TYPE_RAZORGORE) != SPECIAL)
-            { return; }
+            {
+                return;
+            }
 
             m_pInstance->SetData(TYPE_RAZORGORE, DONE);
         }
@@ -96,10 +100,14 @@ struct MANGOS_DLL_DECL boss_razorgoreAI : public ScriptedAI
     void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
     {
         if (uiDamage < m_creature->GetHealth())
-        { return; }
+        {
+            return;
+        }
 
         if (!m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         // Don't allow any accident
         if (m_bEggsExploded)
@@ -122,7 +130,9 @@ struct MANGOS_DLL_DECL boss_razorgoreAI : public ScriptedAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_RAZORGORE, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_RAZORGORE, FAIL);
+        }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -148,11 +158,15 @@ struct MANGOS_DLL_DECL boss_razorgoreAI : public ScriptedAI
                     }
 
                     if (Creature* pOrbTrigger = m_pInstance->GetSingleCreatureFromStorage(NPC_BLACKWING_ORB_TRIGGER))
-                    { pOrbTrigger->CastSpell(m_creature, SPELL_POSSESS, false); }
+                    {
+                        pOrbTrigger->CastSpell(m_creature, SPELL_POSSESS, false);
+                    }
                     m_uiIntroVisualTimer = 0;
                 }
                 else
-                { m_uiIntroVisualTimer -= uiDiff; }
+                {
+                    m_uiIntroVisualTimer -= uiDiff;
+                }
             }
 
             return;
@@ -162,37 +176,45 @@ struct MANGOS_DLL_DECL boss_razorgoreAI : public ScriptedAI
         if (m_uiCleaveTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CLEAVE) == CAST_OK)
-            { m_uiCleaveTimer = urand(4000, 8000); }
+            {
+                m_uiCleaveTimer = urand(4000, 8000);
+            }
         }
         else
-        { m_uiCleaveTimer -= uiDiff; }
+            { m_uiCleaveTimer -= uiDiff; }
 
         // War Stomp
         if (m_uiWarStompTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_WARSTOMP) == CAST_OK)
-            { m_uiWarStompTimer = 30000; }
+            {
+                m_uiWarStompTimer = 30000;
+            }
         }
         else
-        { m_uiWarStompTimer -= uiDiff; }
+            { m_uiWarStompTimer -= uiDiff; }
 
         // Fireball Volley
         if (m_uiFireballVolleyTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_FIREBALL_VOLLEY) == CAST_OK)
-            { m_uiFireballVolleyTimer = urand(15000, 20000); }
+            {
+                m_uiFireballVolleyTimer = urand(15000, 20000);
+            }
         }
         else
-        { m_uiFireballVolleyTimer -= uiDiff; }
+            { m_uiFireballVolleyTimer -= uiDiff; }
 
         // Conflagration
         if (m_uiConflagrationTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_CONFLAGRATION) == CAST_OK)
-            { m_uiConflagrationTimer = urand(15000, 25000); }
+            {
+                m_uiConflagrationTimer = urand(15000, 25000);
+            }
         }
         else
-        { m_uiConflagrationTimer -= uiDiff; }
+            { m_uiConflagrationTimer -= uiDiff; }
 
         /* This is obsolete code, not working anymore, keep as reference, should be handled in core though
         * // Aura Check. If the gamer is affected by confliguration we attack a random gamer.
@@ -217,7 +239,9 @@ bool EffectDummyGameObj_go_black_dragon_egg(Unit* pCaster, uint32 uiSpellId, Spe
     if (uiSpellId == SPELL_DESTROY_EGG && uiEffIndex == EFFECT_INDEX_1)
     {
         if (!pGOTarget->isSpawned())
-        { return true; }
+        {
+            return true;
+        }
 
         if (ScriptedInstance* pInstance = (ScriptedInstance*)pGOTarget->GetInstanceData())
         {
@@ -225,9 +249,15 @@ bool EffectDummyGameObj_go_black_dragon_egg(Unit* pCaster, uint32 uiSpellId, Spe
             {
                 switch (urand(0, 2))
                 {
-                    case 0: DoScriptText(SAY_EGGS_BROKEN_1, pCaster); break;
-                    case 1: DoScriptText(SAY_EGGS_BROKEN_2, pCaster); break;
-                    case 2: DoScriptText(SAY_EGGS_BROKEN_3, pCaster); break;
+                    case 0:
+                        DoScriptText(SAY_EGGS_BROKEN_1, pCaster);
+                        break;
+                    case 1:
+                        DoScriptText(SAY_EGGS_BROKEN_2, pCaster);
+                        break;
+                    case 2:
+                        DoScriptText(SAY_EGGS_BROKEN_3, pCaster);
+                        break;
                 }
             }
 

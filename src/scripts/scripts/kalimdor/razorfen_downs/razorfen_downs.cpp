@@ -23,16 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Razorfen_Downs
-SD%Complete: 100
-SDComment: Quest 3525
-SDCategory: Razorfen Downs
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Razorfen_Downs
+ * SD%Complete: 100
+ * SDComment:   Quest 3525.
+ * SDCategory:  Razorfen Downs
+ * EndScriptData
+ */
 
-/* ContentData
-npc_belnistrasz
-EndContentData */
+/**
+ * ContentData
+ * npc_belnistrasz
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -248,13 +252,17 @@ struct MANGOS_DLL_DECL npc_belnistraszAI : public npc_escortAI
                 ++m_uiRitualPhase;
             }
             else
-            { m_uiRitualTimer -= uiDiff; }
+            {
+                m_uiRitualTimer -= uiDiff;
+            }
 
             return;
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiFireballTimer < uiDiff)
         {
@@ -262,7 +270,7 @@ struct MANGOS_DLL_DECL npc_belnistraszAI : public npc_escortAI
             m_uiFireballTimer  = urand(2000, 3000);
         }
         else
-        { m_uiFireballTimer -= uiDiff; }
+            { m_uiFireballTimer -= uiDiff; }
 
         if (m_uiFrostNovaTimer < uiDiff)
         {
@@ -270,7 +278,7 @@ struct MANGOS_DLL_DECL npc_belnistraszAI : public npc_escortAI
             m_uiFrostNovaTimer = urand(10000, 15000);
         }
         else
-        { m_uiFrostNovaTimer -= uiDiff; }
+            { m_uiFrostNovaTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

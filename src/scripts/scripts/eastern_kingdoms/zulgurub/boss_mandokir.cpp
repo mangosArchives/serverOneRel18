@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Mandokir
-SD%Complete: 80
-SDComment: test Threating Gaze. Script depends on ACID script for Vilebranch Speaker
-SDCategory: Zul'Gurub
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Mandokir
+ * SD%Complete: 80
+ * SDComment:   Test Threating Gaze. Script depends on ACID script for Vilebranch Speaker
+ * SDCategory:  Zul'Gurub
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "zulgurub.h"
@@ -134,7 +136,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
         DoScriptText(SAY_AGGRO, m_creature);
 
         for (uint8 i = 0; i < countof(aSpirits); ++i)
-        { m_creature->SummonCreature(NPC_CHAINED_SPIRIT, aSpirits[i].fX, aSpirits[i].fY, aSpirits[i].fZ, aSpirits[i].fAng, TEMPSUMMON_CORPSE_DESPAWN, 0); }
+        {
+            m_creature->SummonCreature(NPC_CHAINED_SPIRIT, aSpirits[i].fX, aSpirits[i].fY, aSpirits[i].fZ, aSpirits[i].fAng, TEMPSUMMON_CORPSE_DESPAWN, 0);
+        }
 
         // At combat start Mandokir is mounted so we must unmount it first
         m_creature->Unmount();
@@ -143,19 +147,25 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
         m_creature->SummonCreature(NPC_OHGAN, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 35000);
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_OHGAN, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_OHGAN, IN_PROGRESS);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_OHGAN, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_OHGAN, FAIL);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_OHGAN, DONE); }
+        {
+            m_pInstance->SetData(TYPE_OHGAN, DONE);
+        }
     }
 
     void EnterEvadeMode() override
@@ -167,7 +177,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
 
         // should evade to bottom of the stairs when raid fail
         if (m_creature->IsAlive())
-        { m_creature->GetMotionMaster()->MovePoint(0, aMandokirDownstairsPos[0], aMandokirDownstairsPos[1], aMandokirDownstairsPos[2]); }
+        {
+            m_creature->GetMotionMaster()->MovePoint(0, aMandokirDownstairsPos[0], aMandokirDownstairsPos[1], aMandokirDownstairsPos[2]);
+        }
 
         m_creature->SetLootRecipient(NULL);
 
@@ -189,7 +201,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
                     if (Creature* pJindo = m_pInstance->GetSingleCreatureFromStorage(NPC_JINDO))
                     {
                         if (pJindo->IsAlive())
-                        { DoScriptText(SAY_GRATS_JINDO, pJindo); }
+                        {
+                            DoScriptText(SAY_GRATS_JINDO, pJindo);
+                        }
                     }
                 }
 
@@ -200,7 +214,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
             if (m_creature->IsInCombat())
             {
                 if (Creature* pSpirit = GetClosestCreatureWithEntry(pVictim, NPC_CHAINED_SPIRIT, 50.0f))
-                { pSpirit->CastSpell(pVictim, SPELL_REVIVE, false); }
+                {
+                    pSpirit->CastSpell(pVictim, SPELL_REVIVE, false);
+                }
             }
         }
     }
@@ -210,7 +226,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
         if (pSummoned->GetEntry() == NPC_OHGAN)
         {
             if (m_creature->getVictim())
-            { pSummoned->AI()->AttackStart(m_creature->getVictim()); }
+            {
+                pSummoned->AI()->AttackStart(m_creature->getVictim());
+            }
         }
     }
 
@@ -243,7 +261,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
     void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE || !m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         if (uiPointId == POINT_DOWNSTAIRS)
         {
@@ -255,7 +275,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiWatchTimer < uiDiff)
         {
@@ -268,7 +290,9 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
                 if (pWatchTarget && pWatchTarget->IsAlive() && m_creature->GetThreatManager().getThreat(pWatchTarget) > m_fTargetThreat)
                 {
                     if (!m_creature->IsWithinLOSInMap(pWatchTarget))
-                    { m_creature->CastSpell(pWatchTarget, SPELL_SUMMON_PLAYER, true); }
+                    {
+                        m_creature->CastSpell(pWatchTarget, SPELL_SUMMON_PLAYER, true);
+                    }
 
                     DoCastSpellIfCan(pWatchTarget, SPELL_CHARGE);
                 }
@@ -280,14 +304,16 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                 {
                     if (Player* pPlayer = pTarget->GetCharmerOrOwnerPlayerOrPlayerItself())
-                    { m_creature->CastSpell(pPlayer, SPELL_WATCH, false); }
+                    {
+                        m_creature->CastSpell(pPlayer, SPELL_WATCH, false);
+                    }
                 }
             }
 
             m_uiWatchTimer = 20000;
         }
         else
-        { m_uiWatchTimer -= uiDiff; }
+            { m_uiWatchTimer -= uiDiff; }
 
         if (!m_watchTargetGuid)
         {
@@ -295,19 +321,27 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
             if (m_uiCleaveTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_CLEAVE) == CAST_OK)
-                { m_uiCleaveTimer = 7000; }
+                {
+                    m_uiCleaveTimer = 7000;
+                }
             }
             else
-            { m_uiCleaveTimer -= uiDiff; }
+            {
+                m_uiCleaveTimer -= uiDiff;
+            }
 
             // Whirlwind
             if (m_uiWhirlwindTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_WHIRLWIND) == CAST_OK)
-                { m_uiWhirlwindTimer = 18000; }
+                {
+                    m_uiWhirlwindTimer = 18000;
+                }
             }
             else
-            { m_uiWhirlwindTimer -= uiDiff; }
+            {
+                m_uiWhirlwindTimer -= uiDiff;
+            }
 
             // If more then 3 targets in melee range mandokir will cast fear
             if (m_uiFearTimer < uiDiff)
@@ -320,16 +354,22 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
                     Unit* pTarget = m_creature->GetMap()->GetUnit((*i)->getUnitGuid());
 
                     if (pTarget && pTarget->GetTypeId() == TYPEID_PLAYER && m_creature->CanReachWithMeleeAttack(pTarget))
-                    { ++uiTargetInRangeCount; }
+                    {
+                        ++uiTargetInRangeCount;
+                    }
                 }
 
                 if (uiTargetInRangeCount > 3)
-                { DoCastSpellIfCan(m_creature, SPELL_FEAR); }
+                {
+                    DoCastSpellIfCan(m_creature, SPELL_FEAR);
+                }
 
                 m_uiFearTimer = 4000;
             }
             else
-            { m_uiFearTimer -= uiDiff; }
+            {
+                m_uiFearTimer -= uiDiff;
+            }
 
             // Mortal Strike if target below 50% hp
             if (m_creature->getVictim()->GetHealthPercent() < 50.0f)
@@ -337,10 +377,14 @@ struct MANGOS_DLL_DECL boss_mandokirAI : public ScriptedAI
                 if (m_uiMortalStrikeTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MORTAL_STRIKE) == CAST_OK)
-                    { m_uiMortalStrikeTimer = 15000; }
+                    {
+                        m_uiMortalStrikeTimer = 15000;
+                    }
                 }
                 else
-                { m_uiMortalStrikeTimer -= uiDiff; }
+                {
+                    m_uiMortalStrikeTimer -= uiDiff;
+                }
             }
         }
 
@@ -367,7 +411,9 @@ struct MANGOS_DLL_DECL mob_ohganAI : public ScriptedAI
             if (m_creature->IsInCombat())
             {
                 if (Creature* pSpirit = GetClosestCreatureWithEntry(pVictim, NPC_CHAINED_SPIRIT, 50.0f))
-                { pSpirit->CastSpell(pVictim, SPELL_REVIVE, false); }
+                {
+                    pSpirit->CastSpell(pVictim, SPELL_REVIVE, false);
+                }
             }
         }
     }
@@ -375,16 +421,20 @@ struct MANGOS_DLL_DECL mob_ohganAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // SunderArmor
         if (m_uiSunderArmorTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_SUNDERARMOR) == CAST_OK)
-            { m_uiSunderArmorTimer = urand(10000, 15000); }
+            {
+                m_uiSunderArmorTimer = urand(10000, 15000);
+            }
         }
         else
-        { m_uiSunderArmorTimer -= uiDiff; }
+            { m_uiSunderArmorTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

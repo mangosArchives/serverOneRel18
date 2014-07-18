@@ -27,10 +27,10 @@
 # Needs to link against mangos_worldd.lib
 if(WIN32)
   link_directories(
-    ${CMAKE_BINARY_DIR}/src/mangosd/${CMAKE_CFG_INTDIR}
+    "${CMAKE_BINARY_DIR}/src/mangosd/${CMAKE_CFG_INTDIR}"
   )
   include_directories(
-    ${CMAKE_SOURCE_DIR}/dep/include # For Win32
+    "${CMAKE_SOURCE_DIR}/dep/include"
   )
 endif()
 
@@ -41,7 +41,6 @@ add_subdirectory(framework)
 #-----------------------------------------------------------------------------
 # Build the mangos-zero shared library
 add_subdirectory(shared)
-
 
 #-----------------------------------------------------------------------------
 # Build the mangos-zero game library
@@ -55,8 +54,11 @@ add_subdirectory(realmd)
 # Build the mangos-zero world server
 add_subdirectory(mangosd)
 
-# Should have a check for if we're building tools aswell here
-add_subdirectory(tools)
+#-----------------------------------------------------------------------------
+# If we want the tools for map/vmap/mmap extraction
+if(BUILD_TOOLS)
+    add_subdirectory(tools)
+endif()
 
 #-----------------------------------------------------------------------------
 # Build the mangos-zero script library

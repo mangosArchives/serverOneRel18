@@ -45,16 +45,22 @@ bool ScriptedPetAI::IsVisible(Unit* pWho) const
 void ScriptedPetAI::MoveInLineOfSight(Unit* pWho)
 {
     if (m_creature->getVictim())
-    { return; }
+    {
+        return;
+    }
 
     if (!m_creature->GetCharmInfo() || !m_creature->GetCharmInfo()->HasReactState(REACT_AGGRESSIVE))
-    { return; }
+    {
+        return;
+    }
 
     if (m_creature->CanInitiateAttack() && pWho->IsTargetableForAttack() &&
         m_creature->IsHostileTo(pWho) && pWho->isInAccessablePlaceFor(m_creature))
     {
         if (!m_creature->CanFly() && m_creature->GetDistanceZ(pWho) > CREATURE_Z_ATTACK_RANGE)
-        { return; }
+        {
+            return;
+        }
 
         if (m_creature->IsWithinDistInMap(pWho, m_creature->GetAttackDistance(pWho)) && m_creature->IsWithinLOSInMap(pWho))
         {
@@ -67,17 +73,23 @@ void ScriptedPetAI::MoveInLineOfSight(Unit* pWho)
 void ScriptedPetAI::AttackStart(Unit* pWho)
 {
     if (pWho && m_creature->Attack(pWho, true))
-    { m_creature->GetMotionMaster()->MoveChase(pWho); }
+    {
+        m_creature->GetMotionMaster()->MoveChase(pWho);
+    }
 }
 
 void ScriptedPetAI::AttackedBy(Unit* pAttacker)
 {
     if (m_creature->getVictim())
-    { return; }
+    {
+        return;
+    }
 
     if (m_creature->GetCharmInfo() && !m_creature->GetCharmInfo()->HasReactState(REACT_PASSIVE) &&
         m_creature->CanReachWithMeleeAttack(pAttacker))
-    { AttackStart(pAttacker); }
+    {
+        AttackStart(pAttacker);
+    }
 }
 
 void ScriptedPetAI::ResetPetCombat()
@@ -107,8 +119,10 @@ void ScriptedPetAI::UpdatePetAI(const uint32 /*uiDiff*/)
 
 void ScriptedPetAI::UpdateAI(const uint32 uiDiff)
 {
-    if (!m_creature->IsAlive())                             // should not be needed, isAlive is checked in mangos before calling UpdateAI
-    { return; }
+    if (!m_creature->IsAlive())                             // should not be needed, IsAlive is checked in mangos before calling UpdateAI
+    {
+        return;
+    }
 
     // UpdateAllies() is done in the generic PetAI in Mangos, but we can't do this from script side.
     // Unclear what side effects this has, but is something to be resolved from Mangos.
@@ -132,7 +146,9 @@ void ScriptedPetAI::UpdateAI(const uint32 uiDiff)
         Unit* pOwner = m_creature->GetCharmerOrOwner();
 
         if (!pOwner)
-        { return; }
+        {
+            return;
+        }
 
         if (pOwner->IsInCombat() && !m_creature->GetCharmInfo()->HasReactState(REACT_PASSIVE))
         {
@@ -144,7 +160,9 @@ void ScriptedPetAI::UpdateAI(const uint32 uiDiff)
         {
             // not following, so start follow
             if (!m_creature->hasUnitState(UNIT_STAT_FOLLOW))
-            { m_creature->GetMotionMaster()->MoveFollow(pOwner, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE); }
+            {
+                m_creature->GetMotionMaster()->MoveFollow(pOwner, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
+            }
 
             // update when not in combat
             UpdatePetOOCAI(uiDiff);

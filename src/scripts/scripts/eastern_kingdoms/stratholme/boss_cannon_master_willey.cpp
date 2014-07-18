@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: boss_cannon_master_willey
-SD%Complete: 100
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      boss_cannon_master_willey
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Stratholme
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -60,32 +62,40 @@ struct MANGOS_DLL_DECL boss_cannon_master_willeyAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (m_creature->getVictim())
-        { pSummoned->AI()->AttackStart(m_creature->getVictim()); }
+        {
+            pSummoned->AI()->AttackStart(m_creature->getVictim());
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Pummel
         if (m_uiPummelTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_PUMMEL) == CAST_OK)
-            { m_uiPummelTimer = 12000; }
+            {
+                m_uiPummelTimer = 12000;
+            }
         }
         else
-        { m_uiPummelTimer -= uiDiff; }
+            { m_uiPummelTimer -= uiDiff; }
 
         // KnockAway
         if (m_uiKnockAwayTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_KNOCK_AWAY) == CAST_OK)
-            { m_uiKnockAwayTimer = 14000; }
+            {
+                m_uiKnockAwayTimer = 14000;
+            }
         }
         else
-        { m_uiKnockAwayTimer -= uiDiff; }
+            { m_uiKnockAwayTimer -= uiDiff; }
 
         // Shoot
         if (m_uiShootTimer < uiDiff)
@@ -93,20 +103,24 @@ struct MANGOS_DLL_DECL boss_cannon_master_willeyAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_SHOOT, SELECT_FLAG_NOT_IN_MELEE_RANGE))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SHOOT) == CAST_OK)
-                { m_uiShootTimer = urand(3000, 4000); }
+                {
+                    m_uiShootTimer = urand(3000, 4000);
+                }
             }
         }
         else
-        { m_uiShootTimer -= uiDiff; }
+            { m_uiShootTimer -= uiDiff; }
 
         // SummonRifleman
         if (m_uiSummonRiflemanTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_RIFLEMAN) == CAST_OK)
-            { m_uiSummonRiflemanTimer = 30000; }
+            {
+                m_uiSummonRiflemanTimer = 30000;
+            }
         }
         else
-        { m_uiSummonRiflemanTimer -= uiDiff; }
+            { m_uiSummonRiflemanTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

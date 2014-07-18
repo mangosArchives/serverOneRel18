@@ -22,8 +22,8 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-#ifndef _UPDATEFIELDS_AUTO_H
-#define _UPDATEFIELDS_AUTO_H
+#ifndef MANGOS_H_UPDATEFIELDS_AUTO
+#define MANGOS_H_UPDATEFIELDS_AUTO
 
 // Auto generated for version 2, 4, 3, 8606
 

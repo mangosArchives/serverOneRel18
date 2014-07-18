@@ -683,7 +683,9 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     }
 
     sObjectAccessor.AddObject(pCurrChar);
-    // DEBUG_LOG("Player %s added to Map.",pCurrChar->GetName());
+    DEBUG_LOG("Player %s added to map %i", pCurrChar->GetName(), pCurrChar->GetMapId());
+
+    /* send the player's social lists */
     pCurrChar->GetSocial()->SendSocialList();
 
     /* Send packets that must be sent only after player is added to the map */
@@ -763,6 +765,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     // Used by Eluna
     if (pCurrChar->HasAtLoginFlag(AT_LOGIN_FIRST))
         sEluna->OnFirstLogin(pCurrChar);
+
 
     /* We've done what we need to, remove the flag */
     if (pCurrChar->HasAtLoginFlag(AT_LOGIN_FIRST))

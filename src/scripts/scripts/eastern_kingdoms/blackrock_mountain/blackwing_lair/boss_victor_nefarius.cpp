@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Victor_Nefarius
-SD%Complete: 90
-SDComment: Small adjustments needed; Timers
-SDCategory: Blackwing Lair
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Victor_Nefarius
+ * SD%Complete: 90
+ * SDComment:   Small adjustments needed; Timers
+ * SDCategory:  Blackwing Lair
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "blackwing_lair.h"
@@ -142,7 +144,9 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
     {
         // Check the map id because the same creature entry is involved in other scripted event in other instance
         if (m_creature->GetMapId() != MAP_ID_BWL)
-        { return; }
+        {
+            return;
+        }
 
         m_uiSpawnedAdds             = 0;
         m_uiAddSpawnTimer           = 10000;
@@ -158,19 +162,25 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
 
         // Make visible if needed
         if (m_creature->GetVisibility() != VISIBILITY_ON)
-        { m_creature->SetVisibility(VISIBILITY_ON); }
+        {
+            m_creature->SetVisibility(VISIBILITY_ON);
+        }
     }
 
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_NEFARIAN, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_NEFARIAN, IN_PROGRESS);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_NEFARIAN, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_NEFARIAN, FAIL);
+        }
     }
 
     void AttackStart(Unit* pWho) override
@@ -189,14 +199,16 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
     void JustSummoned(Creature* pSummoned) override
     {
         if (m_creature->GetMapId() != MAP_ID_BWL)
-        { return; }
+        {
+            return;
+        }
 
         if (pSummoned->GetEntry() == NPC_NEFARIAN)
         {
             pSummoned->SetWalk(false);
 
             // see boss_onyxia (also note the removal of this in boss_nefarian)
-            pSummoned->SetByteValue(UNIT_FIELD_BYTES_1, 3, UNIT_BYTE1_FLAG_ALWAYS_STAND | UNIT_BYTE1_FLAG_UNK_2);
+            pSummoned->SetByteValue(UNIT_FIELD_BYTES_1, 3, UNIT_BYTE1_FLAG_ALWAYS_STAND);
             pSummoned->SetLevitate(true);
 
             // Let Nefarian fly towards combat area
@@ -208,33 +220,43 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
             ++m_uiSpawnedAdds;
 
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-            { pSummoned->AI()->AttackStart(pTarget); }
+            {
+                pSummoned->AI()->AttackStart(pTarget);
+            }
         }
     }
 
     void SummonedMovementInform(Creature* pSummoned, uint32 uiMotionType, uint32 uiPointId) override
     {
         if (m_creature->GetMapId() != MAP_ID_BWL)
-        { return; }
+        {
+            return;
+        }
 
         // If Nefarian has reached combat area, let him attack
         if (pSummoned->GetEntry() == NPC_NEFARIAN && uiMotionType == POINT_MOTION_TYPE && uiPointId == 1)
         {
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-            { pSummoned->AI()->AttackStart(pTarget); }
+            {
+                pSummoned->AI()->AttackStart(pTarget);
+            }
         }
     }
 
     void SummonedCreatureJustDied(Creature* pSummoned) override
     {
         if (m_creature->GetMapId() != MAP_ID_BWL)
-        { return; }
+        {
+            return;
+        }
 
         // Despawn self when Nefarian is killed
         if (pSummoned->GetEntry() == NPC_NEFARIAN)
-        { m_creature->ForcedDespawn(); }
+        {
+            m_creature->ForcedDespawn();
+        }
         else
-        { pSummoned->CastSpell(pSummoned, SPELL_SUMMON_DRAKONID_BONES, true); }
+            { pSummoned->CastSpell(pSummoned, SPELL_SUMMON_DRAKONID_BONES, true); }
     }
 
     void JustDidDialogueStep(int32 iEntry) override
@@ -258,12 +280,16 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
     void UpdateAI(const uint32 uiDiff) override
     {
         if (m_creature->GetMapId() != MAP_ID_BWL)
-        { return; }
+        {
+            return;
+        }
 
         DialogueUpdate(uiDiff);
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Only do this if we haven't spawned nef yet
         if (m_uiSpawnedAdds < MAX_DRAKE_SUMMONS)
@@ -274,11 +300,15 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_SHADOWBOLT) == CAST_OK)
-                    { m_uiShadowBoltTimer = urand(2000, 4000); }
+                    {
+                        m_uiShadowBoltTimer = urand(2000, 4000);
+                    }
                 }
             }
             else
-            { m_uiShadowBoltTimer -= uiDiff; }
+            {
+                m_uiShadowBoltTimer -= uiDiff;
+            }
 
             // Fear Timer
             if (m_uiFearTimer < uiDiff)
@@ -286,20 +316,28 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_FEAR) == CAST_OK)
-                    { m_uiFearTimer = urand(10000, 20000); }
+                    {
+                        m_uiFearTimer = urand(10000, 20000);
+                    }
                 }
             }
             else
-            { m_uiFearTimer -= uiDiff; }
+            {
+                m_uiFearTimer -= uiDiff;
+            }
 
             // Shadowbolt Volley
             if (m_uiShadowboltVolleyTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_SHADOWBOLT_VOLLEY) == CAST_OK)
-                { m_uiShadowboltVolleyTimer = urand(19000, 28000); }
+                {
+                    m_uiShadowboltVolleyTimer = urand(19000, 28000);
+                }
             }
             else
-            { m_uiShadowboltVolleyTimer -= uiDiff; }
+            {
+                m_uiShadowboltVolleyTimer -= uiDiff;
+            }
 
             // Silence
             if (m_uiSilenceTimer < uiDiff)
@@ -307,11 +345,15 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_SILENCE) == CAST_OK)
-                    { m_uiSilenceTimer = urand(14000, 23000); }
+                    {
+                        m_uiSilenceTimer = urand(14000, 23000);
+                    }
                 }
             }
             else
-            { m_uiSilenceTimer -= uiDiff; }
+            {
+                m_uiSilenceTimer -= uiDiff;
+            }
 
             // Shadow Command
             if (m_uiShadowCommandTimer < uiDiff)
@@ -319,20 +361,28 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1))
                 {
                     if (DoCastSpellIfCan(pTarget, SPELL_SHADOW_COMMAND) == CAST_OK)
-                    { m_uiShadowCommandTimer = urand(24000, 30000); }
+                    {
+                        m_uiShadowCommandTimer = urand(24000, 30000);
+                    }
                 }
             }
             else
-            { m_uiShadowCommandTimer -= uiDiff; }
+            {
+                m_uiShadowCommandTimer -= uiDiff;
+            }
 
             // ShadowBlink
             if (m_uiShadowBlinkTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_SHADOWBLINK) == CAST_OK)
-                { m_uiShadowBlinkTimer = urand(30000, 40000); }
+                {
+                    m_uiShadowBlinkTimer = urand(30000, 40000);
+                }
             }
             else
-            { m_uiShadowBlinkTimer -= uiDiff; }
+            {
+                m_uiShadowBlinkTimer -= uiDiff;
+            }
 
             // Add spawning mechanism
             if (m_uiAddSpawnTimer < uiDiff)
@@ -356,7 +406,9 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
 
                     // Make super invis
                     if (m_creature->GetVisibility() != VISIBILITY_OFF)
-                    { m_creature->SetVisibility(VISIBILITY_OFF); }
+                    {
+                        m_creature->SetVisibility(VISIBILITY_OFF);
+                    }
 
                     // Spawn Nefarian
                     // Summon as active, to be able to work proper!
@@ -366,7 +418,9 @@ struct MANGOS_DLL_DECL boss_victor_nefariusAI : public ScriptedAI, private Dialo
                 m_uiAddSpawnTimer = 4000;
             }
             else
-            { m_uiAddSpawnTimer -= uiDiff; }
+            {
+                m_uiAddSpawnTimer -= uiDiff;
+            }
         }
     }
 };
@@ -379,7 +433,9 @@ CreatureAI* GetAI_boss_victor_nefarius(Creature* pCreature)
 bool GossipHello_boss_victor_nefarius(Player* pPlayer, Creature* pCreature)
 {
     if (pCreature->GetMapId() != MAP_ID_BWL)
-    { return true; }
+    {
+        return true;
+    }
 
     pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, GOSSIP_ITEM_NEFARIUS_1 , GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
     pPlayer->SEND_GOSSIP_MENU(GOSSIP_TEXT_NEFARIUS_1, pCreature->GetObjectGuid());
@@ -389,7 +445,9 @@ bool GossipHello_boss_victor_nefarius(Player* pPlayer, Creature* pCreature)
 bool GossipSelect_boss_victor_nefarius(Player* pPlayer, Creature* pCreature, uint32 /*uiSender*/, uint32 uiAction)
 {
     if (pCreature->GetMapId() != MAP_ID_BWL)
-    { return true; }
+    {
+        return true;
+    }
 
     switch (uiAction)
     {
@@ -408,7 +466,9 @@ bool GossipSelect_boss_victor_nefarius(Player* pPlayer, Creature* pCreature, uin
             pPlayer->CLOSE_GOSSIP_MENU();
             // Start the intro event
             if (boss_victor_nefariusAI* pBossAI = dynamic_cast<boss_victor_nefariusAI*>(pCreature->AI()))
-            { pBossAI->DoStartIntro(); }
+            {
+                pBossAI->DoStartIntro();
+            }
             break;
     }
     return true;

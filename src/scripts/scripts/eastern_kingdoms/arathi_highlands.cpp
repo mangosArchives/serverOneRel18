@@ -23,17 +23,21 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Arathi Highlands
-SD%Complete: 100
-SDComment: Quest support: 660, 665
-SDCategory: Arathi Highlands
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Arathi Highlands
+ * SD%Complete: 100
+ * SDComment:   Quest support: 660, 665
+ * SDCategory:  Arathi Highlands
+ * EndScriptData
+ */
 
-/* ContentData
-npc_professor_phizzlethorpe
-npc_kinelory
-EndContentData */
+/**
+ * ContentData
+ * npc_professor_phizzlethorpe
+ * npc_kinelory
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -55,8 +59,7 @@ enum
     EMOTE_PROGRESS_8        = -1000272,
     SAY_PROGRESS_9          = -1000273,
 
-    QUEST_SUNKEN_TREASURE   = 665,
-    ENTRY_VENGEFUL_SURGE    = 2776
+    QUEST_SUNKEN_TREASURE   = 665,    ENTRY_VENGEFUL_SURGE    = 2776
 };
 
 struct MANGOS_DLL_DECL npc_professor_phizzlethorpeAI : public npc_escortAI
@@ -70,23 +73,35 @@ struct MANGOS_DLL_DECL npc_professor_phizzlethorpeAI : public npc_escortAI
         Player* pPlayer = GetPlayerForEscort();
 
         if (!pPlayer)
-        { return; }
+        {
+            return;
+        }
 
         switch (uiPointId)
         {
-            case 4: DoScriptText(SAY_PROGRESS_2, m_creature, pPlayer); break;
-            case 5: DoScriptText(SAY_PROGRESS_3, m_creature, pPlayer); break;
-            case 8: DoScriptText(EMOTE_PROGRESS_4, m_creature); break;
+            case 4:
+                DoScriptText(SAY_PROGRESS_2, m_creature, pPlayer);
+                break;
+            case 5:
+                DoScriptText(SAY_PROGRESS_3, m_creature, pPlayer);
+                break;
+            case 8:
+                DoScriptText(EMOTE_PROGRESS_4, m_creature);
+                break;
             case 9:
                 m_creature->SummonCreature(ENTRY_VENGEFUL_SURGE, -2056.41f, -2144.01f, 20.59f, 5.70f, TEMPSUMMON_TIMED_OOC_OR_CORPSE_DESPAWN, 600000);
                 m_creature->SummonCreature(ENTRY_VENGEFUL_SURGE, -2050.17f, -2140.02f, 19.54f, 5.17f, TEMPSUMMON_TIMED_OOC_OR_CORPSE_DESPAWN, 600000);
                 break;
-            case 10: DoScriptText(SAY_PROGRESS_5, m_creature, pPlayer); break;
+            case 10:
+                DoScriptText(SAY_PROGRESS_5, m_creature, pPlayer);
+                break;
             case 11:
                 DoScriptText(SAY_PROGRESS_6, m_creature, pPlayer);
                 SetRun();
                 break;
-            case 19: DoScriptText(SAY_PROGRESS_7, m_creature, pPlayer); break;
+            case 19:
+                DoScriptText(SAY_PROGRESS_7, m_creature, pPlayer);
+                break;
             case 20:
                 DoScriptText(EMOTE_PROGRESS_8, m_creature);
                 DoScriptText(SAY_PROGRESS_9, m_creature, pPlayer);
@@ -114,7 +129,9 @@ bool QuestAccept_npc_professor_phizzlethorpe(Player* pPlayer, Creature* pCreatur
         DoScriptText(SAY_PROGRESS_1, pCreature, pPlayer);
 
         if (npc_professor_phizzlethorpeAI* pEscortAI = dynamic_cast<npc_professor_phizzlethorpeAI*>(pCreature->AI()))
-        { pEscortAI->Start(false, pPlayer, pQuest, true); }
+        {
+            pEscortAI->Start(false, pPlayer, pQuest, true);
+        }
     }
     return true;
 }
@@ -141,7 +158,7 @@ enum
     SAY_FINISH              = -1000956,
     EMOTE_HAND_PACK         = -1000957,
 
-    // ToDo: find the healing spell id!
+    SPELL_REJUVENATION      = 3627,
     SPELL_BEAR_FORM         = 4948,
 
     NPC_JORELL              = 2733,
@@ -155,10 +172,12 @@ struct MANGOS_DLL_DECL npc_kineloryAI : public npc_escortAI
     npc_kineloryAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
 
     uint32 m_uiBearFormTimer;
+    uint32 m_uiHealTimer;
 
     void Reset() override
     {
-        m_uiBearFormTimer = urand(1000, 5000);
+        m_uiBearFormTimer = urand(5000, 7000);
+        m_uiHealTimer     = urand(2000, 5000);
     }
 
     void WaypointReached(uint32 uiPointId) override
@@ -178,7 +197,7 @@ struct MANGOS_DLL_DECL npc_kineloryAI : public npc_escortAI
             case 18:
                 DoScriptText(SAY_ESCAPE, m_creature);
                 if (Player* pPlayer = GetPlayerForEscort())
-                    m_creature->SetFacingToObject(pPlayer);
+                    { m_creature->SetFacingToObject(pPlayer); }
                 SetRun();
                 break;
             case 33:
@@ -191,7 +210,7 @@ struct MANGOS_DLL_DECL npc_kineloryAI : public npc_escortAI
                 break;
             case 34:
                 if (Player* pPlayer = GetPlayerForEscort())
-                    pPlayer->GroupEventHappens(QUEST_HINTS_NEW_PLAGUE, m_creature);
+                    { pPlayer->GroupEventHappens(QUEST_HINTS_NEW_PLAGUE, m_creature); }
                 break;
         }
     }
@@ -199,9 +218,9 @@ struct MANGOS_DLL_DECL npc_kineloryAI : public npc_escortAI
     void Aggro(Unit* pWho) override
     {
         if (pWho->GetEntry() == NPC_JORELL)
-            DoScriptText(SAY_AGGRO_JORELL, pWho, m_creature);
+            { DoScriptText(SAY_AGGRO_JORELL, pWho, m_creature); }
         else if (roll_chance_i(10))
-            DoScriptText(SAY_AGGRO_KINELORY, m_creature);
+            { DoScriptText(SAY_AGGRO_KINELORY, m_creature); }
     }
 
     void ReceiveAIEvent(AIEventType eventType, Creature* /*pSender*/, Unit* pInvoker, uint32 uiMiscValue) override
@@ -216,15 +235,26 @@ struct MANGOS_DLL_DECL npc_kineloryAI : public npc_escortAI
     void UpdateEscortAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
+            { return; }
 
         if (m_uiBearFormTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_BEAR_FORM) == CAST_OK)
-                m_uiBearFormTimer = urand(25000, 30000);
+                { m_uiBearFormTimer = urand(25000, 30000); }
         }
         else
-            m_uiBearFormTimer -= uiDiff;
+            { m_uiBearFormTimer -= uiDiff; }
+
+        if (m_uiHealTimer < uiDiff)
+        {
+            if (Unit* pTarget = DoSelectLowestHpFriendly(40.0f))
+            {
+                if (DoCastSpellIfCan(pTarget, SPELL_REJUVENATION) == CAST_OK)
+                    { m_uiHealTimer = urand(15000, 25000); }
+            }
+        }
+        else
+            { m_uiHealTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -238,7 +268,7 @@ CreatureAI* GetAI_npc_kinelory(Creature* pCreature)
 bool QuestAccept_npc_kinelory(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
 {
     if (pQuest->GetQuestId() == QUEST_HINTS_NEW_PLAGUE)
-        pCreature->AI()->SendAIEvent(AI_EVENT_START_ESCORT, pPlayer, pCreature, pQuest->GetQuestId());
+        { pCreature->AI()->SendAIEvent(AI_EVENT_START_ESCORT, pPlayer, pCreature, pQuest->GetQuestId()); }
 
     return true;
 }

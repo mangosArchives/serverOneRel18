@@ -23,16 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Swamp_of_Sorrows
-SD%Complete: 100
-SDComment: Quest support: 1393
-SDCategory: Swap of Sorrows
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Swamp_of_Sorrows
+ * SD%Complete: 100
+ * SDComment:   Quest support: 1393.
+ * SDCategory:  Swap of Sorrows
+ * EndScriptData
+ */
 
-/* ContentData
-npc_galen_goodward
-EndContentData */
+/**
+ * ContentData
+ * npc_galen_goodward
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -71,7 +75,9 @@ struct MANGOS_DLL_DECL npc_galen_goodwardAI : public npc_escortAI
     void Aggro(Unit* pWho) override
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
-        { DoScriptText(urand(0, 1) ? SAY_ATTACKED_1 : SAY_ATTACKED_2, m_creature, pWho); }
+        {
+            DoScriptText(urand(0, 1) ? SAY_ATTACKED_1 : SAY_ATTACKED_2, m_creature, pWho);
+        }
     }
 
     void WaypointStart(uint32 uiPointId) override
@@ -82,9 +88,13 @@ struct MANGOS_DLL_DECL npc_galen_goodwardAI : public npc_escortAI
             {
                 GameObject* pCage = NULL;
                 if (m_galensCageGuid)
-                { pCage = m_creature->GetMap()->GetGameObject(m_galensCageGuid); }
+                {
+                    pCage = m_creature->GetMap()->GetGameObject(m_galensCageGuid);
+                }
                 else
-                { pCage = GetClosestGameObjectWithEntry(m_creature, GO_GALENS_CAGE, INTERACTION_DISTANCE); }
+                {
+                    pCage = GetClosestGameObjectWithEntry(m_creature, GO_GALENS_CAGE, INTERACTION_DISTANCE);
+                }
 
                 if (pCage)
                 {
@@ -105,7 +115,9 @@ struct MANGOS_DLL_DECL npc_galen_goodwardAI : public npc_escortAI
         {
             case 0:
                 if (GameObject* pCage = m_creature->GetMap()->GetGameObject(m_galensCageGuid))
-                { pCage->ResetDoorOrButton(); }
+                {
+                    pCage->ResetDoorOrButton();
+                }
                 break;
             case 20:
                 if (Player* pPlayer = GetPlayerForEscort())
@@ -126,14 +138,18 @@ struct MANGOS_DLL_DECL npc_galen_goodwardAI : public npc_escortAI
         if (m_uiPeriodicSay < uiDiff)
         {
             if (HasEscortState(STATE_ESCORT_NONE))
-            { DoScriptText(SAY_PERIODIC, m_creature); }
+            {
+                DoScriptText(SAY_PERIODIC, m_creature);
+            }
             m_uiPeriodicSay = 6000;
         }
         else
-        { m_uiPeriodicSay -= uiDiff; }
+            { m_uiPeriodicSay -= uiDiff; }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         DoMeleeAttackIfReady();
     }

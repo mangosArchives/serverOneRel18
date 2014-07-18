@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Deadmines
-SD%Complete: 100
-SDComment: Contains GO for Iron Clad door event
-SDCategory: Deadmines
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Deadmines
+ * SD%Complete: 100
+ * SDComment:   Contains GO for Iron Clad door event
+ * SDCategory:  Deadmines
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "deadmines.h"
@@ -38,10 +40,14 @@ bool GOUse_go_defias_cannon(Player* /*pPlayer*/, GameObject* pGo)
     ScriptedInstance* pInstance = (ScriptedInstance*)pGo->GetInstanceData();
 
     if (!pInstance)
-    { return false; }
+    {
+        return false;
+    }
 
     if (pInstance->GetData(TYPE_IRON_CLAD_DOOR) == DONE)
-    { return false; }
+    {
+        return false;
+    }
 
     pInstance->SetData(TYPE_IRON_CLAD_DOOR, DONE);
     return false;

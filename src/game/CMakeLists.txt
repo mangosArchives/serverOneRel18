@@ -17,23 +17,23 @@
 set(LIBRARY_NAME game)
 
 include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/vmap
-  ${CMAKE_CURRENT_SOURCE_DIR}/AuctionHouseBot
-  ${CMAKE_CURRENT_SOURCE_DIR}/BattleGround
-  ${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine
-  ${CMAKE_CURRENT_SOURCE_DIR}/OutdoorPvP
-  ${CMAKE_SOURCE_DIR}/dep/include/g3dlite
-  ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour
-  ${CMAKE_SOURCE_DIR}/dep/recastnavigation/
-  ${CMAKE_SOURCE_DIR}/dep/include
-  ${CMAKE_SOURCE_DIR}/dep/lualib
-  ${CMAKE_SOURCE_DIR}/src/shared
-  ${CMAKE_SOURCE_DIR}/src/framework
-  ${CMAKE_BINARY_DIR}
-  ${CMAKE_BINARY_DIR}/src/shared
-  ${MYSQL_INCLUDE_DIR}
-  ${ACE_INCLUDE_DIR}
+  "${CMAKE_CURRENT_SOURCE_DIR}"
+  "${CMAKE_CURRENT_SOURCE_DIR}/vmap"
+  "${CMAKE_CURRENT_SOURCE_DIR}/AuctionHouseBot"
+  "${CMAKE_CURRENT_SOURCE_DIR}/BattleGround"
+  "${CMAKE_CURRENT_SOURCE_DIR}/OutdoorPvP"
+  "${CMAKE_SOURCE_DIR}/dep/include/g3dlite"
+  "${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour"
+  "${CMAKE_SOURCE_DIR}/dep/recastnavigation/"
+  "${CMAKE_SOURCE_DIR}/dep/include"
+  "${CMAKE_SOURCE_DIR}/dep/lualib"
+  "${CMAKE_SOURCE_DIR}/src/shared"
+  "${CMAKE_SOURCE_DIR}/src/framework"
+  "${CMAKE_SOURCE_DIR}/src/game/LuaEngine"
+  "${CMAKE_BINARY_DIR}"
+  "${CMAKE_BINARY_DIR}/src/shared"
+  "${MYSQL_INCLUDE_DIR}"
+  "${ACE_INCLUDE_DIR}"
 )
 
 set(SRC_GRP_AHBOT
@@ -361,6 +361,7 @@ set(SRC_GRP_WORLD_HANDLERS
     InstanceData.h
     ItemHandler.cpp
     LFGHandler.cpp
+    LFGHandler.h
     LootHandler.cpp
     Mail.cpp
     Mail.h
@@ -505,7 +506,7 @@ source_group("World/Handlers"
 )
 
 if(PCH)
-  include_directories(${CMAKE_CURRENT_BINARY_DIR})
+  include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 endif()
 
 add_library(${LIBRARY_NAME} STATIC

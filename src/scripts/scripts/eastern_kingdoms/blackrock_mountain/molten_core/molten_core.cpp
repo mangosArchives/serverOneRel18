@@ -23,15 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Molten_Core
-SD%Complete:
-SDComment:
-SDCategory: Molten Core
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Molten_Core
+ * SD%Complete: 25
+ * SDComment:   None
+ * SDCategory:  Molten Core
+ * EndScriptData
+ */
 
-/* ContentData
-EndContentData */
+/**
+ * ContentData
+ * go_molten_core_rune
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "molten_core.h"
@@ -45,7 +50,9 @@ bool GOUse_go_molten_core_rune(Player* pPlayer, GameObject* pGo)
     ScriptedInstance* pInstance = (ScriptedInstance*)pGo->GetInstanceData();
 
     if (!pInstance)
-    { return true; }
+    {
+        return true;
+    }
 
     for (uint8 i = 0; i < MAX_MOLTEN_RUNES; ++i)
     {
@@ -53,7 +60,9 @@ bool GOUse_go_molten_core_rune(Player* pPlayer, GameObject* pGo)
         {
             // check if boss is already dead - if not return true
             if (pInstance->GetData(m_aMoltenCoreRunes[i].m_uiType) != DONE)
-            { return true; }
+            {
+                return true;
+            }
 
             pInstance->SetData(m_aMoltenCoreRunes[i].m_uiType, SPECIAL);
             return false;

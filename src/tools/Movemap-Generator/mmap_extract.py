@@ -55,4 +55,4 @@ if __name__ == "__main__":
     while (len(mapList) > 0):
         if (threading.active_count() <= cpu):
             workerThread(mapList.popleft()).start()
-        time.sleep(0.1)
+        time.sleep(0.2)

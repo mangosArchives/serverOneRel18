@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Lucifron
-SD%Complete: 100
-SDComment:
-SDCategory: Molten Core
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Lucifron
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Molten Core
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "molten_core.h"
@@ -64,43 +66,55 @@ struct MANGOS_DLL_DECL boss_lucifronAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LUCIFRON, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_LUCIFRON, IN_PROGRESS);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LUCIFRON, DONE); }
+        {
+            m_pInstance->SetData(TYPE_LUCIFRON, DONE);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LUCIFRON, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_LUCIFRON, FAIL);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Impending doom timer
         if (m_uiImpendingDoomTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_IMPENDINGDOOM) == CAST_OK)
-            { m_uiImpendingDoomTimer = 20000; }
+            {
+                m_uiImpendingDoomTimer = 20000;
+            }
         }
         else
-        { m_uiImpendingDoomTimer -= uiDiff; }
+            { m_uiImpendingDoomTimer -= uiDiff; }
 
         // Lucifron's curse timer
         if (m_uiLucifronCurseTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_LUCIFRONCURSE) == CAST_OK)
-            { m_uiLucifronCurseTimer = 20000; }
+            {
+                m_uiLucifronCurseTimer = 20000;
+            }
         }
         else
-        { m_uiLucifronCurseTimer -= uiDiff; }
+            { m_uiLucifronCurseTimer -= uiDiff; }
 
         // Shadowshock
         if (m_uiShadowShockTimer < uiDiff)
@@ -108,11 +122,13 @@ struct MANGOS_DLL_DECL boss_lucifronAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SHADOWSHOCK) == CAST_OK)
-                { m_uiShadowShockTimer = 6000; }
+                {
+                    m_uiShadowShockTimer = 6000;
+                }
             }
         }
         else
-        { m_uiShadowShockTimer -= uiDiff; }
+            { m_uiShadowShockTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

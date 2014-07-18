@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Patchwerk
-SD%Complete: 100
-SDComment:
-SDCategory: Naxxramas
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Patchwerk
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Naxxramas
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "naxxramas.h"
@@ -77,7 +79,9 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
     void KilledUnit(Unit* /*pVictim*/) override
     {
         if (urand(0, 4))
-        { return; }
+        {
+            return;
+        }
 
         DoScriptText(SAY_SLAY, m_creature);
     }
@@ -87,7 +91,9 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_PATCHWERK, DONE); }
+        {
+            m_pInstance->SetData(TYPE_PATCHWERK, DONE);
+        }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -95,13 +101,17 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
         DoScriptText(urand(0, 1) ? SAY_AGGRO1 : SAY_AGGRO2, m_creature);
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_PATCHWERK, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_PATCHWERK, IN_PROGRESS);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_PATCHWERK, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_PATCHWERK, FAIL);
+        }
     }
 
     void DoHatefulStrike()
@@ -119,7 +129,9 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
             for (; iter != tList.end(); ++iter)
             {
                 if (!uiTargets)
-                { break; }
+                {
+                    break;
+                }
 
                 if (Unit* pTempTarget = m_creature->GetMap()->GetUnit((*iter)->getUnitGuid()))
                 {
@@ -137,7 +149,9 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
         }
 
         if (!pTarget)
-        { pTarget = m_creature->getVictim(); }
+        {
+            pTarget = m_creature->getVictim();
+        }
 
         DoCastSpellIfCan(pTarget, SPELL_HATEFULSTRIKE);
     }
@@ -145,7 +159,9 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Hateful Strike
         if (m_uiHatefulStrikeTimer < uiDiff)
@@ -154,7 +170,7 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
             m_uiHatefulStrikeTimer = 1000;
         }
         else
-        { m_uiHatefulStrikeTimer -= uiDiff; }
+            { m_uiHatefulStrikeTimer -= uiDiff; }
 
         // Soft Enrage at 5%
         if (!m_bEnraged)
@@ -181,7 +197,9 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
                 }
             }
             else
-            { m_uiBerserkTimer -= uiDiff; }
+            {
+                m_uiBerserkTimer -= uiDiff;
+            }
         }
         else
         {
@@ -192,7 +210,7 @@ struct MANGOS_DLL_DECL boss_patchwerkAI : public ScriptedAI
                 m_uiSlimeboltTimer = 5000;
             }
             else
-            { m_uiSlimeboltTimer -= uiDiff; }
+                { m_uiSlimeboltTimer -= uiDiff; }
         }
 
         DoMeleeAttackIfReady();

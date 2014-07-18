@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Instance_Onyxias_Lair
-SD%Complete: 50%
-SDComment:
-SDCategory: Onyxia's Lair
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Instance_Onyxias_Lair
+ * SD%Complete: 50
+ * SDComment:   None
+ * SDCategory:  Onyxia's Lair
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "onyxias_lair.h"
@@ -62,12 +64,16 @@ void instance_onyxias_lair::OnCreatureCreate(Creature* pCreature)
 void instance_onyxias_lair::SetData(uint32 uiType, uint32 uiData)
 {
     if (uiType != TYPE_ONYXIA)
-    { return; }
+    {
+        return;
+    }
 
     m_uiEncounter = uiData;
 
     if (uiData == DATA_LIFTOFF)
-    { m_tPhaseTwoStart = time(NULL); }
+    {
+        m_tPhaseTwoStart = time(NULL);
+    }
 
     // Currently no reason to save anything
 }

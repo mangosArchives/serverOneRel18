@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Magmadar
-SD%Complete: 75
-SDComment: Lavabomb needs still core support
-SDCategory: Molten Core
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Magmadar
+ * SD%Complete: 75
+ * SDComment:   Lava bomb needs still core support
+ * SDCategory:  Molten Core
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "molten_core.h"
@@ -70,25 +72,33 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
         DoCastSpellIfCan(m_creature, SPELL_MAGMASPIT, true);
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_MAGMADAR, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_MAGMADAR, IN_PROGRESS);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_MAGMADAR, DONE); }
+        {
+            m_pInstance->SetData(TYPE_MAGMADAR, DONE);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_MAGMADAR, NOT_STARTED); }
+        {
+            m_pInstance->SetData(TYPE_MAGMADAR, NOT_STARTED);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Frenzy_Timer
         if (m_uiFrenzyTimer < uiDiff)
@@ -100,16 +110,18 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
             }
         }
         else
-        { m_uiFrenzyTimer -= uiDiff; }
+            { m_uiFrenzyTimer -= uiDiff; }
 
         // Panic_Timer
         if (m_uiPanicTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_PANIC) == CAST_OK)
-            { m_uiPanicTimer = 30000; }
+            {
+                m_uiPanicTimer = 30000;
+            }
         }
         else
-        { m_uiPanicTimer -= uiDiff; }
+            { m_uiPanicTimer -= uiDiff; }
 
         // Lavabomb_Timer
         if (m_uiLavabombTimer < uiDiff)
@@ -117,11 +129,13 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_LAVABOMB) == CAST_OK)
-                { m_uiLavabombTimer = 12000; }
+                {
+                    m_uiLavabombTimer = 12000;
+                }
             }
         }
         else
-        { m_uiLavabombTimer -= uiDiff; }
+            { m_uiLavabombTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Archaedas
-SD%Complete: 100
-SDComment:
-SDCategory: Uldaman
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Archaedas
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Uldaman
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "uldaman.h"
@@ -83,7 +85,9 @@ struct MANGOS_DLL_DECL boss_archaedasAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_ARCHAEDAS, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_ARCHAEDAS, IN_PROGRESS);
+        }
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
@@ -95,13 +99,17 @@ struct MANGOS_DLL_DECL boss_archaedasAI : public ScriptedAI
     {
         // open door to vault (handled by instance script)
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_ARCHAEDAS, DONE); }
+        {
+            m_pInstance->SetData(TYPE_ARCHAEDAS, DONE);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_ARCHAEDAS, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_ARCHAEDAS, FAIL);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
@@ -109,7 +117,9 @@ struct MANGOS_DLL_DECL boss_archaedasAI : public ScriptedAI
         // so many things are based in this script on instance data
         // so if we don't have access to it better do nothing
         if (!m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         // OOC Intro part triggered by Altar activation
         if (m_pInstance->GetData(TYPE_ARCHAEDAS) == SPECIAL)
@@ -133,9 +143,13 @@ struct MANGOS_DLL_DECL boss_archaedasAI : public ScriptedAI
 
                         // Attack player
                         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_pInstance->GetGuid(DATA_EVENT_STARTER)))
-                        { AttackStart(pPlayer); }
+                        {
+                            AttackStart(pPlayer);
+                        }
                         else
-                        { EnterEvadeMode(); }
+                        {
+                            EnterEvadeMode();
+                        }
                         break;
                     default:
                         break;
@@ -144,11 +158,15 @@ struct MANGOS_DLL_DECL boss_archaedasAI : public ScriptedAI
                 ++m_uiSubevent;
             }
             else
-            { m_uiAwakeningTimer -= uiDiff; }
+            {
+                m_uiAwakeningTimer -= uiDiff;
+            }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Phase switch
         if (m_creature->GetHealthPercent() < 100.0f - 33.4f * (float)m_uiHpPhaseCheck)
@@ -168,22 +186,30 @@ struct MANGOS_DLL_DECL boss_archaedasAI : public ScriptedAI
                 if (Creature* pEarthen = m_pInstance->GetClosestDwarfNotInCombat(m_creature))
                 {
                     if (DoCastSpellIfCan(pEarthen, SPELL_AWAKEN_EARTHEN_DWARF) == CAST_OK)
-                    { m_uiAwakeDwarfTimer = urand(9000, 12000); }
+                    {
+                        m_uiAwakeDwarfTimer = urand(9000, 12000);
+                    }
                 }
                 else
-                { m_bDwarvesAwaken = true; }
+                {
+                    m_bDwarvesAwaken = true;
+                }
             }
             else
-            { m_uiAwakeDwarfTimer -= uiDiff; }
+            {
+                m_uiAwakeDwarfTimer -= uiDiff;
+            }
         }
 
         if (m_uiTremorTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_GROUND_TREMOR) == CAST_OK)
-            { m_uiTremorTimer = urand(8000, 17000); }
+            {
+                m_uiTremorTimer = urand(8000, 17000);
+            }
         }
         else
-        { m_uiTremorTimer -= uiDiff; }
+            { m_uiTremorTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -205,10 +231,14 @@ bool EffectDummyCreature_npc_vault_warder(Unit* /*pCaster*/, uint32 uiSpellId, S
 
             ScriptedInstance* pInstance = (ScriptedInstance*)pCreatureTarget->GetInstanceData();
             if (!pInstance)
-            { return true; }
+            {
+                return true;
+            }
 
             if (Creature* pArchaedas = pInstance->GetSingleCreatureFromStorage(NPC_ARCHAEDAS))
-            { pCreatureTarget->AI()->AttackStart(pArchaedas->getVictim()); }
+            {
+                pCreatureTarget->AI()->AttackStart(pArchaedas->getVictim());
+            }
 
             return true;
         }
@@ -220,7 +250,9 @@ bool EffectDummyCreature_npc_vault_warder(Unit* /*pCaster*/, uint32 uiSpellId, S
 bool EffectAuraDummy_spell_aura_dummy_awaken_dwarf(const Aura* pAura, bool bApply)
 {
     if (bApply)
-    { return true; }
+    {
+        return true;
+    }
 
     if ((pAura->GetId() == SPELL_AWAKEN_EARTHEN_DWARF || pAura->GetId() == SPELL_AWAKEN_EARTHEN_GUARDIAN) && pAura->GetEffIndex() == EFFECT_INDEX_0)
     {
@@ -230,10 +262,14 @@ bool EffectAuraDummy_spell_aura_dummy_awaken_dwarf(const Aura* pAura, bool bAppl
 
             ScriptedInstance* pInstance = (ScriptedInstance*)pTarget->GetInstanceData();
             if (!pInstance)
-            { return true; }
+            {
+                return true;
+            }
 
             if (Creature* pArchaedas = pInstance->GetSingleCreatureFromStorage(NPC_ARCHAEDAS))
-            { pTarget->AI()->AttackStart(pArchaedas->getVictim()); }
+            {
+                pTarget->AI()->AttackStart(pArchaedas->getVictim());
+            }
         }
     }
 

@@ -23,31 +23,34 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Npcs_Special
-SD%Complete: 100
-SDComment: To be used for special NPCs that are located globally.
-SDCategory: NPCs
-EndScriptData
-*/
+/**
+ * ScriptData
+ * SDName:      Npcs_Special
+ * SD%Complete: 0
+ * SDComment:   To be used for special NPCs that are located globally.
+ * SDCategory:  NPCs
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
 #include "ObjectMgr.h"
 #include "GameEventMgr.h"
 
-/* ContentData
-npc_air_force_bots       80%    support for misc (invisible) guard bots in areas where player allowed to fly. Summon guards after a preset time if tagged by spell
-npc_chicken_cluck       100%    support for quest 3861 (Cluck!)
-npc_dancing_flames      100%    midsummer event NPC
-npc_guardian            100%    guardianAI used to prevent players from accessing off-limits areas. Not in use by SD2
-npc_garments_of_quests   80%    NPC's related to all Garments of-quests 5621, 5624, 5625, 5648, 5650
-npc_injured_patient     100%    patients for triage-quests (6622 and 6624)
-npc_doctor              100%    Gustaf Vanhowzen and Gregory Victor, quest 6622 and 6624 (Triage)
-npc_innkeeper            25%    ScriptName not assigned. Innkeepers in general.
-npc_redemption_target   100%    Used for the paladin quests: 1779,1781,9600,9685
-EndContentData */
-
+/**
+ * ContentData
+ * npc_air_force_bots          80%    support for misc (invisible) guard bots in areas where player allowed to fly. Summon guards after a preset time if tagged by spell
+ * npc_chicken_cluck          100%    support for quest 3861 (Cluck!)
+ * npc_dancing_flames         100%    midsummer event NPC
+ * npc_guardian               100%    guardianAI used to prevent players from accessing off-limits areas. Not in use by SD2
+ * npc_garments_of_quests     100%    NPC's related to all Garments of-quests 5621, 5624, 5625, 5648, 5650
+ * npc_injured_patient         80%    patients for triage-quests (6622 and 6624)
+ * npc_doctor                 100%    Gustaf Vanhowzen and Gregory Victor, quest 6622 and 6624 (Triage)
+ * npc_innkeeper               25%    ScriptName not assigned. Innkeepers in general.
+ * npc_redemption_target      100%    Used for the paladin quests: 1779,1781,9600,9685
+ * EndContentData
+ */
+ 
 /*########
 # npc_air_force_bots
 #########*/

@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Thekal
-SD%Complete: 95
-SDComment: Almost finished.
-SDCategory: Zul'Gurub
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Thekal
+ * SD%Complete: 95
+ * SDComment:   None
+ * SDCategory:  Zul'Gurub
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "zulgurub.h"
@@ -83,7 +85,9 @@ struct MANGOS_DLL_DECL boss_thekalBaseAI : public ScriptedAI
     void DamageTaken(Unit* /*pKiller*/, uint32& uiDamage) override
     {
         if (uiDamage < m_creature->GetHealth())
-        { return; }
+        {
+            return;
+        }
 
         // Prevent glitch if in fake death
         if (m_uiPhase == PHASE_FAKE_DEATH || m_uiPhase == PHASE_WAITING)
@@ -94,7 +98,9 @@ struct MANGOS_DLL_DECL boss_thekalBaseAI : public ScriptedAI
 
         // Only init fake in normal phase
         if (m_uiPhase != PHASE_NORMAL)
-        { return; }
+        {
+            return;
+        }
 
         uiDamage = 0;
 
@@ -122,7 +128,9 @@ struct MANGOS_DLL_DECL boss_thekalBaseAI : public ScriptedAI
         m_creature->SetStandState(UNIT_STAND_STATE_STAND);
 
         if (bOnlyFlags)
-        { return; }
+        {
+            return;
+        }
 
         m_creature->SetHealth(m_creature->GetMaxHealth());
         m_uiPhase = PHASE_NORMAL;
@@ -132,7 +140,9 @@ struct MANGOS_DLL_DECL boss_thekalBaseAI : public ScriptedAI
 
         // Assume Attack
         if (m_creature->getVictim())
-        { m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim()); }
+        {
+            m_creature->GetMotionMaster()->MoveChase(m_creature->getVictim());
+        }
 
         OnRevive();
     }
@@ -140,7 +150,9 @@ struct MANGOS_DLL_DECL boss_thekalBaseAI : public ScriptedAI
     void PreventRevive()
     {
         if (m_creature->IsNonMeleeSpellCasted(true))
-        { m_creature->InterruptNonMeleeSpells(true); }
+        {
+            m_creature->InterruptNonMeleeSpells(true);
+        }
 
         m_uiPhase = PHASE_WAITING;
     }
@@ -195,21 +207,29 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
         DoScriptText(SAY_DEATH, m_creature);
 
         if (!m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         m_pInstance->SetData(TYPE_THEKAL, DONE);
 
         // remove the two adds
         if (Creature* pZath = m_pInstance->GetSingleCreatureFromStorage(NPC_ZATH))
-        { pZath->ForcedDespawn(); }
+        {
+            pZath->ForcedDespawn();
+        }
         if (Creature* pLorkhan = m_pInstance->GetSingleCreatureFromStorage(NPC_LORKHAN))
-        { pLorkhan->ForcedDespawn(); }
+        {
+            pLorkhan->ForcedDespawn();
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_THEKAL, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_THEKAL, FAIL);
+        }
     }
 
     // Only call in context where m_pInstance is valid
@@ -217,18 +237,24 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
     {
         // If any add is alive, return false
         if (m_pInstance->GetData(TYPE_ZATH) != SPECIAL || m_pInstance->GetData(TYPE_LORKHAN) != SPECIAL)
-        { return false; }
+        {
+            return false;
+        }
 
         // Else Prevent them Resurrecting
         if (Creature* pLorkhan = m_pInstance->GetSingleCreatureFromStorage(NPC_LORKHAN))
         {
             if (boss_thekalBaseAI* pFakerAI = dynamic_cast<boss_thekalBaseAI*>(pLorkhan->AI()))
-            { pFakerAI->PreventRevive(); }
+            {
+                pFakerAI->PreventRevive();
+            }
         }
         if (Creature* pZath = m_pInstance->GetSingleCreatureFromStorage(NPC_ZATH))
         {
             if (boss_thekalBaseAI* pFakerAI = dynamic_cast<boss_thekalBaseAI*>(pZath->AI()))
-            { pFakerAI->PreventRevive(); }
+            {
+                pFakerAI->PreventRevive();
+            }
         }
 
         return true;
@@ -244,14 +270,18 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
 
             // If both Adds are already dead, don't wait 10 seconds
             if (CanPreventAddsResurrect())
-            { m_uiResurrectTimer = 1000; }
+            {
+                m_uiResurrectTimer = 1000;
+            }
         }
     }
 
     void OnRevive()
     {
         if (!m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         // Both Adds are 'dead' enter tiger phase
         if (CanPreventAddsResurrect())
@@ -264,7 +294,9 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         switch (m_uiPhase)
         {
@@ -282,7 +314,9 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
                     }
                 }
                 else
-                { m_uiResurrectTimer -= uiDiff; }
+                {
+                    m_uiResurrectTimer -= uiDiff;
+                }
 
                 // No break needed here
             case PHASE_WAITING:
@@ -292,21 +326,29 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
                 if (m_uiMortalCleaveTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MORTAL_CLEAVE) == CAST_OK)
-                    { m_uiMortalCleaveTimer = urand(15000, 20000); }
+                    {
+                        m_uiMortalCleaveTimer = urand(15000, 20000);
+                    }
                 }
                 else
-                { m_uiMortalCleaveTimer -= uiDiff; }
+                {
+                    m_uiMortalCleaveTimer -= uiDiff;
+                }
 
                 if (m_uiSilenceTimer < uiDiff)
                 {
                     if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
                     {
                         if (DoCastSpellIfCan(pTarget, SPELL_SILENCE) == CAST_OK)
-                        { m_uiSilenceTimer = urand(20000, 25000); }
+                        {
+                            m_uiSilenceTimer = urand(20000, 25000);
+                        }
                     }
                 }
                 else
-                { m_uiSilenceTimer -= uiDiff; }
+                {
+                    m_uiSilenceTimer -= uiDiff;
+                }
 
                 break;
             case PHASE_TIGER:
@@ -323,36 +365,52 @@ struct MANGOS_DLL_DECL boss_thekalAI : public boss_thekalBaseAI
                     }
                 }
                 else
-                { m_uiChargeTimer -= uiDiff; }
+                {
+                    m_uiChargeTimer -= uiDiff;
+                }
 
                 if (m_uiFrenzyTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_FRENZY) == CAST_OK)
-                    { m_uiFrenzyTimer = 30000; }
+                    {
+                        m_uiFrenzyTimer = 30000;
+                    }
                 }
                 else
-                { m_uiFrenzyTimer -= uiDiff; }
+                {
+                    m_uiFrenzyTimer -= uiDiff;
+                }
 
                 if (m_uiForcePunchTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_FORCE_PUNCH) == CAST_OK)
-                    { m_uiForcePunchTimer = urand(16000, 21000); }
+                    {
+                        m_uiForcePunchTimer = urand(16000, 21000);
+                    }
                 }
                 else
-                { m_uiForcePunchTimer -= uiDiff; }
+                {
+                    m_uiForcePunchTimer -= uiDiff;
+                }
 
                 if (m_uiSummonTigersTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_TIGERS) == CAST_OK)
-                    { m_uiSummonTigersTimer = urand(10000, 14000); }
+                    {
+                        m_uiSummonTigersTimer = urand(10000, 14000);
+                    }
                 }
                 else
-                { m_uiSummonTigersTimer -= uiDiff; }
+                {
+                    m_uiSummonTigersTimer -= uiDiff;
+                }
 
                 if (!m_bEnraged && m_creature->GetHealthPercent() < 11.0f)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_ENRAGE) == CAST_OK)
-                    { m_bEnraged = true; }
+                    {
+                        m_bEnraged = true;
+                    }
                 }
 
                 break;
@@ -391,7 +449,9 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
         m_uiPhase               = PHASE_NORMAL;
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LORKHAN, NOT_STARTED); }
+        {
+            m_pInstance->SetData(TYPE_LORKHAN, NOT_STARTED);
+        }
 
         Revive(true);
     }
@@ -399,7 +459,9 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LORKHAN, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_LORKHAN, IN_PROGRESS);
+        }
     }
 
     void OnFakeingDeath()
@@ -407,13 +469,17 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
         m_uiResurrectTimer = 10000;
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LORKHAN, SPECIAL); }
+        {
+            m_pInstance->SetData(TYPE_LORKHAN, SPECIAL);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         switch (m_uiPhase)
         {
@@ -421,7 +487,9 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
                 if (m_uiResurrectTimer < uiDiff)
                 {
                     if (!m_pInstance)
-                    { return; }
+                    {
+                        return;
+                    }
 
                     if (m_pInstance->GetData(TYPE_THEKAL) != SPECIAL || m_pInstance->GetData(TYPE_ZATH) != SPECIAL)
                     {
@@ -432,7 +500,9 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
                     m_uiPhase = PHASE_WAITING;
                 }
                 else
-                { m_uiResurrectTimer -= uiDiff; }
+                {
+                    m_uiResurrectTimer -= uiDiff;
+                }
 
                 // no break needed here
             case PHASE_WAITING:
@@ -443,20 +513,28 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
                 if (m_uiShieldTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_SHIELD) == CAST_OK)
-                    { m_uiShieldTimer = 61000; }
+                    {
+                        m_uiShieldTimer = 61000;
+                    }
                 }
                 else
-                { m_uiShieldTimer -= uiDiff; }
+                {
+                    m_uiShieldTimer -= uiDiff;
+                }
 
                 // BloodLust_Timer
                 if (m_uiBloodLustTimer < uiDiff)
                 {
                     // ToDo: research if this should be cast on Thekal or Zath
                     if (DoCastSpellIfCan(m_creature, SPELL_BLOODLUST) == CAST_OK)
-                    { m_uiBloodLustTimer = urand(20000, 28000); }
+                    {
+                        m_uiBloodLustTimer = urand(20000, 28000);
+                    }
                 }
                 else
-                { m_uiBloodLustTimer -= uiDiff; }
+                {
+                    m_uiBloodLustTimer -= uiDiff;
+                }
 
                 // Casting Greaterheal to Thekal or Zath if they are in meele range.
                 // TODO - why this range check?
@@ -471,11 +549,15 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
                         {
                             case 0:
                                 if (pThekal && m_creature->IsWithinDistInMap(pThekal, 3 * ATTACK_DISTANCE))
-                                { DoCastSpellIfCan(pThekal, SPELL_GREATER_HEAL); }
+                                {
+                                    DoCastSpellIfCan(pThekal, SPELL_GREATER_HEAL);
+                                }
                                 break;
                             case 1:
                                 if (pZath && m_creature->IsWithinDistInMap(pZath, 3 * ATTACK_DISTANCE))
-                                { DoCastSpellIfCan(pZath, SPELL_GREATER_HEAL); }
+                                {
+                                    DoCastSpellIfCan(pZath, SPELL_GREATER_HEAL);
+                                }
                                 break;
                         }
                     }
@@ -483,16 +565,22 @@ struct MANGOS_DLL_DECL mob_zealot_lorkhanAI : public boss_thekalBaseAI
                     m_uiGreaterHealTimer = urand(15000, 20000);
                 }
                 else
-                { m_uiGreaterHealTimer -= uiDiff; }
+                {
+                    m_uiGreaterHealTimer -= uiDiff;
+                }
 
                 // Disarm_Timer
                 if (m_uiDisarmTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_DISARM) == CAST_OK)
-                    { m_uiDisarmTimer = urand(15000, 25000); }
+                    {
+                        m_uiDisarmTimer = urand(15000, 25000);
+                    }
                 }
                 else
-                { m_uiDisarmTimer -= uiDiff; }
+                {
+                    m_uiDisarmTimer -= uiDiff;
+                }
 
                 break;
         }
@@ -532,7 +620,9 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
         m_uiPhase                   = PHASE_NORMAL;
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_ZATH, NOT_STARTED); }
+        {
+            m_pInstance->SetData(TYPE_ZATH, NOT_STARTED);
+        }
 
         Revive(true);
     }
@@ -540,7 +630,9 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_ZATH, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_ZATH, IN_PROGRESS);
+        }
     }
 
     void OnFakeingDeath()
@@ -548,13 +640,17 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
         m_uiResurrectTimer = 10000;
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_ZATH, SPECIAL); }
+        {
+            m_pInstance->SetData(TYPE_ZATH, SPECIAL);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         switch (m_uiPhase)
         {
@@ -562,7 +658,9 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
                 if (m_uiResurrectTimer < uiDiff)
                 {
                     if (!m_pInstance)
-                    { return; }
+                    {
+                        return;
+                    }
 
                     if (m_pInstance->GetData(TYPE_THEKAL) != SPECIAL || m_pInstance->GetData(TYPE_LORKHAN) != SPECIAL)
                     {
@@ -573,7 +671,9 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
                     m_uiPhase = PHASE_WAITING;
                 }
                 else
-                { m_uiResurrectTimer -= uiDiff; }
+                {
+                    m_uiResurrectTimer -= uiDiff;
+                }
 
                 // no break needed here
             case PHASE_WAITING:
@@ -584,19 +684,27 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
                 if (m_uiSweepingStrikesTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_SWEEPING_STRIKES) == CAST_OK)
-                    { m_uiSweepingStrikesTimer = urand(22000, 26000); }
+                    {
+                        m_uiSweepingStrikesTimer = urand(22000, 26000);
+                    }
                 }
                 else
-                { m_uiSweepingStrikesTimer -= uiDiff; }
+                {
+                    m_uiSweepingStrikesTimer -= uiDiff;
+                }
 
                 // SinisterStrike_Timer
                 if (m_uiSinisterStrikeTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_SINISTER_STRIKE) == CAST_OK)
-                    { m_uiSinisterStrikeTimer = urand(8000, 16000); }
+                    {
+                        m_uiSinisterStrikeTimer = urand(8000, 16000);
+                    }
                 }
                 else
-                { m_uiSinisterStrikeTimer -= uiDiff; }
+                {
+                    m_uiSinisterStrikeTimer -= uiDiff;
+                }
 
                 // Gouge_Timer
                 if (m_uiGougeTimer < uiDiff)
@@ -604,31 +712,43 @@ struct MANGOS_DLL_DECL mob_zealot_zathAI : public boss_thekalBaseAI
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_GOUGE) == CAST_OK)
                     {
                         if (m_creature->GetThreatManager().getThreat(m_creature->getVictim()))
-                        { m_creature->GetThreatManager().modifyThreatPercent(m_creature->getVictim(), -100); }
+                        {
+                            m_creature->GetThreatManager().modifyThreatPercent(m_creature->getVictim(), -100);
+                        }
 
                         m_uiGougeTimer = urand(17000, 27000);
                     }
                 }
                 else
-                { m_uiGougeTimer -= uiDiff; }
+                {
+                    m_uiGougeTimer -= uiDiff;
+                }
 
                 // Kick_Timer
                 if (m_uiKickTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_KICK) == CAST_OK)
-                    { m_uiKickTimer = urand(15000, 25000); }
+                    {
+                        m_uiKickTimer = urand(15000, 25000);
+                    }
                 }
                 else
-                { m_uiKickTimer -= uiDiff; }
+                {
+                    m_uiKickTimer -= uiDiff;
+                }
 
                 // Blind_Timer
                 if (m_uiBlindTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_BLIND) == CAST_OK)
-                    { m_uiBlindTimer = urand(10000, 20000); }
+                    {
+                        m_uiBlindTimer = urand(10000, 20000);
+                    }
                 }
                 else
-                { m_uiBlindTimer -= uiDiff; }
+                {
+                    m_uiBlindTimer -= uiDiff;
+                }
 
                 break;
         }
@@ -643,7 +763,9 @@ bool EffectDummyCreature_thekal_resurrection(Unit* /*pCaster*/, uint32 uiSpellId
     if (uiSpellId == SPELL_RESURRECT && uiEffIndex == EFFECT_INDEX_0)
     {
         if (boss_thekalBaseAI* pFakerAI = dynamic_cast<boss_thekalBaseAI*>(pCreatureTarget->AI()))
-        { pFakerAI->Revive(); }
+        {
+            pFakerAI->Revive();
+        }
 
         // always return true when we are handling this spell and effect
         return true;

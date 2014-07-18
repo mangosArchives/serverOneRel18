@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Moam
-SD%Complete: 100
-SDComment:
-SDCategory: Ruins of Ahn'Qiraj
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Moam
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Ruins of Ahn'Qiraj
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -81,7 +83,9 @@ struct MANGOS_DLL_DECL boss_moamAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         switch (m_uiPhase)
         {
@@ -98,7 +102,9 @@ struct MANGOS_DLL_DECL boss_moamAI : public ScriptedAI
                     }
                 }
                 else
-                { m_uiCheckoutManaTimer -= uiDiff; }
+                {
+                    m_uiCheckoutManaTimer -= uiDiff;
+                }
 
                 if (m_uiSummonManaFiendsTimer <= uiDiff)
                 {
@@ -108,18 +114,24 @@ struct MANGOS_DLL_DECL boss_moamAI : public ScriptedAI
                     m_uiSummonManaFiendsTimer = 90000;
                 }
                 else
-                { m_uiSummonManaFiendsTimer -= uiDiff; }
+                {
+                    m_uiSummonManaFiendsTimer -= uiDiff;
+                }
 
                 if (m_uiManaDrainTimer <= uiDiff)
                 {
                     if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, SPELL_DRAIN_MANA, SELECT_FLAG_POWER_MANA))
                     {
                         if (DoCastSpellIfCan(pTarget, SPELL_DRAIN_MANA) == CAST_OK)
-                        { m_uiManaDrainTimer = urand(2000, 6000); }
+                        {
+                            m_uiManaDrainTimer = urand(2000, 6000);
+                        }
                     }
                 }
                 else
-                { m_uiManaDrainTimer -= uiDiff; }
+                {
+                    m_uiManaDrainTimer -= uiDiff;
+                }
 
                 if (m_uiTrampleTimer <= uiDiff)
                 {
@@ -127,7 +139,9 @@ struct MANGOS_DLL_DECL boss_moamAI : public ScriptedAI
                     m_uiTrampleTimer = 15000;
                 }
                 else
-                { m_uiTrampleTimer -= uiDiff; }
+                {
+                    m_uiTrampleTimer -= uiDiff;
+                }
 
                 DoMeleeAttackIfReady();
                 break;
@@ -145,7 +159,9 @@ struct MANGOS_DLL_DECL boss_moamAI : public ScriptedAI
                     }
                 }
                 else
-                { m_uiCheckoutManaTimer -= uiDiff; }
+                {
+                    m_uiCheckoutManaTimer -= uiDiff;
+                }
                 break;
         }
     }

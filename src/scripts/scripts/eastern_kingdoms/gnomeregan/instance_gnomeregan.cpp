@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Instance_Gnomeregan
-SD%Complete: 90%
-SDComment:  Support for Grubbis and Thermaplugg Encounters
-SDCategory: Gnomeregan
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Instance_Gnomeregan
+ * SD%Complete: 90
+ * SDComment:   Support for Grubbis and Thermaplugg Encounters
+ * SDCategory:  Gnomeregan
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "gnomeregan.h"
@@ -52,7 +54,9 @@ void instance_gnomeregan::Initialize()
 void instance_gnomeregan::OnCreatureCreate(Creature* pCreature)
 {
     if (pCreature->GetEntry() == NPC_BLASTMASTER_SHORTFUSE)
-    { m_mNpcEntryGuidStore[NPC_BLASTMASTER_SHORTFUSE] = pCreature->GetObjectGuid(); }
+    {
+        m_mNpcEntryGuidStore[NPC_BLASTMASTER_SHORTFUSE] = pCreature->GetObjectGuid();
+    }
 }
 
 void instance_gnomeregan::OnObjectCreate(GameObject* pGo)
@@ -65,15 +69,31 @@ void instance_gnomeregan::OnObjectCreate(GameObject* pGo)
             m_mGoEntryGuidStore[pGo->GetEntry()] = pGo->GetObjectGuid();
             break;
 
-        case GO_RED_ROCKET:         m_lRedRocketGUIDs.push_back(pGo->GetObjectGuid());         return;
-        case GO_EXPLOSIVE_CHARGE:   m_luiExplosiveChargeGUIDs.push_back(pGo->GetObjectGuid()); return;
+        case GO_RED_ROCKET:
+            m_lRedRocketGUIDs.push_back(pGo->GetObjectGuid());
+            return;
+        case GO_EXPLOSIVE_CHARGE:
+            m_luiExplosiveChargeGUIDs.push_back(pGo->GetObjectGuid());
+            return;
 
-        case GO_GNOME_FACE_1: m_asBombFaces[0].m_gnomeFaceGuid = pGo->GetObjectGuid(); return;
-        case GO_GNOME_FACE_2: m_asBombFaces[1].m_gnomeFaceGuid = pGo->GetObjectGuid(); return;
-        case GO_GNOME_FACE_3: m_asBombFaces[2].m_gnomeFaceGuid = pGo->GetObjectGuid(); return;
-        case GO_GNOME_FACE_4: m_asBombFaces[3].m_gnomeFaceGuid = pGo->GetObjectGuid(); return;
-        case GO_GNOME_FACE_5: m_asBombFaces[4].m_gnomeFaceGuid = pGo->GetObjectGuid(); return;
-        case GO_GNOME_FACE_6: m_asBombFaces[5].m_gnomeFaceGuid = pGo->GetObjectGuid(); return;
+        case GO_GNOME_FACE_1:
+            m_asBombFaces[0].m_gnomeFaceGuid = pGo->GetObjectGuid();
+            return;
+        case GO_GNOME_FACE_2:
+            m_asBombFaces[1].m_gnomeFaceGuid = pGo->GetObjectGuid();
+            return;
+        case GO_GNOME_FACE_3:
+            m_asBombFaces[2].m_gnomeFaceGuid = pGo->GetObjectGuid();
+            return;
+        case GO_GNOME_FACE_4:
+            m_asBombFaces[3].m_gnomeFaceGuid = pGo->GetObjectGuid();
+            return;
+        case GO_GNOME_FACE_5:
+            m_asBombFaces[4].m_gnomeFaceGuid = pGo->GetObjectGuid();
+            return;
+        case GO_GNOME_FACE_6:
+            m_asBombFaces[5].m_gnomeFaceGuid = pGo->GetObjectGuid();
+            return;
     }
 }
 
@@ -97,7 +117,9 @@ void instance_gnomeregan::SetData(uint32 uiType, uint32 uiData)
                     for (GuidList::const_iterator itr = m_luiExplosiveChargeGUIDs.begin(); itr != m_luiExplosiveChargeGUIDs.end(); ++itr)
                     {
                         if (GameObject* pCharge = instance->GetGameObject(*itr))
-                        { lExplosiveCharges.push_back(pCharge); }
+                        {
+                            lExplosiveCharges.push_back(pCharge);
+                        }
                     }
                     m_luiExplosiveChargeGUIDs.clear();
 
@@ -135,7 +157,9 @@ void instance_gnomeregan::SetData(uint32 uiType, uint32 uiData)
             if (uiData == DONE)
             {
                 for (GuidList::const_iterator itr = m_lRedRocketGUIDs.begin(); itr != m_lRedRocketGUIDs.end(); ++itr)
-                { DoRespawnGameObject(*itr, HOUR); }
+                {
+                    DoRespawnGameObject(*itr, HOUR);
+                }
             }
             break;
         case TYPE_EXPLOSIVE_CHARGE:
@@ -160,11 +184,15 @@ void instance_gnomeregan::SetData(uint32 uiType, uint32 uiData)
                 case DATA_EXPLOSIVE_CHARGE_USE:
                     Creature* pBlastmaster = GetSingleCreatureFromStorage(NPC_BLASTMASTER_SHORTFUSE);
                     if (!pBlastmaster)
-                    { break; }
+                    {
+                        break;
+                    }
                     for (GuidList::const_iterator itr = m_luiSpawnedExplosiveChargeGUIDs.begin(); itr != m_luiSpawnedExplosiveChargeGUIDs.end(); ++itr)
                     {
                         if (GameObject* pExplosive = instance->GetGameObject(*itr))
-                        { pExplosive->Use(pBlastmaster); }
+                        {
+                            pExplosive->Use(pBlastmaster);
+                        }
                     }
                     m_luiSpawnedExplosiveChargeGUIDs.clear();
                     break;
@@ -179,7 +207,9 @@ void instance_gnomeregan::SetData(uint32 uiType, uint32 uiData)
                 {
                     pDoor->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_LOCKED);
                     if (pDoor->getLootState() == GO_ACTIVATED)
-                    { pDoor->ResetDoorOrButton(); }
+                    {
+                        pDoor->ResetDoorOrButton();
+                    }
                 }
 
                 // Always directly activates this bomb-face
@@ -192,12 +222,16 @@ void instance_gnomeregan::SetData(uint32 uiType, uint32 uiData)
                 {
                     pDoor->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_LOCKED);
                     if (pDoor->getLootState() == GO_READY)
-                    { pDoor->UseDoorOrButton(); }
+                    {
+                        pDoor->UseDoorOrButton();
+                    }
                 }
 
                 // Deactivate all remaining BombFaces
                 for (uint8 i = 0; i < MAX_GNOME_FACES; ++i)
-                { DoDeactivateBombFace(i); }
+                {
+                    DoDeactivateBombFace(i);
+                }
             }
             break;
     }
@@ -232,7 +266,9 @@ void instance_gnomeregan::Load(const char* chrIn)
     for (uint8 i = 0; i < MAX_ENCOUNTER; ++i)
     {
         if (m_auiEncounter[i] == IN_PROGRESS)
-        { m_auiEncounter[i] = NOT_STARTED; }
+        {
+            m_auiEncounter[i] = NOT_STARTED;
+        }
     }
 
     OUT_LOAD_INST_DATA_COMPLETE;
@@ -242,8 +278,10 @@ uint32 instance_gnomeregan::GetData(uint32 uiType) const
 {
     switch (uiType)
     {
-        case TYPE_GRUBBIS:      return m_auiEncounter[0];
-        case TYPE_THERMAPLUGG:  return m_auiEncounter[1];
+        case TYPE_GRUBBIS:
+            return m_auiEncounter[0];
+        case TYPE_THERMAPLUGG:
+            return m_auiEncounter[1];
         default:
             return 0;
     }
@@ -257,7 +295,9 @@ sBombFace* instance_gnomeregan::GetBombFaces()
 void instance_gnomeregan::DoActivateBombFace(uint8 uiIndex)
 {
     if (uiIndex >= MAX_GNOME_FACES)
-    { return; }
+    {
+        return;
+    }
 
     if (!m_asBombFaces[uiIndex].m_bActivated)
     {
@@ -270,7 +310,9 @@ void instance_gnomeregan::DoActivateBombFace(uint8 uiIndex)
 void instance_gnomeregan::DoDeactivateBombFace(uint8 uiIndex)
 {
     if (uiIndex >= MAX_GNOME_FACES)
-    { return; }
+    {
+        return;
+    }
 
     if (m_asBombFaces[uiIndex].m_bActivated)
     {

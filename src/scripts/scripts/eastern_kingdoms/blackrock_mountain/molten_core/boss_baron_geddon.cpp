@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Baron_Geddon
-SD%Complete: 100
-SDComment: Armaggedon is not working properly (core issue)
-SDCategory: Molten Core
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Baron_Geddon
+ * SD%Complete: 90
+ * SDComment:   Armaggedon is not working properly (core issue)
+ * SDCategory:  Molten Core
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "molten_core.h"
@@ -69,28 +71,38 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_GEDDON, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_GEDDON, IN_PROGRESS);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_GEDDON, DONE); }
+        {
+            m_pInstance->SetData(TYPE_GEDDON, DONE);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_GEDDON, NOT_STARTED); }
+        {
+            m_pInstance->SetData(TYPE_GEDDON, NOT_STARTED);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_bIsArmageddon)                                // Do nothing untill armageddon triggers
-        { return; }
+        {
+            return;
+        }
 
         // If we are <2% hp cast Armageddom
         if (m_creature->GetHealthPercent() <= 2.0f && !m_bIsArmageddon)
@@ -107,19 +119,23 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
         if (m_uiInfernoTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_INFERNO) == CAST_OK)
-            { m_uiInfernoTimer = 45000; }
+            {
+                m_uiInfernoTimer = 45000;
+            }
         }
         else
-        { m_uiInfernoTimer -= uiDiff; }
+            { m_uiInfernoTimer -= uiDiff; }
 
         // Ignite Mana Timer
         if (m_uiIgniteManaTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_IGNITE_MANA) == CAST_OK)
-            { m_uiIgniteManaTimer = 30000; }
+            {
+                m_uiIgniteManaTimer = 30000;
+            }
         }
         else
-        { m_uiIgniteManaTimer -= uiDiff; }
+            { m_uiIgniteManaTimer -= uiDiff; }
 
         // Living Bomb Timer
         if (m_uiLivingBombTimer < uiDiff)
@@ -127,11 +143,13 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_LIVING_BOMB) == CAST_OK)
-                { m_uiLivingBombTimer = 35000; }
+                {
+                    m_uiLivingBombTimer = 35000;
+                }
             }
         }
         else
-        { m_uiLivingBombTimer -= uiDiff; }
+            { m_uiLivingBombTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

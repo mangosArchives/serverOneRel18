@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Instance_Scarlet_Monastery
-SD%Complete: 50
-SDComment:
-SDCategory: Scarlet Monastery
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Instance_Scarlet_Monastery
+ * SD%Complete: 50
+ * SDComment:   None
+ * SDCategory:  Scarlet Monastery
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "scarlet_monastery.h"
@@ -61,14 +63,18 @@ void instance_scarlet_monastery::OnCreatureDeath(Creature* pCreature)
     {
         // Any other actions to do with Vorrel? setStandState?
         if (Creature* pVorrel = GetSingleCreatureFromStorage(NPC_VORREL))
-        { DoScriptText(SAY_TRIGGER_VORREL, pVorrel); }
+        {
+            DoScriptText(SAY_TRIGGER_VORREL, pVorrel);
+        }
     }
 }
 
 void instance_scarlet_monastery::OnObjectCreate(GameObject* pGo)
 {
     if (pGo->GetEntry() == GO_WHITEMANE_DOOR)
-    { m_mGoEntryGuidStore[GO_WHITEMANE_DOOR] = pGo->GetObjectGuid(); }
+    {
+        m_mGoEntryGuidStore[GO_WHITEMANE_DOOR] = pGo->GetObjectGuid();
+    }
 }
 
 void instance_scarlet_monastery::SetData(uint32 uiType, uint32 uiData)
@@ -76,9 +82,13 @@ void instance_scarlet_monastery::SetData(uint32 uiType, uint32 uiData)
     if (uiType == TYPE_MOGRAINE_AND_WHITE_EVENT)
     {
         if (uiData == IN_PROGRESS)
-        { DoUseDoorOrButton(GO_WHITEMANE_DOOR); }
+        {
+            DoUseDoorOrButton(GO_WHITEMANE_DOOR);
+        }
         if (uiData == FAIL)
-        { DoUseDoorOrButton(GO_WHITEMANE_DOOR); }
+        {
+            DoUseDoorOrButton(GO_WHITEMANE_DOOR);
+        }
 
         m_auiEncounter[0] = uiData;
     }
@@ -87,7 +97,9 @@ void instance_scarlet_monastery::SetData(uint32 uiType, uint32 uiData)
 uint32 instance_scarlet_monastery::GetData(uint32 uiData) const
 {
     if (uiData == TYPE_MOGRAINE_AND_WHITE_EVENT)
-    { return m_auiEncounter[0]; }
+    {
+        return m_auiEncounter[0];
+    }
 
     return 0;
 }

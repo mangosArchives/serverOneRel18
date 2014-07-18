@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Overlord_Wyrmthalak
-SD%Complete: 100
-SDComment:
-SDCategory: Blackrock Spire
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Overlord_Wyrmthalak
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Blackrock Spire
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -71,7 +73,9 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() != NPC_SPIRESTONE_WARLORD && pSummoned->GetEntry() != NPC_SMOLDERTHORN_BERSERKER)
-        { return; }
+        {
+            return;
+        }
 
         if (m_creature->getVictim())
         {
@@ -84,7 +88,9 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
     {
         // Return since we have no target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // BlastWave
         if (m_uiBlastWaveTimer < uiDiff)
@@ -93,7 +99,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiBlastWaveTimer = 20000;
         }
         else
-        { m_uiBlastWaveTimer -= uiDiff; }
+            { m_uiBlastWaveTimer -= uiDiff; }
 
         // Shout
         if (m_uiShoutTimer < uiDiff)
@@ -102,7 +108,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiShoutTimer = 10000;
         }
         else
-        { m_uiShoutTimer -= uiDiff; }
+            { m_uiShoutTimer -= uiDiff; }
 
         // Cleave
         if (m_uiCleaveTimer < uiDiff)
@@ -111,7 +117,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiCleaveTimer = 7000;
         }
         else
-        { m_uiCleaveTimer -= uiDiff; }
+            { m_uiCleaveTimer -= uiDiff; }
 
         // Knockaway
         if (m_uiKnockawayTimer < uiDiff)
@@ -120,7 +126,7 @@ struct MANGOS_DLL_DECL boss_overlordwyrmthalakAI : public ScriptedAI
             m_uiKnockawayTimer = 14000;
         }
         else
-        { m_uiKnockawayTimer -= uiDiff; }
+            { m_uiKnockawayTimer -= uiDiff; }
 
         // Summon two Beserks
         if (!m_bSummoned && m_creature->GetHealthPercent() < 51.0f)

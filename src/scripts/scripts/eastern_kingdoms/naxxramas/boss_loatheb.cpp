@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Loatheb
-SD%Complete: 100
-SDComment:
-SDCategory: Naxxramas
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Loatheb
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Naxxramas
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "naxxramas.h"
@@ -81,34 +83,46 @@ struct MANGOS_DLL_DECL boss_loathebAI : public ScriptedAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LOATHEB, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_LOATHEB, IN_PROGRESS);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LOATHEB, DONE); }
+        {
+            m_pInstance->SetData(TYPE_LOATHEB, DONE);
+        }
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_LOATHEB, NOT_STARTED); }
+        {
+            m_pInstance->SetData(TYPE_LOATHEB, NOT_STARTED);
+        }
     }
 
     void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() != NPC_SPORE)
-        { return; }
+        {
+            return;
+        }
 
         if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-        { pSummoned->AddThreat(pTarget); }
+        {
+            pSummoned->AddThreat(pTarget);
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         /* Berserk - not used
         if (m_uiBerserkTimer < uiDiff)
@@ -123,10 +137,12 @@ struct MANGOS_DLL_DECL boss_loathebAI : public ScriptedAI
         if (m_uiInevitableDoomTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_INEVITABLE_DOOM) == CAST_OK)
-            { m_uiInevitableDoomTimer = (m_uiCorruptedMindCount <= 5) ? 30000 : 15000; }
+            {
+                m_uiInevitableDoomTimer = (m_uiCorruptedMindCount <= 5) ? 30000 : 15000;
+            }
         }
         else
-        { m_uiInevitableDoomTimer -= uiDiff; }
+            { m_uiInevitableDoomTimer -= uiDiff; }
 
         // Corrupted Mind
         if (m_uiCorruptedMindTimer < uiDiff)
@@ -138,34 +154,40 @@ struct MANGOS_DLL_DECL boss_loathebAI : public ScriptedAI
             }
         }
         else
-        { m_uiCorruptedMindTimer -= uiDiff; }
+            { m_uiCorruptedMindTimer -= uiDiff; }
 
         // Summon
         if (m_uiSummonTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_SUMMON_SPORE) == CAST_OK)
-            { m_uiSummonTimer = 13000; }
+            {
+                m_uiSummonTimer = 13000;
+            }
         }
         else
-        { m_uiSummonTimer -= uiDiff; }
+            { m_uiSummonTimer -= uiDiff; }
 
         // Poison Aura
         if (m_uiPoisonAuraTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_POISON_AURA) == CAST_OK)
-            { m_uiPoisonAuraTimer = 12000; }
+            {
+                m_uiPoisonAuraTimer = 12000;
+            }
         }
         else
-        { m_uiPoisonAuraTimer -= uiDiff; }
+            { m_uiPoisonAuraTimer -= uiDiff; }
 
         // Remove Curse
         if (m_uiRemoveCurseTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_REMOVE_CURSE) == CAST_OK)
-            { m_uiRemoveCurseTimer = 30000; }
+            {
+                m_uiRemoveCurseTimer = 30000;
+            }
         }
         else
-        { m_uiRemoveCurseTimer -= uiDiff; }
+            { m_uiRemoveCurseTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

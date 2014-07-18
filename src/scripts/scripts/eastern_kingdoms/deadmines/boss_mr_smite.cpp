@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Mr_Smite
-SD%Complete: 100
-SDComment:
-SDCategory: Deadmines
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Mr_Smite
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Deadmines
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "deadmines.h"
@@ -80,10 +82,14 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
     void AttackedBy(Unit* pAttacker) override
     {
         if (m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiPhase > PHASE_3)
-        { return; }
+        {
+            return;
+        }
 
         AttackStart(pAttacker);
     }
@@ -91,7 +97,9 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
     void AttackStart(Unit* pWho) override
     {
         if (m_uiPhase > PHASE_3)
-        { return; }
+        {
+            return;
+        }
 
         if (m_creature->Attack(pWho, true))
         {
@@ -106,7 +114,9 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
     void MovementInform(uint32 uiMotionType, uint32 /*uiPointId*/) override
     {
         if (uiMotionType != POINT_MOTION_TYPE)
-        { return; }
+        {
+            return;
+        }
 
         m_creature->SetSheath(SHEATH_STATE_UNARMED);
         m_creature->SetStandState(UNIT_STAND_STATE_KNEEL);
@@ -120,12 +130,16 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
         ScriptedInstance* pInstance = (ScriptedInstance*)m_creature->GetInstanceData();
 
         if (!pInstance)
-        { return; }
+        {
+            return;
+        }
 
         GameObject* pChest = pInstance->GetSingleGameObjectFromStorage(GO_SMITE_CHEST);
 
         if (!pChest)
-        { return; }
+        {
+            return;
+        }
 
         m_uiPhase = PHASE_EQUIP_NULL;
 
@@ -146,7 +160,9 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
             DoCastSpellIfCan(m_creature, SPELL_SMITE_HAMMER);
         }
         else
-        { SetEquipmentSlots(false, EQUIP_ID_AXE, EQUIP_ID_AXE); }
+        {
+            SetEquipmentSlots(false, EQUIP_ID_AXE, EQUIP_ID_AXE);
+        }
 
         m_creature->SetStandState(UNIT_STAND_STATE_STAND);
         m_uiPhase = PHASE_EQUIP_END;
@@ -169,7 +185,9 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
         m_uiPhase = m_creature->GetHealthPercent() < 33.0f ? PHASE_3 : PHASE_2;
 
         if (m_uiPhase == PHASE_2)
-        { DoCastSpellIfCan(m_creature, SPELL_THRASH, CAST_TRIGGERED); }
+        {
+            DoCastSpellIfCan(m_creature, SPELL_THRASH, CAST_TRIGGERED);
+        }
 
         AttackStart(pVictim);
     }
@@ -187,7 +205,9 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
                     return;
                 }
                 else
-                { m_uiEquipTimer = 0; }
+                {
+                    m_uiEquipTimer = 0;
+                }
             }
 
             switch (m_uiPhase)
@@ -250,10 +270,14 @@ struct MANGOS_DLL_DECL boss_mr_smiteAI : public ScriptedAI
                 if (m_uiSlamTimer < uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_SMITE_SLAM) == CAST_OK)
-                    { m_uiSlamTimer = 11000; }
+                    {
+                        m_uiSlamTimer = 11000;
+                    }
                 }
                 else
-                { m_uiSlamTimer -= uiDiff; }
+                {
+                    m_uiSlamTimer -= uiDiff;
+                }
 
                 break;
             }

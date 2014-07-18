@@ -25,4 +25,4 @@
 #ifndef MANGOS_H_REVISION_NR
 #define MANGOS_H_REVISION_NR
 #define REVISION_NR "2061"
-#endif // MANGOS_H_REVISION_NR
+#endif // __REVISION_NR_H__

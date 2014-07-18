@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Kurinnaxx
-SD%Complete: 90
-SDComment: Summon Player ability NYI
-SDCategory: Ruins of Ahn'Qiraj
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Kurinnaxx
+ * SD%Complete: 90
+ * SDComment:   Summon Player ability NYI
+ * SDCategory:  Ruins of Ahn'Qiraj
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -80,36 +82,44 @@ struct MANGOS_DLL_DECL boss_kurinnaxxAI : public ScriptedAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // If we are belowe 30% HP cast enrage
         if (!m_bEnraged && m_creature->GetHealthPercent() <= 30.0f)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_ENRAGE) == CAST_OK)
-            { m_bEnraged = true; }
+            {
+                m_bEnraged = true;
+            }
         }
 
         // Mortal Wound
         if (m_uiMortalWoundTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_MORTAL_WOUND) == CAST_OK)
-            { m_uiMortalWoundTimer = urand(8000, 10000); }
+            {
+                m_uiMortalWoundTimer = urand(8000, 10000);
+            }
         }
         else
-        { m_uiMortalWoundTimer -= uiDiff; }
+            { m_uiMortalWoundTimer -= uiDiff; }
 
         // Sand Trap
         if (m_uiSandTrapTimer < uiDiff)
         {
             Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1);
             if (!pTarget)
-            { pTarget = m_creature->getVictim(); }
+            {
+                pTarget = m_creature->getVictim();
+            }
 
             pTarget->CastSpell(pTarget, SPELL_SANDTRAP, true, NULL, NULL, m_creature->GetObjectGuid());
             m_uiSandTrapTimer = urand(10000, 15000);
         }
         else
-        { m_uiSandTrapTimer -= uiDiff; }
+            { m_uiSandTrapTimer -= uiDiff; }
 
         // Trigger the sand trap in 3 secs after spawn
         if (m_uiTrapTriggerTimer)
@@ -117,30 +127,38 @@ struct MANGOS_DLL_DECL boss_kurinnaxxAI : public ScriptedAI
             if (m_uiTrapTriggerTimer <= uiDiff)
             {
                 if (GameObject* pTrap = m_creature->GetMap()->GetGameObject(m_sandtrapGuid))
-                { pTrap->Use(m_creature); }
+                {
+                    pTrap->Use(m_creature);
+                }
                 m_uiTrapTriggerTimer = 0;
             }
             else
-            { m_uiTrapTriggerTimer -= uiDiff; }
+            {
+                m_uiTrapTriggerTimer -= uiDiff;
+            }
         }
 
         // Wide Slash
         if (m_uiWideSlashTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_WIDE_SLASH) == CAST_OK)
-            { m_uiWideSlashTimer = urand(12000, 15000); }
+            {
+                m_uiWideSlashTimer = urand(12000, 15000);
+            }
         }
         else
-        { m_uiWideSlashTimer -= uiDiff; }
+            { m_uiWideSlashTimer -= uiDiff; }
 
         // Trash
         if (m_uiTrashTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_TRASH) == CAST_OK)
-            { m_uiTrashTimer = urand(12000, 17000); }
+            {
+                m_uiTrashTimer = urand(12000, 17000);
+            }
         }
         else
-        { m_uiTrashTimer -= uiDiff; }
+            { m_uiTrashTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

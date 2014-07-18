@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Dathrohan_Balnazzar
-SD%Complete: 95
-SDComment: Possibly need to fix/improve summons after death
-SDCategory: Stratholme
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Dathrohan_Balnazzar
+ * SD%Complete: 95
+ * SDComment:   Possibly need to fix/improve summons after death
+ * SDCategory:  Stratholme
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -109,7 +111,9 @@ struct MANGOS_DLL_DECL boss_dathrohan_balnazzarAI : public ScriptedAI
         m_bTransformed = false;
 
         if (m_creature->GetEntry() == NPC_BALNAZZAR)
-        { m_creature->UpdateEntry(NPC_DATHROHAN); }
+        {
+            m_creature->UpdateEntry(NPC_DATHROHAN);
+        }
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -123,14 +127,16 @@ struct MANGOS_DLL_DECL boss_dathrohan_balnazzarAI : public ScriptedAI
 
         for (uint32 i = 0; i < countof(m_aSummonPoint); ++i)
             m_creature->SummonCreature(m_aSummonPoint[i].m_uiEntry,
-                                       m_aSummonPoint[i].m_fX, m_aSummonPoint[i].m_fY, m_aSummonPoint[i].m_fZ, m_aSummonPoint[i].m_fOrient,
-                                       TEMPSUMMON_TIMED_DESPAWN, HOUR * IN_MILLISECONDS);
+            m_aSummonPoint[i].m_fX, m_aSummonPoint[i].m_fY, m_aSummonPoint[i].m_fZ, m_aSummonPoint[i].m_fOrient,
+            TEMPSUMMON_TIMED_DESPAWN, HOUR * IN_MILLISECONDS);
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // START NOT TRANSFORMED
         if (!m_bTransformed)
@@ -201,7 +207,9 @@ struct MANGOS_DLL_DECL boss_dathrohan_balnazzarAI : public ScriptedAI
             if (m_uiPsychicScream_Timer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                { DoCastSpellIfCan(pTarget, SPELL_PSYCHICSCREAM); }
+                {
+                    DoCastSpellIfCan(pTarget, SPELL_PSYCHICSCREAM);
+                }
 
                 m_uiPsychicScream_Timer = 20000;
             }
@@ -211,7 +219,9 @@ struct MANGOS_DLL_DECL boss_dathrohan_balnazzarAI : public ScriptedAI
             if (m_uiDeepSleep_Timer < uiDiff)
             {
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                { DoCastSpellIfCan(pTarget, SPELL_SLEEP); }
+                {
+                    DoCastSpellIfCan(pTarget, SPELL_SLEEP);
+                }
 
                 m_uiDeepSleep_Timer = 15000;
             }

@@ -28,14 +28,16 @@
 
 enum
 {
-    MAX_ENCOUNTER               = 2,
+    MAX_ENCOUNTER               = 3,
     MAX_FIRES                   = 4,
     MAX_COUNT_POS               = 3,
 
     TYPE_KELRIS                 = 1,
     TYPE_SHRINE                 = 2,
+    TYPE_STONE                  = 3,
 
     NPC_KELRIS                  = 4832,
+    NPC_BARON_AQUANIS           = 12876,
 
     // Shrine event
     NPC_AKUMAI_SERVANT          = 4978,

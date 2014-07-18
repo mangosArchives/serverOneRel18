@@ -23,16 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Ruins of Ahn'Qiraj
-SD%Complete: 40
-SDComment:
-SDCategory: Ruins of Ahn'Qiraj
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Ruins of Ahn'Qiraj
+ * SD%Complete: 40
+ * SDComment:   None
+ * SDCategory:  Ruins of Ahn'Qiraj
+ * EndScriptData
+ */
 
-/* ContentData
-mob_anubisath_guardian
-EndContentData */
+/**
+ * ContentData
+ * mob_anubisath_guardian
+ * EndContentData
+ */
 
 #include "precompiled.h"
 
@@ -121,14 +125,18 @@ struct MANGOS_DLL_DECL mob_anubisath_guardianAI : public ScriptedAI
                 m_bIsEnraged = true;
             }
             else
-            { DoCastSpellIfCan(m_creature->getVictim(), m_uiSpell4); }
+            {
+                DoCastSpellIfCan(m_creature->getVictim(), m_uiSpell4);
+            }
         }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // Meteor or Plague
         if (m_uiSpell1Timer < uiDiff)
@@ -137,7 +145,7 @@ struct MANGOS_DLL_DECL mob_anubisath_guardianAI : public ScriptedAI
             m_uiSpell1Timer = 15000;
         }
         else
-        { m_uiSpell1Timer -= uiDiff; }
+            { m_uiSpell1Timer -= uiDiff; }
 
         // Shadow Storm or Thunder Clap
         if (m_uiSpell2Timer < uiDiff)
@@ -146,19 +154,21 @@ struct MANGOS_DLL_DECL mob_anubisath_guardianAI : public ScriptedAI
             m_uiSpell2Timer = 15000;
         }
         else
-        { m_uiSpell2Timer -= uiDiff; }
+            { m_uiSpell2Timer -= uiDiff; }
 
         // summon Anubisath Swarmguard or Anubisath Warrior
         if (m_uiSpell5Timer < uiDiff)
         {
             // change for summon spell
             if (m_uiSummonCount < 4)
-            { DoCastSpellIfCan(m_creature->getVictim(), m_uiSpell5); }
+            {
+                DoCastSpellIfCan(m_creature->getVictim(), m_uiSpell5);
+            }
 
             m_uiSpell5Timer = 15000;
         }
         else
-        { m_uiSpell5Timer -= uiDiff; }
+            { m_uiSpell5Timer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Baroness_Anastari
-SD%Complete: 100
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Baroness_Anastari
+ * SD%Complete: 100
+ * SDComment:   None
+ * SDCategory:  Stratholme
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 
@@ -67,7 +69,9 @@ struct MANGOS_DLL_DECL boss_baroness_anastariAI : public ScriptedAI
     {
         // If it's invisible don't evade
         if (m_uiPossessEndTimer)
-        { return; }
+        {
+            return;
+        }
 
         ScriptedAI::EnterEvadeMode();
     }
@@ -108,11 +112,15 @@ struct MANGOS_DLL_DECL boss_baroness_anastariAI : public ScriptedAI
                 m_uiPossessEndTimer = 1000;
             }
             else
-            { m_uiPossessEndTimer -= uiDiff; }
+            {
+                m_uiPossessEndTimer -= uiDiff;
+            }
         }
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         // BansheeWail
         if (m_uiBansheeWailTimer < uiDiff)
@@ -120,20 +128,24 @@ struct MANGOS_DLL_DECL boss_baroness_anastariAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_BANSHEE_WAIL) == CAST_OK)
-                { m_uiBansheeWailTimer = urand(2000, 3000); }
+                {
+                    m_uiBansheeWailTimer = urand(2000, 3000);
+                }
             }
         }
         else
-        { m_uiBansheeWailTimer -= uiDiff; }
+            { m_uiBansheeWailTimer -= uiDiff; }
 
         // BansheeCurse
         if (m_uiBansheeCurseTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_BANSHEE_CURSE) == CAST_OK)
-            { m_uiBansheeCurseTimer = 20000; }
+            {
+                m_uiBansheeCurseTimer = 20000;
+            }
         }
         else
-        { m_uiBansheeCurseTimer -= uiDiff; }
+            { m_uiBansheeCurseTimer -= uiDiff; }
 
         // Silence
         if (m_uiSilenceTimer < uiDiff)
@@ -141,11 +153,13 @@ struct MANGOS_DLL_DECL boss_baroness_anastariAI : public ScriptedAI
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
             {
                 if (DoCastSpellIfCan(pTarget, SPELL_SILENCE) == CAST_OK)
-                { m_uiSilenceTimer = 25000; }
+                {
+                    m_uiSilenceTimer = 25000;
+                }
             }
         }
         else
-        { m_uiSilenceTimer -= uiDiff; }
+            { m_uiSilenceTimer -= uiDiff; }
 
         // Possess
         if (m_uiPossessTimer < uiDiff)
@@ -164,7 +178,7 @@ struct MANGOS_DLL_DECL boss_baroness_anastariAI : public ScriptedAI
             }
         }
         else
-        { m_uiPossessTimer -= uiDiff; }
+            { m_uiPossessTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }

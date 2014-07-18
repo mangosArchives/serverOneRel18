@@ -23,12 +23,14 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_Cthun
-SD%Complete: 95
-SDComment: Transform spell has some minor core issues. Eject from stomach event contains workarounds because of the missing spells. Digestive Acid should be handled in core.
-SDCategory: Temple of Ahn'Qiraj
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_Cthun
+ * SD%Complete: 95
+ * SDComment:   Transform spell has some minor core issues. Eject from stomach event contains workarounds because of the missing spells. Digestive Acid should be handled in core.
+ * SDCategory:  Temple of Ahn'Qiraj
+ * EndScriptData
+ */
 
 #include "precompiled.h"
 #include "temple_of_ahnqiraj.h"
@@ -142,7 +144,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_CTHUN, IN_PROGRESS); }
+        {
+            m_pInstance->SetData(TYPE_CTHUN, IN_PROGRESS);
+        }
     }
 
     void JustDied(Unit* pKiller) override
@@ -151,9 +155,13 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
         if (m_pInstance)
         {
             if (Creature* pCthun = m_pInstance->GetSingleCreatureFromStorage(NPC_CTHUN))
-            { pCthun->AI()->AttackStart(pKiller); }
+            {
+                pCthun->AI()->AttackStart(pKiller);
+            }
             else
-            { script_error_log("C'thun could not be found. Please check your database!"); }
+            {
+                script_error_log("C'thun could not be found. Please check your database!");
+            }
         }
     }
 
@@ -163,7 +171,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
         DoDespawnEyeTentacles();
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_CTHUN, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_CTHUN, FAIL);
+        }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -175,7 +185,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
                 // no break;
             case NPC_CLAW_TENTACLE:
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                { pSummoned->AI()->AttackStart(pTarget); }
+                {
+                    pSummoned->AI()->AttackStart(pTarget);
+                }
 
                 pSummoned->SummonCreature(NPC_TENTACLE_PORTAL, pSummoned->GetPositionX(), pSummoned->GetPositionY(), pSummoned->GetPositionZ(), 0, TEMPSUMMON_CORPSE_DESPAWN, 0);
                 break;
@@ -186,18 +198,24 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
     {
         // Despawn the tentacle portal - this applies to all the summoned tentacles
         if (Creature* pPortal = GetClosestCreatureWithEntry(pSummoned, NPC_TENTACLE_PORTAL, 5.0f))
-        { pPortal->ForcedDespawn(); }
+        {
+            pPortal->ForcedDespawn();
+        }
     }
 
     void SummonedCreatureDespawn(Creature* pSummoned) override
     {
         // Used only after evade
         if (SelectHostileTarget())
-        { return; }
+        {
+            return;
+        }
 
         // Despawn the tentacle portal - this applies to all the summoned tentacles for evade case (which is handled by creature linking)
         if (Creature* pPortal = GetClosestCreatureWithEntry(pSummoned, NPC_TENTACLE_PORTAL, 5.0f))
-        { pPortal->ForcedDespawn(); }
+        {
+            pPortal->ForcedDespawn();
+        }
     }
 
     // Wrapper to kill the eye tentacles before summoning new ones
@@ -206,7 +224,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
         for (GuidList::const_iterator itr = m_lEyeTentaclesList.begin(); itr != m_lEyeTentaclesList.end(); ++itr)
         {
             if (Creature* pTemp = m_creature->GetMap()->GetCreature(*itr))
-            { pTemp->DealDamage(pTemp, pTemp->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, NULL, false); }
+            {
+                pTemp->DealDamage(pTemp, pTemp->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, NULL, false);
+            }
         }
 
         m_lEyeTentaclesList.clear();
@@ -219,12 +239,16 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
         Unit* pOldTarget = m_creature->getVictim();
 
         if (!m_creature->GetThreatManager().isThreatListEmpty())
-        { pTarget = m_creature->GetThreatManager().getHostileTarget(); }
+        {
+            pTarget = m_creature->GetThreatManager().getHostileTarget();
+        }
 
         if (pTarget)
         {
             if (pOldTarget != pTarget && m_Phase == PHASE_EYE_NORMAL)
-            { AttackStart(pTarget); }
+            {
+                AttackStart(pTarget);
+            }
 
             // Set victim to old target (if not while Dark Glare)
             if (pOldTarget && pOldTarget->IsAlive() && m_Phase == PHASE_EYE_NORMAL)
@@ -243,7 +267,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!SelectHostileTarget())
-        { return; }
+        {
+            return;
+        }
 
         switch (m_Phase)
         {
@@ -261,7 +287,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
                     }
                 }
                 else
-                { m_uiBeamTimer -= uiDiff; }
+                {
+                    m_uiBeamTimer -= uiDiff;
+                }
 
                 if (m_uiDarkGlareTimer < uiDiff)
                 {
@@ -278,7 +306,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
                     }
                 }
                 else
-                { m_uiDarkGlareTimer -= uiDiff; }
+                {
+                    m_uiDarkGlareTimer -= uiDiff;
+                }
 
                 break;
             case PHASE_EYE_DARK_GLARE:
@@ -295,7 +325,9 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
                     m_Phase               = PHASE_EYE_NORMAL;
                 }
                 else
-                { m_uiDarkGlareEndTimer -= uiDiff; }
+                {
+                    m_uiDarkGlareEndTimer -= uiDiff;
+                }
 
                 break;
         }
@@ -310,7 +342,7 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
             }
         }
         else
-        { m_uiClawTentacleTimer -= uiDiff; }
+            { m_uiClawTentacleTimer -= uiDiff; }
 
         if (m_uiEyeTentacleTimer <= uiDiff)
         {
@@ -328,7 +360,7 @@ struct MANGOS_DLL_DECL boss_eye_of_cthunAI : public Scripted_NoMovementAI
             m_uiEyeTentacleTimer = 45000;
         }
         else
-        { m_uiEyeTentacleTimer -= uiDiff; }
+            { m_uiEyeTentacleTimer -= uiDiff; }
     }
 };
 
@@ -394,17 +426,23 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
     {
         // Ignore damage reduction when vulnerable
         if (m_Phase == PHASE_CTHUN_WEAKENED)
-        { return; }
+        {
+            return;
+        }
 
         // Not weakened so reduce damage by 99% - workaround for missing spell 26156
         if (uiDamage / 99 > 0)
-        { uiDamage /= 99; }
+        {
+            uiDamage /= 99;
+        }
         else
-        { uiDamage = 1; }
+            { uiDamage = 1; }
 
         // Prevent death in non-weakened state
         if (uiDamage >= m_creature->GetHealth())
-        { uiDamage = 0; }
+        {
+            uiDamage = 0;
+        }
     }
 
     void EnterEvadeMode() override
@@ -423,7 +461,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
     void JustReachedHome() override
     {
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_CTHUN, FAIL); }
+        {
+            m_pInstance->SetData(TYPE_CTHUN, FAIL);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
@@ -431,7 +471,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
         m_creature->SetActiveObjectState(false);
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_CTHUN, DONE); }
+        {
+            m_pInstance->SetData(TYPE_CTHUN, DONE);
+        }
     }
 
     void JustSummoned(Creature* pSummoned) override
@@ -440,7 +482,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
         {
             case NPC_EYE_TENTACLE:
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                { pSummoned->AI()->AttackStart(pTarget); }
+                {
+                    pSummoned->AI()->AttackStart(pTarget);
+                }
 
                 m_lEyeTentaclesList.push_back(pSummoned->GetObjectGuid());
                 pSummoned->SummonCreature(NPC_TENTACLE_PORTAL, pSummoned->GetPositionX(), pSummoned->GetPositionY(), pSummoned->GetPositionZ(), 0, TEMPSUMMON_CORPSE_DESPAWN, 0);
@@ -448,7 +492,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
             case NPC_GIANT_EYE_TENTACLE:
             case NPC_GIANT_CLAW_TENTACLE:
                 if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0))
-                { pSummoned->AI()->AttackStart(pTarget); }
+                {
+                    pSummoned->AI()->AttackStart(pTarget);
+                }
 
                 pSummoned->SummonCreature(NPC_GIANT_TENTACLE_PORTAL, pSummoned->GetPositionX(), pSummoned->GetPositionY(), pSummoned->GetPositionZ(), 0, TEMPSUMMON_CORPSE_DESPAWN, 0);
                 break;
@@ -462,12 +508,16 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
                 // Handle portal despawn on tentacle kill
             case NPC_EYE_TENTACLE:
                 if (Creature* pPortal = GetClosestCreatureWithEntry(pSummoned, NPC_TENTACLE_PORTAL, 5.0f))
-                { pPortal->ForcedDespawn(); }
+                {
+                    pPortal->ForcedDespawn();
+                }
                 break;
             case NPC_GIANT_EYE_TENTACLE:
             case NPC_GIANT_CLAW_TENTACLE:
                 if (Creature* pPortal = GetClosestCreatureWithEntry(pSummoned, NPC_GIANT_TENTACLE_PORTAL, 5.0f))
-                { pPortal->ForcedDespawn(); }
+                {
+                    pPortal->ForcedDespawn();
+                }
                 break;
                 // Handle the stomach tentacles kill
             case NPC_FLESH_TENTACLE:
@@ -492,7 +542,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
 
         // Spawn 2 flesh tentacles
         for (uint8 i = 0; i < MAX_FLESH_TENTACLES; ++i)
-        { m_creature->SummonCreature(NPC_FLESH_TENTACLE, afCthunLocations[i][0], afCthunLocations[i][1], afCthunLocations[i][2], afCthunLocations[i][3], TEMPSUMMON_DEAD_DESPAWN, 0); }
+        {
+            m_creature->SummonCreature(NPC_FLESH_TENTACLE, afCthunLocations[i][0], afCthunLocations[i][1], afCthunLocations[i][2], afCthunLocations[i][3], TEMPSUMMON_DEAD_DESPAWN, 0);
+        }
     }
 
     // Wrapper to kill the eye tentacles before summoning new ones
@@ -501,7 +553,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
         for (GuidList::const_iterator itr = m_lEyeTentaclesList.begin(); itr != m_lEyeTentaclesList.end(); ++itr)
         {
             if (Creature* pTemp = m_creature->GetMap()->GetCreature(*itr))
-            { pTemp->DealDamage(pTemp, pTemp->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, NULL, false); }
+            {
+                pTemp->DealDamage(pTemp, pTemp->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, NULL, false);
+            }
         }
 
         m_lEyeTentaclesList.clear();
@@ -511,7 +565,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
     void DoRemovePlayerFromStomach(Player* pPlayer)
     {
         if (pPlayer)
-        { m_lPlayersInStomachList.remove(pPlayer->GetObjectGuid()); }
+        {
+            m_lPlayersInStomachList.remove(pPlayer->GetObjectGuid());
+        }
     }
 
     // Custom threat management
@@ -521,12 +577,16 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
         Unit* pOldTarget = m_creature->getVictim();
 
         if (!m_creature->GetThreatManager().isThreatListEmpty())
-        { pTarget = m_creature->GetThreatManager().getHostileTarget(); }
+        {
+            pTarget = m_creature->GetThreatManager().getHostileTarget();
+        }
 
         if (pTarget)
         {
             if (pOldTarget != pTarget)
-            { AttackStart(pTarget); }
+            {
+                AttackStart(pTarget);
+            }
 
             // Set victim to old target
             if (pOldTarget && pOldTarget->IsAlive())
@@ -545,7 +605,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!SelectHostileTarget())
-        { return; }
+        {
+            return;
+        }
 
         switch (m_Phase)
         {
@@ -567,7 +629,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
                     }
                 }
                 else
-                { m_uiPhaseTimer -= uiDiff; }
+                {
+                    m_uiPhaseTimer -= uiDiff;
+                }
 
                 break;
             case PHASE_CTHUN:
@@ -586,7 +650,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
                     }
                 }
                 else
-                { m_uiMouthTentacleTimer -= uiDiff; }
+                {
+                    m_uiMouthTentacleTimer -= uiDiff;
+                }
 
                 // Teleport the target to the stomach after a few seconds
                 if (m_uiStomachEnterTimer)
@@ -604,7 +670,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
                         m_uiStomachEnterTimer = 0;
                     }
                     else
-                    { m_uiStomachEnterTimer -= uiDiff; }
+                    {
+                        m_uiStomachEnterTimer -= uiDiff;
+                    }
                 }
 
                 break;
@@ -619,7 +687,9 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
                     m_Phase        = PHASE_CTHUN;
                 }
                 else
-                { m_uiPhaseTimer -= uiDiff; }
+                {
+                    m_uiPhaseTimer -= uiDiff;
+                }
 
                 break;
         }
@@ -628,23 +698,27 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
         {
             // Summon 1 Giant Claw Tentacle every 60 seconds
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, uint32(0), SELECT_FLAG_IN_LOS))
-            { m_creature->SummonCreature(NPC_GIANT_CLAW_TENTACLE, pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 0, TEMPSUMMON_DEAD_DESPAWN, 0); }
+            {
+                m_creature->SummonCreature(NPC_GIANT_CLAW_TENTACLE, pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 0, TEMPSUMMON_DEAD_DESPAWN, 0);
+            }
 
             m_uiGiantClawTentacleTimer = 60000;
         }
         else
-        { m_uiGiantClawTentacleTimer -= uiDiff; }
+            { m_uiGiantClawTentacleTimer -= uiDiff; }
 
         if (m_uiGiantEyeTentacleTimer < uiDiff)
         {
             // Summon 1 Giant Eye Tentacle every 60 seconds
             if (Unit* pTarget = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 0, uint32(0), SELECT_FLAG_IN_LOS))
-            { m_creature->SummonCreature(NPC_GIANT_EYE_TENTACLE, pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 0, TEMPSUMMON_DEAD_DESPAWN, 0); }
+            {
+                m_creature->SummonCreature(NPC_GIANT_EYE_TENTACLE, pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 0, TEMPSUMMON_DEAD_DESPAWN, 0);
+            }
 
             m_uiGiantEyeTentacleTimer = 60000;
         }
         else
-        { m_uiGiantEyeTentacleTimer -= uiDiff; }
+            { m_uiGiantEyeTentacleTimer -= uiDiff; }
 
         if (m_uiEyeTentacleTimer < uiDiff)
         {
@@ -661,7 +735,7 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
             m_uiEyeTentacleTimer = 30000;
         }
         else
-        { m_uiEyeTentacleTimer -= uiDiff; }
+            { m_uiEyeTentacleTimer -= uiDiff; }
 
         // Note: this should be handled by the maps
         if (m_uiDigestiveAcidTimer < uiDiff)
@@ -670,12 +744,14 @@ struct MANGOS_DLL_DECL boss_cthunAI : public Scripted_NoMovementAI
             for (GuidList::const_iterator itr = m_lPlayersInStomachList.begin(); itr != m_lPlayersInStomachList.end(); ++itr)
             {
                 if (Player* pPlayer = m_creature->GetMap()->GetPlayer(*itr))
-                { pPlayer->CastSpell(pPlayer, SPELL_DIGESTIVE_ACID, true, NULL, NULL, m_creature->GetObjectGuid()); }
+                {
+                    pPlayer->CastSpell(pPlayer, SPELL_DIGESTIVE_ACID, true, NULL, NULL, m_creature->GetObjectGuid());
+                }
             }
             m_uiDigestiveAcidTimer = 4000;
         }
         else
-        { m_uiDigestiveAcidTimer -= uiDiff; }
+            { m_uiDigestiveAcidTimer -= uiDiff; }
     }
 };
 
@@ -710,7 +786,9 @@ struct MANGOS_DLL_DECL npc_giant_claw_tentacleAI : public Scripted_NoMovementAI
     {
         // Check if we have a target
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiDistCheckTimer < uiDiff)
         {
@@ -730,26 +808,32 @@ struct MANGOS_DLL_DECL npc_giant_claw_tentacleAI : public Scripted_NoMovementAI
                 }
             }
             else
-            { m_uiDistCheckTimer = 5000; }
+            {
+                m_uiDistCheckTimer = 5000;
+            }
         }
         else
-        { m_uiDistCheckTimer -= uiDiff; }
+            { m_uiDistCheckTimer -= uiDiff; }
 
         if (m_uiThrashTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_THRASH) == CAST_OK)
-            { m_uiThrashTimer = 10000; }
+            {
+                m_uiThrashTimer = 10000;
+            }
         }
         else
-        { m_uiThrashTimer -= uiDiff; }
+            { m_uiThrashTimer -= uiDiff; }
 
         if (m_uiHamstringTimer < uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_HAMSTRING) == CAST_OK)
-            { m_uiHamstringTimer = 10000; }
+            {
+                m_uiHamstringTimer = 10000;
+            }
         }
         else
-        { m_uiHamstringTimer -= uiDiff; }
+            { m_uiHamstringTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -764,7 +848,9 @@ bool AreaTrigger_at_stomach_cthun(Player* pPlayer, AreaTriggerEntry const* pAt)
     if (pAt->id == AREATRIGGER_STOMACH_1)
     {
         if (pPlayer->isGameMaster() || !pPlayer->IsAlive())
-        { return false; }
+        {
+            return false;
+        }
 
         // Summon the exit trigger which should push the player outside the stomach - not used because missing eject spells
         // if (!GetClosestCreatureWithEntry(pPlayer, NPC_EXIT_TRIGGER, 10.0f))
@@ -781,7 +867,9 @@ bool AreaTrigger_at_stomach_cthun(Player* pPlayer, AreaTriggerEntry const* pAt)
             {
                 // Remove player from the Stomach
                 if (boss_cthunAI* pBossAI = dynamic_cast<boss_cthunAI*>(pCthun->AI()))
-                { pBossAI->DoRemovePlayerFromStomach(pPlayer); }
+                {
+                    pBossAI->DoRemovePlayerFromStomach(pPlayer);
+                }
 
                 // Teleport back to C'thun and remove the Digestive Acid
                 pPlayer->RemoveAurasDueToSpell(SPELL_DIGESTIVE_ACID);

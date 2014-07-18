@@ -23,15 +23,20 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: redridge_mountains
-SD%Complete: 100%
-SDComment: Quest support: 219
-SDCategory: Redridge Mountains
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      redridge_mountains
+ * SD%Complete: 100
+ * SDComment:   Quest support: 219.
+ * SDCategory:  Redridge Mountains
+ * EndScriptData
+ */
 
-/* ContentData
-npc_corporal_keeshan */
+/**
+ * ContentData
+ * npc_corporal_keeshan
+ * EndContentData
+ */
 
 #include "precompiled.h"
 #include "escort_ai.h"
@@ -101,7 +106,9 @@ struct MANGOS_DLL_DECL npc_corporal_keeshan_escortAI : public npc_escortAI
             case 53:                                        // quest_complete
                 DoScriptText(SAY_CORPORAL_KEESHAN_4, m_creature);
                 if (Player* pPlayer = GetPlayerForEscort())
-                { pPlayer->GroupEventHappens(QUEST_MISSING_IN_ACTION, m_creature); }
+                {
+                    pPlayer->GroupEventHappens(QUEST_MISSING_IN_ACTION, m_creature);
+                }
                 break;
         }
     }
@@ -110,7 +117,9 @@ struct MANGOS_DLL_DECL npc_corporal_keeshan_escortAI : public npc_escortAI
     {
         // Combat check
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiMockingBlowTimer < uiDiff)
         {
@@ -118,7 +127,7 @@ struct MANGOS_DLL_DECL npc_corporal_keeshan_escortAI : public npc_escortAI
             m_uiMockingBlowTimer = 5000;
         }
         else
-        { m_uiMockingBlowTimer -= uiDiff; }
+            { m_uiMockingBlowTimer -= uiDiff; }
 
         if (m_uiShieldBashTimer < uiDiff)
         {
@@ -126,7 +135,7 @@ struct MANGOS_DLL_DECL npc_corporal_keeshan_escortAI : public npc_escortAI
             m_uiShieldBashTimer = 8000;
         }
         else
-        { m_uiShieldBashTimer -= uiDiff; }
+            { m_uiShieldBashTimer -= uiDiff; }
 
         DoMeleeAttackIfReady();
     }
@@ -140,7 +149,9 @@ CreatureAI* GetAI_npc_corporal_keeshan(Creature* pCreature)
 bool QuestAccept_npc_corporal_keeshan(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
 {
     if (pQuest->GetQuestId() == QUEST_MISSING_IN_ACTION)
-    { pCreature->AI()->SendAIEvent(AI_EVENT_START_ESCORT, pPlayer, pCreature, pQuest->GetQuestId()); }
+    {
+        pCreature->AI()->SendAIEvent(AI_EVENT_START_ESCORT, pPlayer, pCreature, pQuest->GetQuestId());
+    }
 
     return true;
 }

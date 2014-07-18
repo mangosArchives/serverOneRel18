@@ -23,16 +23,21 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-/* ScriptData
-SDName: Boss_KelThuzad
-SD%Complete: 75
-SDComment: Timers will need adjustments, along with tweaking positions and amounts
-SDCategory: Naxxramas
-EndScriptData */
+/**
+ * ScriptData
+ * SDName:      Boss_KelThuzad
+ * SD%Complete: 75
+ * SDComment:   Timers will need adjustments, along with tweaking positions and amounts
+ * SDCategory:  Naxxramas
+ * EndScriptData
+ */
 
-// some not answered questions:
-// - will intro mobs, not sent to center, despawn when phase 2 start?
-// - what happens if raid fail, can they start the event as soon after as they want?
+/**
+ * Notes
+ *
+ * - will intro mobs, not sent to center, despawn when phase 2 start?
+ * - what happens if raid fail, can they start the event as soon after as they want?
+ */
 
 #include "precompiled.h"
 #include "naxxramas.h"
@@ -161,10 +166,14 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
     void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() != TYPEID_PLAYER)
-        { return; }
+        {
+            return;
+        }
 
         if (urand(0, 1))
-        { DoScriptText(urand(0, 1) ? SAY_SLAY1 : SAY_SLAY2, m_creature); }
+        {
+            DoScriptText(urand(0, 1) ? SAY_SLAY1 : SAY_SLAY2, m_creature);
+        }
     }
 
     void JustDied(Unit* /*pKiller*/) override
@@ -173,7 +182,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
         DespawnAdds();
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_KELTHUZAD, DONE); }
+        {
+            m_pInstance->SetData(TYPE_KELTHUZAD, DONE);
+        }
     }
 
     void JustReachedHome() override
@@ -182,13 +193,17 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
         DespawnAdds();
 
         if (m_pInstance)
-        { m_pInstance->SetData(TYPE_KELTHUZAD, NOT_STARTED); }
+        {
+            m_pInstance->SetData(TYPE_KELTHUZAD, NOT_STARTED);
+        }
     }
 
     void MoveInLineOfSight(Unit* pWho) override
     {
         if (m_pInstance && m_pInstance->GetData(TYPE_KELTHUZAD) != IN_PROGRESS)
-        { return; }
+        {
+            return;
+        }
 
         ScriptedAI::MoveInLineOfSight(pWho);
     }
@@ -200,7 +215,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
             for (GuidSet::const_iterator itr = m_lIntroMobsSet.begin(); itr != m_lIntroMobsSet.end(); ++itr)
             {
                 if (Creature* pCreature = m_pInstance->instance->GetCreature(*itr))
-                { pCreature->ForcedDespawn(); }
+                {
+                    pCreature->ForcedDespawn();
+                }
             }
         }
 
@@ -231,13 +248,20 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
     {
         switch (uiId)
         {
-            case 1: return M_PI_F - M_F_ANGLE;              // south
-            case 2: return M_PI_F / 2 * 3 - M_F_ANGLE;      // east
-            case 3: return M_PI_F / 2 - M_F_ANGLE;          // west
-            case 4: return M_PI_F / 4 - M_F_ANGLE;          // north-west
-            case 5: return M_PI_F / 4 * 7 - M_F_ANGLE;      // north-east
-            case 6: return M_PI_F / 4 * 5 - M_F_ANGLE;      // south-east
-            case 7: return M_PI_F / 4 * 3 - M_F_ANGLE;      // south-west
+            case 1:
+                return M_PI_F - M_F_ANGLE;              // south
+            case 2:
+                return M_PI_F / 2 * 3 - M_F_ANGLE;      // east
+            case 3:
+                return M_PI_F / 2 - M_F_ANGLE;          // west
+            case 4:
+                return M_PI_F / 4 - M_F_ANGLE;          // north-west
+            case 5:
+                return M_PI_F / 4 * 7 - M_F_ANGLE;      // north-east
+            case 6:
+                return M_PI_F / 4 * 5 - M_F_ANGLE;      // south-east
+            case 7:
+                return M_PI_F / 4 * 3 - M_F_ANGLE;      // south-west
         }
 
         return M_F_ANGLE;
@@ -246,7 +270,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
     void SummonIntroCreatures(uint32 packId)
     {
         if (!m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         float fAngle = GetLocationAngle(packId + 1);
 
@@ -267,9 +293,13 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
             if (uiI > 0)
             {
                 if (uiI < 4)
-                { uiNpcEntry = NPC_UNSTOPPABLE_ABOM; }
+                {
+                    uiNpcEntry = NPC_UNSTOPPABLE_ABOM;
+                }
                 else
-                { uiNpcEntry = NPC_SOLDIER_FROZEN; }
+                {
+                    uiNpcEntry = NPC_SOLDIER_FROZEN;
+                }
             }
 
             float fNewX, fNewY, fNewZ;
@@ -282,7 +312,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
     void SummonMob(uint32 uiType)
     {
         if (!m_pInstance)
-        { return; }
+        {
+            return;
+        }
 
         float fAngle = GetLocationAngle(urand(1, 7));
 
@@ -318,7 +350,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
             case NPC_SOUL_WEAVER:
             {
                 if (m_uiIntroPackCount < 7)
-                { m_lIntroMobsSet.insert(pSummoned->GetObjectGuid()); }
+                {
+                    m_lIntroMobsSet.insert(pSummoned->GetObjectGuid());
+                }
                 else
                 {
                     m_lAddsSet.insert(pSummoned->GetObjectGuid());
@@ -354,16 +388,22 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
     void SummonedMovementInform(Creature* pSummoned, uint32 uiMotionType, uint32 uiPointId) override
     {
         if (uiMotionType == POINT_MOTION_TYPE && uiPointId == 0)
-        { pSummoned->SetInCombatWithZone(); }
+        {
+            pSummoned->SetInCombatWithZone();
+        }
     }
 
     void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-        { return; }
+        {
+            return;
+        }
 
         if (!m_pInstance || m_pInstance->GetData(TYPE_KELTHUZAD) != IN_PROGRESS)
-        { return; }
+        {
+            return;
+        }
 
         if (m_uiPhase == PHASE_INTRO)
         {
@@ -372,14 +412,18 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                 if (m_uiSummonIntroTimer < uiDiff)
                 {
                     if (!m_uiIntroPackCount)
-                    { DoScriptText(SAY_SUMMON_MINIONS, m_creature); }
+                    {
+                        DoScriptText(SAY_SUMMON_MINIONS, m_creature);
+                    }
 
                     SummonIntroCreatures(m_uiIntroPackCount);
                     ++m_uiIntroPackCount;
                     m_uiSummonIntroTimer = 2000;
                 }
                 else
-                { m_uiSummonIntroTimer -= uiDiff; }
+                {
+                    m_uiSummonIntroTimer -= uiDiff;
+                }
             }
             else
             {
@@ -396,13 +440,21 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
 
                     switch (urand(0, 2))
                     {
-                        case 0: DoScriptText(SAY_AGGRO1, m_creature); break;
-                        case 1: DoScriptText(SAY_AGGRO2, m_creature); break;
-                        case 2: DoScriptText(SAY_AGGRO3, m_creature); break;
+                        case 0:
+                            DoScriptText(SAY_AGGRO1, m_creature);
+                            break;
+                        case 1:
+                            DoScriptText(SAY_AGGRO2, m_creature);
+                            break;
+                        case 2:
+                            DoScriptText(SAY_AGGRO3, m_creature);
+                            break;
                     };
                 }
                 else
-                { m_uiPhase1Timer -= uiDiff; }
+                {
+                    m_uiPhase1Timer -= uiDiff;
+                }
 
                 if (m_uiSoldierCount < MAX_SOLDIER_COUNT)
                 {
@@ -413,7 +465,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                         m_uiSoldierTimer = 3000;
                     }
                     else
-                    { m_uiSoldierTimer -= uiDiff; }
+                    {
+                        m_uiSoldierTimer -= uiDiff;
+                    }
                 }
 
                 if (m_uiAbominationCount < MAX_ABOMINATION_COUNT)
@@ -425,7 +479,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                         m_uiAbominationTimer = 25000;
                     }
                     else
-                    { m_uiAbominationTimer -= uiDiff; }
+                    {
+                        m_uiAbominationTimer -= uiDiff;
+                    }
                 }
 
                 if (m_uiBansheeCount < MAX_BANSHEE_COUNT)
@@ -437,7 +493,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                         m_uiBansheeTimer = 25000;
                     }
                     else
-                    { m_uiBansheeTimer -= uiDiff; }
+                    {
+                        m_uiBansheeTimer -= uiDiff;
+                    }
                 }
             }
         }
@@ -446,18 +504,22 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
             if (m_uiFrostBoltTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_FROST_BOLT) == CAST_OK)
-                { m_uiFrostBoltTimer = urand(1000, 60000); }
+                {
+                    m_uiFrostBoltTimer = urand(1000, 60000);
+                }
             }
             else
-            { m_uiFrostBoltTimer -= uiDiff; }
+                { m_uiFrostBoltTimer -= uiDiff; }
 
             if (m_uiFrostBoltNovaTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_FROST_BOLT_NOVA) == CAST_OK)
-                { m_uiFrostBoltNovaTimer = 15000; }
+                {
+                    m_uiFrostBoltNovaTimer = 15000;
+                }
             }
             else
-            { m_uiFrostBoltNovaTimer -= uiDiff; }
+                { m_uiFrostBoltNovaTimer -= uiDiff; }
 
             if (m_uiManaDetonationTimer < uiDiff)
             {
@@ -466,14 +528,16 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                     if (DoCastSpellIfCan(pTarget, SPELL_MANA_DETONATION) == CAST_OK)
                     {
                         if (urand(0, 1))
-                        { DoScriptText(SAY_SPECIAL1_MANA_DET, m_creature); }
+                        {
+                            DoScriptText(SAY_SPECIAL1_MANA_DET, m_creature);
+                        }
 
                         m_uiManaDetonationTimer = 20000;
                     }
                 }
             }
             else
-            { m_uiManaDetonationTimer -= uiDiff; }
+                { m_uiManaDetonationTimer -= uiDiff; }
 
             if (m_uiShadowFissureTimer < uiDiff)
             {
@@ -482,27 +546,31 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                     if (DoCastSpellIfCan(pTarget, SPELL_SHADOW_FISSURE) == CAST_OK)
                     {
                         if (urand(0, 1))
-                        { DoScriptText(SAY_SPECIAL3_MANA_DET, m_creature); }
+                        {
+                            DoScriptText(SAY_SPECIAL3_MANA_DET, m_creature);
+                        }
 
                         m_uiShadowFissureTimer = 25000;
                     }
                 }
             }
             else
-            { m_uiShadowFissureTimer -= uiDiff; }
+                { m_uiShadowFissureTimer -= uiDiff; }
 
             if (m_uiFrostBlastTimer < uiDiff)
             {
                 if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_FROST_BLAST) == CAST_OK)
                 {
                     if (urand(0, 1))
-                    { DoScriptText(SAY_FROST_BLAST, m_creature); }
+                    {
+                        DoScriptText(SAY_FROST_BLAST, m_creature);
+                    }
 
                     m_uiFrostBlastTimer = urand(30000, 60000);
                 }
             }
             else
-            { m_uiFrostBlastTimer -= uiDiff; }
+                { m_uiFrostBlastTimer -= uiDiff; }
 
             if (m_uiChainsTimer < uiDiff)
             {
@@ -514,7 +582,7 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                 }
             }
             else
-            { m_uiChainsTimer -= uiDiff; }
+                { m_uiChainsTimer -= uiDiff; }
 
             if (m_uiPhase == PHASE_NORMAL)
             {
@@ -533,14 +601,18 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                     m_uiGuardiansTimer = 5000;
                 }
                 else
-                { m_uiGuardiansTimer -= uiDiff; }
+                {
+                    m_uiGuardiansTimer -= uiDiff;
+                }
 
                 if (m_uiLichKingAnswerTimer && m_pInstance)
                 {
                     if (m_uiLichKingAnswerTimer <= uiDiff)
                     {
                         if (Creature* pLichKing = m_pInstance->GetSingleCreatureFromStorage(NPC_THE_LICHKING))
-                        { DoScriptText(SAY_ANSWER_REQUEST, pLichKing); }
+                        {
+                            DoScriptText(SAY_ANSWER_REQUEST, pLichKing);
+                        }
 
                         m_pInstance->DoUseDoorOrButton(GO_KELTHUZAD_WINDOW_1);
                         m_pInstance->DoUseDoorOrButton(GO_KELTHUZAD_WINDOW_2);
@@ -550,7 +622,9 @@ struct MANGOS_DLL_DECL boss_kelthuzadAI : public ScriptedAI
                         m_uiLichKingAnswerTimer = 0;
                     }
                     else
-                    { m_uiLichKingAnswerTimer -= uiDiff; }
+                    {
+                        m_uiLichKingAnswerTimer -= uiDiff;
+                    }
                 }
             }
 
