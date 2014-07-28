@@ -26,5 +26,5 @@
 #define MANGOS_H_REVISION_SQL
 #define REVISION_DB_CHARACTERS "required_s1350_11716_09_characters_mail"
 #define REVISION_DB_MANGOS "required_19001_scripted_event"
-#define REVISION_DB_REALMD "required_z2426_01_realmd_relations"
+#define REVISION_DB_REALMD "required_20140607_Realm_Resync"
 #endif // __REVISION_SQL_H__
