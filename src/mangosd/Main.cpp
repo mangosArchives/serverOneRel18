@@ -184,7 +184,7 @@ extern int main(int argc, char** argv)
     }
 #endif
 
-	sLog.outString("%s [world-daemon]", MANGOS_FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_NR, REVISION_ID));
+    sLog.outString("%s [world-daemon]", MANGOS_FULLVERSION(REVISION_DATE, REVISION_TIME, REVISION_NR, REVISION_ID));
     sLog.outString("<Ctrl-C> to stop.\n"
                    "  __  __      _  _  ___  ___  ___                        \n"
                    " |  \\/  |__ _| \\| |/ __|/ _ \\/ __|     We Love the    \n"
