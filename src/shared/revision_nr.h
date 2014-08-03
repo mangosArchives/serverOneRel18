@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * MaNGOS is a full featured server for World of Warcraft, supporting
  * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
@@ -25,4 +26,9 @@
 #ifndef MANGOS_H_REVISION_NR
 #define MANGOS_H_REVISION_NR
 #define REVISION_NR "19000"
+=======
+#ifndef __REVISION_NR_H__
+#define __REVISION_NR_H__
+ #define REVISION_NR "2128"
+>>>>>>> acb3821... [s2128] Add new Regen Health / Power flags and rename database fields accordingly
 #endif // __REVISION_NR_H__

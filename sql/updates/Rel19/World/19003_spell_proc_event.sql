@@ -1,4 +1,4 @@
-ALTER TABLE db_version CHANGE COLUMN required_z2463_01_mangos_creature_equip_template required_z2481_mangos_spell_proc_event bit;
+ALTER TABLE db_version CHANGE COLUMN required_19002_creature_equip_template required_19003_spell_proc_event bit;
 
 DELETE FROM `spell_proc_event` WHERE `entry` = 6346;
 INSERT INTO `spell_proc_event` VALUES
