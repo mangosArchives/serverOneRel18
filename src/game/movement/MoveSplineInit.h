@@ -54,6 +54,9 @@ namespace Movement
              */
             int32 Launch();
 
+            /* Stop any creature movement */
+            void Stop();
+
             /**
              * @brief  Adds final facing animation
              * sets unit's facing to specified point/angle after all path done.
@@ -153,7 +156,6 @@ namespace Movement
              * @return PointsArray
              */
             PointsArray& Path() { return args.path; }
-
         protected:
 
             MoveSplineInitArgs args; /**< TODO */
