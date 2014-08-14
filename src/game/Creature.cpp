@@ -146,7 +146,7 @@ Creature::Creature(CreatureSubtype subtype) : Unit(),
     m_corpseDecayTimer(0), m_respawnTime(0), m_respawnDelay(25), m_corpseDelay(60), m_respawnradius(5.0f), m_aggroDelay(0),
     m_subtype(subtype), m_defaultMovementType(IDLE_MOTION_TYPE), m_equipmentId(0),
     m_AlreadyCallAssistance(false), m_AlreadySearchedAssistance(false),
-    m_AI_locked(false), m_isDeadByDefault(false), m_temporaryFactionFlags(TEMPFACTION_NONE),
+    m_AI_locked(false), m_IsDeadByDefault(false), m_temporaryFactionFlags(TEMPFACTION_NONE),
     m_meleeDamageSchoolMask(SPELL_SCHOOL_MASK_NORMAL), m_originalEntry(0),
     m_creatureInfo(NULL)
 {
