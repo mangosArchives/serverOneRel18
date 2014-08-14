@@ -39,12 +39,15 @@ class workerThread(threading.Thread):
             stInfo.dwFlags |= 0x00000001
             stInfo.wShowWindow = 7
             cFlags = subprocess.CREATE_NEW_CONSOLE
-            binName = "MoveMapGen.exe"
+            binName = "movemap-generator.exe"
         else:
             stInfo = None
             cFlags = 0
             binName = "./MoveMapGen"
-        retcode = subprocess.call([binName, "%u" % (self.mapID),"--silent"], startupinfo=stInfo, creationflags=cFlags)
+        if self.mapID == 0:
+            retcode = subprocess.call([binName, "%u" % (self.mapID), "--silent",  "--offMeshInput", "offmesh.txt"], startupinfo=stInfo, creationflags=cFlags)
+        else:
+            retcode = subprocess.call([binName, "%u" % (self.mapID), "--silent"], startupinfo=stInfo, creationflags=cFlags)
         print "-- %s" % (name)
 
 if __name__ == "__main__":

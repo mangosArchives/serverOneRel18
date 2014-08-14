@@ -21,6 +21,23 @@ PARAMS="--silent"
 ## Already a few map extracted, and don't care anymore
 EXCLUDE_MAPS=""
 #EXCLUDE_MAPS="0 1 530 571" # example to exclude the continents
+## Exclude file
+EXCLUDE_MAPS_FILE="mmap_excluded.txt"
+
+## The Exclude file contains a space delimited list of map id's to skip in the same format as EXCLUDE_MAPS
+
+## Does an exclude file exist ?
+if [ "$EXCLUDE_MAPS" == "" ]
+then 
+  ## Exclude file provided?
+  if [ -f "$EXCLUDE_MAPS_FILE" ]
+  then ## Yes, read the file
+    read -d -r EXCLUDE_MAPS < $EXCLUDE_MAPS_FILE
+	echo "Excluded maps: $EXCLUDE_MAPS"
+  else ## No, remind the user that they can create the file
+	echo "Excluded maps: NONE (no file called '$EXCLUDE_MAPS_FILE' was found.)"
+  fi
+fi
 
 ## Offmesh file
 OFFMESH_FILE="offmesh.txt"
@@ -52,6 +69,7 @@ badParam()
   echo
   echo "For further fine-tuning edit this helper script"
   echo
+  read line
 }
 
 if [ "$#" = "3" ]
@@ -96,13 +114,27 @@ createMMaps()
 
 createHeader()
 {
+#  read line
+  echo
   echo "`date`: Start creating MoveMaps" | tee -a $LOG_FILE
   echo "Used params: $PARAMS $OFFMESH" | tee -a $LOG_FILE
+  echo
   echo "Detailed log can be found in $DETAIL_LOG_FILE" | tee -a $LOG_FILE
   echo "Start creating MoveMaps" | tee -a $DETAIL_LOG_FILE
   echo
-  echo "Be PATIENT - This will take a long time and might also have gaps between visible changes on the console."
-  echo "WAIT until you are informed that 'creating MoveMaps' is 'finished'!"
+  echo "################################################################"
+  echo "##                                                            ##"
+  echo "##      BE PATIENT - This process will take a long time       ##"
+  echo "##                                                            ##"
+  echo "################################################################"
+  echo "##                                                            ##"
+  echo "##   There will also be periods where the display does not    ##"
+  echo "##   update, this is normal behavior for this process         ##"
+  echo "##                                                            ##"
+  echo "##  Once you see the message 'creating MoveMaps' is finished  ##"
+  echo "##  then the process is complete.                             ##"
+  echo "################################################################"
+  echo ""
 }
 
 # Create mmaps directory if not exist
@@ -156,3 +188,6 @@ echo  | tee -a $LOG_FILE
 echo  | tee -a $DETAIL_LOG_FILE
 echo "`date`: Finished creating MoveMaps" | tee -a $LOG_FILE
 echo "`date`: Finished creating MoveMaps" >> $DETAIL_LOG_FILE
+echo
+echo "Press any key"
+read line

@@ -201,14 +201,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="base\escort_ai.cpp" />
-    <ClCompile Include="base\follower_ai.cpp" />
-    <ClCompile Include="base\guard_ai.cpp" />
-    <ClCompile Include="base\pet_ai.cpp" />
-    <ClCompile Include="scripts\battlegrounds\battleground.cpp" />
-    <ClCompile Include="scripts\eastern_kingdoms\alterac_mountains.cpp" />
-    <ClCompile Include="scripts\eastern_kingdoms\arathi_highlands.cpp" />
-    <ClCompile Include="scripts\eastern_kingdoms\blasted_lands.cpp" />
+    <ClCompile Include="..\base\escort_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\follower_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\guard_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\pet_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\battlegrounds\battleground.cpp">
+      <Filter>scripts\battlegrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_mountains.cpp">
+      <Filter>scripts\eastern_kingdoms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\arathi_highlands.cpp">
+      <Filter>scripts\eastern_kingdoms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blasted_lands.cpp">
+      <Filter>scripts\eastern_kingdoms</Filter>
+    </ClCompile>
     <ClCompile Include="scripts\eastern_kingdoms\burning_steppes.cpp" />
     <ClCompile Include="scripts\eastern_kingdoms\dun_morogh.cpp" />
     <ClCompile Include="scripts\eastern_kingdoms\eastern_plaguelands.cpp" />
@@ -504,24 +520,58 @@
     <ClCompile Include="scripts\outland\tempest_keep\the_mechanar\boss_nethermancer_sepethrea.cpp" />
     <ClCompile Include="scripts\outland\tempest_keep\the_mechanar\boss_pathaleon_the_calculator.cpp" />
     <ClCompile Include="scripts\outland\tempest_keep\the_mechanar\instance_mechanar.cpp" />
-    <ClCompile Include="scripts\world\areatrigger_scripts.cpp" />
-    <ClCompile Include="scripts\world\bosses_emerald_dragons.cpp" />
-    <ClCompile Include="scripts\world\go_scripts.cpp" />
-    <ClCompile Include="scripts\world\guards.cpp" />
-    <ClCompile Include="scripts\world\item_scripts.cpp" />
-    <ClCompile Include="scripts\world\mob_generic_creature.cpp" />
-    <ClCompile Include="scripts\world\npc_professions.cpp" />
-    <ClCompile Include="scripts\world\npcs_special.cpp" />
-    <ClCompile Include="scripts\world\spell_scripts.cpp" />
-    <ClCompile Include="scripts\world\world_map_scripts.cpp" />
-    <ClCompile Include="include\precompiled.cpp" />
-    <ClCompile Include="include\sc_creature.cpp" />
-    <ClCompile Include="include\sc_grid_searchers.cpp" />
-    <ClCompile Include="include\sc_instance.cpp" />
-    <ClCompile Include="system\MangosdRev.cpp" />
-    <ClCompile Include="system\ScriptLoader.cpp" />
-    <ClCompile Include="system\system.cpp" />
-    <ClCompile Include="ScriptDevMgr.cpp" />
+    <ClCompile Include="..\scripts\world\areatrigger_scripts.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\bosses_emerald_dragons.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\go_scripts.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\guards.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\item_scripts.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\mob_generic_creature.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\npc_professions.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\npcs_special.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\spell_scripts.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\world_map_scripts.cpp">
+      <Filter>scripts\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\precompiled.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\sc_creature.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\sc_grid_searchers.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\sc_instance.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\MangosdRev.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\ScriptLoader.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\system.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ScriptMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\system\ScriptLoader.h">
@@ -584,11 +634,11 @@
     <ClInclude Include="include\sc_gossip.h" />
     <ClInclude Include="include\sc_grid_searchers.h" />
     <ClInclude Include="include\sc_instance.h" />
-    <ClInclude Include="sd2_revision_nr.h" />
-    <ClInclude Include="sd2_revision_sql.h" />
-    <ClInclude Include="ScriptDevMgr.h" />
+    <ClInclude Include="..\sd2_revision_nr.h" />
+    <ClInclude Include="..\sd2_revision_sql.h" />
+    <ClInclude Include="..\ScriptMgr.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="revision.h" />
+    <CustomBuild Include="..\revision.h" />
   </ItemGroup>
 </Project>

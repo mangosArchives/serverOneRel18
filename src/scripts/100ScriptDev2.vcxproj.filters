@@ -40,7 +40,7 @@
     <Filter Include="scripts\eastern_kingdoms\molten_core">
       <UniqueIdentifier>{920d1832-b347-4afd-bd05-4c943e5555f0}</UniqueIdentifier>
     </Filter>
-	<Filter Include="scripts\eastern_kingdoms\naxxramas">
+    <Filter Include="scripts\eastern_kingdoms\naxxramas">
       <UniqueIdentifier>{a187836e-bd7b-4c74-a8bd-d86ed0793280}</UniqueIdentifier>
     </Filter>
     <Filter Include="scripts\eastern_kingdoms\scarlet_monastery">
