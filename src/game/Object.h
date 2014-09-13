@@ -31,6 +31,7 @@
 #include "UpdateData.h"
 #include "ObjectGuid.h"
 #include "Camera.h"
+#include "ElunaEventMgr.h"
 
 #include <set>
 #include <string>
@@ -471,7 +472,7 @@ class MANGOS_DLL_SPEC WorldObject : public Object
 
         virtual ~WorldObject();
 
-        virtual void Update(uint32 /*update_diff*/, uint32 /*time_diff*/) {}
+        virtual void Update(uint32 update_diff, uint32 /*time_diff*/) { elunaEvents.Update(update_diff); }
 
         void _Create(uint32 guidlow, HighGuid guidhigh);
 
@@ -648,6 +649,8 @@ class MANGOS_DLL_SPEC WorldObject : public Object
 #ifdef ENABLE_ELUNA
         ElunaEventProcessor* const elunaEvents;
 #endif /* ENABLE_ELUNA */
+
+        ElunaEventProcessor elunaEvents;
 
     protected:
         explicit WorldObject();

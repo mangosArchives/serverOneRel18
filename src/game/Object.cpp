@@ -901,7 +901,8 @@ WorldObject::WorldObject() :
 #endif /* ENABLE_ELUNA */
     m_transportInfo(NULL), m_currMap(NULL),
     m_mapId(0), m_InstanceId(0),
-    m_isActiveObject(false)
+    m_isActiveObject(false),
+    elunaEvents(this)
 {
 }
 
