@@ -900,9 +900,9 @@ WorldObject::WorldObject() :
     elunaEvents(new ElunaEventProcessor(this)),
 #endif /* ENABLE_ELUNA */
     m_transportInfo(NULL), m_currMap(NULL),
+    m_currMap(NULL),
     m_mapId(0), m_InstanceId(0),
-    m_isActiveObject(false),
-    elunaEvents(this)
+    m_isActiveObject(false)
 {
 }
 
@@ -917,6 +917,13 @@ WorldObject::~WorldObject()
 void WorldObject::CleanupsBeforeDelete()
 {
     RemoveFromWorld();
+}
+
+void WorldObject::Update(uint32 update_diff, uint32 /*time_diff*/)
+{
+#ifdef ENABLE_ELUNA
+    elunaEvents->Update(update_diff);
+#endif /* ENABLE_ELUNA */
 }
 
 void WorldObject::_Create(uint32 guidlow, HighGuid guidhigh)
