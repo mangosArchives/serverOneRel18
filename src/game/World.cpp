@@ -154,10 +154,6 @@ void World::CleanupsBeforeStop()
     KickAll();                                       // save and kick all players
     UpdateSessions(1);                               // real players unload required UpdateSessions call
     sBattleGroundMgr.DeleteAllBattleGrounds();       // unload battleground templates before different singletons destroyed
-<<<<<<< HEAD
-    Eluna::Uninitialize();
-=======
->>>>>>> d30be25... Temporarily fix crash on shutdown
 }
 
 /// Find a player in a specified zone
@@ -882,6 +878,11 @@ void World::LoadConfigSettings(bool reload)
     sLog.outString("WORLD: mmap pathfinding %sabled", getConfig(CONFIG_BOOL_MMAP_ENABLED) ? "en" : "dis");
 
     setConfig(CONFIG_BOOL_ELUNA_ENABLED, "Eluna.Enabled", true);
+
+#ifdef ENABLE_ELUNA
+    if (reload)
+        sEluna->OnConfigLoad(reload);
+#endif /* ENABLE_ELUNA */
 }
 
 /// Initialize the World
@@ -972,6 +973,17 @@ void World::SetInitialWorldSettings()
     ///- Init highest guids before any guid using table loading to prevent using not initialized guids in some code.
     sObjectMgr.SetHighestGuids();                           // must be after packing instances
     sLog.outString();
+
+#ifdef ENABLE_ELUNA
+    ///- Initialize Lua Engine
+    sLog.outString("Initialize Eluna Lua Engine...");
+    Eluna::Initialize();
+#else /* ENABLE_ELUNA */
+    if (sConfig.GetBoolDefault("Eluna.Enabled", false))
+    {
+        sLog.outError("Eluna is enabled but wasn't included during compilation, not activating it.");
+    }
+#endif /* ENABLE_ELUNA */
 
     sLog.outString("Loading Page Texts...");
     sObjectMgr.LoadPageTexts();
@@ -1301,10 +1313,6 @@ void World::SetInitialWorldSettings()
     sLog.outError("SD2 is enabled but wasn't included during compilation, not activating it.");
 #endif /* ENABLE_SD2 */
 
-    ///- Initialize Lua Engine
-    sLog.outString("Initialize Eluna Lua Engine...");
-    Eluna::Initialize();
-
     ///- Initialize game time and timers
     sLog.outString("DEBUG:: Initialize game time and timers");
     m_gameTime = time(NULL);
@@ -1375,6 +1383,13 @@ void World::SetInitialWorldSettings()
 
     sLog.outString("Initialize AuctionHouseBot...");
     sAuctionBot.Initialize();
+
+#ifdef ENABLE_ELUNA
+    ///- Run eluna scripts.
+    // in multithread foreach: run scripts
+    sEluna->RunScripts();
+    sEluna->OnConfigLoad(false); // Must be done after Eluna is initialized and scripts have run.
+#endif
 
     sLog.outString("WORLD: World initialized");
 
