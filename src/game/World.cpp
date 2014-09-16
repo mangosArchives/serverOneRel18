@@ -879,7 +879,6 @@ void World::LoadConfigSettings(bool reload)
 
     setConfig(CONFIG_BOOL_ELUNA_ENABLED, "Eluna.Enabled", true);
 
-    ///- Used by Eluna
 #ifdef ENABLE_ELUNA
     if (reload)
         sEluna->OnConfigLoad(reload);
@@ -1313,18 +1312,6 @@ void World::SetInitialWorldSettings()
 #else /* ENABLE_SD2 */
     sLog.outError("SD2 is enabled but wasn't included during compilation, not activating it.");
 #endif /* ENABLE_SD2 */
-
-#ifdef ENABLE_ELUNA
-    ///- Initialize Lua Engine
-    sLog.outString("Initialize Eluna Lua Engine...");
-    Eluna::Initialize();
-    sEluna->OnConfigLoad(false); // Must be done after Eluna is initialized.
-#else /* ENABLE_ELUNA */
-    if (sConfig.GetBoolDefault("Eluna.Enabled", false))
-    {
-        sLog.outError("Eluna is enabled but wasn't included during compilation, not activating it.");
-    }
-#endif /* ENABLE_ELUNA */
 
     ///- Initialize game time and timers
     sLog.outString("DEBUG:: Initialize game time and timers");
