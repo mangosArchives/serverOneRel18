@@ -744,6 +744,16 @@ class MANGOS_DLL_SPEC Creature : public Unit
         uint32 GetRespawnDelay() const { return m_respawnDelay; }
         void SetRespawnDelay(uint32 delay) { m_respawnDelay = delay; }
 
+		/**
+		* Returns the time when the creature has been killed.
+		*/
+		time_t const& GetKilledTime() const { return m_killedTime; }
+
+		/**
+		* Set the time when the creature has been killed.
+		*/
+		void SetKilledTime(time_t time) { m_killedTime = time; }
+
         float GetRespawnRadius() const { return m_respawnradius; }
         void SetRespawnRadius(float dist) { m_respawnradius = dist; }
 
@@ -822,6 +832,8 @@ class MANGOS_DLL_SPEC Creature : public Unit
         uint32 m_corpseDelay;                               // (secs) delay between death and corpse disappearance
         uint32 m_aggroDelay;                                // (msecs)delay between respawn and aggro due to movement
         float m_respawnradius;
+
+		time_t m_killedTime;								// Exact time of the death.
 
         CreatureSubtype m_subtype;                          // set in Creatures subclasses for fast it detect without dynamic_cast use
         void RegeneratePower();

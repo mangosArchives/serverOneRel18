@@ -489,9 +489,17 @@ void Object::BuildValuesUpdate(uint8 updatetype, ByteBuffer* data, UpdateMask* u
                 else if (index == UNIT_DYNAMIC_FLAGS && GetTypeId() == TYPEID_UNIT)
                 {
                     if (!target->isAllowedToLoot((Creature*)this))
-                        *data << (m_uint32Values[index] & ~UNIT_DYNFLAG_LOOTABLE);
-                    else
-                        *data << (m_uint32Values[index] & ~UNIT_DYNFLAG_TAPPED);
+                        if (send_value & UNIT_DYNFLAG_LOOTABLE)
+                            { send_value = send_value & ~UNIT_DYNFLAG_LOOTABLE; }
+
+                    /* If we are allowed to loot it and mob is tapped by us, destroy the tapped flag */
+                    bool is_tapped = target->IsTappedByMeOrMyGroup((Creature*)this);
+
+                    /* If the creature has tapped flag but is tapped by us, remove the flag */
+                    if (send_value & UNIT_DYNFLAG_TAPPED && is_tapped)
+                        { send_value = send_value & ~UNIT_DYNFLAG_TAPPED; }
+
+                    *data << send_value;
                 }
                 else
                 {
@@ -744,6 +752,14 @@ void Object::ApplyModPositiveFloatValue(uint16 index, float  val, bool apply)
     if (cur < 0)
         { cur = 0; }
     SetFloatValue(index, cur);
+}
+
+void Object::MarkFlagUpdateForClient(uint16 index)
+{
+	MANGOS_ASSERT(index < m_valuesCount || PrintIndexError(index, true));
+
+	m_changedValues[index] = true;
+	MarkForClientUpdate();
 }
 
 void Object::SetFlag(uint16 index, uint32 newFlag)
