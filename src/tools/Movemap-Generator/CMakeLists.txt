@@ -20,6 +20,8 @@ cmake_minimum_required (VERSION 2.8)
 
 project(mmap-generator)
 
+ADD_DEFINITIONS(-DDT_POLYREF64)
+
 set(EXECUTABLE_NAME mmap-generator)
 
 if(debug)
