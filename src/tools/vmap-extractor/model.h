@@ -110,9 +110,9 @@ class ModelInstance
         Model* model; /**< TODO */
 
         uint32 id; /**< TODO */
+        uint16 scale;
         Vec3D pos, rot; /**< TODO */
-        unsigned int d1, scale; /**< TODO */
-        float w, sc; /**< TODO */
+        float sc; /**< TODO */
 
         /**
          * @brief
