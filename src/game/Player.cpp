@@ -7868,17 +7868,29 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                     {
                         if (group == GetGroup())
                         {
-                            if (group->GetLootMethod() == FREE_FOR_ALL)
-                                { permission = ALL_PERMISSION; }
-                            else if (group->GetLooterGuid() == GetObjectGuid())
-                            {
-                                if (group->GetLootMethod() == MASTER_LOOT)
-                                    { permission = MASTER_PERMISSION; }
-                                else
-                                    { permission = ALL_PERMISSION; }
-                            }
-                            else
-                                { permission = GROUP_PERMISSION; }
+							switch(group->GetLootMethod())
+							{
+								case FREE_FOR_ALL:
+								case ROUND_ROBIN:
+									permission = ALL_PERMISSION;
+									break;
+								case MASTER_LOOT:
+									if(group->GetLooterGuid() == GetObjectGuid())
+										{ permission = MASTER_PERMISSION; } 
+									else 
+										{ permission = (creature->hasBeenLootedOnce ? ALL_PERMISSION : GROUP_PERMISSION); }
+									break;
+								case GROUP_LOOT:
+								case NEED_BEFORE_GREED:
+									permission = GROUP_PERMISSION;
+									
+									if(loot->IsWinner(this))
+									{
+										permission = OWNER_PERMISSION;
+									}
+
+									break;
+							}
                         }
                         else
                             { permission = NONE_PERMISSION; }
