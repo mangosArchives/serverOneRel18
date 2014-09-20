@@ -37,6 +37,9 @@
     <Filter Include="BattleGround">
       <UniqueIdentifier>{0af4d063-6d01-4546-a429-59bd828ab270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LuaEngine">
+      <UniqueIdentifier>{56a63cf6-4879-4f3c-870e-dfb6d4a2ec6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\AccountMgr.cpp">
@@ -526,11 +529,21 @@
     <ClCompile Include="..\..\src\game\TransportSystem.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game\LuaEngine\ElunaEventMgr.cpp" />
-    <ClCompile Include="..\..\src\game\LuaEngine\ElunaUtility.cpp" />
-    <ClCompile Include="..\..\src\game\LuaEngine\HookMgr.cpp" />
-    <ClCompile Include="..\..\src\game\LuaEngine\LuaEngine.cpp" />
-    <ClCompile Include="..\..\src\game\LuaEngine\LuaFunctions.cpp" />
+    <ClCompile Include="..\..\src\game\LuaEngine\ElunaEventMgr.cpp">
+      <Filter>LuaEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\LuaEngine\ElunaUtility.cpp">
+      <Filter>LuaEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\LuaEngine\HookMgr.cpp">
+      <Filter>LuaEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\LuaEngine\LuaEngine.cpp">
+      <Filter>LuaEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\LuaEngine\LuaFunctions.cpp">
+      <Filter>LuaEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game\AccountMgr.h">
@@ -1008,14 +1021,27 @@
     <ClInclude Include="..\..\src\game\TransportSystem.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\LuaEngine\AuraMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\CorpseMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\CreatureMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\GameObjectMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\GlobalMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\GroupMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\GuildMethods.h" />
-    <ClInclude Include="..\..\src\game\LuaEngine\ItemMethods.h" />
+    <ClInclude Include="..\..\src\game\LuaEngine\AuraMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\LuaEngine\CorpseMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\LuaEngine\CreatureMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\LuaEngine\GameObjectMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\LuaEngine\GlobalMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\LuaEngine\GroupMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\LuaEngine\GuildMethods.h">
+      <Filter>LuaEngine</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\game\LuaEngine\MapMethods.h" />
     <ClInclude Include="..\..\src\game\LuaEngine\ObjectMethods.h" />
     <ClInclude Include="..\..\src\game\LuaEngine\PlayerMethods.h" />
