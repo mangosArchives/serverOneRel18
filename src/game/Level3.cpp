@@ -4755,9 +4755,7 @@ bool ChatHandler::HandleServerShutDownCommand(char* args)
     {
         sWorld.ShutdownServ(time, SHUTDOWN_MASK_STOP, SHUTDOWN_EXIT_CODE);
     }
->>>>>>> 588d766... [Core] Fix Master Loot + Group Loot Issues - Part 2
 
-    sWorld.ShutdownServ(delay, 0, exitcode);
     return true;
 }
 

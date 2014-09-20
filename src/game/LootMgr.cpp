@@ -438,11 +438,22 @@ LootSlotType LootItem::GetSlotTypeForSharedLoot(PermissionTypes permission, Play
         case ALL_PERMISSION:
             return LOOT_SLOT_NORMAL;
         case GROUP_PERMISSION:
-            return (is_blocked || is_underthreshold) ? LOOT_SLOT_NORMAL : LOOT_SLOT_VIEW;
+		{
+			/// The roll for this item has been done.
+			if (is_underthreshold || winner || viewer->GetGroup()->IsRollDoneForItem((Creature *)lootTarget, this))
+				{ return LOOT_SLOT_NORMAL; }
+			
+			return LOOT_SLOT_VIEW;			
+		}
         case MASTER_PERMISSION:
-            return !is_underthreshold ? LOOT_SLOT_MASTER : LOOT_SLOT_NORMAL;
-        case OWNER_PERMISSION:
-            return LOOT_SLOT_OWNER;
+			// If we're not the winner, the item won't show up anymore.
+			if (winner && winner != viewer->GetObjectGuid())
+				{ return MAX_LOOT_SLOT_TYPE; }
+
+			if (is_underthreshold || viewer->GetObjectGuid() != viewer->GetGroup()->GetLooterGuid() || winner == viewer->GetObjectGuid())
+				{ return LOOT_SLOT_NORMAL; }
+			
+			return LOOT_SLOT_MASTER;
         default:
             return MAX_LOOT_SLOT_TYPE;
     }
