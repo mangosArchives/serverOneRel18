@@ -150,7 +150,6 @@ void GuildMgr::LoadGuilds()
             delete newGuild;
             continue;
         }
-
         newGuild->LoadGuildEventLogFromDB();
         newGuild->LoadGuildBankEventLogFromDB();
         newGuild->LoadGuildBankFromDB();

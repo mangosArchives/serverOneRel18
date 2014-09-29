@@ -138,6 +138,11 @@ class GMTicket
             CharacterDatabase.PExecute("UPDATE character_ticket SET ticket_text = '%s' WHERE guid = '%u'", escapedString.c_str(), m_guid.GetCounter());
         }
 
+        /** 
+         * Changes the response to the ticket
+         * @param text the response to give
+         * \deprecated
+         */
         void SetResponseText(const char* text)
         {
             m_responseText = text ? text : "";
@@ -217,7 +222,14 @@ class GMTicketMgr
             return *itr;
         }
 
-
+        /** 
+         * This will delete a \ref GMTicket from this manager of tickets so that we don't
+         * need to handle it anymore, this should be used in conjunction with setting
+         * resolved = 1 in the character_ticket table.
+         *
+         * Note: This will _not_ remove anything from the DB
+         * @param guid guid of the \ref Player who created the ticket that we want to delete
+         */
         void Delete(ObjectGuid guid)
         {
             GMTicketMap::iterator itr = m_GMTicketMap.find(guid);

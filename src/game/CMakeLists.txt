@@ -16,6 +16,8 @@
 
 set(LIBRARY_NAME game)
 
+add_definitions(-DDT_POLYREF64)
+
 include_directories(
   "${CMAKE_CURRENT_SOURCE_DIR}"
   "${CMAKE_CURRENT_SOURCE_DIR}/vmap"
@@ -26,7 +28,6 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour"
   "${CMAKE_SOURCE_DIR}/dep/recastnavigation/"
   "${CMAKE_SOURCE_DIR}/dep/include"
-  "${CMAKE_SOURCE_DIR}/dep/lualib"
   "${CMAKE_SOURCE_DIR}/src/shared"
   "${CMAKE_SOURCE_DIR}/src/framework"
   "${CMAKE_SOURCE_DIR}/src/game/LuaEngine"
@@ -36,6 +37,10 @@ include_directories(
   "${ACE_INCLUDE_DIR}"
 )
 
+if(SCRIPT_LIB_ELUNA)
+    include_directories("${CMAKE_SOURCE_DIR}/dep/lualib")
+endif()
+
 set(SRC_GRP_AHBOT
     AuctionHouseBot/AuctionHouseBot.cpp
     AuctionHouseBot/AuctionHouseBot.h
@@ -44,54 +49,23 @@ set(SRC_GRP_AHBOT
 set(SRC_GRP_BATTLEGROUND
     BattleGround/BattleGround.cpp
     BattleGround/BattleGround.h
-    BattleGround/BattleGroundAA.cpp
-    BattleGround/BattleGroundAA.h
     BattleGround/BattleGroundAB.cpp
     BattleGround/BattleGroundAB.h
     BattleGround/BattleGroundAV.cpp
     BattleGround/BattleGroundAV.h
-    BattleGround/BattleGroundBE.cpp
-    BattleGround/BattleGroundBE.h
-    BattleGround/BattleGroundEY.cpp
-    BattleGround/BattleGroundEY.h
     BattleGround/BattleGroundHandler.cpp
     BattleGround/BattleGroundMgr.cpp
     BattleGround/BattleGroundMgr.h
-    BattleGround/BattleGroundNA.cpp
-    BattleGround/BattleGroundNA.h
-    BattleGround/BattleGroundRL.cpp
-    BattleGround/BattleGroundRL.h
     BattleGround/BattleGroundWS.cpp
     BattleGround/BattleGroundWS.h
 )
 
-set(SRC_GRP_LUAENGINE
-    LuaEngine/AuraMethods.h
-    LuaEngine/CorpseMethods.h
-    LuaEngine/CreatureMethods.h
-    LuaEngine/GameObjectMethods.h
-    LuaEngine/GlobalMethods.h
-    LuaEngine/GroupMethods.h
-    LuaEngine/GuildMethods.h
-    LuaEngine/HookMgr.cpp
-    LuaEngine/HookMgr.h
-    LuaEngine/Includes.h
-    LuaEngine/ItemMethods.h
-    LuaEngine/LuaEngine.cpp
-    LuaEngine/LuaEngine.h
-    LuaEngine/LuaFunctions.cpp
-    LuaEngine/MapMethods.h
-    LuaEngine/ObjectMethods.h
-    LuaEngine/PlayerMethods.h
-    LuaEngine/QueryMethods.h
-    LuaEngine/QuestMethods.h
-    LuaEngine/SpellMethods.h
-    LuaEngine/UnitMethods.h
-    LuaEngine/VehicleMethods.h
-    LuaEngine/WeatherMethods.h
-    LuaEngine/WorldObjectMethods.h
-    LuaEngine/WorldPacketMethods.h
-)
+if (SCRIPT_LIB_ELUNA)
+    file(GLOB SRC_FILES_LUAENGINE LuaEngine/*.cpp LuaEngine/*.h)
+    set(SRC_GRP_LUAENGINE
+        ${SRC_FILES_LUAENGINE}
+    )
+endif()
 
 set(SRC_GRP_CHAT_COMMANDS
     debugcmds.cpp
@@ -146,8 +120,6 @@ set(SRC_GRP_MOVEMENT
 set(SRC_GRP_OBJECT
     AggressorAI.cpp
     AggressorAI.h
-    ArenaTeam.cpp
-    ArenaTeam.h
     AuctionHouseMgr.cpp
     AuctionHouseMgr.h
     Bag.cpp
@@ -185,8 +157,17 @@ set(SRC_GRP_OBJECT
     ItemEnchantmentMgr.cpp
     ItemEnchantmentMgr.h
     ItemPrototype.h
+    ItemHandler.cpp
+    LFGHandler.cpp
+    LFGMgr.cpp
+    Level0.cpp
+    Level1.cpp
+    Level2.cpp
+    Level3.cpp
+    LootHandler.cpp
     LootMgr.cpp
     LootMgr.h
+    Mail.cpp
     NullCreatureAI.cpp
     NullCreatureAI.h
     Object.cpp
@@ -220,8 +201,6 @@ set(SRC_GRP_OBJECT
     Totem.h
     TotemAI.cpp
     TotemAI.h
-    TransportSystem.cpp
-    TransportSystem.h
     Unit.cpp
     Unit.h
     UnitEvents.h
@@ -234,18 +213,10 @@ set(SRC_GRP_OUTDOOR_PVP
     OutdoorPvP/OutdoorPvP.h
     OutdoorPvP/OutdoorPvPEP.cpp
     OutdoorPvP/OutdoorPvPEP.h
-    OutdoorPvP/OutdoorPvPHP.cpp
-    OutdoorPvP/OutdoorPvPHP.h
     OutdoorPvP/OutdoorPvPMgr.cpp
     OutdoorPvP/OutdoorPvPMgr.h
-    OutdoorPvP/OutdoorPvPNA.cpp
-    OutdoorPvP/OutdoorPvPNA.h
     OutdoorPvP/OutdoorPvPSI.cpp
     OutdoorPvP/OutdoorPvPSI.h
-    OutdoorPvP/OutdoorPvPTF.cpp
-    OutdoorPvP/OutdoorPvPTF.h
-    OutdoorPvP/OutdoorPvPZM.cpp
-    OutdoorPvP/OutdoorPvPZM.h
 )
 
 set(SRC_GRP_REFERENCES
@@ -321,7 +292,6 @@ set(SRC_GRP_WORLD_HANDLERS
     AccountMgr.h
     AddonHandler.cpp
     AddonHandler.h
-    ArenaTeamHandler.cpp
     AuctionHouseHandler.cpp
     Cell.h
     CellImpl.h
@@ -364,6 +334,12 @@ set(SRC_GRP_WORLD_HANDLERS
     LFGHandler.h
     LootHandler.cpp
     Mail.cpp
+    ItemEnchantmentMgr.h
+    Item.h
+    ItemPrototype.h
+    LFGMgr.h
+    Language.h
+    LootMgr.h
     Mail.h
     MailHandler.cpp
     Map.cpp
@@ -394,10 +370,6 @@ set(SRC_GRP_WORLD_HANDLERS
     QuestHandler.cpp
     ScriptMgr.cpp
     ScriptMgr.h
-    SkillDiscovery.cpp
-    SkillDiscovery.h
-    SkillExtraItems.cpp
-    SkillExtraItems.h
     SkillHandler.cpp
     Spell.cpp
     Spell.h
@@ -413,7 +385,6 @@ set(SRC_GRP_WORLD_HANDLERS
     UnitAuraProcHandler.cpp
     UpdateData.cpp
     UpdateData.h
-    VoiceChatHandler.cpp
     WaypointManager.cpp
     WaypointManager.h
     Weather.cpp
@@ -425,7 +396,6 @@ set(SRC_GRP_WORLD_HANDLERS
 set(LIBRARY_SRCS
     ${SRC_GRP_AHBOT}
     ${SRC_GRP_BATTLEGROUND}
-    ${SRC_GRP_LUAENGINE}
     ${SRC_GRP_CHAT_COMMANDS}
     ${SRC_GRP_MOTION_GEN}
     ${SRC_GRP_MOVEMENT}
@@ -440,6 +410,10 @@ set(LIBRARY_SRCS
     pchdef.h
 )
 
+if(SCRIPT_LIB_ELUNA)
+    list(APPEND LIBRARY_SRCS ${SRC_GRP_LUAENGINE})
+endif()
+
 source_group("AhBot"
   FILES
     ${SRC_GRP_AHBOT}
@@ -450,10 +424,12 @@ source_group("BattleGround"
     ${SRC_GRP_BATTLEGROUND}
 )
 
-source_group("LuaEngine"
-  FILES
-    ${SRC_GRP_LUAENGINE}
-)
+if(SCRIPT_LIB_ELUNA)
+    source_group("LuaEngine"
+      FILES
+        ${SRC_GRP_LUAENGINE}
+    )
+endif()
 
 source_group("Chat Commands"
   FILES
@@ -516,8 +492,11 @@ add_library(${LIBRARY_NAME} STATIC
 target_link_libraries(${LIBRARY_NAME}
   shared
   detour
-  lualib
 )
+
+if(SCRIPT_LIB_ELUNA)
+    target_link_libraries(${LIBRARY_NAME} lualib)
+endif()
 
 if(UNIX)
   # Both systems don't have libdl and don't need them
@@ -529,9 +508,12 @@ if(UNIX)
 endif()
 
 add_dependencies(${LIBRARY_NAME} revision.h)
-add_dependencies(${LIBRARY_NAME} lualib)
+if(SCRIPT_LIB_ELUNA)
+    add_dependencies(${LIBRARY_NAME} lualib)
+endif()
+
 if(NOT ACE_USE_EXTERNAL)
-  add_dependencies(${LIBRARY_NAME} ACE_Project)
+    add_dependencies(${LIBRARY_NAME} ACE_Project)
 endif()
 
 # Generate precompiled header
@@ -550,4 +532,6 @@ if(PCH)
 endif()
 
 add_subdirectory(AuctionHouseBot)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine/extensions DESTINATION ${BIN_DIR}/lua_scripts/)
+if(SCRIPT_LIB_ELUNA)
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/LuaEngine/extensions DESTINATION ${BIN_DIR}/lua_scripts/)
+endif()

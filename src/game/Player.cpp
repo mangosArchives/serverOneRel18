@@ -68,7 +68,9 @@
 #include "Mail.h"
 #include "DBCStores.h"
 #include "SQLStorages.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 #include <cmath>
 
@@ -557,7 +559,9 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
 
 Player::~Player()
 {
+#ifdef ENABLE_ELUNA
     Eluna::RemoveRef(this);
+#endif /* ENABLE_ELUNA */
 
     CleanupsBeforeDelete();
 
@@ -712,7 +716,7 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
     UpdateMaxHealth();                                      // Update max Health (for add bonus from stamina)
     SetHealth(GetMaxHealth());
 
-    if (getPowerType() == POWER_MANA)
+    if (GetPowerType() == POWER_MANA)
     {
         UpdateMaxPower(POWER_MANA);                         // Update max Mana (for add bonus from intellect)
         SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
@@ -1300,7 +1304,9 @@ void Player::Update(uint32 update_diff, uint32 p_time)
         {
             // m_nextSave reseted in SaveToDB call
             // Used by Eluna
+#ifdef ENABLE_ELUNA
             sEluna->OnSave(this);
+#endif /* ENABLE_ELUNA */
             SaveToDB();
             DETAIL_LOG("Player '%s' (GUID: %u) saved", GetName(), GetGUIDLow());
         }
@@ -2257,9 +2263,12 @@ bool Player::IsGroupVisibleFor(Player* p) const
 {
     switch (sWorld.getConfig(CONFIG_UINT32_GROUP_VISIBILITY))
     {
-        default: return IsInSameGroupWith(p);
-        case 1:  return IsInSameRaidWith(p);
-        case 2:  return GetTeam() == p->GetTeam();
+        default:
+            return IsInSameGroupWith(p);
+        case 1:
+            return IsInSameRaidWith(p);
+        case 2:
+            return GetTeam() == p->GetTeam();
     }
 }
 
@@ -2302,7 +2311,7 @@ void Player::RemoveFromGroup(Group* group, ObjectGuid guid)
             // group->Disband(); already disbanded in RemoveMember
             sObjectMgr.RemoveGroup(group);
             delete group;
-            // removemember sets the player's group pointer to NULL
+            // RemoveMember sets the player's group pointer to NULL
         }
     }
 }
@@ -2333,7 +2342,9 @@ void Player::GiveXP(uint32 xp, Unit* victim)
     uint32 level = getLevel();
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnGiveXP(this, xp, victim);
+#endif /* ENABLE_ELUNA */
 
     // XP to money conversion processed in Player::RewardQuest
     if (level >= sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL))
@@ -2432,10 +2443,16 @@ void Player::GiveLevel(uint32 level)
         { pet->SynchronizeLevelWithOwner(); }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnLevelChanged(this, oldLevel);
+#endif /* ENABLE_ELUNA */
 
     if (MailLevelReward const* mailReward = sObjectMgr.GetMailLevelReward(level, getRaceMask()))
         MailDraft(mailReward->mailTemplateId).SendMailTo(this, MailSender(MAIL_CREATURE, mailReward->senderEntry));
+    // Used by Eluna
+#ifdef ENABLE_ELUNA
+//TODO:Fixup    sEluna->OnFreeTalentPointsChanged(this, points);
+#endif /* ENABLE_ELUNA */
 }
 
 void Player::UpdateFreeTalentPoints(bool resetIfNeed)
@@ -3533,7 +3550,9 @@ uint32 Player::resetTalentsCost() const
 bool Player::resetTalents(bool no_cost)
 {
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnTalentsReset(this, no_cost);
+#endif /* ENABLE_ELUNA */
 
     // not need after this call
     if (HasAtLoginFlag(AT_LOGIN_RESET_TALENTS))
@@ -4237,7 +4256,9 @@ void Player::ResurrectPlayer(float restore_percent, bool applySickness)
     // update visibility of player for nearby cameras
     UpdateObjectVisibility();
 
+#ifdef ENABLE_ELUNA
     sEluna->OnResurrect(this);
+#endif /* ENABLE_ELUNA */
 
     if (!applySickness)
         { return; }
@@ -6475,7 +6496,9 @@ void Player::UpdateZone(uint32 newZone, uint32 newArea)
     }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnUpdateZone(this, newZone, newArea);
+#endif /* ENABLE_ELUNA */
 
     m_zoneUpdateId    = newZone;
     m_zoneUpdateTimer = ZONE_UPDATE_INTERVAL;
@@ -6612,7 +6635,9 @@ void Player::DuelComplete(DuelCompleteType type)
     }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnDuelEnd(duel->opponent, this, type);
+#endif /* ENABLE_ELUNA */
 
     // Remove Duel Flag object
     if (GameObject* obj = GetMap()->GetGameObject(GetGuidValue(PLAYER_DUEL_ARBITER)))
@@ -10303,12 +10328,16 @@ Item* Player::EquipItem(uint16 pos, Item* pItem, bool update)
         ApplyEquipCooldown(pItem2);
 
         // Used by Eluna
+#ifdef ENABLE_ELUNA
         sEluna->OnEquip(this, pItem2, bag, slot);
+#endif /* ENABLE_ELUNA */
 
         return pItem2;
     }
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnEquip(this, pItem, bag, slot);
+#endif /* ENABLE_ELUNA */
 
     return pItem;
 }
@@ -10534,7 +10563,9 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
             ApplyItemOnStoreSpell(pItem, false);
 
         ItemRemovedQuestCheck(pItem->GetEntry(), pItem->GetCount());
+#ifdef ENABLE_ELUNA
         sEluna->OnRemove(this, pItem);
+#endif /* ENABLE_ELUNA */
 
         if (bag == INVENTORY_SLOT_BAG_0)
         {
@@ -12999,9 +13030,23 @@ void Player::RewardQuest(Quest const* pQuest, uint32 reward, Object* questGiver,
     switch (questGiver->GetTypeId())
     {
         case TYPEID_UNIT:
+#ifdef ENABLE_ELUNA
+            if (sEluna->OnQuestReward(this, (Creature*)questGiver, pQuest, reward))
+            {
+                handled = true;
+                break;
+            }
+#endif /* ENABLE_ELUNA */
             handled = sScriptMgr.OnQuestRewarded(this, (Creature*)questGiver, pQuest);
             break;
         case TYPEID_GAMEOBJECT:
+#ifdef ENABLE_ELUNA
+            if (sEluna->OnQuestReward(this, (GameObject*)questGiver, pQuest, reward))
+            {
+                handled = true;
+                break;
+            }
+#endif /* ENABLE_ELUNA */
             handled = sScriptMgr.OnQuestRewarded(this, (GameObject*)questGiver, pQuest);
             break;
     }
@@ -14058,12 +14103,12 @@ void Player::SendQuestReward(Quest const* pQuest, uint32 XP, Object* questGiver)
     GetSession()->SendPacket(&data);
 
     // Used by Eluna
-    if (Creature* pCreature = questGiver->ToCreature())
-        sEluna->OnQuestComplete(pPlayer, pCreature, pQuest);
+//TODO:Fixup    if (Creature* pCreature = questGiver->ToCreature())
+//        sEluna->OnQuestComplete(pPlayer, pCreature, pQuest);
 
     // Used by Eluna
-    if (GameObject* pGameObject = questGiver->ToGameObject())
-        sEluna->OnQuestComplete(pPlayer, pGameObject, pQuest);
+//TODO:Fixup    if (GameObject* pGameObject = questGiver->ToGameObject())
+//        sEluna->OnQuestComplete(pPlayer, pGameObject, pQuest);
 }
 
 void Player::SendQuestFailed(uint32 quest_id)
@@ -14633,7 +14678,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
     m_deathExpireTime = (time_t)fields[36].GetUInt64();
     if (m_deathExpireTime > now + MAX_DEATH_COUNT * DEATH_EXPIRE_STEP)
-        m_deathExpireTime = now + MAX_DEATH_COUNT * DEATH_EXPIRE_STEP - 1;
+        { m_deathExpireTime = now + MAX_DEATH_COUNT * DEATH_EXPIRE_STEP - 1; }
 
     std::string taxi_nodes = fields[37].GetCppString();
 
@@ -15657,7 +15702,9 @@ InstancePlayerBind* Player::BindToInstance(DungeonPersistentState* state, bool p
             DEBUG_LOG("Player::BindToInstance: %s(%d) is now bound to map %d, instance %d, difficulty %d",
                       GetName(), GetGUIDLow(), state->GetMapId(), state->GetInstanceId(), state->GetDifficulty());
         // Used by Eluna
+#ifdef ENABLE_ELUNA
         sEluna->OnBindToInstance(this, (Difficulty)0, state->GetMapId(), permanent);
+#endif /* ENABLE_ELUNA */
         return &bind;
     }
     else
@@ -15786,7 +15833,7 @@ void Player::ConvertInstancesToGroup(Player* player, Group* group, ObjectGuid pl
                 has_binds = true;
 
                 if (group)
-                    group->BindToInstance(itr->second.state, itr->second.perm, true);
+                { group->BindToInstance(itr->second.state, itr->second.perm, true); }
 
                 // permanent binds are not removed
                 if (!itr->second.perm)
@@ -16844,7 +16891,9 @@ void Player::UpdateDuelFlag(time_t currTime)
         { return; }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnDuelStart(this, duel->opponent);
+#endif /* ENABLE_ELUNA */
 
     SetUInt32Value(PLAYER_DUEL_TEAM, 1);
     duel->opponent->SetUInt32Value(PLAYER_DUEL_TEAM, 2);
@@ -17641,22 +17690,22 @@ void Player::InitDataForForm(bool reapplyMods)
     {
         case FORM_CAT:
         {
-            if (getPowerType() != POWER_ENERGY)
-                { setPowerType(POWER_ENERGY); }
+            if (GetPowerType() != POWER_ENERGY)
+                { SetPowerType(POWER_ENERGY); }
             break;
         }
         case FORM_BEAR:
         case FORM_DIREBEAR:
         {
-            if (getPowerType() != POWER_RAGE)
-                { setPowerType(POWER_RAGE); }
+            if (GetPowerType() != POWER_RAGE)
+                { SetPowerType(POWER_RAGE); }
             break;
         }
         default:                                            // 0, for example
         {
             ChrClassesEntry const* cEntry = sChrClassesStore.LookupEntry(getClass());
-            if (cEntry && cEntry->powerType < MAX_POWERS && uint32(getPowerType()) != cEntry->powerType)
-                { setPowerType(Powers(cEntry->powerType)); }
+            if (cEntry && cEntry->powerType < MAX_POWERS && uint32(GetPowerType()) != cEntry->powerType)
+                { SetPowerType(Powers(cEntry->powerType)); }
 
             break;
         }
@@ -18643,9 +18692,11 @@ void Player::SendInitialPacketsBeforeAddToMap()
 
     // SMSG_SET_AURA_SINGLE
 
+    const float game_time = 0.01666667f; // Game speed
+
     data.Initialize(SMSG_LOGIN_SETTIMESPEED, 4 + 4);
     data << uint32(secsToTimeBitFields(sWorld.GetGameTime()));
-    data << (float)0.01666667f;                             // game speed
+    data << game_time; // Float is 4 bytes here
     GetSession()->SendPacket(&data);
 
     // set fly flag if in fly form or taxi flight to prevent visually drop at ground in showup moment

@@ -2822,8 +2822,8 @@ void Aura::HandleAuraModShapeshift(bool apply, bool Real)
         if (PowerType != POWER_MANA)
         {
             // reset power to default values only at power change
-            if (target->getPowerType() != PowerType)
-                { target->setPowerType(PowerType); }
+            if (target->GetPowerType() != PowerType)
+                { target->SetPowerType(PowerType); }
 
             switch (form)
             {
@@ -2912,7 +2912,7 @@ void Aura::HandleAuraModShapeshift(bool apply, bool Real)
         }
 
         if (target->getClass() == CLASS_DRUID)
-            { target->setPowerType(POWER_MANA); }
+            { target->SetPowerType(POWER_MANA); }
 
         target->SetShapeshiftForm(FORM_NONE);
 
@@ -4950,7 +4950,7 @@ void Aura::HandleModPowerRegen(bool apply, bool Real)       // drinking
     if (!Real)
         { return; }
 
-    Powers pt = GetTarget()->getPowerType();
+    Powers pt = GetTarget()->GetPowerType();
     if (m_modifier.periodictime == 0)
     {
         // Anger Management (only spell use this aura for rage)
@@ -5067,7 +5067,7 @@ void  Aura::HandleAuraModIncreaseMaxHealth(bool apply, bool /*Real*/)
 void Aura::HandleAuraModIncreaseEnergy(bool apply, bool /*Real*/)
 {
     Unit* target = GetTarget();
-    Powers powerType = target->getPowerType();
+    Powers powerType = target->GetPowerType();
     if (int32(powerType) != m_modifier.m_miscvalue)
         { return; }
 
@@ -5078,7 +5078,7 @@ void Aura::HandleAuraModIncreaseEnergy(bool apply, bool /*Real*/)
 
 void Aura::HandleAuraModIncreaseEnergyPercent(bool apply, bool /*Real*/)
 {
-    Powers powerType = GetTarget()->getPowerType();
+    Powers powerType = GetTarget()->GetPowerType();
     if (int32(powerType) != m_modifier.m_miscvalue)
         { return; }
 
@@ -6181,7 +6181,7 @@ void Aura::PeriodicTick()
             Powers power = Powers(m_modifier.m_miscvalue);
 
             // power type might have changed between aura applying and tick (druid's shapeshift)
-            if (target->getPowerType() != power)
+            if (target->GetPowerType() != power)
                 { return; }
 
             Unit* pCaster = GetCaster();
@@ -6243,7 +6243,7 @@ void Aura::PeriodicTick()
             {
                 case 32960:                                 // Mark of Kazzak
                 {
-                    if (target->GetTypeId() == TYPEID_PLAYER && target->getPowerType() == POWER_MANA)
+                    if (target->GetTypeId() == TYPEID_PLAYER && target->GetPowerType() == POWER_MANA)
                     {
                         // Drain 5% of target's mana
                         pdamage = target->GetMaxPower(POWER_MANA) * 5 / 100;
@@ -6348,7 +6348,7 @@ void Aura::PeriodicTick()
 
             Powers powerType = Powers(m_modifier.m_miscvalue);
 
-            if (!target->IsAlive() || target->getPowerType() != powerType)
+            if (!target->IsAlive() || target->GetPowerType() != powerType)
                 { return; }
 
             // resilience reduce mana draining effect at spell crit damage reduction (added in 2.4)
@@ -6398,7 +6398,7 @@ void Aura::PeriodicTick()
             if (!target->IsAlive())
                 { return; }
 
-            Powers pt = target->getPowerType();
+            Powers pt = target->GetPowerType();
             if (int32(pt) != m_modifier.m_miscvalue)
                 { return; }
 
@@ -6664,7 +6664,7 @@ void Aura::PeriodicDummyTick()
                     if (target->GetTypeId() != TYPEID_PLAYER)
                         return;
                     // Should be manauser
-                    if (target->getPowerType() != POWER_MANA)
+                    if (target->GetPowerType() != POWER_MANA)
                         return;
                     Unit* caster = GetCaster();
                     if (!caster)
@@ -6783,7 +6783,7 @@ void Aura::HandleAuraMirrorImage(bool apply, bool Real)
         pCreature->SetByteValue(UNIT_FIELD_BYTES_0, 0, caster->getRace());
         pCreature->SetByteValue(UNIT_FIELD_BYTES_0, 1, caster->getClass());
         pCreature->SetByteValue(UNIT_FIELD_BYTES_0, 2, caster->getGender());
-        pCreature->SetByteValue(UNIT_FIELD_BYTES_0, 3, caster->getPowerType());
+        pCreature->SetByteValue(UNIT_FIELD_BYTES_0, 3, caster->GetPowerType());
 
         pCreature->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_CLONED);
 

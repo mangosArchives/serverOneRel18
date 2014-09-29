@@ -5532,7 +5532,6 @@ void ObjectMgr::LoadAreaTriggerTeleports()
         }
 
         mAreaTriggers[Trigger_ID] = at;
-
     }
     while (result->NextRow());
 

@@ -49,7 +49,10 @@
 #include "movement/packet_builder.h"
 #include "CreatureLinkingMgr.h"
 #include "Chat.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#include "ElunaEventMgr.h"
+#endif /* ENABLE_ELUNA */
 
 Object::Object()
 {
@@ -65,7 +68,9 @@ Object::Object()
 
 Object::~Object()
 {
+#ifdef ENABLE_ELUNA
     Eluna::RemoveRef(this);
+#endif /* ENABLE_ELUNA */
 
     if (IsInWorld())
     {
@@ -891,6 +896,9 @@ void Object::MarkForClientUpdate()
 }
 
 WorldObject::WorldObject() :
+#ifdef ENABLE_ELUNA
+    elunaEvents(new ElunaEventProcessor(this)),
+#endif /* ENABLE_ELUNA */
     m_transportInfo(NULL), m_currMap(NULL),
     m_mapId(0), m_InstanceId(0),
     m_isActiveObject(false)
@@ -899,7 +907,10 @@ WorldObject::WorldObject() :
 
 WorldObject::~WorldObject()
 {
+#ifdef ENABLE_ELUNA
     Eluna::RemoveRef(this);
+    delete elunaEvents;
+#endif /* ENABLE_ELUNA */
 }
 
 void WorldObject::CleanupsBeforeDelete()
@@ -1540,8 +1551,10 @@ Creature* WorldObject::SummonCreature(uint32 id, float x, float y, float z, floa
     if (GetTypeId() == TYPEID_UNIT && ((Creature*)this)->AI())
         { ((Creature*)this)->AI()->JustSummoned(pCreature); }
 
+#ifdef ENABLE_ELUNA
     if (Unit* summoner = ToUnit())
         sEluna->OnSummoned(pCreature, summoner);
+#endif /* ENABLE_ELUNA */
 
     // Creature Linking, Initial load is handled like respawn
     if (pCreature->IsLinkingEventTrigger())

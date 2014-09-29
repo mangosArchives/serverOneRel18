@@ -38,7 +38,9 @@
 #include "MapPersistentStateMgr.h"
 #include "Util.h"
 #include "LootMgr.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 #define LOOT_ROLL_TIMEOUT  (1*MINUTE*IN_MILLISECONDS)
 
@@ -65,7 +67,9 @@ Group::Group() : m_Id(0), m_groupType(GROUPTYPE_NORMAL),
 
 Group::~Group()
 {
+#ifdef ENABLE_ELUNA
     Eluna::RemoveRef(this);
+#endif /* ENABLE_ELUNA */
 
     if (m_bgGroup)
     {
@@ -145,7 +149,9 @@ bool Group::Create(ObjectGuid guid, const char* name)
         { CharacterDatabase.CommitTransaction(); }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnCreate(this, m_leaderGuid, m_groupType);
+#endif /* ENABLE_ELUNA */
 
     return true;
 }
@@ -235,7 +241,9 @@ bool Group::AddInvite(Player* player)
     player->SetGroupInvite(this);
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnInviteMember(this, player->GetObjectGuid());
+#endif /* ENABLE_ELUNA */
 
     return true;
 }
@@ -310,7 +318,9 @@ bool Group::AddMember(ObjectGuid guid, const char* name)
         UpdatePlayerOutOfRange(player);
 
         // Used by Eluna
+#ifdef ENABLE_ELUNA
         sEluna->OnAddMember(this, player->GetObjectGuid());
+#endif /* ENABLE_ELUNA */
 
         // quest related GO state dependent from raid membership
         if (isRaidGroup())
@@ -370,7 +380,9 @@ uint32 Group::RemoveMember(ObjectGuid guid, uint8 method)
         { Disband(true); }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnRemoveMember(this, guid, method); // Kicker and Reason not a part of Mangos, implement?
+#endif /* ENABLE_ELUNA */
 
     return m_memberSlots.size();
 }
@@ -382,7 +394,9 @@ void Group::ChangeLeader(ObjectGuid guid)
         { return; }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnChangeLeader(this, guid, GetLeaderGuid());
+#endif /* ENABLE_ELUNA */
 
     _setLeader(guid);
 
@@ -458,7 +472,9 @@ void Group::Disband(bool hideDestroy)
     }
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnDisband(this);
+#endif /* ENABLE_ELUNA */
 
     m_leaderGuid.Clear();
     m_leaderName = "";
@@ -766,6 +782,8 @@ void Group::EndRoll()
 void Group::CountTheRoll(Rolls::iterator& rollI)
 {
     Roll* roll = *rollI;
+	
+
     if (!roll->isValid())                                   // is loot already deleted ?
     {
         rollI = RollId.erase(rollI);
@@ -870,6 +888,7 @@ void Group::CountTheRoll(Rolls::iterator& rollI)
         LootItem* item = &(roll->getLoot()->items[roll->itemSlot]);
         if (item) { item->is_blocked = false; }
     }
+
     rollI = RollId.erase(rollI);
     delete roll;
 }

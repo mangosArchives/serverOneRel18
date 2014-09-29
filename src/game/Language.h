@@ -654,6 +654,7 @@ enum MangosStrings
     LANG_BG_EY_START_ONE_MINUTE         = 636,
     LANG_BG_EY_START_HALF_MINUTE        = 637,
     LANG_BG_EY_HAS_BEGUN                = 638,
+
     // 639 - 649 not used
     LANG_BG_ALLY                        = 650,
     LANG_BG_HORDE                       = 651,
@@ -713,9 +714,9 @@ enum MangosStrings
     LANG_BG_QUEUE_ANNOUNCE_SELF         = 711,
     LANG_BG_QUEUE_ANNOUNCE_WORLD        = 712,
     LANG_YOUR_ARENA_LEVEL_REQ_ERROR     = 713,
-//                                      = 714, not used
+    //                                  = 714, not used
     LANG_YOUR_BG_LEVEL_REQ_ERROR        = 715,
-//                                      = 716, not used
+    //                                  = 716, not used
     LANG_BG_STARTED_ANNOUNCE_WORLD      = 717,
     LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN = 718,
     LANG_ARENA_QUEUE_ANNOUNCE_WORLD_EXIT = 719,

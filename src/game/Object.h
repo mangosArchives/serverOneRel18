@@ -76,6 +76,9 @@ class Map;
 class UpdateMask;
 class InstanceData;
 class TerrainInfo;
+#ifdef ENABLE_ELUNA
+class ElunaEventProcessor;
+#endif /* ENABLE_ELUNA */
 class TransportInfo;
 struct MangosStringLocale;
 
@@ -640,7 +643,11 @@ class MANGOS_DLL_SPEC WorldObject : public Object
         // ASSERT print helper
         bool PrintCoordinatesError(float x, float y, float z, char const* descr) const;
 
-        virtual void StartGroupLoot(Group* /*group*/, uint32 /*timer*/) {}
+        virtual void StartGroupLoot(Group* /*group*/, uint32 /*timer*/) { }
+
+#ifdef ENABLE_ELUNA
+        ElunaEventProcessor* const elunaEvents;
+#endif /* ENABLE_ELUNA */
 
     protected:
         explicit WorldObject();

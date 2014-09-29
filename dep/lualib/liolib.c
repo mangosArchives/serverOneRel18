@@ -10,8 +10,8 @@
 ** should not affect non-POSIX systems
 */
 #if !defined(_FILE_OFFSET_BITS)
-#define    _LARGEFILE_SOURCE    1
-#define _FILE_OFFSET_BITS    64
+#define	_LARGEFILE_SOURCE	1
+#define _FILE_OFFSET_BITS	64
 #endif
 
 
@@ -37,10 +37,10 @@
 ** the standard ones.
 */
 #define lua_checkmode(mode) \
-    (*mode != '\0' && strchr("rwa", *(mode++)) != NULL &&    \
-    (*mode != '+' || ++mode) &&  /* skip if char is '+' */    \
-    (*mode != 'b' || ++mode) &&  /* skip if char is 'b' */    \
-    (*mode == '\0'))
+	(*mode != '\0' && strchr("rwa", *(mode++)) != NULL &&	\
+	(*mode != '+' || ++mode) &&  /* skip if char is '+' */	\
+	(*mode != 'b' || ++mode) &&  /* skip if char is 'b' */	\
+	(*mode == '\0'))
 
 #endif
 
@@ -51,29 +51,29 @@
 ** =======================================================
 */
 
-#if !defined(lua_popen)    /* { */
+#if !defined(lua_popen)	/* { */
 
-#if defined(LUA_USE_POPEN)    /* { */
+#if defined(LUA_USE_POPEN)	/* { */
 
-#define lua_popen(L,c,m)    ((void)L, fflush(NULL), popen(c,m))
-#define lua_pclose(L,file)    ((void)L, pclose(file))
+#define lua_popen(L,c,m)	((void)L, fflush(NULL), popen(c,m))
+#define lua_pclose(L,file)	((void)L, pclose(file))
 
-#elif defined(LUA_WIN)        /* }{ */
+#elif defined(LUA_WIN)		/* }{ */
 
-#define lua_popen(L,c,m)        ((void)L, _popen(c,m))
-#define lua_pclose(L,file)        ((void)L, _pclose(file))
-
-
-#else                /* }{ */
-
-#define lua_popen(L,c,m)        ((void)((void)c, m),  \
-        luaL_error(L, LUA_QL("popen") " not supported"), (FILE*)0)
-#define lua_pclose(L,file)        ((void)((void)L, file), -1)
+#define lua_popen(L,c,m)		((void)L, _popen(c,m))
+#define lua_pclose(L,file)		((void)L, _pclose(file))
 
 
-#endif                /* } */
+#else				/* }{ */
 
-#endif            /* } */
+#define lua_popen(L,c,m)		((void)((void)c, m),  \
+		luaL_error(L, LUA_QL("popen") " not supported"), (FILE*)0)
+#define lua_pclose(L,file)		((void)((void)L, file), -1)
+
+
+#endif				/* } */
+
+#endif			/* } */
 
 /* }====================================================== */
 
@@ -84,47 +84,47 @@
 ** =======================================================
 */
 
-#if !defined(lua_fseek)    && !defined(LUA_ANSI)    /* { */
+#if !defined(lua_fseek)	&& !defined(LUA_ANSI)	/* { */
 
-#if defined(LUA_USE_POSIX)    /* { */
+#if defined(LUA_USE_POSIX)	/* { */
 
-#define l_fseek(f,o,w)        fseeko(f,o,w)
-#define l_ftell(f)        ftello(f)
-#define l_seeknum        off_t
+#define l_fseek(f,o,w)		fseeko(f,o,w)
+#define l_ftell(f)		ftello(f)
+#define l_seeknum		off_t
 
 #elif defined(LUA_WIN) && !defined(_CRTIMP_TYPEINFO) \
-   && defined(_MSC_VER) && (_MSC_VER >= 1400)    /* }{ */
+   && defined(_MSC_VER) && (_MSC_VER >= 1400)	/* }{ */
 /* Windows (but not DDK) and Visual C++ 2005 or higher */
 
-#define l_fseek(f,o,w)        _fseeki64(f,o,w)
-#define l_ftell(f)        _ftelli64(f)
-#define l_seeknum        __int64
+#define l_fseek(f,o,w)		_fseeki64(f,o,w)
+#define l_ftell(f)		_ftelli64(f)
+#define l_seeknum		__int64
 
-#endif    /* } */
+#endif	/* } */
 
-#endif            /* } */
+#endif			/* } */
 
 
-#if !defined(l_fseek)        /* default definitions */
-#define l_fseek(f,o,w)        fseek(f,o,w)
-#define l_ftell(f)        ftell(f)
-#define l_seeknum        long
+#if !defined(l_fseek)		/* default definitions */
+#define l_fseek(f,o,w)		fseek(f,o,w)
+#define l_ftell(f)		ftell(f)
+#define l_seeknum		long
 #endif
 
 /* }====================================================== */
 
 
-#define IO_PREFIX    "_IO_"
-#define IO_INPUT    (IO_PREFIX "input")
-#define IO_OUTPUT    (IO_PREFIX "output")
+#define IO_PREFIX	"_IO_"
+#define IO_INPUT	(IO_PREFIX "input")
+#define IO_OUTPUT	(IO_PREFIX "output")
 
 
 typedef luaL_Stream LStream;
 
 
-#define tolstream(L)    ((LStream *)luaL_checkudata(L, 1, LUA_FILEHANDLE))
+#define tolstream(L)	((LStream *)luaL_checkudata(L, 1, LUA_FILEHANDLE))
 
-#define isclosed(p)    ((p)->closef == NULL)
+#define isclosed(p)	((p)->closef == NULL)
 
 
 static int io_type (lua_State *L) {
@@ -390,7 +390,7 @@ static int read_line (lua_State *L, FILE *f, int chop) {
 }
 
 
-#define MAX_SIZE_T    (~(size_t)0)
+#define MAX_SIZE_T	(~(size_t)0)
 
 static void read_all (lua_State *L, FILE *f) {
   size_t rlen = LUAL_BUFFERSIZE;  /* how much to read in each cycle */

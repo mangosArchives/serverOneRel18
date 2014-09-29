@@ -218,6 +218,7 @@ For all ACTION_T_RANDOM Actions, When a Particular Param is selected for the Eve
 47 | ACTION_T_SET_STAND_STATE             | StandState                    | Set the unit stand state (Param1) of the current creature.
 48 | ACTION_T_CHANGE_MOVEMENT             | MovementType, WanderDistance  | Change the unit movement type (Param1). If the movement type is Random Movement (1), the WanderDistance (Param2) must be provided.
 49 | ACTION_T_SUMMON_UNIQUE               | CreatureID, Target, SummonID  | Only summons a creature when not already spawned (Param1) to attack target (Param2) at location specified by EventAI_Summons (Param3). Preventing multiple spawns of unique creatures.
+50 | ACTION_T_EMOTE_TARGET                | EmoteId, TargetGuid           |
 
 Event Types: Expanded and Detailed Information
 ----------------------------------------------

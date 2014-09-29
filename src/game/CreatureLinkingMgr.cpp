@@ -557,7 +557,7 @@ void CreatureLinkingHolder::ProcessSlave(CreatureLinkingEvent eventType, Creatur
                 { pSlave->ForcedDespawn(); }
 
             if (flag & FLAG_FOLLOW && pSlave->IsAlive() && !pSlave->IsInCombat())
-                SetFollowing(pSlave, pSource);
+                { SetFollowing(pSlave, pSource); }
 
             break;
         case LINKING_EVENT_DESPAWN:

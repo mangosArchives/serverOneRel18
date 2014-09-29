@@ -42,7 +42,11 @@
 #include "ArenaTeam.h"
 #include "World.h"
 #include "WorldPacket.h"
+#include "Language.h"
 #include "GameEventMgr.h"
+#ifdef ENABLE_ELUNA
+#include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 #include "Policies/Singleton.h"
 

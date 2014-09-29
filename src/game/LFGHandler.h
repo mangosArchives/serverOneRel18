@@ -22,8 +22,9 @@
  * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
-#ifndef LFGHANDLER_H
-#define LFGHANDLER_H
+
+#ifndef MANGOSSERVER_LFGHANDLER_H
+#define MANGOSSERVER_LFGHANDLER_H
 
 enum MeetingstoneQueueStatus
 {

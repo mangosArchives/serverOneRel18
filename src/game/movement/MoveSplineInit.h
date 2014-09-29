@@ -94,7 +94,7 @@ namespace Movement
              * @param forceDestination
              * @param maxPathRange 
              */
-            void MoveTo(const Vector3& destination, bool generatePath = false, bool forceDestination = false);
+            void MoveTo(const Vector3& destination, bool generatePath = false, bool forceDestination = false, float maxPathRange = 0.0f);
             /**
              * @brief
              *
@@ -105,7 +105,7 @@ namespace Movement
              * @param forceDestination
              * @param maxPathRange
              */
-            void MoveTo(float x, float y, float z, bool generatePath = false, bool forceDestination = false);
+            void MoveTo(float x, float y, float z, bool generatePath = false, bool forceDestination = false, float maxPathRange = 0.0f);
 
             /**
              * @brief Sets Id of fisrt point of the path
@@ -211,10 +211,10 @@ namespace Movement
      * @param generatePath
      * @param forceDestination
      */
-    inline void MoveSplineInit::MoveTo(float x, float y, float z, bool generatePath, bool forceDestination)
+    inline void MoveSplineInit::MoveTo(float x, float y, float z, bool generatePath, bool forceDestination, float maxPathRange)
     {
         Vector3 v(x, y, z);
-        MoveTo(v, generatePath, forceDestination);
+        MoveTo(v, generatePath, forceDestination, maxPathRange);
     }
 
     /**
@@ -224,11 +224,15 @@ namespace Movement
      * @param generatePath
      * @param forceDestination
      */
-    inline void MoveSplineInit::MoveTo(const Vector3& dest, bool generatePath, bool forceDestination)
+    inline void MoveSplineInit::MoveTo(const Vector3& dest, bool generatePath, bool forceDestination, float maxPathRange)
     {
         if (generatePath)
         {
             PathFinder path(&unit);
+            if (maxPathRange > 0.0f)
+            {
+                path.setPathLengthLimit(maxPathRange);
+            }
             path.calculate(dest.x, dest.y, dest.z, forceDestination);
             MovebyPath(path.getPath());
         }

@@ -441,7 +441,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket& recv_data)
             // this is still needed here if battleground "jumping" shouldn't add deserter debuff
             // also this is required to prevent stuck at old battleground after SetBattleGroundId set to new
             if (BattleGround* currentBg = _player->GetBattleGround())
-                currentBg->RemovePlayerAtLeave(_player->GetObjectGuid(), false, true);
+                { currentBg->RemovePlayerAtLeave(_player->GetObjectGuid(), false, true); }
 
             // set the destination instance id
             _player->SetBattleGroundId(bg->GetInstanceID(), bgTypeId);

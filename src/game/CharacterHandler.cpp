@@ -46,7 +46,9 @@
 #include "Language.h"
 #include "Chat.h"
 #include "SpellMgr.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 // config option SkipCinematics supported values
 enum CinematicsSkipMode

@@ -50,6 +50,8 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature& creature)
     const float angle = rand_norm_f() * (M_PI_F * 2.0f);
     const float range = rand_norm_f() * i_radius;
 
+    const float maxPathRange = range * 1.5f;
+
     float destX = i_x + range * cos(angle);
     float destY = i_y + range * sin(angle);
     float destZ = i_z + frand(-1, 1) * i_verticalZ;
@@ -58,7 +60,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature& creature)
     creature.addUnitState(UNIT_STAT_ROAMING_MOVE);
 
     Movement::MoveSplineInit init(creature);
-    init.MoveTo(destX, destY, destZ, true);
+    init.MoveTo(destX, destY, destZ, true, false, maxPathRange);
     init.SetWalk(true);
     init.Launch();
 

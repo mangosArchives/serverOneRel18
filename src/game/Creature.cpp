@@ -55,7 +55,9 @@
 #include "CellImpl.h"
 #include "movement/MoveSplineInit.h"
 #include "CreatureLinkingMgr.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 // apply implementation of the singletons
 #include "Policies/Singleton.h"
@@ -165,7 +167,9 @@ Creature::Creature(CreatureSubtype subtype) : Unit(),
 
 Creature::~Creature()
 {
+#ifdef ENABLE_ELUNA
     Eluna::RemoveRef(this);
+#endif /* ENABLE_ELUNA */
 
     CleanupsBeforeDelete();
 
@@ -177,8 +181,10 @@ Creature::~Creature()
 
 void Creature::AddToWorld()
 {
+#ifdef ENABLE_ELUNA
     if (!IsInWorld())
         sEluna->OnAddToWorld(this);
+#endif /* ENABLE_ELUNA */
 
     ///- Register the creature for guid lookup
     if (!IsInWorld() && GetObjectGuid().GetHigh() == HIGHGUID_UNIT)
@@ -189,8 +195,10 @@ void Creature::AddToWorld()
 
 void Creature::RemoveFromWorld()
 {
+#ifdef ENABLE_ELUNA
     if (IsInWorld())
         sEluna->OnRemoveFromWorld(this);
+#endif /* ENABLE_ELUNA */
 
     ///- Remove the creature from the accessor
     if (IsInWorld() && GetObjectGuid().GetHigh() == HIGHGUID_UNIT)
@@ -668,7 +676,7 @@ void Creature::RegeneratePower()
     if (!IsRegeneratingPower())
         return;
 
-    Powers powerType = getPowerType();
+    Powers powerType = GetPowerType();
     uint32 curValue = GetPower(powerType);
     uint32 maxValue = GetMaxPower(powerType);
 
@@ -1093,7 +1101,7 @@ void Creature::SetLootRecipient(Unit* unit)
     if (Group* group = player->GetGroup())
         { m_lootGroupRecipientId = group->GetId(); }
 
-    SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_TAPPED);
+	SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_TAPPED);
 }
 
 void Creature::SaveToDB()
@@ -2134,11 +2142,11 @@ bool Creature::MeetsSelectAttackingRequirement(Unit* pTarget, SpellEntry const* 
     if (selectFlags & SELECT_FLAG_PLAYER && pTarget->GetTypeId() != TYPEID_PLAYER)
         { return false; }
 
-    if (selectFlags & SELECT_FLAG_POWER_MANA && pTarget->getPowerType() != POWER_MANA)
+    if (selectFlags & SELECT_FLAG_POWER_MANA && pTarget->GetPowerType() != POWER_MANA)
         { return false; }
-    else if (selectFlags & SELECT_FLAG_POWER_RAGE && pTarget->getPowerType() != POWER_RAGE)
+    else if (selectFlags & SELECT_FLAG_POWER_RAGE && pTarget->GetPowerType() != POWER_RAGE)
         { return false; }
-    else if (selectFlags & SELECT_FLAG_POWER_ENERGY && pTarget->getPowerType() != POWER_ENERGY)
+    else if (selectFlags & SELECT_FLAG_POWER_ENERGY && pTarget->GetPowerType() != POWER_ENERGY)
         { return false; }
 
     if (selectFlags & SELECT_FLAG_IN_MELEE_RANGE && !CanReachWithMeleeAttack(pTarget))
