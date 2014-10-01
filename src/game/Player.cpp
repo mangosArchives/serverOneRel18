@@ -2449,10 +2449,15 @@ void Player::GiveLevel(uint32 level)
 
     if (MailLevelReward const* mailReward = sObjectMgr.GetMailLevelReward(level, getRaceMask()))
         MailDraft(mailReward->mailTemplateId).SendMailTo(this, MailSender(MAIL_CREATURE, mailReward->senderEntry));
+}
+
+void Player::SetFreeTalentPoints(uint32 points)
+{
     // Used by Eluna
 #ifdef ENABLE_ELUNA
-//TODO:Fixup    sEluna->OnFreeTalentPointsChanged(this, points);
+    sEluna->OnFreeTalentPointsChanged(this, points);
 #endif /* ENABLE_ELUNA */
+    SetUInt32Value(PLAYER_CHARACTER_POINTS1, points);
 }
 
 void Player::UpdateFreeTalentPoints(bool resetIfNeed)
@@ -2641,13 +2646,6 @@ void Player::InitStatsForLevel(bool reapplyMods)
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
         { pet->SynchronizeLevelWithOwner(); }
-}
-
-void Player::SetFreeTalentPoints(uint32 points)
-{
-    // Used by Eluna
-    sEluna->OnFreeTalentPointsChanged(this, points);
-    SetUInt32Value(PLAYER_CHARACTER_POINTS1, points);
 }
 
 /* Used during Player::SendInitialPacketsBeforeAddToMap */
@@ -14101,14 +14099,6 @@ void Player::SendQuestReward(Quest const* pQuest, uint32 XP, Object* questGiver)
             { data << uint32(0) << uint32(0); }
     }
     GetSession()->SendPacket(&data);
-
-    // Used by Eluna
-//TODO:Fixup    if (Creature* pCreature = questGiver->ToCreature())
-//        sEluna->OnQuestComplete(pPlayer, pCreature, pQuest);
-
-    // Used by Eluna
-//TODO:Fixup    if (GameObject* pGameObject = questGiver->ToGameObject())
-//        sEluna->OnQuestComplete(pPlayer, pGameObject, pQuest);
 }
 
 void Player::SendQuestFailed(uint32 quest_id)

@@ -28,7 +28,9 @@
 #include "Platform/Define.h"
 #include <cassert>
 
+#ifndef MANGOS
 #define MANGOS
+#endif /* MANGOS */
 #define TBC
 
 enum Gender
@@ -225,6 +227,13 @@ enum SpellSchoolMask
       SPELL_SCHOOL_MASK_FROST | SPELL_SCHOOL_MASK_SHADOW | \
       SPELL_SCHOOL_MASK_ARCANE )
 
+/**
+ * Turns a \ref SpellSchoolMask into a \ref SpellSchools from the first bit
+ * that is set in the mask.
+ * @param mask the mask you want to get the first school for
+ * @return a \ref SpellSchools of the first bit that was set, if none were found
+ * \ref SpellSchools::SPELL_SCHOOL_NORMAL is returned
+ */
 inline SpellSchools GetFirstSchoolInMask(SpellSchoolMask mask)
 {
     for (int i = 0; i < MAX_SPELL_SCHOOL; ++i)
@@ -1229,6 +1238,7 @@ enum DamageEffectType
     SPELL_DIRECT_DAMAGE     = 1,
     DOT                     = 2,
     HEAL                    = 3,
+    /// used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
     NODAMAGE                = 4,                            //< used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
     SELF_DAMAGE_ROGUE_FALL  = 5,                            //< used to avoid rogue loosing stealth on falling damage
     SELF_DAMAGE             = 6
@@ -2228,7 +2238,7 @@ enum UnitDynFlags
     UNIT_DYNFLAG_NONE                       = 0x0000,
     UNIT_DYNFLAG_LOOTABLE                   = 0x0001,
     UNIT_DYNFLAG_TRACK_UNIT                 = 0x0002,
-    UNIT_DYNFLAG_TAPPED                     = 0x0004,       // Lua_UnitIsTapped
+    UNIT_DYNFLAG_TAPPED                     = 0x0004,       // Lua_UnitIsTapped - Indicates the target as grey for the client.
     UNIT_DYNFLAG_ROOTED                     = 0x0008,
     UNIT_DYNFLAG_SPECIALINFO                = 0x0010,
     UNIT_DYNFLAG_DEAD                       = 0x0020,
