@@ -25,6 +25,6 @@
 #ifndef MANGOS_H_REVISION_SQL
 #define MANGOS_H_REVISION_SQL
 #define REVISION_DB_CHARACTERS "required_s1350_11716_09_characters_mail"
-#define REVISION_DB_MANGOS "required_19004_creature_template_power"
+#define REVISION_DB_MANGOS "required_19005_04_gossip_menu_option"
 #define REVISION_DB_REALMD "required_20140607_Realm_Resync"
 #endif // __REVISION_SQL_H__
