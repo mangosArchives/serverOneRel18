@@ -548,6 +548,30 @@ LogColors = "13 7 11 9"
 #        Enable or disable instant logout for security level (0..4) or high (NOT in combat/while dueling/while falling)
 #        Default: 1 (Mods/GMs/Admins)
 #
+#    MountCost
+#        The cost in copper of the regular mounts usually purchased at level 40.
+#        Default: 100000 (10g)
+#
+#    TrainMountCost
+#        The cost in copper for training the apprentice riding skill for regular mounts usually purchased at level 40.
+#        Default: 350000 (35g)
+#
+#    MinTrainMountLevel
+#        The minimal level at which players can train the apprentice riding skill for regular mounts.
+#        Default: 30 (level 30)
+#
+#    EpicMountCost
+#        The cost in copper for epic mounts usually purchased at level 60.
+#        Default: 1000000 (100g)
+#
+#    TrainEpicMountCost
+#        The cost in copper for training the journeyman riding skill for epic mounts usually purchased at level 60.
+#        Default: 6000000 (600g)
+#
+#    MinTrainEpicMountLevel
+#        The minimal level at which players can train the journeyman riding skill for epic mounts.
+#        Default: 60 (level 60)
+#
 #    AllFlightPaths
 #        Players will start with all flight paths (Note: ALL flight paths, not only player's team)
 #        Default: 0 (true)
@@ -755,6 +779,12 @@ StartHonorPoints = 0
 MaxArenaPoints = 5000
 StartArenaPoints = 0
 InstantLogout = 1
+MountCost = 100000
+TrainMountCost = 350000
+MinTrainMountLevel = 30
+EpicMountCost = 1000000
+TrainEpicMountCost = 6000000
+MinTrainEpicMountLevel = 60
 DisableWaterBreath = 4
 AllFlightPaths = 0
 AlwaysMaxSkillForLevel = 0
