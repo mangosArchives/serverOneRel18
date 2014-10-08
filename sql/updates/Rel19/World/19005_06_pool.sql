@@ -3,7 +3,7 @@ ALTER TABLE db_version CHANGE COLUMN required_19005_04_gossip_menu_option requir
 -- Fixing the massive spawns in Fargodeep-Mine, Elwynn Forest (Inner Section)
 
 INSERT INTO `pool_template` (`entry`, `max_limit`, `description`) VALUES 
-(12265, 1, 'Master Creature Pool - Fargodeep Mine (Inner Section)');
+(12265, 18, 'Master Creature Pool - Fargodeep Mine (Inner Section)');
 
 INSERT INTO `pool_pool` (`pool_id`, `mother_pool`, `chance`, `description`) VALUES 
 (12265, 12265,  0, 'Kobold Tunneler - Fargodeep Mine');
@@ -13,7 +13,7 @@ INSERT INTO `pool_creature` (`guid`, `pool_entry`, `chance`, `description`) VALU
 (80582, 12265, 40, 'Kobold Tunneler (Fargodeep Mine)'),
 (80601, 12265, 10, 'Kobold Tunneler (Fargodeep Mine)'),
 (80586, 12265, 12, 'Kobold Tunneler (Fargodeep Mine)'),
-(80585, 12265, 11, 'Kobold Tunneler (Fargodeep Mine)'),
+(80585, 12265, 9, 'Kobold Tunneler (Fargodeep Mine)'),
 (80618, 12265, 19, 'Kobold Tunneler (Fargodeep Mine)'),
 (80614, 12265, 34, 'Kobold Tunneler (Fargodeep Mine)'),
 (80620, 12265, 22, 'Kobold Tunneler (Fargodeep Mine)'),
@@ -29,7 +29,7 @@ INSERT INTO `pool_creature` (`guid`, `pool_entry`, `chance`, `description`) VALU
 (80631, 12265, 12, 'Kobold Tunneler (Fargodeep Mine)'),
 (80650, 12265, 34, 'Kobold Tunneler (Fargodeep Mine)'),
 (80617, 12265, 25, 'Kobold Tunneler (Fargodeep Mine)'),
-(80640, 12265, 30, 'Kobold Tunneler (Fargodeep Mine)'),
+(80640, 12265, 11, 'Kobold Tunneler (Fargodeep Mine)'),
 (80639, 12265, 12, 'Kobold Tunneler (Fargodeep Mine)'),
 (80638, 12265, 40, 'Kobold Tunneler (Fargodeep Mine)'),
 (80626, 12265, 45, 'Kobold Tunneler (Fargodeep Mine)'),
