@@ -648,10 +648,6 @@ class MANGOS_DLL_SPEC WorldObject : public Object
         ElunaEventProcessor* const elunaEvents;
 #endif /* ENABLE_ELUNA */
 
-#ifdef ENABLE_ELUNA
-        ElunaEventProcessor* const elunaEvents;
-#endif /* ENABLE_ELUNA */
-
     protected:
         explicit WorldObject();
 

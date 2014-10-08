@@ -899,7 +899,7 @@ WorldObject::WorldObject() :
 #ifdef ENABLE_ELUNA
     elunaEvents(new ElunaEventProcessor(this)),
 #endif /* ENABLE_ELUNA */
-    m_transportInfo(NULL), m_currMap(NULL),
+    m_transportInfo(NULL),
     m_currMap(NULL),
     m_mapId(0), m_InstanceId(0),
     m_isActiveObject(false)
