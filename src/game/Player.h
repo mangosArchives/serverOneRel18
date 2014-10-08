@@ -2345,6 +2345,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         GridReference<Player>& GetGridRef() { return m_gridRef; }
         MapReference& GetMapRef() { return m_mapRef; }
 
+        bool IsTappedByMeOrMyGroup(Creature* creature);
         bool isAllowedToLoot(Creature* creature);
 
         DeclinedName const* GetDeclinedNames() const { return m_declinedname; }

@@ -50,6 +50,7 @@
 #include "WaypointManager.h"
 #include "GossipDef.h"
 #include "Mail.h"
+#include "Formulas.h"
 #include "InstanceData.h"
 #include "GridNotifiers.h"
 #include "GridNotifiersImpl.h"

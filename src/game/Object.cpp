@@ -109,6 +109,15 @@ void Object::_Create(uint32 guidlow, uint32 entry, HighGuid guidhigh)
     m_PackGUID.Set(guid);
 }
 
+void Object::_ReCreate(uint32 entry)
+{
+    if (!m_uint32Values)
+        { _InitValues(); }
+
+    SetUInt32Value(OBJECT_FIELD_TYPE, m_objectType);
+    SetUInt32Value(OBJECT_FIELD_ENTRY, entry);
+}
+
 void Object::SetObjectScale(float newScale)
 {
     SetFloatValue(OBJECT_FIELD_SCALE_X, newScale);
@@ -488,6 +497,22 @@ void Object::BuildValuesUpdate(uint8 updatetype, ByteBuffer* data, UpdateMask* u
                 /* Hide loot animation for players that aren't permitted to loot the corpse */
                 else if (index == UNIT_DYNAMIC_FLAGS && GetTypeId() == TYPEID_UNIT)
                 {
+                    uint32 send_value = m_uint32Values[index];
+
+                    /* Initiate pointer to creature so we can check loot */
+                    if (Creature* my_creature = (Creature*)this)
+                        /* If the creature is NOT fully looted */
+                        if (!my_creature->loot.isLooted())
+                            /* If the lootable flag is NOT set */
+                            if (!(send_value & UNIT_DYNFLAG_LOOTABLE))
+                            {
+                                /* Update it on the creature */
+                                my_creature->SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
+                                /* Update it in the packet */
+                                send_value = send_value | UNIT_DYNFLAG_LOOTABLE;
+                            }
+
+                    /* If we're not allowed to loot the target, destroy the lootable flag */
                     if (!target->isAllowedToLoot((Creature*)this))
                         if (send_value & UNIT_DYNFLAG_LOOTABLE)
                             { send_value = send_value & ~UNIT_DYNFLAG_LOOTABLE; }

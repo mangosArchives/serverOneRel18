@@ -207,6 +207,9 @@ bool GameObject::Create(uint32 guidlow, uint32 name_id, Map* map, float x, float
         case GAMEOBJECT_TYPE_FISHINGNODE:
             m_lootState = GO_NOT_READY;                     // Initialize Traps and Fishingnode delayed in ::Update
             break;
+        case GAMEOBJECT_TYPE_CHEST:
+            RollIfMineralVein();
+            break;
     }
 
     // Used by Eluna
@@ -532,6 +535,9 @@ void GameObject::Update(uint32 update_diff, uint32 p_time)
             // can be not in world at pool despawn
             if (IsInWorld())
                 { UpdateObjectVisibility(); }
+
+            if (GetGoType() == GAMEOBJECT_TYPE_CHEST)
+                { RollIfMineralVein(); }
 
             break;
         }
@@ -1273,6 +1279,14 @@ void GameObject::Use(Unit* user)
                         player->PrepareGossipMenu(this, info->goober.gossipID);
                         player->SendPreparedGossip(this);
                     }
+                }
+
+                // possible quest objective for active quests
+                if (info->goober.questId && sObjectMgr.GetQuestTemplate(info->goober.questId))
+                {
+                    // Quest require to be active for GO using
+                    if (player->GetQuestStatus(info->goober.questId) != QUEST_STATUS_INCOMPLETE)
+                        { break; }
                 }
 
                 if (info->goober.eventId)

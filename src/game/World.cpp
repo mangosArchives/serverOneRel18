@@ -495,6 +495,8 @@ void World::LoadConfigSettings(bool reload)
     setConfig(CONFIG_FLOAT_RATE_HONOR, "Rate.Honor", 1.0f);
     setConfigPos(CONFIG_FLOAT_RATE_MINING_AMOUNT, "Rate.Mining.Amount", 1.0f);
     setConfigPos(CONFIG_FLOAT_RATE_MINING_NEXT,   "Rate.Mining.Next", 1.0f);
+    setConfig(CONFIG_UINT32_RATE_MINING_RARE,          "Rate.Mining.Rare", 20);
+    setConfig(CONFIG_UINT32_RATE_MINING_AUTOPOOLING,   "Rate.Mining.Autopooling", 90);
     setConfigPos(CONFIG_FLOAT_RATE_INSTANCE_RESET_TIME, "Rate.InstanceResetTime", 1.0f);
     setConfigPos(CONFIG_FLOAT_RATE_TALENT, "Rate.Talent", 1.0f);
     setConfigPos(CONFIG_FLOAT_RATE_CORPSE_DECAY_LOOTED, "Rate.Corpse.Decay.Looted", 0.0f);
