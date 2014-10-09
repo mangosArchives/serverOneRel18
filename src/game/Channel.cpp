@@ -572,23 +572,24 @@ void Channel::Say(Player* player, const char* text, uint32 lang)
 
     ObjectGuid guid = player->GetObjectGuid();
 	Player* plr = sObjectMgr.GetPlayer(guid);
-    bool speakInLocalDef = false;
+    bool speakInLocalDef = true;	// By Default everyone could chat in local defense
     bool speakInWorldDef = false;
     if (plr)
     {
         if (plr->isGameMaster())
         {
-            speakInLocalDef = true;
+//            speakInLocalDef = true;
             speakInWorldDef = true;
         }
         
-        HonorRankInfo honorInfo = plr->GetHonorRankInfo();
-        //We can speak in local defense if we're above this rank (see .h file)
-        if (honorInfo.rank >= SPEAK_IN_LOCALDEFENSE_RANK)
-            speakInLocalDef = true;
-        // Are we not allowed to speak in WorldDefense at all?
-        // if (honorInfo.rank >= SPEAK_IN_WORLDDEFENSE_RANK)
-        //     speakInWorldDef = true;
+		// Not applicable for TBC onwards
+        //HonorRankInfo honorInfo = plr->GetHonorRankInfo();
+        ////We can speak in local defense if we're above this rank (see .h file)
+        //if (honorInfo.rank >= SPEAK_IN_LOCALDEFENSE_RANK)
+        //    speakInLocalDef = true;
+        //// Are we not allowed to speak in WorldDefense at all?
+        //// if (honorInfo.rank >= SPEAK_IN_WORLDDEFENSE_RANK)
+        ////     speakInWorldDef = true;
     }
     
     if (!IsOn(guid))
