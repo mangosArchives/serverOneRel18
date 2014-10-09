@@ -29,6 +29,8 @@
 #include "Database/DatabaseEnv.h"
 #include "Util.h"
 #include "ObjectGuid.h"
+#include "WorldSession.h"
+#include "SharedDefines.h"
 #include <map>
 
 /**
@@ -95,13 +97,7 @@ class GMTicket
          * @param responsetext the response to the question if any
          * @param update the last time the ticket was updated by either \ref Player or GM
          */
-        void Init(ObjectGuid guid, const std::string& text, const std::string& responsetext, time_t update)
-        {
-            m_guid = guid;
-            m_text = text;
-            m_responseText = responsetext;
-            m_lastUpdate = update;
-        }
+        void Init(ObjectGuid guid, const std::string& text, const std::string& responsetext, time_t update);
 
         /** 
          * Gets the \ref Player s \ref ObjectGuid which asked the question and created the ticket
@@ -128,30 +124,13 @@ class GMTicket
          * Changes the tickets question text.
          * @param text the text to change the question to
          */
-        void SetText(const char* text)
-        {
-            m_text = text ? text : "";
-            m_lastUpdate = time(NULL);
-
-            std::string escapedString = m_text;
-            CharacterDatabase.escape_string(escapedString);
-            CharacterDatabase.PExecute("UPDATE character_ticket SET ticket_text = '%s' WHERE guid = '%u'", escapedString.c_str(), m_guid.GetCounter());
-        }
-
+        void SetText(const char* text);
         /** 
          * Changes the response to the ticket
          * @param text the response to give
          * \deprecated
          */
-        void SetResponseText(const char* text)
-        {
-            m_responseText = text ? text : "";
-            m_lastUpdate = time(NULL);
-
-            std::string escapedString = m_responseText;
-            CharacterDatabase.escape_string(escapedString);
-            CharacterDatabase.PExecute("UPDATE character_ticket SET response_text = '%s' WHERE guid = '%u'", escapedString.c_str(), m_guid.GetCounter());
-        }
+        void SetResponseText(const char* text);
 
         /** 
          * Has this ticket gotten a response?
@@ -159,28 +138,43 @@ class GMTicket
          * \deprecated
          * \todo Change to resolved/not resolved instead, via the check in db
          */
-        bool HasResponse() { return !m_responseText.empty(); }
+        bool HasResponse() { return !m_responseText.empty(); };
 
-        void DeleteFromDB() const
-        {
-            CharacterDatabase.PExecute("DELETE FROM character_ticket WHERE guid = '%u' LIMIT 1", m_guid.GetCounter());
-        }
-
-        void SaveToDB() const
-        {
-            CharacterDatabase.BeginTransaction();
-            DeleteFromDB();
-
-            std::string escapedString = m_text;
-            CharacterDatabase.escape_string(escapedString);
-
-            std::string escapedString2 = m_responseText;
-            CharacterDatabase.escape_string(escapedString2);
-
-            CharacterDatabase.PExecute("INSERT INTO character_ticket (guid, ticket_text, response_text) VALUES ('%u', '%s', '%s')", m_guid.GetCounter(), escapedString.c_str(), escapedString2.c_str());
-            CharacterDatabase.CommitTransaction();
-        }
+        /**
+         * This will delete this ticket from the characters database (table character_ticket)
+         * and that in turn makes sure that the ticket isn't loaded as a new one when
+         * restarting the server. 
+         * \todo Mark the ticked as solved instead
+         * \todo Log conversation between GM and player aswell
+         */
+        void DeleteFromDB() const;
+        /** 
+         * Saves the current state of this ticket to the DB in the characters database
+         * in a table name character_ticket
+         */
+        void SaveToDB() const;
+    
+        /** 
+         * This will take care of a \ref OpcodesList::CMSG_GMSURVEY_SUBMIT packet
+         * and save the data received into the database, this is not implemented yet
+         * @param recvData the packet we received with answers to the survey
+         * \todo Implement saving this to DB
+         */
+        void SaveSurveyData(WorldPacket& recvData) const;
+        /** 
+         * Close this ticket so that the window showing in the client for the \ref Player
+         * disappears.
+         */
+        void Close() const;
+        /** 
+         * This does the same thing as \ref GMTicket::Close but it also shows a survey window to the
+         * \ref Player so that they can answer how well the GM behaved and such.
+         * \todo Save the survey results in DB!
+         */
+        void CloseWithSurvey() const;
     private:
+        void _Close(GMTicketStatus statusCode) const;
+    
         ObjectGuid m_guid;
         std::string m_text;
         std::string m_responseText;
@@ -192,7 +186,9 @@ typedef std::list<GMTicket*> GMTicketList;                  // for creating orde
 class GMTicketMgr
 {
     public:
-        GMTicketMgr() {  }
+        //TODO: Make the default value a config option instead
+        GMTicketMgr() : m_TicketSystemOn(true)
+        {  }
         ~GMTicketMgr() {  }
 
         void LoadGMTickets();
@@ -267,7 +263,22 @@ class GMTicketMgr
             ticket.SaveToDB();
             m_GMTicketListByCreatingOrder.push_back(&ticket);
         }
+
+       /** 
+        * Turns on/off accepting tickets globally, if this is off the client will see a message
+        * telling them that filing tickets is currently unavailable. When it's on anyone can
+        * file a ticket.
+        * @param accept true means that we accept tickets, false means that we don't
+        */
+        void SetAcceptTickets(bool accept) { m_TicketSystemOn = accept; };
+        /** 
+         * Checks if we accept tickets globally (see \ref GMTicketMgr::SetAcceptTickets)
+         * @return true if we are accepting tickets globally, false otherwise
+         * \todo Perhaps rename to IsAcceptingTickets?
+         */
+        bool WillAcceptTickets() { return m_TicketSystemOn; };
     private:
+        bool m_TicketSystemOn;
         GMTicketMap m_GMTicketMap;
         GMTicketList m_GMTicketListByCreatingOrder;
 };
