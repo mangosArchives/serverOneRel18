@@ -57,8 +57,10 @@ INSERT INTO scripted_areatrigger VALUES
 (4485,'at_dark_portal');
 DELETE FROM scripted_areatrigger WHERE entry=1966;
 INSERT INTO scripted_areatrigger VALUES (1966,'at_murkdeep');
-DELETE FROM scripted_areatrigger WHERE entry=4047;
-INSERT INTO scripted_areatrigger VALUES (4047,'at_temple_ahnqiraj');
+DELETE FROM scripted_areatrigger WHERE entry IN (4047,4052);
+INSERT INTO scripted_areatrigger VALUES
+(4047,'at_temple_ahnqiraj'),
+(4052,'at_temple_ahnqiraj');
 
 
 /* BATTLEGROUNDS */
@@ -98,7 +100,7 @@ UPDATE creature_template SET ScriptName='guard_bluffwatcher' WHERE entry=3084;
 UPDATE creature_template SET ScriptName='guard_durotar' WHERE entry=5953;
 UPDATE creature_template SET ScriptName='guard_mulgore' WHERE entry IN (3212,3215,3217,3218,3219,3220,3221,3222,3223,3224);
 UPDATE creature_template SET ScriptName='guard_dunmorogh' WHERE entry IN (727,13076);
-UPDATE creature_template SET ScriptName='guard_tirisfal' WHERE entry IN (1735,1738,2210,1744,1745,5725,1743,2209,1746,1742);
+UPDATE creature_template SET ScriptName='guard_tirisfal' WHERE entry IN (1735,1738,2210,1744,1745,5725,1743,2209,1746,1742,7980);
 UPDATE creature_template SET ScriptName='guard_silvermoon' WHERE entry=16222;
 UPDATE creature_template SET ScriptName='guard_exodar' WHERE entry=16733;
 UPDATE creature_template SET ScriptName='guard_shattrath' WHERE entry=19687;
@@ -257,6 +259,7 @@ UPDATE creature_template SET ScriptName='npc_enslaved_soul' WHERE entry=23469;
 /* BLACKFATHOM DEPTHS */
 UPDATE instance_template SET ScriptName='instance_blackfathom_deeps' WHERE map=48;
 UPDATE gameobject_template SET ScriptName='go_fire_of_akumai' WHERE entry IN (21118,21119,21120,21121);
+UPDATE gameobject_template SET ScriptName='go_fathom_stone' WHERE entry=177964;
 
 /* BLACKROCK DEPTHS */
 DELETE FROM scripted_areatrigger WHERE entry=1526;

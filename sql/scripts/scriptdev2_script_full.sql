@@ -98,6 +98,7 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 (-1000145,'Captain Helios, I\'ve been rescued from the Amani Catacombs. Reporting for duty, sir!',0,0,1,0,'lilatha SAY_END2'),
 (-1000146,'Liatha, get someone to look at those injuries. Thank you for bringing her back safely.',0,0,1,0,'lilatha CAPTAIN_ANSWER'),
 
+-- Worldboss: Doomloard Kazzak
 (-1000147,'I remember well the sting of defeat at the conclusion of the Third War. I have waited far too long for my revenge. Now the shadow of the Legion falls over this world. It is only a matter of time until all of your failed creation... is undone.',11332,1,0,0,'kazzak SAY_INTRO'),
 (-1000148,'The Legion will conquer all!',11333,1,0,0,'kazzak SAY_AGGRO1'),
 (-1000149,'All mortals will perish!',11334,1,0,0,'kazzak SAY_AGGRO2'),
