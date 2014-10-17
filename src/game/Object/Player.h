@@ -40,7 +40,7 @@
 #include "MapReference.h"
 #include "Util.h"                                           // for Tokens typedef
 #include "ReputationMgr.h"
-#include "BattleGround/BattleGround.h"
+#include "BattleGround.h"
 #include "DBCStores.h"
 #include "SharedDefines.h"
 #include "Chat.h"
