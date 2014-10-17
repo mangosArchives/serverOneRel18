@@ -20,9 +20,7 @@ cmake_minimum_required (VERSION 2.8)
 
 project(mmap-generator)
 
-ADD_DEFINITIONS(-DDT_POLYREF64)
-
-set(EXECUTABLE_NAME mmap-generator)
+set(EXECUTABLE_NAME movemap-generator)
 
 if(WIN32)
   # add resource file to windows build
@@ -37,15 +35,17 @@ if(WIN32 AND MSVC)
     add_definitions(-DNO_vsnprintf)
 endif()
 
+# For 64bit definitions in Detour
+add_definitions(-DDT_POLYREF64)
+
 include_directories(
     "${CMAKE_SOURCE_DIR}/src"
     "${CMAKE_SOURCE_DIR}/src/shared"
     "${CMAKE_SOURCE_DIR}/src/game"
     "${CMAKE_SOURCE_DIR}/src/game/vmap"
     "${CMAKE_SOURCE_DIR}/dep/include/g3dlite"
-    "${CMAKE_SOURCE_DIR}/dep/ACE_wrappers"
-    "${CMAKE_BINARY_DIR}/dep/ACE_wrappers"
     "${CMAKE_SOURCE_DIR}/src/framework"
+    "${CMAKE_SOURCE_DIR}/src/game/WorldHandlers"
     "${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour/Include"
     "${CMAKE_SOURCE_DIR}/dep/recastnavigation/Recast/Include"
     "${CMAKE_SOURCE_DIR}/dep/src/zlib"
@@ -61,6 +61,24 @@ set(SOURCES
 
 add_executable(${EXECUTABLE_NAME} ${SOURCES} ${EXECUTABLE_SRCS})
 
-target_link_libraries(${EXECUTABLE_NAME} g3dlite vmap detour recast zlib shared)
+target_link_libraries(${EXECUTABLE_NAME} ace g3dlite vmap detour recast zlib shared)
+
+#Output the compiled exes to build/bin/$(Configuration)/tools directory on windows by default
+if(WIN32)
+  if ( MSVC )
+    set_target_properties(${EXECUTABLE_NAME} PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/Release/tools
+      RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug/tools
+    )
+  elseif ( MINGW )
+    set_target_properties(${EXECUTABLE_NAME} PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/tools
+      RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/tools
+    )
+  endif()
+endif()
 
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION "${BIN_DIR}/${TOOLS_DIR}")
+if(WIN32 AND MSVC)
+  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/\${BUILD_TYPE}/${EXECUTABLE_NAME}.pdb" DESTINATION "${BIN_DIR}/${TOOLS_DIR}" CONFIGURATIONS Debug)
+endif()
