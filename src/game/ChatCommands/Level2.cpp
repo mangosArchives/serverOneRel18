@@ -2571,7 +2571,7 @@ bool ChatHandler::HandleTicketCommand(char* args)
         if (ExtractUInt32(&args, num))
         {
             if (num == 0)
-                return false;
+                { return false; }
 
             // mgr numbering tickets start from 0
             ticket = sTicketMgr.GetGMTicketByOrderPos(num - 1);
@@ -2588,7 +2588,7 @@ bool ChatHandler::HandleTicketCommand(char* args)
             ObjectGuid target_guid;
             std::string target_name;
             if (!ExtractPlayerTarget(&args, NULL, &target_guid, &target_name))
-                return false;
+                { return false; }
 
             // ticket respond $char_name
             ticket = sTicketMgr.GetGMTicket(target_guid);
@@ -5265,8 +5265,8 @@ bool ChatHandler::HandleMmapLocCommand(char* /*args*/)
     {
         const dtMeshTile* tile;
         const dtPoly* poly;
-        navmesh->getTileAndPolyByRef(polyRef, &tile, &poly);
-        if (tile)
+        dtStatus dtResult = navmesh->getTileAndPolyByRef(polyRef, &tile, &poly);
+        if ((dtStatusSucceed(dtResult)) && tile)
             { PSendSysMessage("Dt     [%02i,%02i]", tile->header->x, tile->header->y); }
         else
             { PSendSysMessage("Dt     [??,??] (no tile loaded)"); }

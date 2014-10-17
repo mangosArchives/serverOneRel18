@@ -652,8 +652,8 @@ enum MovementFlags
 {
     // Byte 1 (Resets on Movement Key Press)
     MOVEFLAG_NONE               = 0x00000000,
-    MOVEFLAG_FORWARD            = 0x00000001,
-    MOVEFLAG_BACKWARD           = 0x00000002,
+    MOVEFLAG_MOVE_FORWARD            = 0x00000001,
+    MOVEFLAG_MOVE_BACKWARD           = 0x00000002,
     MOVEFLAG_STRAFE_LEFT            = 0x00000004,           /// verified
     MOVEFLAG_STRAFE_RIGHT           = 0x00000008,           /// verified
     MOVEFLAG_TURN_LEFT              = 0x00000010,           /// verified
@@ -682,7 +682,7 @@ enum MovementFlags
 
 // flags that use in movement check for example at spell casting
 MovementFlags const movementFlagsMask = MovementFlags(
-        MOVEFLAG_FORWARD | MOVEFLAG_BACKWARD  | MOVEFLAG_STRAFE_LEFT | MOVEFLAG_STRAFE_RIGHT |
+        MOVEFLAG_MOVE_FORWARD | MOVEFLAG_MOVE_BACKWARD  | MOVEFLAG_STRAFE_LEFT | MOVEFLAG_STRAFE_RIGHT |
         MOVEFLAG_PITCH_UP | MOVEFLAG_PITCH_DOWN | MOVEFLAG_IMMOBILIZED        |
         MOVEFLAG_FALLING | MOVEFLAG_FALLINGFAR | MOVEFLAG_ASCENDING   |
         MOVEFLAG_FLYING  | MOVEFLAG_SPLINE_ELEVATION
