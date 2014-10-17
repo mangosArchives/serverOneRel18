@@ -24,6 +24,10 @@ ADD_DEFINITIONS(-DDT_POLYREF64)
 
 set(EXECUTABLE_NAME mmap-generator)
 
+if(WIN32)
+  # add resource file to windows build
+  set(EXECUTABLE_SRCS ${EXECUTABLE_SRCS} Movemap-Generator.rc)
+endif()
 if(debug)
     add_definitions(-DDEBUG)
 endif()
@@ -55,7 +59,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/VMapExtensions.cpp
 )
 
-add_executable(${EXECUTABLE_NAME} ${SOURCES})
+add_executable(${EXECUTABLE_NAME} ${SOURCES} ${EXECUTABLE_SRCS})
 
 target_link_libraries(${EXECUTABLE_NAME} g3dlite vmap detour recast zlib shared)
 
