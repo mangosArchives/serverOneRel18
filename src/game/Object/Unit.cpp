@@ -65,6 +65,17 @@
 #include <math.h>
 #include <stdarg.h>
 
+#ifdef WIN32
+inline uint32 getMSTime() { return GetTickCount(); }
+#else
+inline uint32 getMSTime()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+#endif
+
 float baseMoveSpeed[MAX_MOVE_TYPE] =
 {
     2.5f,                                                   // MOVE_WALK
@@ -104,7 +115,11 @@ void MovementInfo::Read(ByteBuffer& data)
         data >> s_pitch;
     }
 
-    data >> fallTime;
+    /* This is never sent when we're on a taxi */
+    if (!HasMovementFlag(MOVEFLAG_ONTRANSPORT))
+    {
+        data >> fallTime;
+    }
 
     if (HasMovementFlag(MOVEFLAG_FALLING))
     {
@@ -145,7 +160,11 @@ void MovementInfo::Write(ByteBuffer& data) const
         data << s_pitch;
     }
 
-    data << fallTime;
+    /* This is never sent when we're on a taxi */
+    if (!HasMovementFlag(MOVEFLAG_ONTRANSPORT))
+    {
+        data << fallTime;
+    }
 
     if (HasMovementFlag(MOVEFLAG_FALLING))
     {

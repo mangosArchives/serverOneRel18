@@ -36,6 +36,43 @@
 #include "MapPersistentStateMgr.h"
 #include "ObjectMgr.h"
 
+#if defined(WIN32) && !defined(__MINGW32__)
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
+#define DELTA_EPOCH_IN_USEC  11644473600000000ULL
+
+uint32 mTimeStamp()
+{
+    /* We subtract 20 years from the epoch so that it doesn't overflow uint32
+    * TODO: Remember to update code in 20 years */
+    const uint32 YEAR_IN_SECONDS = 31556952;
+
+    FILETIME ft;
+    uint64 t;
+    GetSystemTimeAsFileTime(&ft);
+
+    t = (uint64)ft.dwHighDateTime << 32;
+    t |= ft.dwLowDateTime;
+    t /= 10;
+    t -= DELTA_EPOCH_IN_USEC;
+
+    return uint32((((t / 1000000L) * 1000) + ((t % 1000000L) / 1000)) - ((YEAR_IN_SECONDS * 20) * 1000));
+}
+
+#else
+#include <time.h>
+
+uint32 mTimeStamp()
+{
+    struct timeval tp;
+    const uint32 YEAR_IN_SECONDS = 31556952;
+    gettimeofday(&tp, NULL);
+    uint32 return_val = (((tp.tv_sec * 1000) + (tp.tv_usec / 1000)) - ((YEAR_IN_SECONDS * 20) * 1000));
+    return return_val;
+}
+
+#endif
+
 void WorldSession::HandleMoveWorldportAckOpcode(WorldPacket& /*recv_data*/)
 {
     DEBUG_LOG("WORLD: got MSG_MOVE_WORLDPORT_ACK.");
@@ -267,8 +304,19 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
 
     /* extract packet */
     MovementInfo movementInfo;
-    recv_data >> movementInfo;
+    movementInfo.Read(recv_data);
     /*----------------*/
+
+    // Calculate timestamp
+    int32 move_time, mstime;
+    mstime = mTimeStamp();
+    if (m_clientTimeDelay == 0)
+    {
+        m_clientTimeDelay = mstime - movementInfo.GetTime();
+    }
+    
+    move_time = (movementInfo.GetTime() - (mstime - m_clientTimeDelay)) + 500 + mstime;
+    movementInfo.UpdateTime(move_time);
 
     if (!VerifyMovementInfo(movementInfo))
         { return; }
@@ -283,9 +331,9 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
     if (plMover)
         { plMover->UpdateFallInformationIfNeed(movementInfo, opcode); }
 
-    WorldPacket data(opcode, recv_data.size());
-    data << mover->GetPackGUID();             // write guid
-    movementInfo.Write(data);                               // write data
+    WorldPacket data(opcode, uint16(recv_data.size() + 2));
+    data << mover->GetPackGUID();           // write guid
+    movementInfo.Write(data);               // write data
     mover->SendMessageToSetExcept(&data, _player);
 }
 
@@ -425,8 +473,24 @@ void WorldSession::HandleMoveKnockBackAck(WorldPacket& recv_data)
 
     recv_data >> guid;
     recv_data >> Unused<uint32>();                          // knockback packets counter
-    recv_data >> movementInfo;
+    movementInfo.Read(recv_data);
 
+
+    // Calculate timestamp (should probably move this into its own function?
+    int32 move_time, mstime;
+    mstime = mTimeStamp();
+    if (m_clientTimeDelay == 0)
+    {
+        m_clientTimeDelay = mstime - movementInfo.GetTime();
+    }
+
+    /* The 500 delay lets the client sync the movement correctly.
+     * Yes it slows things a bit, but removing it causes stutter.
+     * Fixes itself after a short while */
+    move_time = (movementInfo.GetTime() - (mstime - m_clientTimeDelay)) + 500 + mstime;
+    movementInfo.UpdateTime(move_time);
+    
+    /* Make sure input is valid */
     if (!VerifyMovementInfo(movementInfo, guid))
     {
         return;

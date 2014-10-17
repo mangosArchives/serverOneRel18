@@ -879,8 +879,24 @@ void WorldSession::HandleMoveTimeSkippedOpcode(WorldPacket& recv_data)
     /*  WorldSession::Update( WorldTimer::getMSTime() );*/
     DEBUG_LOG("WORLD: Received opcode CMSG_MOVE_TIME_SKIPPED");
 
-    recv_data >> Unused<uint64>();
-    recv_data >> Unused<uint32>();
+    uint64 guid;
+    uint32 time_dif;
+    //uint8 buf[16];
+    WorldPacket data(MSG_MOVE_TIME_SKIPPED, 16);
+    
+    recv_data >> guid;
+    recv_data >> time_dif;
+    
+    // ignore updates not for us
+    if (_player == NULL || guid != _player->GetGUID())
+    {
+        return;
+    }
+
+    // send to other players
+    data << _player->GetPackGUID();
+    data << time_dif;
+    _player->SendMessageToSet(&data, false);
 
     /*
     ObjectGuid guid;
