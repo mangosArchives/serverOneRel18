@@ -93,7 +93,6 @@ void WorldSession::SendGMTicketStatusUpdate(GMTicketStatus statusCode)
     SendPacket(&data);
 }
 
-
 void WorldSession::HandleGMTicketDeleteTicketOpcode(WorldPacket& /*recv_data*/)
 {
     //Some housekeeping, this could be cleaner

@@ -475,7 +475,6 @@ void WorldSession::HandleMoveKnockBackAck(WorldPacket& recv_data)
     recv_data >> Unused<uint32>();                          // knockback packets counter
     movementInfo.Read(recv_data);
 
-
     // Calculate timestamp (should probably move this into its own function?
     int32 move_time, mstime;
     mstime = mTimeStamp();
@@ -489,7 +488,7 @@ void WorldSession::HandleMoveKnockBackAck(WorldPacket& recv_data)
      * Fixes itself after a short while */
     move_time = (movementInfo.GetTime() - (mstime - m_clientTimeDelay)) + 500 + mstime;
     movementInfo.UpdateTime(move_time);
-    
+
     /* Make sure input is valid */
     if (!VerifyMovementInfo(movementInfo, guid))
     {

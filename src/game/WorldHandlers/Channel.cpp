@@ -571,7 +571,7 @@ void Channel::Say(Player* player, const char* text, uint32 lang)
         return;
 
     ObjectGuid guid = player->GetObjectGuid();
-	Player* plr = sObjectMgr.GetPlayer(guid);
+    Player* plr = sObjectMgr.GetPlayer(guid);
     bool speakInLocalDef = true;	// By Default everyone could chat in local defense
     bool speakInWorldDef = false;
     if (plr)

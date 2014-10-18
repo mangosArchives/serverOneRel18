@@ -58,7 +58,9 @@
 #include "Util.h"
 #include "TemporarySummon.h"
 #include "ScriptMgr.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 pEffect SpellEffects[TOTAL_SPELL_EFFECTS] =
 {
@@ -267,11 +269,11 @@ void Spell::EffectInstaKill(SpellEffectIndex /*eff_idx*/)
         uint32 spellID;
         switch (entry)
         {
-            case   416: spellID=18789; break;               // imp
-            case   417: spellID=18792; break;               // fellhunter
-            case  1860: spellID=18790; break;               // void
-            case  1863: spellID=18791; break;               // succubus
-            case 17252: spellID=35701; break;               // fellguard
+            case   416: spellID = 18789; break;             // imp
+            case   417: spellID = 18792; break;             // fellhunter
+            case  1860: spellID = 18790; break;             // void
+            case  1863: spellID = 18791; break;             // succubus
+            case 17252: spellID = 35701; break;               // fellguard
             default:
                 sLog.outError("EffectInstaKill: Unhandled creature entry (%u) case.", entry);
                 return;

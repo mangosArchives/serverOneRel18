@@ -879,66 +879,66 @@ struct SoundEntriesEntry
 */
 struct ClassFamilyMask
 {
-	// Flags of the class family.
+    // Flags of the class family.
     uint64 Flags;
 
-	/**
-	* Default constructor.
-	*/
+    /**
+    * Default constructor.
+    */
     ClassFamilyMask() : Flags(0) {}
 
-	/**
-	* Constructor taking familyFlags as parameter.
-	*/
+    /**
+    * Constructor taking familyFlags as parameter.
+    */
     explicit ClassFamilyMask(uint64 familyFlags) : Flags(familyFlags) {}
 
-	/**
-	* function indicating whether the class is empty ( = 0) or not.
-	* Returns a boolean value.
-	*/
+    /**
+    * function indicating whether the class is empty ( = 0) or not.
+    * Returns a boolean value.
+    */
     bool Empty() const { return Flags == 0; }
 
-	/**
-	* function overloading the operator !
-	* Returns a boolean value.
-	*/
+    /**
+    * function overloading the operator !
+    * Returns a boolean value.
+    */
     bool operator!() const { return Empty(); }
 
     operator void const* () const { return Empty() ? NULL : this; } // for allow normal use in if(mask)
 
-	/**
-	* function indicating whether a familyFlags belongs to a Spell Family.
-	* Does a bitwise comparison between current Flags and familyFlags given in parameter.
-	* Returns a boolean value.
-	* \param familyFlags The familyFlags to compare.
-	*/
+    /**
+    * function indicating whether a familyFlags belongs to a Spell Family.
+    * Does a bitwise comparison between current Flags and familyFlags given in parameter.
+    * Returns a boolean value.
+    * \param familyFlags The familyFlags to compare.
+    */
     bool IsFitToFamilyMask(uint64 familyFlags) const
     {
         return Flags & familyFlags;
     }
 
-	/**
-	* function indicating whether a ClassFamilyMask belongs to a Spell Family.
-	* Does a bitwise comparison between current Flags and mask's flags.
-	* Returns a boolean value.
-	* \param mask The ClassFamilyMask to compare.
-	*/
+    /**
+    * function indicating whether a ClassFamilyMask belongs to a Spell Family.
+    * Does a bitwise comparison between current Flags and mask's flags.
+    * Returns a boolean value.
+    * \param mask The ClassFamilyMask to compare.
+    */
     bool IsFitToFamilyMask(ClassFamilyMask const& mask) const
     {
         return Flags & mask.Flags;
     }
 
-	/**
-	* function overloading the operator & for bitwise comparison.
-	*/
+    /**
+    * function overloading the operator & for bitwise comparison.
+    */
     uint64 operator& (uint64 mask) const                    // possible will removed at finish convertion code use IsFitToFamilyMask
     {
         return Flags & mask;
     }
 
-	/**
-	* function overloading operator |=.
-	*/
+    /**
+    * function overloading operator |=.
+    */
     ClassFamilyMask& operator|= (ClassFamilyMask const& mask)
     {
         Flags |= mask.Flags;

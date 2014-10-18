@@ -51,7 +51,9 @@
 #include "Util.h"
 #include "Chat.h"
 #include "SQLStorages.h"
+#ifdef ENABLE_ELUNA
 #include "LuaEngine.h"
+#endif /* ENABLE_ELUNA */
 
 extern pEffect SpellEffects[TOTAL_SPELL_EFFECTS];
 
@@ -354,7 +356,9 @@ Spell::Spell(Unit* caster, SpellEntry const* info, bool triggered, ObjectGuid or
 
 Spell::~Spell()
 {
+#ifdef ENABLE_ELUNA
     Eluna::RemoveRef(this);
+#endif /* ENABLE_ELUNA */
 }
 
 template<typename T>
@@ -447,7 +451,7 @@ void Spell::FillTargetMap()
                             break;
                         case TARGET_AREAEFFECT_INSTANT:     // use B case that not dependent from from A in fact
                             if ((m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION) == 0)
-                                m_targets.setDestination(m_caster->GetPositionX(), m_caster->GetPositionY(), m_caster->GetPositionZ());
+                                { m_targets.setDestination(m_caster->GetPositionX(), m_caster->GetPositionY(), m_caster->GetPositionZ()); }
                             SetTargetMap(SpellEffectIndex(i), m_spellInfo->EffectImplicitTargetB[i], tmpUnitLists[i /*==effToIndex[i]*/]);
                             break;
                         case TARGET_BEHIND_VICTIM:          // use B case that not dependent from from A in fact
@@ -2916,8 +2920,10 @@ void Spell::cast(bool skipCheck)
     m_targets.updateTradeSlotItem();
 
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     if (m_caster->GetTypeId() == TYPEID_PLAYER)
         sEluna->OnSpellCast(m_caster->ToPlayer(), this, skipCheck);
+#endif /* ENABLE_ELUNA */
 
     FillTargetMap();
 
@@ -4882,9 +4888,9 @@ SpellCastResult Spell::CheckCast(bool strict)
                 uint32 lockId = 0;
                 if (GameObject* go = m_targets.getGOTarget())
                 {
-					// Prevent opening two times a chest in same time.
-					if (go->GetGoType() == GAMEOBJECT_TYPE_CHEST && go->GetGoState() == GO_STATE_ACTIVE)
-						{ return SPELL_FAILED_CHEST_IN_USE; }
+                    // Prevent opening two times a chest in same time.
+                    if (go->GetGoType() == GAMEOBJECT_TYPE_CHEST && go->GetGoState() == GO_STATE_ACTIVE)
+                        { return SPELL_FAILED_CHEST_IN_USE; }
 
                     // In BattleGround players can use only flags and banners
                     if (((Player*)m_caster)->InBattleGround() &&

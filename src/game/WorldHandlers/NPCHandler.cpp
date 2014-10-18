@@ -38,8 +38,10 @@
 #include "Creature.h"
 #include "Pet.h"
 #include "Guild.h"
+#include "Spell.h"
 #include "GuildMgr.h"
 #include "Chat.h"
+#include "World.h"
 #include "Item.h"
 #ifdef ENABLE_ELUNA
 #include "LuaEngine.h"

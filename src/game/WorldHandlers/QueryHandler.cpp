@@ -228,7 +228,7 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
             if (gl)
             {
                 if (gl->Name.size() > size_t(loc_idx) && !gl->Name[loc_idx].empty())
-                    Name = gl->Name[loc_idx];
+                    { Name = gl->Name[loc_idx]; }
                 if (gl->CastBarCaption.size() > size_t(loc_idx) && !gl->CastBarCaption[loc_idx].empty())
                     CastBarCaption = gl->CastBarCaption[loc_idx];
             }
