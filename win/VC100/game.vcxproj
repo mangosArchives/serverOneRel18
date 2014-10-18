@@ -304,15 +304,15 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\game\AuctionHouseBot\AuctionHouseBot.cpp" />
     <ClCompile Include="..\..\src\game\BattleGround\BattleGround.cpp" />
-    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundAA.cpp"  />
+    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundAA.cpp" />
     <ClCompile Include="..\..\src\game\BattleGround\BattleGroundAB.cpp" />
     <ClCompile Include="..\..\src\game\BattleGround\BattleGroundAV.cpp" />
-    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundBE.cpp"  />
-    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundEY.cpp"  />
+    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundBE.cpp" />
+    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundEY.cpp" />
     <ClCompile Include="..\..\src\game\BattleGround\BattleGroundHandler.cpp" />
     <ClCompile Include="..\..\src\game\BattleGround\BattleGroundMgr.cpp" />
-    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundNA.cpp"  />
-    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundRL.cpp"  />
+    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundNA.cpp" />
+    <ClCompile Include="..\..\src\game\BattleGround\BattleGroundRL.cpp" />
     <ClCompile Include="..\..\src\game\BattleGround\BattleGroundWS.cpp" />
     <ClCompile Include="..\..\src\game\ChatCommands\debugcmds.cpp" />
     <ClCompile Include="..\..\src\game\ChatCommands\Level0.cpp" />
@@ -336,7 +336,7 @@
     <ClCompile Include="..\..\src\game\movement\spline.cpp" />
     <ClCompile Include="..\..\src\game\movement\util.cpp" />
     <ClCompile Include="..\..\src\game\Object\AggressorAI.cpp" />
-    <ClCompile Include="..\..\src\game\Object\ArenaTeam.cpp"  />
+    <ClCompile Include="..\..\src\game\Object\ArenaTeam.cpp" />
     <ClCompile Include="..\..\src\game\Object\AuctionHouseMgr.cpp" />
     <ClCompile Include="..\..\src\game\Object\Bag.cpp" />
     <ClCompile Include="..\..\src\game\Object\Camera.cpp" />
@@ -375,12 +375,12 @@
     <ClCompile Include="..\..\src\game\Object\Unit.cpp" />
     <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvP.cpp" />
     <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPEP.cpp" />
-    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPHP.cpp"  />
+    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPHP.cpp" />
     <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPMgr.cpp" />
-    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPNA.cpp"  />
+    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPNA.cpp" />
     <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPSI.cpp" />
-    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPTF.cpp"  />
-    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPZM.cpp"  />
+    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPTF.cpp" />
+    <ClCompile Include="..\..\src\game\OutdoorPvP\OutdoorPvPZM.cpp" />
     <ClCompile Include="..\..\src\game\References\FollowerReference.cpp" />
     <ClCompile Include="..\..\src\game\References\GroupReference.cpp" />
     <ClCompile Include="..\..\src\game\References\HostileRefManager.cpp" />
@@ -404,7 +404,7 @@
     <ClCompile Include="..\..\src\game\vmap\WorldModel.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\AccountMgr.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\AddonHandler.cpp" />
-    <ClCompile Include="..\..\src\game\WorldHandlers\ArenaTeamHandler.cpp"  />
+    <ClCompile Include="..\..\src\game\WorldHandlers\ArenaTeamHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\AuctionHouseHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\Channel.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\ChannelHandler.cpp" />
@@ -447,8 +447,8 @@
     <ClCompile Include="..\..\src\game\WorldHandlers\QuestDef.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\QuestHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\ScriptMgr.cpp" />
-    <ClCompile Include="..\..\src\game\WorldHandlers\SkillDiscovery.cpp"  />
-    <ClCompile Include="..\..\src\game\WorldHandlers\SkillExtraItems.cpp"  />
+    <ClCompile Include="..\..\src\game\WorldHandlers\SkillDiscovery.cpp" />
+    <ClCompile Include="..\..\src\game\WorldHandlers\SkillExtraItems.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\SkillHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\Spell.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\SpellAuras.cpp" />
@@ -457,10 +457,10 @@
     <ClCompile Include="..\..\src\game\WorldHandlers\TaxiHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\TradeHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\Transports.cpp" />
-    <ClCompile Include="..\..\src\game\WorldHandlers\TransportSystem.cpp"  />
+    <ClCompile Include="..\..\src\game\WorldHandlers\TransportSystem.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\UnitAuraProcHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\UpdateData.cpp" />
-    <ClCompile Include="..\..\src\game\WorldHandlers\VoiceChatHandler.cpp"  />
+    <ClCompile Include="..\..\src\game\WorldHandlers\VoiceChatHandler.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\WaypointManager.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\Weather.cpp" />
     <ClCompile Include="..\..\src\game\WorldHandlers\World.cpp" />
@@ -486,9 +486,6 @@
     </ProjectReference>
     <ProjectReference Include="mangosscript.vcxproj">
       <Project>DA729B06-9097-4DA6-A86C-E97BC843B7C2</Project>
-    </ProjectReference>
-    <ProjectReference Include="revision.h.vcxproj">
-      <Project>{e5759321-6212-4ce4-b099-aaae0055bb85}</Project>
     </ProjectReference>
     <ProjectReference Include="shared.vcxproj">
       <Project>594C9AA1-A759-4DEB-A6E4-F079A5DFBA31</Project>
