@@ -7,6 +7,9 @@
 
 MangosOne 
 ===
+DEVELOPMENT BRANCH
+===
+ **(Please be aware that this branch is a Work in Progress)**
 ### A World of Warcraft server for the WOW Expansion The Burning Crusade
 ----
 *MangosOne* is open source project, built in [C++][7], it's fast, runs on multiple,
