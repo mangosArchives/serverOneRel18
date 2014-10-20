@@ -362,13 +362,13 @@ set(CMAKE_INSTALL_RPATH "${LIBS_DIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Generate revision-extractor
-set(GENREV_SRC
-  src/tools/genrevision/genrevision.cpp
-)
+#set(GENREV_SRC
+#  src/tools/genrevision/genrevision.cpp
+#)
 
-add_executable(genrev
-  ${GENREV_SRC}
-)
+#add_executable(genrev
+#  ${GENREV_SRC}
+#)
 
 if(WIN32)
   install(
