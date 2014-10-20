@@ -149,24 +149,24 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\mangosd\soapServer.cpp" />
-    <ClCompile Include="..\..\src\mangosd\soapC.cpp" />
-    <ClCompile Include="..\..\src\mangosd\MaNGOSsoap.cpp" />
+    <ClInclude Include="..\..\src\mangosd\CliRunnable.h" />
+    <ClInclude Include="..\..\src\mangosd\Master.h" />
+    <ClInclude Include="..\..\src\mangosd\RASocket.h" />
+    <ClInclude Include="..\..\src\mangosd\WorldRunnable.h" />
+    <ClInclude Include="..\..\src\mangosd\MaNGOSsoap.h" />
+    <ClInclude Include="..\..\src\mangosd\soapH.h" />
+    <ClInclude Include="..\..\src\mangosd\soapStub.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\..\src\mangosd\CliRunnable.cpp" />
     <ClCompile Include="..\..\src\mangosd\Main.cpp" />
     <ClCompile Include="..\..\src\mangosd\Master.cpp" />
     <ClCompile Include="..\..\src\mangosd\RASocket.cpp" />
     <ClCompile Include="..\..\src\mangosd\WorldRunnable.cpp" />
+    <ClCompile Include="..\..\src\mangosd\MaNGOSsoap.cpp" />
+    <ClCompile Include="..\..\src\mangosd\soapC.cpp" />
+    <ClCompile Include="..\..\src\mangosd\soapServer.cpp" />
     <ResourceCompile Include="..\..\src\mangosd\mangosd.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\mangosd\soapStub.h" />
-    <ClInclude Include="..\..\src\mangosd\soapH.h" />
-    <ClInclude Include="..\..\src\mangosd\MaNGOSsoap.h" />
-    <ClInclude Include="..\..\src\mangosd\CliRunnable.h" />
-    <ClInclude Include="..\..\src\mangosd\Master.h" />
-    <ClInclude Include="..\..\src\mangosd\RASocket.h" />
-    <ClInclude Include="..\..\src\mangosd\WorldRunnable.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="LuaEngine.vcxproj">
