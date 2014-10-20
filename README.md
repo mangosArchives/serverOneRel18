@@ -65,16 +65,15 @@ License
 
 [10]: http://a.dependency.net/ "A · dependency"
 
-[20]: https://github.com/mangoswiki/Wiki/wiki/MaNGOS%20Installation/ "Wiki"
+[20]: https://getmangos.eu/wiki "Wiki"
 
 [50]: http://www.wowpedia.org/Patch_2.4.2 "WoW TBC · Patch 2.4.3 release notes"
 
-[100]: http://getmangos.co.uk/ "MaNGOS Community Project Website"
-[101]: http://community.getmangos.co.uk/ "MaNGOS Community Discussion Forums"
+[100]: http://getmangos.eu/ "MaNGOS Community Project Website"
+[101]: http://getmangos.eu/forum.php/ "MaNGOS Community Discussion Forums"
 
 [110]: http://github.com/mangosone "MaNGOS One · github organization"
 [111]: http://github.com/mangosone/server "MaNGOS One · server repository"
-[112]: http://github.com/mangosone/scripts "MaNGOS One · script extensions repository"
 [113]: http://github.com/mangosone/database "MaNGOS One · content database repository"
 [114]: https://travis-ci.org/mangosone/server/ "MaNGOS One · build status"
 
