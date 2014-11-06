@@ -1297,9 +1297,9 @@ void World::SetInitialWorldSettings()
 
     sLog.outString("Loading CreatureEventAI Scripts...");
     sEventAIMgr.LoadCreatureEventAI_Scripts();
-
-#ifdef ENABLE_SD2
+    
     sLog.outString("Initializing Scripts...");
+#ifdef ENABLE_SD2
     switch (sScriptMgr.LoadScriptLibrary(MANGOS_SCRIPT_NAME))
     {
         case SCRIPT_LOAD_OK:
@@ -1316,7 +1316,7 @@ void World::SetInitialWorldSettings()
             break;
     }
 #else /* ENABLE_SD2 */
-    sLog.outError("SD2 is enabled but wasn't included during compilation, not activating it.");
+    sLog.outError("SD2 was not included in compilation, not using it.");
 #endif /* ENABLE_SD2 */
 
     ///- Initialize game time and timers
@@ -1609,7 +1609,12 @@ namespace MaNGOS
                     { do_helper(data_list, (char*)text); }
             }
         private:
-            char* lineFromMessage(char*& pos) { char* start = strtok(pos, "\n"); pos = NULL; return start; }
+            char* lineFromMessage(char*& pos)
+            {
+                char* start = strtok(pos, "\n");
+                pos = NULL;
+                return start;
+            }
             void do_helper(WorldPacketList& data_list, char* text)
             {
                 char* pos = text;
@@ -1863,9 +1868,9 @@ void World::ShutdownServ(uint32 time, uint32 options, uint8 exitcode)
     {
         if (!(options & SHUTDOWN_MASK_IDLE) || GetActiveAndQueuedSessionCount() == 0)
         { 
-				sObjectAccessor.SaveAllPlayers();		// save all players.
-				m_stopEvent = true;								// exist code already set
-		}                             
+                sObjectAccessor.SaveAllPlayers();        // save all players.
+                m_stopEvent = true;                                // exist code already set
+        }                             
         else
             { m_ShutdownTimer = 1; }                            // So that the session count is re-evaluated at next world tick
     }
