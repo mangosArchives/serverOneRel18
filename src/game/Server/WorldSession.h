@@ -117,8 +117,14 @@ class PacketFilter
         explicit PacketFilter(WorldSession* pSession) : m_pSession(pSession) {}
         virtual ~PacketFilter() {}
 
-        virtual bool Process(WorldPacket* /*packet*/) { return true; }
-        virtual bool ProcessLogout() const { return true; }
+        virtual bool Process(WorldPacket* /*packet*/)
+        {
+            return true;
+        }
+        virtual bool ProcessLogout() const
+        {
+            return true;
+        }
 
     protected:
         WorldSession* const m_pSession;
@@ -132,7 +138,10 @@ class MapSessionFilter : public PacketFilter
 
         virtual bool Process(WorldPacket* packet) override;
         // in Map::Update() we do not process player logout!
-        virtual bool ProcessLogout() const override { return false; }
+        virtual bool ProcessLogout() const override
+        {
+            return false;
+        }
 };
 
 // class used to filer only thread-unsafe packets from queue
@@ -155,9 +164,18 @@ class MANGOS_DLL_SPEC WorldSession
         WorldSession(uint32 id, WorldSocket* sock, AccountTypes sec, uint8 expansion, time_t mute_time, LocaleConstant locale);
         ~WorldSession();
 
-        bool PlayerLoading() const { return m_playerLoading; }
-        bool PlayerLogout() const { return m_playerLogout; }
-        bool PlayerLogoutWithSave() const { return m_playerLogout && m_playerSave; }
+        bool PlayerLoading() const
+        {
+            return m_playerLoading;
+        }
+        bool PlayerLogout() const
+        {
+            return m_playerLogout;
+        }
+        bool PlayerLogoutWithSave() const
+        {
+            return m_playerLogout && m_playerSave;
+        }
 
 
         void SizeError(WorldPacket const& packet, uint32 size) const;
@@ -173,20 +191,44 @@ class MANGOS_DLL_SPEC WorldSession
         void SendTransferAborted(uint32 mapid, uint8 reason, uint8 arg = 0);
         void SendQueryTimeResponse();
 
-        AccountTypes GetSecurity() const { return _security; }
-        uint32 GetAccountId() const { return _accountId; }
-        Player* GetPlayer() const { return _player; }
+        AccountTypes GetSecurity() const
+        {
+            return _security;
+        }
+        uint32 GetAccountId() const
+        {
+            return _accountId;
+        }
+        Player* GetPlayer() const
+        {
+            return _player;
+        }
         char const* GetPlayerName() const;
-        void SetSecurity(AccountTypes security) { _security = security; }
-        std::string const& GetRemoteAddress() { return m_Address; }
-        void SetPlayer(Player* plr) { _player = plr; }
+        void SetSecurity(AccountTypes security)
+        {
+            _security = security;
+        }
+        std::string const& GetRemoteAddress()
+        {
+            return m_Address;
+        }
+        void SetPlayer(Player* plr)
+        {
+            _player = plr;
+        }
         uint8 Expansion() const { return m_expansion; }
 
         /// Session in auth.queue currently
-        void SetInQueue(bool state) { m_inQueue = state; }
+        void SetInQueue(bool state)
+        {
+            m_inQueue = state;
+        }
 
         /// Is the user engaged in a log out process?
-        bool isLogingOut() const { return _logoutTime || m_playerLogout; }
+        bool isLogingOut() const
+        {
+            return _logoutTime || m_playerLogout;
+        }
 
         /// Engage the logout process for the user
         void LogoutRequest(time_t requestTime)
@@ -307,12 +349,24 @@ class MANGOS_DLL_SPEC WorldSession
         time_t m_muteTime;
 
         // Locales
-        LocaleConstant GetSessionDbcLocale() const { return m_sessionDbcLocale; }
-        int GetSessionDbLocaleIndex() const { return m_sessionDbLocaleIndex; }
+        LocaleConstant GetSessionDbcLocale() const
+        {
+            return m_sessionDbcLocale;
+        }
+        int GetSessionDbLocaleIndex() const
+        {
+            return m_sessionDbLocaleIndex;
+        }
         const char* GetMangosString(int32 entry) const;
 
-        uint32 GetLatency() const { return m_latency; }
-        void SetLatency(uint32 latency) { m_latency = latency; }
+        uint32 GetLatency() const
+        {
+            return m_latency;
+        }
+        void SetLatency(uint32 latency)
+        {
+            m_latency = latency;
+        }
         void SetClientTimeDelay(uint32 delay) { m_clientTimeDelay = delay; }
         uint32 getDialogStatus(Player* pPlayer, Object* questgiver, uint32 defstatus);
 
@@ -375,16 +429,16 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleAutostoreLootItemOpcode(WorldPacket& recvPacket);
         void HandleLootMoneyOpcode(WorldPacket& recvPacket);
 
-		/**
-		* Method which handles the loot Opcode sent by the client, happens when the player is actually looting the object.
-		* It generates required loot on purpose.
-		*/
+        /**
+        * Method which handles the loot Opcode sent by the client, happens when the player is actually looting the object.
+        * It generates required loot on purpose.
+        */
         void HandleLootOpcode(WorldPacket& recvPacket);
 
-		/**
-		* Method which handles the loot release opcode sent by the client, happens when the player has end looting the object.
-		* It will take care of the looting state of the object depending on the case.
-		*/
+        /**
+        * Method which handles the loot release opcode sent by the client, happens when the player has end looting the object.
+        * It will take care of the looting state of the object depending on the case.
+        */
         void HandleLootReleaseOpcode(WorldPacket& recvPacket);
         void HandleLootMasterGiveOpcode(WorldPacket& recvPacket);
         void HandleWhoOpcode(WorldPacket& recvPacket);
