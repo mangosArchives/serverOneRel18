@@ -1534,7 +1534,9 @@ void World::Update(uint32 diff)
     sOutdoorPvPMgr.Update(diff);
 
     ///- Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnWorldUpdate(diff);
+#endif /* ENABLE_ELUNA */
 
     ///- Delete all characters which have been deleted X days before
     if (m_timers[WUPDATE_DELETECHARS].Passed())

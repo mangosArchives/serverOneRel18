@@ -149,8 +149,11 @@ int WorldSocket::SendPacket(const WorldPacket& pkt)
     // Dump outgoing packet.
     sLog.outWorldPacketDump(uint32(get_handle()), pct.GetOpcode(), pct.GetOpcodeName(), &pct, false);
 
+    // Used by Eluna
+#ifdef ENABLE_ELUNA
     if (!sEluna->OnPacketSend(m_Session, pct))
-        return 0;
+        { return 0; }
+#endif /* ENABLE_ELUNA */
 
     if (iSendPacket(pct) == -1)
     {
@@ -591,8 +594,12 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
             case CMSG_KEEP_ALIVE:
                 DEBUG_LOG("CMSG_KEEP_ALIVE ,size: " SIZEFMTD " ", new_pct->size());
 
+    // Used by Eluna
+#ifdef ENABLE_ELUNA
                 sEluna->OnPacketReceive(m_Session, *new_pct);
                 return 0;
+#endif /* ENABLE_ELUNA */
+
             default:
             {
                 ACE_GUARD_RETURN(LockType, Guard, m_SessionLock, -1);

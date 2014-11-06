@@ -20609,7 +20609,9 @@ void Player::_SaveBGData()
 void Player::ModifyMoney(int32 d)
 {
     // Used by Eluna
+#ifdef ENABLE_ELUNA
     sEluna->OnMoneyChanged(this, d);
+#endif /* ENABLE_ELUNA */
 
     if (d < 0)
         { SetMoney(GetMoney() > uint32(-d) ? GetMoney() + d : 0); }
