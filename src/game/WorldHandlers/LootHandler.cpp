@@ -142,7 +142,7 @@ void WorldSession::HandleAutostoreLootItemOpcode(WorldPacket& recv_data)
                     player->SendEquipError(EQUIP_ERR_LOOT_CANT_LOOT_THAT_NOW, NULL, NULL, item->itemid);
                     return;
                 }
-				break;
+                break;
             }
             case MASTER_LOOT:
             {
@@ -151,7 +151,7 @@ void WorldSession::HandleAutostoreLootItemOpcode(WorldPacket& recv_data)
                     player->SendEquipError(EQUIP_ERR_LOOT_CANT_LOOT_THAT_NOW, NULL, NULL, item->itemid);
                     return;
                 }
-				break;
+                break;
             }
         }
     }
@@ -529,28 +529,28 @@ void WorldSession::DoLootRelease(ObjectGuid lguid)
             if(!loot->isLooted())
             { 
                 Group const* group = pCreature->GetGroupLootRecipient();
-				if(group && !pCreature->hasBeenLootedOnce)
-				{
-					// Checking whether it has been looted once by the designed looter (master loot case).
-					switch(group->GetLootMethod())
-					{
-						case FREE_FOR_ALL:
-						case NEED_BEFORE_GREED:
-						case ROUND_ROBIN:
-						case GROUP_LOOT:
-						{
-							pCreature->hasBeenLootedOnce = true;
-							break;
-						}
-						case MASTER_LOOT:
-						{
-							pCreature->hasBeenLootedOnce = (group->GetLooterGuid() == player->GetObjectGuid());
-							break;
-						}
+                if (group && !pCreature->hasBeenLootedOnce)
+                {
+                    // Checking whether it has been looted once by the designed looter (master loot case).
+                    switch (group->GetLootMethod())
+                    {
+                        case FREE_FOR_ALL:
+                        case NEED_BEFORE_GREED:
+                        case ROUND_ROBIN:
+                        case GROUP_LOOT:
+                        {
+                            pCreature->hasBeenLootedOnce = true;
+                            break;
+                        }
+                        case MASTER_LOOT:
+                        {
+                            pCreature->hasBeenLootedOnce = (group->GetLooterGuid() == player->GetObjectGuid());
+                            break;
+                        }
 
-					}
-					pCreature->MarkFlagUpdateForClient(UNIT_DYNAMIC_FLAGS);
-				}
+                    }
+                    pCreature->MarkFlagUpdateForClient(UNIT_DYNAMIC_FLAGS);
+                }
             }            
 
             /* We've completely looted the creature, mark it as available for skinning */
