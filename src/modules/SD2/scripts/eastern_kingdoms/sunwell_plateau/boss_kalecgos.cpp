@@ -86,7 +86,7 @@ static const float aKalecHumanLoc[4] = {1709.094f, 927.5035f, -74.28364f, 2.9321
 ## boss_kalecgos
 ######*/
 
-struct MANGOS_DLL_DECL boss_kalecgosAI : public ScriptedAI
+struct boss_kalecgosAI : public ScriptedAI
 {
     boss_kalecgosAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -328,7 +328,7 @@ struct MANGOS_DLL_DECL boss_kalecgosAI : public ScriptedAI
 ## boss_sathrovarr
 ######*/
 
-struct MANGOS_DLL_DECL boss_sathrovarrAI : public ScriptedAI
+struct boss_sathrovarrAI : public ScriptedAI
 {
     boss_sathrovarrAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -507,7 +507,7 @@ struct MANGOS_DLL_DECL boss_sathrovarrAI : public ScriptedAI
 ## boss_kalecgos_humanoid
 ######*/
 
-struct MANGOS_DLL_DECL boss_kalecgos_humanoidAI : public ScriptedAI
+struct boss_kalecgos_humanoidAI : public ScriptedAI
 {
     boss_kalecgos_humanoidAI(Creature* pCreature) : ScriptedAI(pCreature)
     {

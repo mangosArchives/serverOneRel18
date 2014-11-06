@@ -58,7 +58,7 @@ enum
     SPELL_SHOCK                     = 12553,
 };
 
-struct MANGOS_DLL_DECL npc_aeranasAI : public ScriptedAI
+struct npc_aeranasAI : public ScriptedAI
 {
     npc_aeranasAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
@@ -143,7 +143,7 @@ enum
     NPC_RYGA                        = 17123
 };
 
-struct MANGOS_DLL_DECL npc_ancestral_wolfAI : public npc_escortAI
+struct npc_ancestral_wolfAI : public npc_escortAI
 {
     npc_ancestral_wolfAI(Creature* pCreature) : npc_escortAI(pCreature)
     {
@@ -212,7 +212,7 @@ enum
 };
 
 // script is basic support, details like end event are not implemented
-struct MANGOS_DLL_DECL npc_demoniac_scryerAI : public ScriptedAI
+struct npc_demoniac_scryerAI : public ScriptedAI
 {
     npc_demoniac_scryerAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -377,7 +377,7 @@ enum
     QUEST_ROAD_TO_FALCON_WATCH  = 9375,
 };
 
-struct MANGOS_DLL_DECL npc_wounded_blood_elfAI : public npc_escortAI
+struct npc_wounded_blood_elfAI : public npc_escortAI
 {
     npc_wounded_blood_elfAI(Creature* pCreature) : npc_escortAI(pCreature) {Reset();}
 
@@ -462,7 +462,7 @@ enum
     NPC_DERANGED_HELBOAR        = 16863,
 };
 
-struct MANGOS_DLL_DECL npc_fel_guard_houndAI : public ScriptedPetAI
+struct npc_fel_guard_houndAI : public ScriptedPetAI
 {
     npc_fel_guard_houndAI(Creature* pCreature) : ScriptedPetAI(pCreature) { Reset(); }
 

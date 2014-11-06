@@ -45,14 +45,18 @@ class Object;
 class ObjectGuid;
 
 // *********************************************************
+// **************** Functions used by core *****************
+
 class SD2
 {
 public:
     static void FreeScriptLibrary();
     static void InitScriptLibrary();
     static char const* GetScriptLibraryVersion();
+
     static CreatureAI* GetCreatureAI(Creature* pCreature);
     static InstanceData* CreateInstanceData(Map* pMap);
+
     static bool GossipHello(Player*, Creature*);
     static bool GOGossipHello(Player*, GameObject*);
     static bool GossipSelect(Player*, Creature*, uint32, uint32);
@@ -76,6 +80,8 @@ public:
     static bool EffectScriptEffectCreature(Unit*, uint32, SpellEffectIndex, Creature*, ObjectGuid);
     static bool AuraDummy(Aura const*, bool);
 };
+
+// *********************************************************
 // ************** Some defines used globally ***************
 
 // Basic defines

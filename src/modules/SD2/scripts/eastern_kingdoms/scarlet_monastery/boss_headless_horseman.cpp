@@ -51,7 +51,7 @@ enum
     SAY_PLAYER4            = -1189034
 };
 
-struct MANGOS_DLL_DECL boss_headless_horsemanAI : public ScriptedAI
+struct boss_headless_horsemanAI : public ScriptedAI
 {
     boss_headless_horsemanAI(Creature* pCreature) : ScriptedAI(pCreature) {Reset();}
 

@@ -67,7 +67,7 @@ enum
     GO_FLAYER_CARCASS           = 185155,
 };
 
-struct MANGOS_DLL_DECL mob_mature_netherwing_drakeAI : public ScriptedAI
+struct mob_mature_netherwing_drakeAI : public ScriptedAI
 {
     mob_mature_netherwing_drakeAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
@@ -196,7 +196,7 @@ enum
     NPC_ESCAPE_DUMMY                = 21348
 };
 
-struct MANGOS_DLL_DECL mob_enslaved_netherwing_drakeAI : public ScriptedAI
+struct mob_enslaved_netherwing_drakeAI : public ScriptedAI
 {
     mob_enslaved_netherwing_drakeAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -300,7 +300,7 @@ enum
     POINT_DEST                      = 1
 };
 
-struct MANGOS_DLL_DECL npc_dragonmaw_peonAI : public ScriptedAI
+struct npc_dragonmaw_peonAI : public ScriptedAI
 {
     npc_dragonmaw_peonAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
@@ -469,7 +469,7 @@ enum
 };
 
 // this script needs verification
-struct MANGOS_DLL_DECL npc_wildaAI : public npc_escortAI
+struct npc_wildaAI : public npc_escortAI
 {
     npc_wildaAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
 
@@ -739,7 +739,7 @@ enum
     SPELL_SPELL_REFLECTION = 33961
 };
 
-struct MANGOS_DLL_DECL mob_torlothAI : public ScriptedAI
+struct mob_torlothAI : public ScriptedAI
 {
     mob_torlothAI(Creature* pCreature) : ScriptedAI(pCreature) {Reset();}
 
@@ -892,7 +892,7 @@ CreatureAI* GetAI_mob_torloth(Creature* pCreature)
 # npc_lord_illidan_stormrage
 #####*/
 
-struct MANGOS_DLL_DECL npc_lord_illidan_stormrageAI : public Scripted_NoMovementAI
+struct npc_lord_illidan_stormrageAI : public Scripted_NoMovementAI
 {
     npc_lord_illidan_stormrageAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature) {Reset();}
 
@@ -1170,7 +1170,7 @@ enum
     EVENT_AIR                           = 13516,
 };
 
-struct MANGOS_DLL_DECL npc_totem_of_spiritsAI : public ScriptedPetAI
+struct npc_totem_of_spiritsAI : public ScriptedPetAI
 {
     npc_totem_of_spiritsAI(Creature* pCreature) : ScriptedPetAI(pCreature) { Reset(); }
 
@@ -1421,7 +1421,7 @@ const static EventLocations aDamnationLocations[] =
     { -3599.71f, 1897.94f, 47.24f}             // 6 epilogue move loc
 };
 
-struct MANGOS_DLL_DECL npc_spawned_oronok_tornheartAI : public ScriptedAI, private DialogueHelper
+struct npc_spawned_oronok_tornheartAI : public ScriptedAI, private DialogueHelper
 {
     npc_spawned_oronok_tornheartAI(Creature* pCreature) : ScriptedAI(pCreature),
         DialogueHelper(aOutroDialogue)
@@ -1698,7 +1698,7 @@ enum
     GO_SHADOWMOON_TUBER_MOUND   = 184701,
 };
 
-struct MANGOS_DLL_DECL npc_domesticated_felboarAI : public ScriptedAI
+struct npc_domesticated_felboarAI : public ScriptedAI
 {
     npc_domesticated_felboarAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
@@ -1818,7 +1818,7 @@ enum
     NPC_SPIRIT_HUNTER           = 21332,
 };
 
-struct MANGOS_DLL_DECL npc_veneratus_spawn_nodeAI : public Scripted_NoMovementAI
+struct npc_veneratus_spawn_nodeAI : public Scripted_NoMovementAI
 {
     npc_veneratus_spawn_nodeAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature) { Reset(); }
 

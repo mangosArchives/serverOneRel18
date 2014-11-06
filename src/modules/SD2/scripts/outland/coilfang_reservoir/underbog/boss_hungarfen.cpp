@@ -46,7 +46,7 @@ enum
     NPC_UNDERBOG_MUSHROOM       = 17990,
 };
 
-struct MANGOS_DLL_DECL boss_hungarfenAI : public ScriptedAI
+struct boss_hungarfenAI : public ScriptedAI
 {
     boss_hungarfenAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -118,7 +118,7 @@ CreatureAI* GetAI_boss_hungarfen(Creature* pCreature)
     return new boss_hungarfenAI(pCreature);
 }
 
-struct MANGOS_DLL_DECL mob_underbog_mushroomAI : public ScriptedAI
+struct mob_underbog_mushroomAI : public ScriptedAI
 {
     mob_underbog_mushroomAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 

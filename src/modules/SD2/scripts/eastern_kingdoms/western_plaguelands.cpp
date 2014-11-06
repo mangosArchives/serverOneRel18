@@ -46,7 +46,7 @@
 ## npc_the_scourge_cauldron
 ######*/
 
-struct MANGOS_DLL_DECL npc_the_scourge_cauldronAI : public ScriptedAI
+struct npc_the_scourge_cauldronAI : public ScriptedAI
 {
     npc_the_scourge_cauldronAI(Creature* pCreature) : ScriptedAI(pCreature) {Reset();}
 
@@ -143,7 +143,7 @@ enum
     QUEST_ID_TOMB_LIGHTBRINGER  = 9446,
 };
 
-struct MANGOS_DLL_DECL npc_anchorite_truuenAI: public npc_escortAI
+struct npc_anchorite_truuenAI: public npc_escortAI
 {
     npc_anchorite_truuenAI(Creature* pCreature): npc_escortAI(pCreature) { Reset(); }
 

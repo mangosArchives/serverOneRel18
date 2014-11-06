@@ -118,7 +118,7 @@ static const Location afBrokenSpawnLoc[] =
 ## npc_akama
 ######*/
 
-struct MANGOS_DLL_DECL npc_akamaAI : public ScriptedAI, private DialogueHelper
+struct npc_akamaAI : public ScriptedAI, private DialogueHelper
 {
     npc_akamaAI(Creature* pCreature) : ScriptedAI(pCreature),
         DialogueHelper(aOutroDialogue)
@@ -524,7 +524,7 @@ bool GossipSelect_npc_akama(Player* pPlayer, Creature* pCreature, uint32 /*uiSen
 ## boss_shade_of_akama
 ######*/
 
-struct MANGOS_DLL_DECL boss_shade_of_akamaAI : public ScriptedAI
+struct boss_shade_of_akamaAI : public ScriptedAI
 {
     boss_shade_of_akamaAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -598,7 +598,7 @@ struct MANGOS_DLL_DECL boss_shade_of_akamaAI : public ScriptedAI
 ## mob_ashtongue_channeler
 ######*/
 
-struct MANGOS_DLL_DECL mob_ashtongue_channelerAI : public ScriptedAI
+struct mob_ashtongue_channelerAI : public ScriptedAI
 {
     mob_ashtongue_channelerAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -649,7 +649,7 @@ struct MANGOS_DLL_DECL mob_ashtongue_channelerAI : public ScriptedAI
 ## mob_ashtongue_sorcerer
 ######*/
 
-struct MANGOS_DLL_DECL mob_ashtongue_sorcererAI : public ScriptedAI
+struct mob_ashtongue_sorcererAI : public ScriptedAI
 {
     mob_ashtongue_sorcererAI(Creature* pCreature) : ScriptedAI(pCreature)
     {

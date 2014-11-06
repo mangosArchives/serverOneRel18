@@ -51,7 +51,7 @@ enum
     SPELL_WARLORDS_RAGE_AURA    = 36453,
 };
 
-struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
+struct boss_warlord_kalithreshAI : public ScriptedAI
 {
     boss_warlord_kalithreshAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -231,7 +231,7 @@ bool EffectAuraDummy_spell_aura_dummy_warlord_rage(const Aura* pAura, bool bAppl
     return true;
 }
 
-struct MANGOS_DLL_DECL mob_naga_distillerAI : public Scripted_NoMovementAI
+struct mob_naga_distillerAI : public Scripted_NoMovementAI
 {
     mob_naga_distillerAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature) { Reset(); }
 

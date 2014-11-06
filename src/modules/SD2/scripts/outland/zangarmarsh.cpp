@@ -48,7 +48,7 @@ enum
     SPELL_LIGHTNING_BOLT    = 9532,
 };
 
-struct MANGOS_DLL_DECL npc_cooshcooshAI : public ScriptedAI
+struct npc_cooshcooshAI : public ScriptedAI
 {
     npc_cooshcooshAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
@@ -104,7 +104,7 @@ enum
     NPC_SLAVEBINDER     = 18042
 };
 
-struct MANGOS_DLL_DECL npc_kayra_longmaneAI : public npc_escortAI
+struct npc_kayra_longmaneAI : public npc_escortAI
 {
     npc_kayra_longmaneAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
 

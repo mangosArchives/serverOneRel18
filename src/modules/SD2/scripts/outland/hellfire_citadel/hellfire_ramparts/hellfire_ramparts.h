@@ -41,7 +41,7 @@ enum
     GO_FEL_IRON_CHEST_H         = 185169,
 };
 
-class MANGOS_DLL_DECL instance_ramparts : public ScriptedInstance
+class instance_ramparts : public ScriptedInstance
 {
     public:
         instance_ramparts(Map* pMap);

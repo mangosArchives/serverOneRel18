@@ -83,7 +83,7 @@ static const AddsLocations aLurkerLoc[MAX_SUBMERGE_ADDS] =
 
 static const float afLurkerSpawnPos[4] = {40.4058f, -417.108f, -21.5911f, 3.03312f};
 
-struct MANGOS_DLL_DECL boss_the_lurker_belowAI : public Scripted_NoMovementAI
+struct boss_the_lurker_belowAI : public Scripted_NoMovementAI
 {
     boss_the_lurker_belowAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature)
     {

@@ -57,7 +57,7 @@ enum
     QUEST_RESCUE_OOX22FE    = 2767
 };
 
-struct MANGOS_DLL_DECL npc_oox22feAI : public npc_escortAI
+struct npc_oox22feAI : public npc_escortAI
 {
     npc_oox22feAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
 

@@ -50,7 +50,7 @@ enum
     SPELL_RED_LIGHTNING         = 39990,
 };
 
-class MANGOS_DLL_DECL instance_sethekk_halls : public ScriptedInstance
+class instance_sethekk_halls : public ScriptedInstance
 {
     public:
         instance_sethekk_halls(Map* pMap);
