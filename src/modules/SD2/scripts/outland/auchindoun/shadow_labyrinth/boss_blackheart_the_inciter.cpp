@@ -119,7 +119,7 @@ struct boss_blackheart_the_inciterAI : public ScriptedAI
         { m_pInstance->SetData(TYPE_INCITER, FAIL); }
     }
 
-    void EnterEvadeMode()
+    void EnterEvadeMode() override
     {
         // if we are waiting for Incite chaos to expire don't evade
         if (m_uiInciteChaosWaitTimer)

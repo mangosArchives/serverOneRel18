@@ -26,7 +26,7 @@
 /**
  * ScriptData
  * SDName:      Boss_Gyth
- * SD%Complete: 95
+ * SD%Complete: 100
  * SDComment:   Timers may need adjustments
  * SDCategory:  Blackrock Spire
  * EndScriptData

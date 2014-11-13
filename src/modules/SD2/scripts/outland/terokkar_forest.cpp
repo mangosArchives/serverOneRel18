@@ -26,7 +26,7 @@
 /* ScriptData
 SDName: Terokkar_Forest
 SD%Complete: 80
-SDComment: Quest support: 9889, 10009, 10873, 10896, 10446/10447, 10852, 10887, 10922, 11096, 11093, 10051, 10052, 10898.
+SDComment: Quest support: 9889, 10009, 10051, 10052, 10446/10447, 10852, 10873, 10887, 10896, 10898, 10922, 10988, 11085, 11093, 11096.
 SDCategory: Terokkar Forest
 EndScriptData */
 
@@ -42,6 +42,8 @@ go_veil_skith_cage
 npc_captive_child
 npc_isla_starmane
 npc_skywing
+npc_cenarion_sparrowhawk
+npc_skyguard_prisoner
 EndContentData */
 
 #include "precompiled.h"
@@ -1035,6 +1037,210 @@ CreatureAI* GetAI_npc_skywing(Creature* pCreature)
     return new npc_skywingAI(pCreature);
 }
 
+/*######
+## npc_cenarion_sparrowhawk
+######*/
+
+enum
+{
+    EMOTE_FOLLOW                = -1000963,
+    EMOTE_SURVEY                = -1000964,
+    EMOTE_LOCATE                = -1000965,
+
+    NPC_SKETTIS_RAVEN_STONE     = 22986,
+    GO_RAVEN_STONE              = 185541,
+};
+
+struct npc_cenarion_sparrowhawkAI : public ScriptedAI
+{
+    npc_cenarion_sparrowhawkAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
+
+    uint32 m_uiSurveyTimer;
+    bool m_bFirstTimer;
+
+    ObjectGuid m_currentStone;
+
+    void Reset() override
+    {
+        m_uiSurveyTimer = 3000;
+        m_bFirstTimer   = true;
+        DoScriptText(EMOTE_FOLLOW, m_creature);
+    }
+
+    void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
+    {
+        if (uiMoveType != POINT_MOTION_TYPE || !uiPointId)
+            return;
+
+        // despawn the trigger and spawn the nearby stone
+        if (Creature* pStoneTrigger = m_creature->GetMap()->GetCreature(m_currentStone))
+            pStoneTrigger->ForcedDespawn();
+
+        if (GameObject* pStone = GetClosestGameObjectWithEntry(m_creature, GO_RAVEN_STONE, 5.0f))
+        {
+            pStone->SetRespawnTime(pStone->GetRespawnDelay());
+            pStone->Refresh();
+        }
+        DoScriptText(EMOTE_LOCATE, m_creature);
+
+        // check if we still have other stones in range
+        m_uiSurveyTimer = 5000;
+    }
+
+    void DoFindNearbyStones()
+    {
+        float fX, fY, fZ;
+        if (Creature* pStoneTrigger = GetClosestCreatureWithEntry(m_creature, NPC_SKETTIS_RAVEN_STONE, 80.0f))
+        {
+            m_currentStone = pStoneTrigger->GetObjectGuid();
+            pStoneTrigger->GetContactPoint(m_creature, fX, fY, fZ);
+
+            m_creature->SetWalk(false);
+            m_creature->GetMotionMaster()->MovePoint(1, fX, fY, fZ);
+        }
+        else
+            m_creature->ForcedDespawn(10000);
+    }
+
+    void UpdateAI(const uint32 uiDiff) override
+    {
+        if (m_uiSurveyTimer)
+        {
+            if (m_uiSurveyTimer <= uiDiff)
+            {
+                if (m_bFirstTimer)
+                {
+                    DoScriptText(EMOTE_SURVEY, m_creature);
+                    m_bFirstTimer = false;
+                }
+
+                DoFindNearbyStones();
+                m_uiSurveyTimer = 0;
+            }
+            else
+                m_uiSurveyTimer -= uiDiff;
+        }
+    }
+};
+
+CreatureAI* GetAI_npc_cenarion_sparrowhawk(Creature* pCreature)
+{
+    return new npc_cenarion_sparrowhawkAI(pCreature);
+}
+
+/*#####
+## npc_skyguard_prisoner
+#####*/
+
+enum
+{
+    SAY_ESCORT_START            = -1001006,
+    SAY_AMBUSH_END              = -1001007,
+    SAY_ESCORT_COMPLETE         = -1001008,
+    SAY_AMBUSH_1                = -1001009,
+    SAY_AMBUSH_2                = -1001010,
+    SAY_AMBUSH_3                = -1001011,
+    SAY_AMBUSH_4                = -1001012,
+
+    NPC_WING_GUARD              = 21644,
+    GO_PRISONER_CAGE            = 185952,
+
+    QUEST_ID_ESCAPE_SKETTIS     = 11085,
+};
+
+struct npc_skyguard_prisonerAI : public npc_escortAI
+{
+    npc_skyguard_prisonerAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
+
+    void Reset() override { }
+
+    void ReceiveAIEvent(AIEventType eventType, Creature* /*pSender*/, Unit* pInvoker, uint32 uiMiscValue) override
+    {
+        if (eventType == AI_EVENT_START_ESCORT && pInvoker->GetTypeId() == TYPEID_PLAYER)
+        {
+            m_creature->SetFactionTemporary(FACTION_ESCORT_N_NEUTRAL_ACTIVE, TEMPFACTION_RESTORE_RESPAWN);
+            Start(false, (Player*)pInvoker, GetQuestTemplateStore(uiMiscValue));
+
+            // ToDo: add additional WP when DB will support it
+            if (m_creature->GetPositionZ() < 310.0f)
+            {
+                SetEscortPaused(true);
+                //SetCurrentWaypoint(WP_ID_SPAWN_1);
+                //SetEscortPaused(false);
+                script_error_log("NPC entry %u, location %f, %f, %f does not have waypoints implemented for current spawn location. Please contact customer support!", m_creature->GetEntry(), m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ());
+            }
+            else if (m_creature->GetPositionZ() < 330.0f)
+            {
+                SetEscortPaused(true);
+                //SetCurrentWaypoint(WP_ID_SPAWN_2);
+                //SetEscortPaused(false);
+                script_error_log("NPC entry %u, location %f, %f, %f does not have waypoints implemented for current spawn location. Please contact customer support!", m_creature->GetEntry(), m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ());
+            }
+            // else just use standard WP
+
+            // open cage
+            if (GameObject* pCage = GetClosestGameObjectWithEntry(m_creature, GO_PRISONER_CAGE, 10.0f))
+                pCage->Use(m_creature);
+        }
+    }
+
+    void JustSummoned(Creature* pSummoned) override
+    {
+        if (pSummoned->GetEntry() == NPC_WING_GUARD)
+        {
+            pSummoned->AI()->AttackStart(m_creature);
+
+            switch (urand(0, 3))
+            {
+                case 0: DoScriptText(SAY_AMBUSH_1, pSummoned); break;
+                case 1: DoScriptText(SAY_AMBUSH_2, pSummoned); break;
+                case 2: DoScriptText(SAY_AMBUSH_3, pSummoned); break;
+                case 3: DoScriptText(SAY_AMBUSH_4, pSummoned); break;
+            }
+        }
+    }
+
+    void WaypointReached(uint32 uiPointId) override
+    {
+        switch (uiPointId)
+        {
+            case 0:
+                DoScriptText(SAY_ESCORT_START, m_creature);
+                break;
+            case 13:
+                m_creature->SummonCreature(NPC_WING_GUARD, -4179.043f, 3081.007f, 328.28f, 4.51f, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 60000);
+                m_creature->SummonCreature(NPC_WING_GUARD, -4181.610f, 3081.289f, 328.32f, 4.52f, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 60000);
+                break;
+            case 14:
+                DoScriptText(SAY_AMBUSH_END, m_creature);
+                break;
+            case 18:
+                DoScriptText(SAY_ESCORT_COMPLETE, m_creature);
+                SetRun();
+
+                if (Player* pPlayer = GetPlayerForEscort())
+                    pPlayer->GroupEventHappens(QUEST_ID_ESCAPE_SKETTIS, m_creature);
+                break;
+        }
+    }
+};
+
+CreatureAI* GetAI_npc_skyguard_prisoner(Creature* pCreature)
+{
+    return new npc_skyguard_prisonerAI(pCreature);
+}
+
+bool QuestAccept_npc_skyguard_prisoner(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
+{
+    if (pQuest->GetQuestId() == QUEST_ID_ESCAPE_SKETTIS)
+    {
+        pCreature->AI()->SendAIEvent(AI_EVENT_START_ESCORT, pPlayer, pCreature, pQuest->GetQuestId());
+        return true;
+    }
+
+    return false;
+}
+
 void AddSC_terokkar_forest()
 {
     Script* pNewScript;
@@ -1096,5 +1302,16 @@ void AddSC_terokkar_forest()
     pNewScript->Name = "npc_skywing";
     pNewScript->GetAI = &GetAI_npc_skywing;
     pNewScript->pQuestAcceptNPC = &QuestAccept_npc_skywing;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_cenarion_sparrowhawk";
+    pNewScript->GetAI = &GetAI_npc_cenarion_sparrowhawk;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_skyguard_prisoner";
+    pNewScript->GetAI = &GetAI_npc_skyguard_prisoner;
+    pNewScript->pQuestAcceptNPC = &QuestAccept_npc_skyguard_prisoner;
     pNewScript->RegisterSelf();
 }
