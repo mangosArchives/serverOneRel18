@@ -3,7 +3,14 @@ MaNGOS One Changelog
 This change log references the relevant changes (bug and security fixes) done
 in recent versions.
 
-0.19 (2014-07-xx) - The Genius of Tom Rus
+0.20 (2014-11-31) - Points of departure
+---------------------------------------
+Many Thanks to all the groups and individuals who contributed to this release.
+
+* Some of the dependant file groups have been made into submodules
+* i.e. all the dependant libraries (dep folder) and realmd
+
+0.19 (2014-07-xx) - The Genius of Tom Rus (Not released publically)
 --------------------------------
 Major changes for this build which require your attention when upgrading include:
 
